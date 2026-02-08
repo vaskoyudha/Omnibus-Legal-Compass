@@ -1,5 +1,7 @@
 langchain-nvidia-ai-endpoints
 langchain
+langchain-huggingface>=0.0.3
+sentence-transformers>=2.2.0
 qdrant-client
 fastapi
 uvicorn
