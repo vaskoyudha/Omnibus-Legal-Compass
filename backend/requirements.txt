@@ -11,3 +11,4 @@ pytest
 pytest-asyncio
 python-dotenv
 requests
+rank_bm25>=0.2.2
