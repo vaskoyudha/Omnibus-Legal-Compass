@@ -276,7 +276,7 @@ def main():
     args = parser.parse_args()
     
     # Note: HuggingFace embeddings run locally, no API key needed for embeddings
-    # NVIDIA_API_KEY is still used for the LLM (Kimi 2.5) in later stages
+    # NVIDIA_API_KEY is still used for the LLM (Llama 3.1) in later stages
     
     result = ingest_documents(
         json_path=args.json_path,
