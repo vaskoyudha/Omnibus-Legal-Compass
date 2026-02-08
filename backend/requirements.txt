@@ -1,0 +1,11 @@
+langchain-nvidia-ai-endpoints
+langchain
+qdrant-client
+fastapi
+uvicorn
+pymupdf
+pytesseract
+pytest
+pytest-asyncio
+python-dotenv
+requests
