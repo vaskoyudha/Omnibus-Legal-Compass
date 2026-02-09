@@ -1,11 +1,33 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+// Backend returns this structure
+export interface CitationInfo {
+  number: number;
+  citation_id: string;
+  citation: string;
+  score: number;
+  metadata: Record<string, unknown>;
+}
+
+// Mapped citation for display
 export interface Citation {
   document_title: string;
   document_type: string;
   pasal: string;
   relevance_score: number;
   content_snippet: string;
+}
+
+// Helper to map backend citation to frontend format
+export function mapCitation(c: CitationInfo): Citation {
+  const meta = c.metadata || {};
+  return {
+    document_title: c.citation || `${meta.jenis_dokumen || ''} No. ${meta.nomor || ''} Tahun ${meta.tahun || ''}`,
+    document_type: (meta.jenis_dokumen as string) || 'Peraturan',
+    pasal: meta.pasal ? `Pasal ${meta.pasal}${meta.ayat ? ` Ayat (${meta.ayat})` : ''}` : '',
+    relevance_score: c.score || 0,
+    content_snippet: (meta.text as string) || (meta.isi as string) || '',
+  };
 }
 
 export interface ConfidenceScore {
@@ -24,11 +46,11 @@ export interface ValidationResult {
 
 export interface AskResponse {
   answer: string;
-  citations: Citation[];
-  confidence: number;
+  citations: CitationInfo[];
+  confidence: string;
   confidence_score?: ConfidenceScore;
   validation?: ValidationResult;
-  processing_time: number;
+  processing_time_ms: number;
 }
 
 export interface AskRequest {

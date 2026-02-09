@@ -5,6 +5,9 @@ sentence-transformers>=2.2.0
 qdrant-client
 fastapi
 uvicorn
+pypdf>=4.0.0
+python-multipart
+httpx
 pymupdf
 pytesseract
 pytest

@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 from pypdf import PdfReader
 import io
 
-from backend.rag_chain import LegalRAGChain, RAGResponse
+from rag_chain import LegalRAGChain, RAGResponse
 
 # Configure logging
 logging.basicConfig(

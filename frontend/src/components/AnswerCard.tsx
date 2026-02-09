@@ -1,5 +1,6 @@
 'use client';
 
+import ReactMarkdown from 'react-markdown';
 import { AskResponse } from '@/lib/api';
 import CitationList from './CitationList';
 
@@ -8,8 +9,11 @@ interface AnswerCardProps {
 }
 
 export default function AnswerCard({ response }: AnswerCardProps) {
-  // Get numeric confidence from confidence_score if available, fallback to legacy confidence
-  const numericConfidence = response.confidence_score?.numeric ?? response.confidence ?? 0;
+  // Get numeric confidence from confidence_score if available
+  const numericConfidence = response.confidence_score?.numeric ?? 0;
+  
+  // Convert processing_time_ms to seconds
+  const processingTimeSec = (response.processing_time_ms ?? 0) / 1000;
   
   const getConfidenceColor = (confidence: number) => {
     if (confidence >= 0.7) return 'text-green-600 bg-green-50 border-green-200';
@@ -57,7 +61,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>Keyakinan: {getConfidenceLabel(numericConfidence)}</span>
+                <span>Keyakinan: {response.confidence_score?.label || getConfidenceLabel(numericConfidence)}</span>
                 <span className="font-bold">{Math.round(numericConfidence * 100)}%</span>
               </div>
             </div>
@@ -91,9 +95,9 @@ export default function AnswerCard({ response }: AnswerCardProps) {
             )}
 
             {/* Processing Time */}
-            {response.processing_time !== undefined && (
+            {processingTimeSec > 0 && (
               <span className="text-slate-400 ml-auto">
-                Waktu proses: {response.processing_time.toFixed(2)}s
+                Waktu proses: {processingTimeSec.toFixed(2)}s
               </span>
             )}
           </div>
@@ -110,11 +114,9 @@ export default function AnswerCard({ response }: AnswerCardProps) {
             </div>
           )}
 
-          {/* Answer Text */}
-          <div className="prose prose-slate max-w-none">
-            <div className="text-slate-700 leading-relaxed whitespace-pre-wrap">
-              {response.answer}
-            </div>
+          {/* Answer Text with Markdown Rendering */}
+          <div className="prose prose-slate max-w-none prose-headings:text-slate-800 prose-headings:font-semibold prose-h2:text-lg prose-h2:mt-4 prose-h2:mb-2 prose-p:text-slate-700 prose-p:leading-relaxed prose-strong:text-slate-800 prose-ul:text-slate-700 prose-ol:text-slate-700">
+            <ReactMarkdown>{response.answer}</ReactMarkdown>
           </div>
 
           {/* Citations */}

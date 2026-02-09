@@ -18,7 +18,7 @@ from typing import Any
 import requests
 from dotenv import load_dotenv
 
-from backend.retriever import HybridRetriever, SearchResult
+from retriever import HybridRetriever, SearchResult
 
 # Load environment variables
 load_dotenv()
@@ -269,13 +269,16 @@ class LegalRAGChain:
         citations = []
         
         for i, result in enumerate(results, 1):
-            # Build citation info
+            # Build citation info with text snippet included
             citation_info = {
                 "number": i,
                 "citation_id": result.citation_id,
                 "citation": result.citation,
                 "score": round(result.score, 4),
-                "metadata": result.metadata,
+                "metadata": {
+                    **result.metadata,
+                    "text": result.text[:500] if result.text else "",  # Include text snippet
+                },
             }
             citations.append(citation_info)
             
