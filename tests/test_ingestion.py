@@ -7,6 +7,10 @@ import os
 import pytest
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
+from dotenv import load_dotenv
+
+# Load env at module level so skipif decorators can access env vars
+load_dotenv()
 
 
 # Test data path
@@ -99,32 +103,30 @@ class TestDocumentChunker:
 
 
 class TestEmbeddingGenerator:
-    """Tests for NVIDIA NIM embedding generation."""
+    """Tests for HuggingFace embedding generation."""
     
-    @pytest.mark.skipif(
-        not os.getenv("NVIDIA_API_KEY"),
-        reason="NVIDIA_API_KEY not set"
-    )
-    def test_nvidia_embeddings_connection(self):
-        """Test connection to NVIDIA NIM embeddings API."""
-        from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+    def test_huggingface_embeddings_connection(self):
+        """Test connection to HuggingFace embeddings (local)."""
+        from langchain_huggingface import HuggingFaceEmbeddings
         
-        embedder = NVIDIAEmbeddings(model="NV-Embed-QA")
+        embedder = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+        )
         
         # Test single query embedding
         result = embedder.embed_query("Apa itu penanaman modal?")
         
         assert isinstance(result, list)
-        assert len(result) > 0  # NV-Embed-QA produces 1024-dim vectors typically
+        assert len(result) == 384  # paraphrase-multilingual-MiniLM-L12-v2 produces 384-dim vectors
         assert all(isinstance(x, float) for x in result)
     
     def test_embedding_dimension_consistency(self):
         """Embeddings must have consistent dimensions."""
         # Mock embeddings for unit test
         mock_embeddings = [
-            [0.1] * 1024,
-            [0.2] * 1024,
-            [0.3] * 1024,
+            [0.1] * 384,
+            [0.2] * 384,
+            [0.3] * 384,
         ]
         
         # All should be same dimension
@@ -143,7 +145,7 @@ class TestQdrantIngestion:
         
         # Must have dense vector config
         assert "vectors_config" in config
-        assert config["vectors_config"]["size"] == 1024  # NV-Embed-QA dimension
+        assert config["vectors_config"]["size"] == 384  # paraphrase-multilingual-MiniLM-L12-v2 dimension
         assert config["vectors_config"]["distance"] == "Cosine"
     
     def test_point_struct_creation(self):
@@ -161,7 +163,7 @@ class TestQdrantIngestion:
                 "pasal": "1"
             }
         }
-        mock_embedding = [0.1] * 1024
+        mock_embedding = [0.1] * 384
         
         point = create_point_struct(
             point_id=1,
@@ -198,14 +200,14 @@ class TestIngestionPipeline:
         from backend.scripts.ingest import ingest_documents
         
         with patch("backend.scripts.ingest.QdrantClient") as MockQdrant, \
-             patch("backend.scripts.ingest.NVIDIAEmbeddings") as MockEmbed:
+             patch("backend.scripts.ingest.HuggingFaceEmbeddings") as MockEmbed:
             
             # Setup mocks
             mock_client = MagicMock()
             MockQdrant.return_value = mock_client
             
             mock_embedder = MagicMock()
-            mock_embedder.embed_documents.return_value = [[0.1] * 1024] * 10
+            mock_embedder.embed_documents.return_value = [[0.1] * 384] * 10
             MockEmbed.return_value = mock_embedder
             
             # Run ingestion
