@@ -1,44 +1,34 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export interface Citation {
-  number: number;
-  citation_id: string;
-  citation: string;
-  score: number;
-  metadata: Record<string, unknown>;
-  // Legacy fields for backward compatibility
-  document_title?: string;
-  document_type?: string;
-  pasal?: string;
-  relevance_score?: number;
-  content_snippet?: string;
+  document_title: string;
+  document_type: string;
+  pasal: string;
+  relevance_score: number;
+  content_snippet: string;
 }
 
 export interface ConfidenceScore {
-  numeric: number;       // 0.0 to 1.0
-  label: string;         // tinggi, sedang, rendah, tidak ada
-  top_score: number;     // Best retrieval score
-  avg_score: number;     // Average retrieval score
+  numeric: number;
+  label: string;
+  top_score: number;
+  avg_score: number;
 }
 
 export interface ValidationResult {
   is_valid: boolean;
-  citation_coverage: number;  // 0.0 to 1.0
+  citation_coverage: number;
   warnings: string[];
   hallucination_risk: 'low' | 'medium' | 'high';
-  missing_citations: number[];
 }
 
 export interface AskResponse {
   answer: string;
   citations: Citation[];
-  sources: string[];
-  confidence: string;                       // Label: tinggi, sedang, rendah
-  confidence_score: ConfidenceScore | null; // Numeric score with details
-  validation: ValidationResult | null;      // Answer validation result
-  processing_time_ms: number;               // Milliseconds
-  // Legacy field for backward compatibility
-  processing_time?: number;
+  confidence: number;
+  confidence_score?: ConfidenceScore;
+  validation?: ValidationResult;
+  processing_time: number;
 }
 
 export interface AskRequest {

@@ -90,22 +90,21 @@ class CitationInfo(BaseModel):
 
 
 class ConfidenceScoreInfo(BaseModel):
-    """Numeric confidence score with details."""
-
-    numeric: float = Field(description="Skor kepercayaan 0.0 - 1.0")
-    label: str = Field(description="Label: tinggi, sedang, rendah, tidak ada")
-    top_score: float = Field(description="Skor tertinggi dari hasil pencarian")
-    avg_score: float = Field(description="Skor rata-rata hasil pencarian")
+    """Numeric confidence score details."""
+    
+    numeric: float = Field(description="Nilai kepercayaan 0.0 sampai 1.0")
+    label: str = Field(description="Label kepercayaan: tinggi, sedang, rendah, tidak ada")
+    top_score: float = Field(description="Skor tertinggi dari retrieval")
+    avg_score: float = Field(description="Skor rata-rata dari retrieval")
 
 
 class ValidationInfo(BaseModel):
-    """Answer validation/self-reflection result."""
-
-    is_valid: bool = Field(description="Apakah jawaban tervalidasi")
-    citation_coverage: float = Field(description="Persentase sitasi yang digunakan (0.0-1.0)")
-    warnings: list[str] = Field(default=[], description="Peringatan validasi")
+    """Answer validation details."""
+    
+    is_valid: bool = Field(description="Apakah jawaban valid tanpa peringatan")
+    citation_coverage: float = Field(description="Persentase sumber yang dikutip 0.0-1.0")
+    warnings: list[str] = Field(default=[], description="Daftar peringatan validasi")
     hallucination_risk: str = Field(description="Risiko halusinasi: low, medium, high")
-    missing_citations: list[int] = Field(default=[], description="Nomor sitasi yang tidak valid")
 
 
 class QuestionResponse(BaseModel):
@@ -118,7 +117,7 @@ class QuestionResponse(BaseModel):
         description="Tingkat kepercayaan: tinggi, sedang, rendah, tidak ada"
     )
     confidence_score: ConfidenceScoreInfo | None = Field(
-        default=None, description="Skor kepercayaan numerik dengan detail"
+        default=None, description="Detail skor kepercayaan numerik"
     )
     validation: ValidationInfo | None = Field(
         default=None, description="Hasil validasi jawaban"
@@ -414,7 +413,7 @@ async def ask_question(request: QuestionRequest):
             for c in response.citations
         ]
 
-        # Build confidence score info
+        # Build confidence score info if available
         confidence_score_info = None
         if response.confidence_score:
             confidence_score_info = ConfidenceScoreInfo(
@@ -423,8 +422,8 @@ async def ask_question(request: QuestionRequest):
                 top_score=response.confidence_score.top_score,
                 avg_score=response.confidence_score.avg_score,
             )
-
-        # Build validation info
+        
+        # Build validation info if available
         validation_info = None
         if response.validation:
             validation_info = ValidationInfo(
@@ -432,7 +431,6 @@ async def ask_question(request: QuestionRequest):
                 citation_coverage=response.validation.citation_coverage,
                 warnings=response.validation.warnings,
                 hallucination_risk=response.validation.hallucination_risk,
-                missing_citations=response.validation.missing_citations,
             )
 
         return QuestionResponse(
@@ -506,7 +504,7 @@ async def ask_followup(request: FollowUpRequest):
             for c in response.citations
         ]
 
-        # Build confidence score info
+        # Build confidence score info if available
         confidence_score_info = None
         if response.confidence_score:
             confidence_score_info = ConfidenceScoreInfo(
@@ -515,8 +513,8 @@ async def ask_followup(request: FollowUpRequest):
                 top_score=response.confidence_score.top_score,
                 avg_score=response.confidence_score.avg_score,
             )
-
-        # Build validation info
+        
+        # Build validation info if available
         validation_info = None
         if response.validation:
             validation_info = ValidationInfo(
@@ -524,7 +522,6 @@ async def ask_followup(request: FollowUpRequest):
                 citation_coverage=response.validation.citation_coverage,
                 warnings=response.validation.warnings,
                 hallucination_risk=response.validation.hallucination_risk,
-                missing_citations=response.validation.missing_citations,
             )
 
         return QuestionResponse(

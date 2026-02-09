@@ -147,7 +147,7 @@ class RAGResponse:
     citations: list[dict[str, Any]]
     sources: list[str]
     confidence: str  # Kept for backward compatibility
-    confidence_score: ConfidenceScore | None  # New numeric confidence
+    confidence_score: ConfidenceScore | None  # Numeric confidence
     raw_context: str
     validation: ValidationResult | None = None  # Answer validation result
 
@@ -331,78 +331,36 @@ class LegalRAGChain:
         self,
         answer: str,
         citations: list[dict],
-        context: str,
     ) -> ValidationResult:
-        """
-        Validate answer for citation accuracy and hallucination risk.
-        
-        Performs self-reflection checks:
-        1. Verifies all cited references exist in citations
-        2. Checks citation coverage (% of sources used)
-        3. Assesses hallucination risk based on citation patterns
-        
-        Args:
-            answer: Generated answer text
-            citations: List of citation dictionaries with 'number' key
-            context: Raw context provided to LLM
-            
-        Returns:
-            ValidationResult with validation status and warnings
-        """
+        """Validate answer for citation accuracy and hallucination risk."""
         warnings: list[str] = []
         
         # Extract citation references from answer [1], [2], etc.
         cited_refs = set(int(m) for m in re.findall(r'\[(\d+)\]', answer))
         available_refs = set(c["number"] for c in citations)
         
-        # Check for invalid citations (referencing non-existent sources)
+        # Check for invalid citations (references that don't exist)
         invalid_refs = cited_refs - available_refs
         if invalid_refs:
             warnings.append(f"Referensi tidak valid: {sorted(invalid_refs)}")
         
-        # Calculate citation coverage (how many available sources were used)
+        # Check citation coverage (how many available sources were used)
         if available_refs:
-            valid_cited = cited_refs & available_refs
-            coverage = len(valid_cited) / len(available_refs)
+            coverage = len(cited_refs & available_refs) / len(available_refs)
         else:
             coverage = 0.0
         
-        # Assess hallucination risk based on citation patterns
+        # Assess hallucination risk based on citation usage
         if not cited_refs:
-            # No citations at all - highest risk
             risk = "high"
             warnings.append("Jawaban tidak memiliki sitasi sama sekali")
         elif invalid_refs:
-            # Some invalid references - medium risk
             risk = "medium"
-        elif coverage < 0.2:
-            # Very low coverage - medium risk
+        elif coverage < 0.3:
             risk = "medium"
-            warnings.append("Hanya sedikit sumber yang dikutip dalam jawaban")
-        elif coverage < 0.4:
-            # Low coverage - low risk but note it
-            risk = "low"
+            warnings.append("Hanya sedikit sumber yang dikutip")
         else:
-            # Good coverage - low risk
             risk = "low"
-        
-        # Check for potential hallucination signals in text
-        # (claims without nearby citations)
-        sentences = answer.split('.')
-        uncited_claim_count = 0
-        claim_indicators = ['harus', 'wajib', 'dilarang', 'sanksi', 'denda', 'pidana', 'persentase', 'tahun']
-        
-        for sentence in sentences:
-            sentence_lower = sentence.lower()
-            has_claim_indicator = any(ind in sentence_lower for ind in claim_indicators)
-            has_citation = bool(re.search(r'\[\d+\]', sentence))
-            
-            if has_claim_indicator and not has_citation:
-                uncited_claim_count += 1
-        
-        if uncited_claim_count >= 3:
-            risk = "medium" if risk == "low" else risk
-            warnings.append(f"Ditemukan {uncited_claim_count} klaim hukum tanpa sitasi langsung")
         
         return ValidationResult(
             is_valid=len(warnings) == 0,
@@ -461,10 +419,11 @@ class LegalRAGChain:
                 ),
                 raw_context="",
                 validation=ValidationResult(
-                    is_valid=False,
+                    is_valid=True,
                     citation_coverage=0.0,
-                    warnings=["Tidak ada dokumen yang ditemukan"],
-                    hallucination_risk="high",
+                    warnings=[],
+                    hallucination_risk="low",
+                    missing_citations=[],
                 ),
             )
         
@@ -485,8 +444,8 @@ class LegalRAGChain:
             system_message=SYSTEM_PROMPT,
         )
         
-        # Step 4: Validate answer for citation accuracy and hallucination risk
-        validation = self._validate_answer(answer, citations, context)
+        # Step 4: Validate answer for citation accuracy
+        validation = self._validate_answer(answer, citations)
         if validation.warnings:
             logger.warning(f"Answer validation warnings: {validation.warnings}")
         
@@ -496,9 +455,9 @@ class LegalRAGChain:
             citations=citations,
             sources=sources,
             confidence=confidence.label,  # String label for backward compatibility
-            confidence_score=confidence,   # Full ConfidenceScore object with numeric value
+            confidence_score=confidence,   # Full ConfidenceScore object
             raw_context=context,
-            validation=validation,  # Validation result with hallucination risk
+            validation=validation,
         )
     
     def query_with_history(
@@ -578,6 +537,17 @@ def main():
             
             print(f"\nJAWABAN:\n{response.answer}")
             print(f"\nKONFIDENSI: {response.confidence}")
+            if response.confidence_score:
+                print(f"  Numeric: {response.confidence_score.numeric:.2%}")
+                print(f"  Top Score: {response.confidence_score.top_score:.4f}")
+                print(f"  Avg Score: {response.confidence_score.avg_score:.4f}")
+            if response.validation:
+                print(f"\nVALIDASI:")
+                print(f"  Valid: {response.validation.is_valid}")
+                print(f"  Citation Coverage: {response.validation.citation_coverage:.0%}")
+                print(f"  Hallucination Risk: {response.validation.hallucination_risk}")
+                if response.validation.warnings:
+                    print(f"  Warnings: {response.validation.warnings}")
             print(f"\nSUMBER:")
             for source in response.sources:
                 print(f"  {source}")

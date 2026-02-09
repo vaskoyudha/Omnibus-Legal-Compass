@@ -14,7 +14,7 @@ from typing import Any
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
-from sentence_transformers import SentenceTransformer
+from langchain_huggingface import HuggingFaceEmbeddings
 
 # Load environment variables
 load_dotenv()
@@ -201,7 +201,7 @@ def ingest_documents(
     """
     # Initialize clients
     client = QdrantClient(url=qdrant_url)
-    embedder = SentenceTransformer(EMBEDDING_MODEL)
+    embedder = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     
     # Load documents
     with open(json_path, "r", encoding="utf-8") as f:
@@ -227,7 +227,7 @@ def ingest_documents(
     # Generate embeddings
     texts = [chunk["text"] for chunk in chunks]
     print(f"Generating embeddings for {len(texts)} chunks...")
-    embeddings = embedder.encode(texts, show_progress_bar=True).tolist()
+    embeddings = embedder.embed_documents(texts)
     print(f"Generated {len(embeddings)} embeddings")
     
     # Create points
@@ -259,7 +259,7 @@ def main():
     parser = argparse.ArgumentParser(description="Ingest legal documents to Qdrant")
     parser.add_argument(
         "--json-path",
-        default="data/peraturan/regulations.json",
+        default="data/peraturan/sample.json",
         help="Path to JSON file with documents"
     )
     parser.add_argument(
