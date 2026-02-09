@@ -179,7 +179,8 @@ def create_point_struct(
 def ingest_documents(
     json_path: str,
     collection_name: str = COLLECTION_NAME,
-    qdrant_url: str = "http://localhost:6333",
+    qdrant_url: str | None = None,
+    qdrant_api_key: str | None = None,
     batch_size: int = 50
 ) -> dict[str, Any]:
     """
@@ -187,20 +188,29 @@ def ingest_documents(
     
     1. Load documents from JSON
     2. Create chunks with metadata
-    3. Generate embeddings using NVIDIA NIM
+    3. Generate embeddings using HuggingFace
     4. Upsert to Qdrant collection
     
     Args:
         json_path: Path to JSON file with legal documents
         collection_name: Qdrant collection name
-        qdrant_url: Qdrant server URL
+        qdrant_url: Qdrant server URL (defaults to env var or localhost)
+        qdrant_api_key: API key for Qdrant Cloud (optional)
         batch_size: Number of documents to embed at once
     
     Returns:
         Status dict with ingestion results
     """
-    # Initialize clients
-    client = QdrantClient(url=qdrant_url)
+    # Get config from environment
+    qdrant_url = qdrant_url or os.getenv("QDRANT_URL", "http://localhost:6333")
+    qdrant_api_key = qdrant_api_key or os.getenv("QDRANT_API_KEY")
+    
+    # Initialize clients (with API key for Qdrant Cloud)
+    if qdrant_api_key:
+        client = QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
+    else:
+        client = QdrantClient(url=qdrant_url)
+    
     embedder = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     
     # Load documents

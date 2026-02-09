@@ -7,14 +7,19 @@ sparse BM25 retrieval for optimal recall on Bahasa Indonesia legal text.
 Uses Reciprocal Rank Fusion (RRF) to merge results:
     score = sum(1 / (k + rank)) where k=60 (standard constant)
 """
+import os
 from typing import Any
 from dataclasses import dataclass
 import logging
 
+from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchValue
 from langchain_huggingface import HuggingFaceEmbeddings
 from rank_bm25 import BM25Okapi
+
+# Load environment variables
+load_dotenv()
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -23,7 +28,8 @@ logger = logging.getLogger(__name__)
 COLLECTION_NAME = "indonesian_legal_docs"
 EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 EMBEDDING_DIM = 384
-QDRANT_URL = "http://localhost:6333"
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")  # For Qdrant Cloud
 RRF_K = 60  # Standard RRF constant
 RERANKER_MODEL = "jeffwan/mmarco-mMiniLMv2-L12-H384-v1"  # Multilingual cross-encoder
 
@@ -90,6 +96,7 @@ class HybridRetriever:
     def __init__(
         self,
         qdrant_url: str = QDRANT_URL,
+        qdrant_api_key: str | None = QDRANT_API_KEY,
         collection_name: str = COLLECTION_NAME,
         embedding_model: str = EMBEDDING_MODEL,
         use_reranker: bool = True,
@@ -99,6 +106,7 @@ class HybridRetriever:
         
         Args:
             qdrant_url: Qdrant server URL
+            qdrant_api_key: API key for Qdrant Cloud (optional for local)
             collection_name: Name of the Qdrant collection
             embedding_model: HuggingFace model for embeddings
             use_reranker: Whether to use CrossEncoder for re-ranking
@@ -107,8 +115,11 @@ class HybridRetriever:
         self.qdrant_url = qdrant_url
         self.use_reranker = use_reranker
         
-        # Initialize Qdrant client
-        self.client = QdrantClient(url=qdrant_url)
+        # Initialize Qdrant client (with API key for cloud)
+        if qdrant_api_key:
+            self.client = QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
+        else:
+            self.client = QdrantClient(url=qdrant_url)
         
         # Initialize embeddings (same model as ingestion)
         self.embedder = HuggingFaceEmbeddings(model_name=embedding_model)

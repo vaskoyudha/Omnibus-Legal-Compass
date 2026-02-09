@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: omnibus-legal-api
+    runtime: python
+    region: singapore  # Closest to Indonesia
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: NVIDIA_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: QDRANT_URL
+        sync: false  # Set to Qdrant Cloud URL
+      - key: QDRANT_API_KEY
+        sync: false  # Set to Qdrant Cloud API key
+      - key: PYTHON_VERSION
+        value: "3.11"
+    healthCheckPath: /
+    autoDeploy: true
