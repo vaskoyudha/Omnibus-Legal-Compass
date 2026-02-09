@@ -43,3 +43,45 @@ export async function checkHealth(): Promise<{ status: string; qdrant_connected:
   }
   return response.json();
 }
+
+// Compliance Checker Types
+export interface ComplianceIssue {
+  issue: string;
+  severity: string;
+  regulation: string;
+}
+
+export interface ComplianceResponse {
+  compliant: boolean;
+  risk_level: 'tinggi' | 'sedang' | 'rendah';
+  summary: string;
+  issues: ComplianceIssue[];
+  recommendations: string[];
+  citations: Citation[];
+  processing_time_ms: number;
+}
+
+export async function checkCompliance(
+  businessDescription: string,
+  pdfFile?: File
+): Promise<ComplianceResponse> {
+  const formData = new FormData();
+  
+  if (pdfFile) {
+    formData.append('pdf_file', pdfFile);
+  } else {
+    formData.append('business_description', businessDescription);
+  }
+
+  const response = await fetch(`${API_URL}/api/compliance/check`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal memeriksa kepatuhan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}

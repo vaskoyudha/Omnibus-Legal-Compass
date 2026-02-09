@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import SearchBar from '@/components/SearchBar';
 import AnswerCard from '@/components/AnswerCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -29,13 +30,37 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-12 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-2">Omnibus Legal Compass</h1>
-          <p className="text-blue-200 text-lg">Sistem Tanya Jawab Hukum Indonesia</p>
-          <p className="text-blue-300 text-sm mt-2">
-            Didukung oleh AI untuk membantu Anda memahami peraturan perundang-undangan
-          </p>
+      <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white">
+        {/* Navigation */}
+        <nav className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between border-b border-blue-700">
+          <Link href="/" className="font-semibold text-lg hover:text-blue-200 transition-colors">
+            Omnibus Legal Compass
+          </Link>
+          <div className="flex gap-4">
+            <Link 
+              href="/" 
+              className="text-sm px-3 py-1.5 bg-blue-700 rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Tanya Jawab
+            </Link>
+            <Link 
+              href="/compliance" 
+              className="text-sm px-3 py-1.5 bg-blue-700/50 rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Pemeriksa Kepatuhan
+            </Link>
+          </div>
+        </nav>
+        
+        {/* Hero */}
+        <div className="py-10 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl font-bold mb-2">Tanya Jawab Hukum</h1>
+            <p className="text-blue-200 text-lg">Sistem Tanya Jawab Hukum Indonesia</p>
+            <p className="text-blue-300 text-sm mt-2">
+              Didukung oleh AI untuk membantu Anda memahami peraturan perundang-undangan
+            </p>
+          </div>
         </div>
       </div>
       
