@@ -42,6 +42,8 @@ export interface ValidationResult {
   citation_coverage: number;
   warnings: string[];
   hallucination_risk: 'low' | 'medium' | 'high';
+  grounding_score?: number | null;
+  ungrounded_claims?: string[];
 }
 
 export interface AskResponse {

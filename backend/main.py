@@ -105,6 +105,8 @@ class ValidationInfo(BaseModel):
     citation_coverage: float = Field(description="Persentase sumber yang dikutip 0.0-1.0")
     warnings: list[str] = Field(default=[], description="Daftar peringatan validasi")
     hallucination_risk: str = Field(description="Risiko halusinasi: low, medium, high")
+    grounding_score: float | None = Field(default=None, description="Skor grounding NLI 0.0-1.0")
+    ungrounded_claims: list[str] = Field(default=[], description="Klaim yang tidak didukung sumber")
 
 
 class QuestionResponse(BaseModel):
@@ -336,7 +338,7 @@ async def health_check():
     if rag_chain is not None:
         try:
             # Check Qdrant connection
-            collection_info = rag_chain.retriever.qdrant_client.get_collection(
+            collection_info = rag_chain.retriever.client.get_collection(
                 rag_chain.retriever.collection_name
             )
             qdrant_connected = True

@@ -225,6 +225,30 @@ export default function StreamingAnswerCard({
                   <span>Risiko halusinasi: {hallucinationConfig.label}</span>
                 </div>
               )}
+              
+              {validation?.grounding_score != null && (
+                <div className="flex items-center gap-2 text-sm border-l border-slate-300 pl-4">
+                  <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <span className="text-slate-600">Grounding:</span>
+                  <div className="w-16 bg-slate-200 rounded-full h-1.5">
+                    <div
+                      className={`h-1.5 rounded-full ${
+                        validation.grounding_score >= 0.7 ? 'bg-emerald-500' :
+                        validation.grounding_score >= 0.5 ? 'bg-amber-500' : 'bg-red-500'
+                      }`}
+                      style={{ width: `${validation.grounding_score * 100}%` }}
+                    />
+                  </div>
+                  <span className={`font-medium ${
+                    validation.grounding_score >= 0.7 ? 'text-emerald-600' :
+                    validation.grounding_score >= 0.5 ? 'text-amber-600' : 'text-red-600'
+                  }`}>
+                    {Math.round(validation.grounding_score * 100)}%
+                  </span>
+                </div>
+              )}
             </div>
             
             <button
@@ -283,6 +307,28 @@ export default function StreamingAnswerCard({
                     <li key={idx} className="flex items-start gap-2">
                       <span className="text-amber-500">•</span>
                       {warning}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Ungrounded Claims Warning */}
+        {validation && validation.ungrounded_claims && validation.ungrounded_claims.length > 0 && (
+          <div className="mx-6 mt-2 p-4 bg-red-50 border border-red-200 rounded-xl">
+            <div className="flex items-start gap-3">
+              <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <div>
+                <p className="font-medium text-red-800 mb-1">Klaim Tidak Terverifikasi</p>
+                <ul className="text-sm text-red-700 space-y-1">
+                  {validation.ungrounded_claims.map((claim, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-red-500">&bull;</span>
+                      {claim}
                     </li>
                   ))}
                 </ul>

@@ -32,12 +32,12 @@ NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 NVIDIA_MODEL = "moonshotai/kimi-k2-instruct"  # Correct model name per NVIDIA docs
 MAX_TOKENS = 4096
-TEMPERATURE = 0.7
+TEMPERATURE = 0.2
 
 # Retriever configuration
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME", "indonesian_legal_docs")
-EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+EMBEDDING_MODEL = "intfloat/multilingual-e5-base"
 
 
 # Chain-of-Thought Legal Reasoning System Prompt
@@ -98,6 +98,65 @@ INSTRUKSI:
 JAWABAN:"""
 
 
+def classify_query(question: str) -> str:
+    """
+    Classify legal question into type for prompt routing.
+    
+    Types: definition, procedure, requirement, sanction, comparison, general
+    """
+    q = question.lower().strip()
+    
+    if any(p in q for p in ["apa itu", "apa yang dimaksud", "definisi", "pengertian", "maksud dari"]):
+        return "definition"
+    elif any(p in q for p in ["bagaimana cara", "langkah", "prosedur", "proses", "tahapan", "cara mendirikan", "cara membuat"]):
+        return "procedure"
+    elif any(p in q for p in ["syarat", "persyaratan", "ketentuan", "wajib", "harus", "perlu"]):
+        return "requirement"
+    elif any(p in q for p in ["sanksi", "hukuman", "denda", "pidana", "pelanggaran", "ancaman"]):
+        return "sanction"
+    elif any(p in q for p in ["perbedaan", "bandingkan", "dibandingkan", "versus", "beda"]):
+        return "comparison"
+    else:
+        return "general"
+
+
+QUERY_TYPE_INSTRUCTIONS = {
+    "definition": """
+Fokus jawaban:
+- Berikan definisi resmi dari peraturan yang relevan
+- Jelaskan ruang lingkup dan batasan definisi tersebut
+- Sebutkan pasal yang memuat definisi tersebut""",
+
+    "procedure": """
+Fokus jawaban:
+- Jelaskan langkah-langkah secara berurutan (gunakan numbered list)
+- Sebutkan dokumen/persyaratan yang diperlukan di setiap langkah
+- Cantumkan estimasi waktu jika tersedia dalam dokumen
+- Sebutkan instansi yang bertanggung jawab""",
+
+    "requirement": """
+Fokus jawaban:
+- Daftar semua persyaratan yang disebutkan dalam dokumen
+- Kelompokkan persyaratan wajib vs opsional jika ada
+- Sebutkan konsekuensi jika persyaratan tidak dipenuhi""",
+
+    "sanction": """
+Fokus jawaban:
+- Sebutkan jenis sanksi (administratif, pidana, perdata)
+- Cantumkan besaran denda atau hukuman secara spesifik
+- Jelaskan kondisi/pelanggaran yang memicu sanksi tersebut
+- Sebutkan pasal yang mengatur sanksi""",
+
+    "comparison": """
+Fokus jawaban:
+- Jelaskan setiap konsep secara terpisah terlebih dahulu
+- Identifikasi persamaan dan perbedaan utama
+- Gunakan struktur yang jelas untuk memudahkan perbandingan""",
+
+    "general": "",
+}
+
+
 @dataclass
 class ConfidenceScore:
     """Confidence score with numeric value and text label."""
@@ -125,6 +184,8 @@ class ValidationResult:
     warnings: list[str] = field(default_factory=list)
     hallucination_risk: str = "low"  # low, medium, high
     missing_citations: list[int] = field(default_factory=list)
+    grounding_score: float | None = None
+    ungrounded_claims: list[str] = field(default_factory=list)
     
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -133,6 +194,8 @@ class ValidationResult:
             "warnings": self.warnings,
             "hallucination_risk": self.hallucination_risk,
             "missing_citations": self.missing_citations,
+            "grounding_score": self.grounding_score,
+            "ungrounded_claims": self.ungrounded_claims,
         }
 
 
@@ -317,6 +380,10 @@ class LegalRAGChain:
             self.llm_client = llm_client
         
         self.top_k = top_k
+        
+        # HHEM grounding model (lazy-loaded on first use to reduce startup memory)
+        self.grounding_model = None
+        self._hhem_loaded = False
     
     def _format_context(self, results: list[SearchResult]) -> tuple[str, list[dict]]:
         """Format search results into context with numbered citations."""
@@ -495,6 +562,62 @@ class LegalRAGChain:
             missing_citations=sorted(invalid_refs),
         )
     
+    def _verify_grounding(
+        self,
+        answer: str,
+        results: list[SearchResult],
+    ) -> dict:
+        """
+        Verify answer grounding using Vectara HHEM model.
+        
+        Splits answer into sentences, scores each against source passages.
+        Returns grounding score and list of potentially ungrounded claims.
+        """
+        # Lazy-load HHEM on first call
+        if not self._hhem_loaded:
+            self._hhem_loaded = True
+            try:
+                from sentence_transformers import CrossEncoder
+                logger.info("Loading Vectara HHEM grounding model (lazy)...")
+                self.grounding_model = CrossEncoder('vectara/hallucination_evaluation_model', trust_remote_code=True)
+                logger.info("HHEM grounding model loaded successfully")
+            except Exception as e:
+                logger.warning(f"Failed to load HHEM model, grounding verification disabled: {e}")
+        
+        if not self.grounding_model:
+            return {"grounding_score": None, "ungrounded_claims": []}
+        
+        # Split answer into sentences (only meaningful ones)
+        sentences = [s.strip() for s in re.split(r'[.!?]\s+', answer) if len(s.strip()) > 20]
+        
+        if not sentences:
+            return {"grounding_score": 1.0, "ungrounded_claims": []}
+        
+        # Combine source texts
+        source_text = " ".join([r.text for r in results[:5]])
+        
+        # Score each sentence against source
+        pairs = [[sentence, source_text] for sentence in sentences]
+        
+        try:
+            scores = self.grounding_model.predict(pairs)
+            
+            # Identify ungrounded claims (score < 0.5)
+            ungrounded = []
+            for sentence, score in zip(sentences, scores):
+                if float(score) < 0.5:
+                    ungrounded.append(sentence[:100])
+            
+            avg_score = float(sum(scores)) / len(scores) if len(scores) > 0 else 0.0
+            
+            return {
+                "grounding_score": round(avg_score, 4),
+                "ungrounded_claims": ungrounded[:3],
+            }
+        except Exception as e:
+            logger.warning(f"Grounding verification failed: {e}")
+            return {"grounding_score": None, "ungrounded_claims": []}
+    
     def query(
         self,
         question: str,
@@ -559,10 +682,16 @@ class LegalRAGChain:
         confidence = self._assess_confidence(results)
         
         # Step 3: Generate answer using LLM
+        query_type = classify_query(question)
+        type_instructions = QUERY_TYPE_INSTRUCTIONS.get(query_type, "")
+        
         user_prompt = USER_PROMPT_TEMPLATE.format(
             context=context,
             question=question,
         )
+        
+        if type_instructions:
+            user_prompt += f"\n\n{type_instructions}"
         
         logger.info(f"Generating answer with NVIDIA NIM {NVIDIA_MODEL}...")
         answer = self.llm_client.generate(
@@ -575,7 +704,13 @@ class LegalRAGChain:
         if validation.warnings:
             logger.warning(f"Answer validation warnings: {validation.warnings}")
         
-        # Step 5: Build response
+        # Step 5: Verify grounding
+        grounding = self._verify_grounding(answer, results)
+        if validation and grounding.get("grounding_score") is not None:
+            validation.grounding_score = grounding["grounding_score"]
+            validation.ungrounded_claims = grounding["ungrounded_claims"]
+        
+        # Step 6: Build response
         return RAGResponse(
             answer=answer,
             citations=citations,
@@ -708,10 +843,16 @@ class LegalRAGChain:
         })
         
         # Step 3: Generate answer using streaming LLM
+        query_type = classify_query(question)
+        type_instructions = QUERY_TYPE_INSTRUCTIONS.get(query_type, "")
+        
         user_prompt = USER_PROMPT_TEMPLATE.format(
             context=context,
             question=question,
         )
+        
+        if type_instructions:
+            user_prompt += f"\n\n{type_instructions}"
         
         logger.info(f"Streaming answer with NVIDIA NIM {NVIDIA_MODEL}...")
         
@@ -727,6 +868,12 @@ class LegalRAGChain:
         validation = self._validate_answer(full_answer, citations)
         if validation.warnings:
             logger.warning(f"Answer validation warnings: {validation.warnings}")
+        
+        # Step 5: Verify grounding
+        grounding = self._verify_grounding(full_answer, results)
+        if grounding.get("grounding_score") is not None:
+            validation.grounding_score = grounding["grounding_score"]
+            validation.ungrounded_claims = grounding["ungrounded_claims"]
         
         yield ("done", {
             "validation": validation.to_dict(),

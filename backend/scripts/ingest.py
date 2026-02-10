@@ -2,8 +2,8 @@
 Qdrant ingestion pipeline with HuggingFace embeddings.
 Ingests Indonesian legal documents for RAG retrieval.
 
-Uses sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 for
-multilingual support (including Bahasa Indonesia).
+Uses intfloat/multilingual-e5-base for search-optimized multilingual
+embeddings with query/passage prefix support.
 """
 import json
 import os
@@ -20,8 +20,8 @@ from langchain_huggingface import HuggingFaceEmbeddings
 load_dotenv()
 
 # Constants - HuggingFace multilingual model (free, local, supports Indonesian)
-EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-EMBEDDING_DIM = 384  # paraphrase-multilingual-MiniLM-L12-v2 dimension
+EMBEDDING_MODEL = "intfloat/multilingual-e5-base"
+EMBEDDING_DIM = 768  # multilingual-e5-base dimension
 COLLECTION_NAME = "indonesian_legal_docs"
 
 # Document type mappings for citations
@@ -157,23 +157,65 @@ def chunk_text(
     return chunks
 
 
+def parse_legal_structure(text: str, metadata: dict[str, Any]) -> list[dict[str, Any]] | None:
+    """
+    Parse Indonesian legal text into structural chunks by Pasal boundaries.
+    
+    Returns list of chunk dicts with text and metadata, or None if no
+    structure detected (signals fallback to character-based chunking).
+    """
+    import re as _re
+    
+    # Try to split by Pasal boundaries
+    pasal_pattern = r'(?=Pasal\s+(\d+))'
+    pasal_splits = _re.split(pasal_pattern, text)
+    
+    if len(pasal_splits) <= 1:
+        return None  # No Pasal structure — use fallback
+    
+    # Build parent context prefix
+    doc_type = metadata.get("jenis_dokumen", "")
+    doc_nomor = metadata.get("nomor", "")
+    doc_tahun = metadata.get("tahun", "")
+    doc_title = metadata.get("judul", "")
+    parent_prefix = f"{doc_type} No. {doc_nomor} Tahun {doc_tahun}"
+    if doc_title:
+        parent_prefix += f" tentang {doc_title}"
+    
+    chunks = []
+    i = 1  # Skip preamble at index 0
+    while i < len(pasal_splits) - 1:
+        pasal_num = pasal_splits[i]
+        pasal_text = pasal_splits[i + 1].strip()
+        
+        # Inject parent context
+        chunk_text_str = f"[{parent_prefix}, Pasal {pasal_num}]\n\n{pasal_text}"
+        
+        chunk_meta = {**metadata, "pasal": pasal_num}
+        chunks.append({
+            "text": chunk_text_str,
+            "metadata": chunk_meta,
+        })
+        i += 2
+    
+    return chunks if chunks else None
+
+
 def create_document_chunks(documents: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """
     Create chunks from legal documents with metadata for citations.
     
-    For legal documents, each article/ayat is typically a natural chunk.
-    Long articles (>500 chars) are split into overlapping sub-chunks.
-    We preserve the full metadata for citation generation.
+    Uses structure-aware parsing (Pasal boundaries) when possible,
+    falls back to character-based chunking for unstructured text.
     """
     chunks = []
     
     for doc in documents:
-        # Extract text
         text = doc.get("text", "")
         if not text:
             continue
         
-        # Build metadata (excluding text)
+        # Build metadata
         metadata = {
             "jenis_dokumen": doc.get("jenis_dokumen", ""),
             "nomor": doc.get("nomor", ""),
@@ -181,36 +223,41 @@ def create_document_chunks(documents: list[dict[str, Any]]) -> list[dict[str, An
             "judul": doc.get("judul", ""),
             "tentang": doc.get("tentang", ""),
         }
-        
-        # Optional fields
         for field in ["bab", "pasal", "ayat"]:
             if field in doc:
                 metadata[field] = doc[field]
         
-        # Generate base citation ID and citation string
-        base_citation_id = generate_citation_id(metadata)
-        base_citation = format_citation(metadata)
+        # Try structure-aware parsing first
+        structured = parse_legal_structure(text, metadata)
         
-        # Split long articles into overlapping chunks
-        text_chunks = chunk_text(text, chunk_size=500, overlap=100)
-        
-        for chunk_idx, chunk_text_piece in enumerate(text_chunks):
-            if len(text_chunks) == 1:
-                # Single chunk — use original citation
-                cid = base_citation_id
-                cit = base_citation
-            else:
-                # Multi-chunk — append part number
-                part_num = chunk_idx + 1
-                cid = f"{base_citation_id}_chunk{part_num}"
-                cit = f"{base_citation} (bagian {part_num})"
-            
-            chunks.append({
-                "text": chunk_text_piece,
-                "citation_id": cid,
-                "citation": cit,
-                "metadata": metadata,
-            })
+        if structured:
+            for chunk_data in structured:
+                cid = generate_citation_id(chunk_data["metadata"])
+                cit = format_citation(chunk_data["metadata"])
+                sub_chunks = chunk_text(chunk_data["text"], chunk_size=500, overlap=100)
+                for idx, sub in enumerate(sub_chunks):
+                    suffix = f"_chunk{idx+1}" if len(sub_chunks) > 1 else ""
+                    part_label = f" (bagian {idx+1})" if len(sub_chunks) > 1 else ""
+                    chunks.append({
+                        "text": sub,
+                        "citation_id": f"{cid}{suffix}",
+                        "citation": f"{cit}{part_label}",
+                        "metadata": chunk_data["metadata"],
+                    })
+        else:
+            # Fallback to character-based chunking
+            base_cid = generate_citation_id(metadata)
+            base_cit = format_citation(metadata)
+            text_chunks = chunk_text(text, chunk_size=500, overlap=100)
+            for idx, piece in enumerate(text_chunks):
+                suffix = f"_chunk{idx+1}" if len(text_chunks) > 1 else ""
+                part_label = f" (bagian {idx+1})" if len(text_chunks) > 1 else ""
+                chunks.append({
+                    "text": piece,
+                    "citation_id": f"{base_cid}{suffix}",
+                    "citation": f"{base_cit}{part_label}",
+                    "metadata": metadata,
+                })
     
     return chunks
 
@@ -311,7 +358,7 @@ def ingest_documents(
     print(f"Created collection: {collection_name}")
     
     # Generate embeddings
-    texts = [chunk["text"] for chunk in chunks]
+    texts = [f"passage: {chunk['text']}" for chunk in chunks]
     print(f"Generating embeddings for {len(texts)} chunks...")
     embeddings = embedder.embed_documents(texts)
     print(f"Generated {len(embeddings)} embeddings")
