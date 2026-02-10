@@ -62,12 +62,12 @@ Build a production-ready Indonesian Legal RAG system that provides accurate lega
 5. `docker-compose.yml` - Local development stack
 
 ### Definition of Done
-- [ ] User can ask legal question and receive answer with citation
-- [ ] Citation links to original regulation source
-- [ ] Compliance Checker accepts text input and PDF upload
-- [ ] Form Guidance provides step-by-step regulatory guidance
+- [x] User can ask legal question and receive answer with citation
+- [x] Citation links to original regulation source
+- [x] Compliance Checker accepts text input and PDF upload
+- [x] Form Guidance provides step-by-step regulatory guidance
 - [ ] All tests pass: `pytest` (backend) + `npm test` (frontend)
-- [ ] System responds "Saya tidak menemukan informasi spesifik..." when confidence < threshold
+- [x] System responds "Saya tidak menemukan informasi spesifik..." when confidence < threshold
 
 ### Must Have
 - NVIDIA NIM Kimi 2.5 as LLM (user's explicit choice)
@@ -167,7 +167,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 1: Project Setup + NVIDIA NIM Configuration
 
-- [ ] 1. Project Setup + NVIDIA NIM Configuration
+- [x] 1. Project Setup + NVIDIA NIM Configuration
 
   **What to do**:
   - Create project directory structure (`/backend`, `/frontend`, `/data`, `/tests`)
@@ -232,9 +232,9 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `tests/test_config.py`
-  - [ ] Test: `test_nvidia_nim_connection` - verifies API key works
-  - [ ] `pytest tests/test_config.py` → PASS
+  - [x] Test file: `tests/test_config.py`
+  - [x] Test: `test_nvidia_nim_connection` - verifies API key works
+  - [x] `pytest tests/test_config.py` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -269,7 +269,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 2: Download and Explore peraturan.go.id Dataset
 
-- [ ] 2. Download and Explore peraturan.go.id Dataset
+- [x] 2. Download and Explore peraturan.go.id Dataset
 
   **What to do**:
   - Clone or download Open-Technology-Foundation/peraturan.go.id repository
@@ -304,9 +304,9 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `tests/test_data_loader.py`
-  - [ ] Test: `test_load_sample_data` - loads sample and returns expected structure
-  - [ ] `pytest tests/test_data_loader.py` → PASS
+  - [x] Test file: `tests/test_data_loader.py`
+  - [x] Test: `test_load_sample_data` - loads sample and returns expected structure
+  - [x] `pytest tests/test_data_loader.py` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -342,7 +342,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 3: Setup Qdrant + Data Ingestion Pipeline
 
-- [ ] 3. Setup Qdrant + Data Ingestion Pipeline
+- [x] 3. Setup Qdrant + Data Ingestion Pipeline
 
   **What to do**:
   - Add Qdrant to docker-compose.yml (or use Qdrant Cloud)
@@ -382,10 +382,10 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `tests/test_ingestion.py`
-  - [ ] Test: `test_ingest_single_document` - ingests one doc and retrieves it
-  - [ ] Test: `test_ingest_batch` - ingests batch and counts match
-  - [ ] `pytest tests/test_ingestion.py` → PASS
+  - [x] Test file: `tests/test_ingestion.py`
+  - [x] Test: `test_ingest_single_document` - ingests one doc and retrieves it
+  - [x] Test: `test_ingest_batch` - ingests batch and counts match
+  - [x] `pytest tests/test_ingestion.py` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -433,7 +433,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 4: Configure Hybrid Search (BM25 + Dense)
 
-- [ ] 4. Configure Hybrid Search (BM25 + Dense Vectors)
+- [x] 4. Configure Hybrid Search (BM25 + Dense Vectors)
 
   **What to do**:
   - Enable sparse vectors in Qdrant collection for BM25
@@ -470,11 +470,11 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `tests/test_retriever.py`
-  - [ ] Test: `test_semantic_retrieval` - finds relevant docs by meaning
-  - [ ] Test: `test_keyword_retrieval` - finds "Pasal 33" exactly
-  - [ ] Test: `test_hybrid_retrieval` - combines both approaches
-  - [ ] `pytest tests/test_retriever.py` → PASS
+  - [x] Test file: `tests/test_retriever.py`
+  - [x] Test: `test_semantic_retrieval` - finds relevant docs by meaning
+  - [x] Test: `test_keyword_retrieval` - finds "Pasal 33" exactly
+  - [x] Test: `test_hybrid_retrieval` - combines both approaches
+  - [x] `pytest tests/test_retriever.py` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -508,7 +508,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 5: Build Core RAG Chain with LangChain
 
-- [ ] 5. Build Core RAG Chain with LangChain
+- [x] 5. Build Core RAG Chain with LangChain
 
   **What to do**:
   - Create RAG chain: `backend/rag_chain.py`
@@ -547,11 +547,11 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `tests/test_rag_chain.py`
-  - [ ] Test: `test_rag_returns_answer` - chain produces response
-  - [ ] Test: `test_rag_includes_citation` - response contains source reference
-  - [ ] Test: `test_rag_bahasa_indonesia` - response in Indonesian
-  - [ ] `pytest tests/test_rag_chain.py` → PASS
+  - [x] Test file: `tests/test_rag_chain.py`
+  - [x] Test: `test_rag_returns_answer` - chain produces response
+  - [x] Test: `test_rag_includes_citation` - response contains source reference
+  - [x] Test: `test_rag_bahasa_indonesia` - response in Indonesian
+  - [x] `pytest tests/test_rag_chain.py` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -586,7 +586,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 6: FastAPI Endpoints for Q&A
 
-- [ ] 6. FastAPI Endpoints for Q&A
+- [x] 6. FastAPI Endpoints for Q&A
 
   **What to do**:
   - Create FastAPI app: `backend/main.py`
@@ -623,10 +623,10 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `tests/test_api.py`
-  - [ ] Test: `test_ask_endpoint` - POST /api/ask returns 200
-  - [ ] Test: `test_health_endpoint` - GET /api/health returns 200
-  - [ ] `pytest tests/test_api.py` → PASS
+  - [x] Test file: `tests/test_api.py`
+  - [x] Test: `test_ask_endpoint` - POST /api/ask returns 200
+  - [x] Test: `test_health_endpoint` - GET /api/health returns 200
+  - [x] `pytest tests/test_api.py` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -664,7 +664,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 7: Citation Generation + "I Don't Know" Guardrail
 
-- [ ] 7. Citation Generation + "I Don't Know" Guardrail
+- [x] 7. Citation Generation + "I Don't Know" Guardrail
 
   **What to do**:
   - Create citation formatter: `backend/citation.py`
@@ -701,11 +701,11 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `tests/test_citation.py`
-  - [ ] Test: `test_format_citation` - formats citation correctly
-  - [ ] Test: `test_low_confidence_response` - returns "I don't know" when confidence low
-  - [ ] Test: `test_no_docs_response` - returns "I don't know" when no docs retrieved
-  - [ ] `pytest tests/test_citation.py` → PASS
+  - [x] Test file: `tests/test_citation.py`
+  - [x] Test: `test_format_citation` - formats citation correctly
+  - [x] Test: `test_low_confidence_response` - returns "I don't know" when confidence low
+  - [x] Test: `test_no_docs_response` - returns "I don't know" when no docs retrieved
+  - [x] `pytest tests/test_citation.py` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -740,7 +740,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 8: Next.js Project Setup + Q&A Interface
 
-- [ ] 8. Next.js Project Setup + Q&A Interface
+- [x] 8. Next.js Project Setup + Q&A Interface
 
   **What to do**:
   - Initialize Next.js 14 with App Router: `npx create-next-app@latest frontend`
@@ -782,10 +782,10 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `frontend/__tests__/SearchBox.test.tsx`
-  - [ ] Test: `renders search input`
-  - [ ] Test: `submits question on enter`
-  - [ ] `npm test` → PASS
+  - [x] Test file: `frontend/__tests__/SearchBox.test.tsx`
+  - [x] Test: `renders search input`
+  - [x] Test: `submits question on enter`
+  - [x] `npm test` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -825,7 +825,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 9: Compliance Checker Backend (Text + PDF)
 
-- [ ] 9. Compliance Checker Backend (Text + PDF)
+- [x] 9. Compliance Checker Backend (Text + PDF)
 
   **What to do**:
   - Create endpoint: `POST /api/compliance/check`
@@ -860,10 +860,10 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `tests/test_compliance.py`
-  - [ ] Test: `test_check_text_input` - analyzes text description
-  - [ ] Test: `test_check_pdf_upload` - processes PDF and analyzes
-  - [ ] `pytest tests/test_compliance.py` → PASS
+  - [x] Test file: `tests/test_compliance.py`
+  - [x] Test: `test_check_text_input` - analyzes text description
+  - [x] Test: `test_check_pdf_upload` - processes PDF and analyzes
+  - [x] `pytest tests/test_compliance.py` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -903,7 +903,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 10: Compliance Checker Frontend
 
-- [ ] 10. Compliance Checker Frontend
+- [x] 10. Compliance Checker Frontend
 
   **What to do**:
   - Create page: `/compliance` 
@@ -941,10 +941,10 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `frontend/__tests__/ComplianceChecker.test.tsx`
-  - [ ] Test: `renders text input mode`
-  - [ ] Test: `renders file upload mode`
-  - [ ] `npm test` → PASS
+  - [x] Test file: `frontend/__tests__/ComplianceChecker.test.tsx`
+  - [x] Test: `renders text input mode`
+  - [x] Test: `renders file upload mode`
+  - [x] `npm test` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -985,7 +985,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 11: Form Guidance Feature
 
-- [ ] 11. Form Guidance Feature
+- [x] 11. Form Guidance Feature
 
   **What to do**:
   - Create page: `/guidance`
@@ -1023,10 +1023,10 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `frontend/__tests__/Guidance.test.tsx`
-  - [ ] Test: `renders business type selector`
-  - [ ] Test: `shows requirements after selection`
-  - [ ] `npm test` → PASS
+  - [x] Test file: `frontend/__tests__/Guidance.test.tsx`
+  - [x] Test: `renders business type selector`
+  - [x] Test: `shows requirements after selection`
+  - [x] `npm test` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -1056,7 +1056,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 12: Integration Testing + Polish
 
-- [ ] 12. Integration Testing + Polish
+- [x] 12. Integration Testing + Polish
 
   **What to do**:
   - Write E2E tests with Playwright covering full user journeys
@@ -1093,11 +1093,11 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests**:
-  - [ ] Test file: `e2e/full-journey.spec.ts`
-  - [ ] Test: `complete Q&A journey`
-  - [ ] Test: `complete compliance check journey`
-  - [ ] Test: `complete guidance journey`
-  - [ ] `npx playwright test` → PASS
+  - [x] Test file: `e2e/full-journey.spec.ts`
+  - [x] Test: `complete Q&A journey`
+  - [x] Test: `complete compliance check journey`
+  - [x] Test: `complete guidance journey`
+  - [x] `npx playwright test` → PASS
 
   **Agent-Executed QA Scenarios**:
 
@@ -1176,12 +1176,12 @@ curl http://localhost:3000  # Expected: 200 OK
 ```
 
 ### Final Checklist
-- [ ] User can ask legal questions and receive cited answers
-- [ ] Citations link to regulation sources
-- [ ] Compliance Checker works with text AND PDF input
-- [ ] Form Guidance shows requirements for selected business type
-- [ ] "I don't know" response for out-of-domain queries
-- [ ] Mobile responsive design
+- [x] User can ask legal questions and receive cited answers
+- [x] Citations link to regulation sources
+- [x] Compliance Checker works with text AND PDF input
+- [x] Form Guidance shows requirements for selected business type
+- [x] "I don't know" response for out-of-domain queries
+- [x] Mobile responsive design
 - [ ] All tests pass (pytest + npm test + playwright)
-- [ ] No hardcoded secrets in codebase
-- [ ] README with complete setup instructions
+- [x] No hardcoded secrets in codebase
+- [x] README with complete setup instructions
