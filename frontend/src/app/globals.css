@@ -1,8 +1,17 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Highlight.js GitHub Dark theme for code blocks */
+@import "highlight.js/styles/github-dark.css";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #e2e8f0;
 }
 
 @theme inline {
@@ -12,15 +21,136 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Dark mode card styles */
+.dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-slate-50 {
+  background-color: #0f172a !important;
+}
+
+.dark .border-slate-200 {
+  border-color: #334155 !important;
+}
+
+.dark .text-slate-800 {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-slate-500 {
+  color: #64748b !important;
+}
+
+/* Dark mode prose styling */
+.dark .prose {
+  --tw-prose-body: theme('colors.slate.300');
+  --tw-prose-headings: theme('colors.slate.100');
+  --tw-prose-links: theme('colors.blue.400');
+  --tw-prose-bold: theme('colors.slate.100');
+  --tw-prose-counters: theme('colors.slate.400');
+  --tw-prose-bullets: theme('colors.slate.500');
+}
+
+/* Light mode prose styling */
+.prose {
+  --tw-prose-body: theme('colors.slate.700');
+  --tw-prose-headings: theme('colors.slate.800');
+  --tw-prose-links: theme('colors.blue.600');
+  --tw-prose-bold: theme('colors.slate.800');
+  --tw-prose-counters: theme('colors.slate.500');
+  --tw-prose-bullets: theme('colors.slate.400');
+}
+
+.prose p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+}
+
+.prose ul, .prose ol {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+/* Legal citation styling */
+.prose a[href^="["], .legal-citation {
+  color: theme('colors.blue.600');
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.dark .prose a[href^="["], .dark .legal-citation {
+  color: theme('colors.blue.400');
+}
+
+/* Dark mode gradient overrides */
+.dark .bg-gradient-to-r.from-blue-600 {
+  --tw-gradient-from: #1e40af !important;
+}
+
+.dark .bg-gradient-to-r.to-indigo-700 {
+  --tw-gradient-to: #4338ca !important;
+}
+
+/* Dark mode for amber/warning elements */
+.dark .bg-amber-50 {
+  background-color: #422006 !important;
+}
+
+.dark .border-amber-200 {
+  border-color: #854d0e !important;
+}
+
+.dark .text-amber-800 {
+  color: #fcd34d !important;
+}
+
+.dark .text-amber-900 {
+  color: #fef3c7 !important;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+  
+  .prose {
+    max-width: 100%;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  
+  /* Force light mode for printing */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .dark .bg-white {
+    background-color: white !important;
+  }
 }

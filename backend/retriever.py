@@ -366,8 +366,9 @@ class HybridRetriever:
             # Return top_k with updated scores
             reranked = []
             for result, ce_score in scored_results[:top_k]:
-                # Normalize cross-encoder score to 0-1 range (sigmoid-like)
-                normalized_score = max(0.0, min(1.0, (ce_score + 10) / 20))
+                # Normalize cross-encoder score to 0-1 range
+                # mMiniLMv2 CE scores typically fall in [-5, +5] range
+                normalized_score = max(0.0, min(1.0, (ce_score + 5) / 10))
                 reranked.append(SearchResult(
                     id=result.id,
                     text=result.text,

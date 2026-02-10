@@ -95,7 +95,7 @@ export interface ComplianceResponse {
   summary: string;
   issues: ComplianceIssue[];
   recommendations: string[];
-  citations: Citation[];
+  citations: CitationInfo[];
   processing_time_ms: number;
 }
 
@@ -173,4 +173,95 @@ export async function getGuidance(request: GuidanceRequest): Promise<GuidanceRes
   }
 
   return response.json();
+}
+
+// Streaming types and function
+export interface StreamMetadata {
+  citations: CitationInfo[];
+  sources: string[];
+  confidence_score: ConfidenceScore;
+}
+
+export interface StreamDone {
+  validation: ValidationResult;
+  processing_time_ms: number;
+}
+
+export interface StreamCallbacks {
+  onMetadata?: (metadata: StreamMetadata) => void;
+  onChunk?: (text: string) => void;
+  onDone?: (data: StreamDone) => void;
+  onError?: (error: Error) => void;
+}
+
+/**
+ * Stream a question answer from the backend using Server-Sent Events.
+ * Provides real-time text chunks as the LLM generates the response.
+ */
+export async function askQuestionStream(
+  question: string,
+  callbacks: StreamCallbacks,
+  topK: number = 5
+): Promise<void> {
+  const response = await fetch(`${API_URL}/api/ask/stream`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question, top_k: topK }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal mendapatkan jawaban' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  if (!response.body) {
+    throw new Error('Response body is null');
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+
+      // Process complete SSE events
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || ''; // Keep incomplete line in buffer
+
+      let currentEvent = '';
+      for (const line of lines) {
+        if (line.startsWith('event: ')) {
+          currentEvent = line.slice(7).trim();
+        } else if (line.startsWith('data: ') && currentEvent) {
+          const data = line.slice(6);
+          try {
+            const parsed = JSON.parse(data);
+            
+            if (currentEvent === 'metadata' && callbacks.onMetadata) {
+              callbacks.onMetadata(parsed as StreamMetadata);
+            } else if (currentEvent === 'chunk' && callbacks.onChunk) {
+              callbacks.onChunk(parsed.text);
+            } else if (currentEvent === 'done' && callbacks.onDone) {
+              callbacks.onDone(parsed as StreamDone);
+            } else if (currentEvent === 'error' && callbacks.onError) {
+              callbacks.onError(new Error(parsed.error));
+            }
+          } catch {
+            // Ignore JSON parse errors
+          }
+          currentEvent = '';
+        }
+      }
+    }
+  } catch (err) {
+    if (callbacks.onError) {
+      callbacks.onError(err instanceof Error ? err : new Error(String(err)));
+    }
+    throw err;
+  }
 }

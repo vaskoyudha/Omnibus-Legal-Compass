@@ -1,41 +1,61 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
-import { AskResponse } from '@/lib/api';
+import { CitationInfo, ConfidenceScore, ValidationResult } from '@/lib/api';
 import CitationList from './CitationList';
 
-interface AnswerCardProps {
-  response: AskResponse;
+interface StreamingAnswerCardProps {
+  answer: string;
+  citations: CitationInfo[];
+  confidenceScore: ConfidenceScore | null;
+  validation: ValidationResult | null;
+  processingTimeMs: number;
+  isStreaming: boolean;
 }
 
-export default function AnswerCard({ response }: AnswerCardProps) {
+export default function StreamingAnswerCard({ 
+  answer, 
+  citations, 
+  confidenceScore, 
+  validation, 
+  processingTimeMs,
+  isStreaming 
+}: StreamingAnswerCardProps) {
   const [copied, setCopied] = useState(false);
   const [showMetrics, setShowMetrics] = useState(false);
+  const answerRef = useRef<HTMLDivElement>(null);
   
   // Get numeric confidence from confidence_score if available
-  const numericConfidence = response.confidence_score?.numeric ?? 0;
+  const numericConfidence = confidenceScore?.numeric ?? 0;
   
   // Convert processing_time_ms to seconds
-  const processingTimeSec = (response.processing_time_ms ?? 0) / 1000;
+  const processingTimeSec = processingTimeMs / 1000;
+
+  // Auto-scroll as content streams in
+  useEffect(() => {
+    if (isStreaming && answerRef.current) {
+      answerRef.current.scrollTop = answerRef.current.scrollHeight;
+    }
+  }, [answer, isStreaming]);
   
   // Copy answer to clipboard
   const handleCopy = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(response.answer);
+      await navigator.clipboard.writeText(answer);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
-  }, [response.answer]);
+  }, [answer]);
   
   // Share functionality
   const handleShare = useCallback(async () => {
     const shareData = {
       title: 'Jawaban Hukum - Omnibus Legal Compass',
-      text: response.answer.slice(0, 300) + '...',
+      text: answer.slice(0, 300) + '...',
       url: window.location.href,
     };
     
@@ -46,11 +66,10 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         console.log('Share cancelled');
       }
     } else {
-      // Fallback: copy link
       await navigator.clipboard.writeText(window.location.href);
       alert('Link disalin ke clipboard');
     }
-  }, [response.answer]);
+  }, [answer]);
   
   // Print functionality
   const handlePrint = useCallback(() => {
@@ -58,11 +77,10 @@ export default function AnswerCard({ response }: AnswerCardProps) {
   }, []);
 
   const getConfidenceConfig = (confidence: number) => {
-    if (confidence >= 0.7) return {
+    if (confidence >= 0.65) return {
       color: 'text-emerald-700',
       bg: 'bg-emerald-50',
       border: 'border-emerald-200',
-      ringColor: 'ring-emerald-500',
       label: 'Tinggi',
       icon: (
         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -74,7 +92,6 @@ export default function AnswerCard({ response }: AnswerCardProps) {
       color: 'text-amber-700',
       bg: 'bg-amber-50',
       border: 'border-amber-200',
-      ringColor: 'ring-amber-500',
       label: 'Sedang',
       icon: (
         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -86,7 +103,6 @@ export default function AnswerCard({ response }: AnswerCardProps) {
       color: 'text-red-700',
       bg: 'bg-red-50',
       border: 'border-red-200',
-      ringColor: 'ring-red-500',
       label: 'Rendah',
       icon: (
         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -103,8 +119,8 @@ export default function AnswerCard({ response }: AnswerCardProps) {
   };
 
   const confidenceConfig = getConfidenceConfig(numericConfidence);
-  const hallucinationConfig = response.validation 
-    ? getHallucinationConfig(response.validation.hallucination_risk)
+  const hallucinationConfig = validation 
+    ? getHallucinationConfig(validation.hallucination_risk)
     : null;
 
   return (
@@ -117,13 +133,26 @@ export default function AnswerCard({ response }: AnswerCardProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white/10 rounded-lg">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
+                {isStreaming ? (
+                  <svg className="w-6 h-6 text-white animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                )}
               </div>
               <div>
-                <h2 className="text-white font-semibold text-lg">Jawaban Legal</h2>
-                {processingTimeSec > 0 && (
+                <h2 className="text-white font-semibold text-lg flex items-center gap-2">
+                  Jawaban Legal
+                  {isStreaming && (
+                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full animate-pulse">
+                      Streaming...
+                    </span>
+                  )}
+                </h2>
+                {processingTimeSec > 0 && !isStreaming && (
                   <p className="text-blue-100 text-sm">Diproses dalam {processingTimeSec.toFixed(2)} detik</p>
                 )}
               </div>
@@ -133,7 +162,8 @@ export default function AnswerCard({ response }: AnswerCardProps) {
             <div className="flex items-center gap-2 no-print">
               <button
                 onClick={handleCopy}
-                className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                disabled={isStreaming}
+                className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
                 title="Salin jawaban"
               >
                 {copied ? (
@@ -148,7 +178,8 @@ export default function AnswerCard({ response }: AnswerCardProps) {
               </button>
               <button
                 onClick={handleShare}
-                className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                disabled={isStreaming}
+                className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
                 title="Bagikan"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -157,7 +188,8 @@ export default function AnswerCard({ response }: AnswerCardProps) {
               </button>
               <button
                 onClick={handlePrint}
-                className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                disabled={isStreaming}
+                className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
                 title="Cetak"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -169,65 +201,63 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         </div>
 
         {/* Confidence Summary Bar */}
-        <div className={`px-6 py-3 border-b ${confidenceConfig.bg} ${confidenceConfig.border} flex items-center justify-between`}>
-          <div className="flex items-center gap-4">
-            {/* Main Confidence */}
-            <div className={`flex items-center gap-2 ${confidenceConfig.color} font-medium`}>
-              {confidenceConfig.icon}
-              <span>Keyakinan {confidenceConfig.label}</span>
-              <span className="font-bold">{Math.round(numericConfidence * 100)}%</span>
+        {confidenceScore && (
+          <div className={`px-6 py-3 border-b ${confidenceConfig.bg} ${confidenceConfig.border} flex items-center justify-between`}>
+            <div className="flex items-center gap-4">
+              <div className={`flex items-center gap-2 ${confidenceConfig.color} font-medium`}>
+                {confidenceConfig.icon}
+                <span>Keyakinan {confidenceConfig.label}</span>
+                <span className="font-bold">{Math.round(numericConfidence * 100)}%</span>
+              </div>
+              
+              {validation && (
+                <div className="flex items-center gap-2 text-slate-600 text-sm border-l border-slate-300 pl-4">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span>{Math.round(validation.citation_coverage * 100)}% sumber dikutip</span>
+                </div>
+              )}
+              
+              {hallucinationConfig && (
+                <div className={`flex items-center gap-1.5 text-sm ${hallucinationConfig.color}`}>
+                  <span className={`w-2 h-2 rounded-full ${hallucinationConfig.bg}`}></span>
+                  <span>Risiko halusinasi: {hallucinationConfig.label}</span>
+                </div>
+              )}
             </div>
             
-            {/* Citation Coverage */}
-            {response.validation && (
-              <div className="flex items-center gap-2 text-slate-600 text-sm border-l border-slate-300 pl-4">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <span>{Math.round(response.validation.citation_coverage * 100)}% sumber dikutip</span>
-              </div>
-            )}
-            
-            {/* Hallucination Risk */}
-            {hallucinationConfig && (
-              <div className={`flex items-center gap-1.5 text-sm ${hallucinationConfig.color}`}>
-                <span className={`w-2 h-2 rounded-full ${hallucinationConfig.bg}`}></span>
-                <span>Risiko halusinasi: {hallucinationConfig.label}</span>
-              </div>
-            )}
+            <button
+              onClick={() => setShowMetrics(!showMetrics)}
+              className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 no-print"
+            >
+              {showMetrics ? 'Sembunyikan' : 'Detail'}
+              <svg className={`w-4 h-4 transition-transform ${showMetrics ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
           </div>
-          
-          {/* Toggle Details */}
-          <button
-            onClick={() => setShowMetrics(!showMetrics)}
-            className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 no-print"
-          >
-            {showMetrics ? 'Sembunyikan' : 'Detail'}
-            <svg className={`w-4 h-4 transition-transform ${showMetrics ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-        </div>
+        )}
         
         {/* Expandable Metrics Panel */}
-        {showMetrics && (
+        {showMetrics && confidenceScore && (
           <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div className="bg-white p-3 rounded-lg border border-slate-200">
               <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Skor Tertinggi</div>
               <div className="font-bold text-lg text-slate-800">
-                {response.confidence_score ? (response.confidence_score.top_score * 100).toFixed(1) : 0}%
+                {(confidenceScore.top_score * 100).toFixed(1)}%
               </div>
             </div>
             <div className="bg-white p-3 rounded-lg border border-slate-200">
               <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Rata-rata Skor</div>
               <div className="font-bold text-lg text-slate-800">
-                {response.confidence_score ? (response.confidence_score.avg_score * 100).toFixed(1) : 0}%
+                {(confidenceScore.avg_score * 100).toFixed(1)}%
               </div>
             </div>
             <div className="bg-white p-3 rounded-lg border border-slate-200">
               <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Jumlah Sumber</div>
               <div className="font-bold text-lg text-slate-800">
-                {response.citations?.length || 0}
+                {citations?.length || 0}
               </div>
             </div>
             <div className="bg-white p-3 rounded-lg border border-slate-200">
@@ -240,7 +270,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         )}
 
         {/* Validation Warnings */}
-        {response.validation && response.validation.warnings.length > 0 && (
+        {validation && validation.warnings.length > 0 && (
           <div className="mx-6 mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
             <div className="flex items-start gap-3">
               <svg className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -249,7 +279,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
               <div>
                 <p className="font-medium text-amber-800 mb-1">Peringatan Validasi</p>
                 <ul className="text-sm text-amber-700 space-y-1">
-                  {response.validation.warnings.map((warning, idx) => (
+                  {validation.warnings.map((warning, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <span className="text-amber-500">•</span>
                       {warning}
@@ -262,7 +292,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         )}
 
         {/* Answer Content */}
-        <div className="p-6">
+        <div className="p-6" ref={answerRef}>
           <div className="prose prose-slate prose-lg max-w-none 
             prose-p:text-slate-700 prose-p:leading-relaxed prose-p:mb-4
             prose-strong:text-slate-800 prose-strong:font-semibold
@@ -275,14 +305,21 @@ export default function AnswerCard({ response }: AnswerCardProps) {
             prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
             prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
             prose-pre:bg-slate-900 prose-pre:text-slate-100 prose-pre:rounded-lg prose-pre:overflow-x-auto">
-            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{response.answer}</ReactMarkdown>
+            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+              {answer || (isStreaming ? '...' : '')}
+            </ReactMarkdown>
+            {isStreaming && (
+              <span className="inline-block w-2 h-5 bg-blue-500 animate-pulse ml-1" />
+            )}
           </div>
         </div>
 
         {/* Citations Section */}
-        <div className="border-t border-slate-200">
-          <CitationList citations={response.citations} />
-        </div>
+        {citations.length > 0 && (
+          <div className="border-t border-slate-200">
+            <CitationList citations={citations} />
+          </div>
+        )}
       </div>
 
       {/* Disclaimer */}

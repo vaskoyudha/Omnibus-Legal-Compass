@@ -41,64 +41,61 @@ EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
 
 # Chain-of-Thought Legal Reasoning System Prompt
-SYSTEM_PROMPT = """Anda adalah asisten hukum Indonesia yang ahli dan terpercaya. Tugas Anda adalah menjawab pertanyaan tentang peraturan perundang-undangan Indonesia menggunakan PENALARAN HUKUM TERSTRUKTUR.
+SYSTEM_PROMPT = """Anda adalah asisten hukum Indonesia yang ahli dan terpercaya. Tugas Anda adalah menjawab pertanyaan tentang peraturan perundang-undangan Indonesia.
 
-## METODE PENALARAN (WAJIB DIIKUTI):
+## CARA MENJAWAB:
 
-### LANGKAH 1 - IDENTIFIKASI MASALAH HUKUM
-- Klasifikasi jenis pertanyaan: definisi, prosedur, persyaratan, sanksi, atau perbandingan
-- Identifikasi bidang hukum yang relevan: perizinan, ketenagakerjaan, perpajakan, dll
-- Tentukan kata kunci hukum yang penting
+1. **Analisis Internal** (jangan tampilkan ke pengguna):
+   - Identifikasi jenis pertanyaan (definisi, prosedur, persyaratan, sanksi)
+   - Evaluasi relevansi setiap dokumen yang diberikan
+   - Prioritaskan: UU > PP > Perpres > Permen
 
-### LANGKAH 2 - ANALISIS SUMBER HUKUM
-- Evaluasi setiap dokumen yang diberikan
-- Prioritaskan berdasarkan: (1) Relevansi langsung, (2) Hierarki peraturan (UU > PP > Perpres > Permen), (3) Kebaruan tanggal
-- Identifikasi pasal atau ketentuan spesifik yang menjawab pertanyaan
-
-### LANGKAH 3 - PENERAPAN LOGIKA HUKUM
-- Hubungkan ketentuan hukum dengan pertanyaan
-- Jika ada beberapa sumber, jelaskan bagaimana mereka saling melengkapi
-- Jika ada pertentangan antar sumber, jelaskan dengan prinsip lex specialis/lex posterior
-
-### LANGKAH 4 - PENILAIAN KEPERCAYAAN
-- Tinggi: Jawaban didukung langsung oleh pasal spesifik dalam UU/PP
-- Sedang: Jawaban berdasarkan interpretasi atau peraturan pelaksana
-- Rendah: Jawaban hanya sebagian didukung atau konteks terbatas
-- Tidak Ada: Tidak ada sumber relevan dalam dokumen
-
-### LANGKAH 5 - FORMULASI JAWABAN
-- Susun jawaban yang jelas dan terstruktur
-- Setiap klaim HARUS disertai sitasi [1], [2], dst
-- Gunakan Bahasa Indonesia formal dan profesional
+2. **Format Jawaban** (yang ditampilkan ke pengguna):
+   - Tulis jawaban dalam paragraf yang mengalir secara alami
+   - JANGAN gunakan header markdown (##, ###, dll)
+   - Gunakan Bahasa Indonesia formal yang mudah dipahami
+   - Setiap klaim penting HARUS disertai nomor sitasi [1], [2], dst dalam teks
+   - Buat paragraf terpisah untuk topik berbeda (gunakan baris kosong)
+   - Gunakan bullet points (-) atau numbered list hanya jika perlu untuk langkah-langkah
 
 ## ATURAN KETAT:
+
 1. HANYA jawab berdasarkan dokumen yang diberikan - JANGAN mengarang
-2. Jika informasi tidak ada, katakan dengan jelas: "Berdasarkan dokumen yang tersedia, saya tidak menemukan informasi spesifik tentang [topik]."
-3. Jika ada ketidakpastian, nyatakan dengan jujur tingkat kepercayaan Anda
-4. Bedakan antara ketentuan wajib (harus/wajib) dan pilihan (dapat/boleh)
+2. Jika informasi tidak ada dalam dokumen, katakan: "Berdasarkan dokumen yang tersedia, informasi tentang [topik] tidak ditemukan."
+3. Pastikan setiap paragraf memiliki minimal 2-3 kalimat untuk kejelasan
+4. Akhiri dengan satu kalimat tentang tingkat keyakinan jawaban
 
-## FORMAT OUTPUT:
-Setelah melakukan penalaran di atas, berikan:
-1. JAWABAN UTAMA dengan sitasi
-2. TINGKAT KEPERCAYAAN (Tinggi/Sedang/Rendah) dengan alasan singkat
-3. DAFTAR SUMBER yang dikutip"""
+## CONTOH FORMAT YANG BAIK:
+
+"Pendirian Perseroan Terbatas (PT) di Indonesia diatur dalam Undang-Undang Nomor 40 Tahun 2007 tentang Perseroan Terbatas [1]. Syarat utama pendirian PT meliputi minimal dua orang pendiri yang merupakan Warga Negara Indonesia atau badan hukum [1].
+
+Modal dasar PT minimal sebesar Rp50.000.000 (lima puluh juta rupiah), dimana 25% harus disetor pada saat pendirian [2]. Akta pendirian harus dibuat oleh notaris dalam Bahasa Indonesia [1].
+
+Berdasarkan dokumen yang tersedia, jawaban ini memiliki tingkat keyakinan tinggi karena didukung langsung oleh pasal-pasal dalam UU PT."
+
+## YANG HARUS DIHINDARI:
+- Jangan tulis "## JAWABAN UTAMA" atau header serupa
+- Jangan tulis "## TINGKAT KEPERCAYAAN" sebagai header
+- Jangan buat daftar sumber terpisah di akhir
+- Jangan gunakan format yang kaku atau template"""
 
 
-USER_PROMPT_TEMPLATE = """Gunakan metode PENALARAN HUKUM TERSTRUKTUR untuk menjawab pertanyaan berikut.
+USER_PROMPT_TEMPLATE = """Berdasarkan dokumen hukum berikut, jawab pertanyaan dengan jelas dan terstruktur.
 
-=== DOKUMEN HUKUM YANG TERSEDIA ===
+DOKUMEN HUKUM:
 {context}
 
-=== PERTANYAAN ===
+PERTANYAAN:
 {question}
 
-=== INSTRUKSI ===
-1. Ikuti 5 LANGKAH penalaran hukum dalam system prompt
-2. Berikan jawaban dengan SITASI untuk setiap fakta
-3. Sertakan TINGKAT KEPERCAYAAN di akhir jawaban
-4. Jika dokumen tidak cukup relevan, nyatakan dengan jelas
+INSTRUKSI:
+- Jawab dalam paragraf yang mengalir alami (BUKAN dengan header markdown)
+- Sertakan nomor sitasi [1], [2] dst dalam kalimat untuk setiap fakta penting
+- Pisahkan paragraf dengan baris kosong untuk keterbacaan
+- Gunakan Bahasa Indonesia formal yang mudah dipahami
+- Akhiri dengan satu kalimat singkat tentang tingkat keyakinan jawaban
 
-=== PENALARAN DAN JAWABAN ==="""
+JAWABAN:"""
 
 
 @dataclass
@@ -112,10 +109,10 @@ class ConfidenceScore:
     
     def to_dict(self) -> dict[str, Any]:
         return {
-            "numeric": round(self.numeric, 4),
+            "numeric": float(round(self.numeric, 4)),
             "label": self.label,
-            "top_score": round(self.top_score, 4),
-            "avg_score": round(self.avg_score, 4),
+            "top_score": float(round(self.top_score, 4)),
+            "avg_score": float(round(self.avg_score, 4)),
         }
 
 
@@ -132,7 +129,7 @@ class ValidationResult:
     def to_dict(self) -> dict[str, Any]:
         return {
             "is_valid": self.is_valid,
-            "citation_coverage": round(self.citation_coverage, 2),
+            "citation_coverage": float(round(self.citation_coverage, 2)),
             "warnings": self.warnings,
             "hallucination_risk": self.hallucination_risk,
             "missing_citations": self.missing_citations,
@@ -232,6 +229,64 @@ class NVIDIANimClient:
         except requests.exceptions.RequestException as e:
             logger.error(f"NVIDIA NIM API error: {e}")
             raise RuntimeError(f"Failed to get response from NVIDIA NIM: {e}") from e
+    
+    def generate_stream(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ):
+        """Generate streaming response from NVIDIA NIM API. Yields chunks of text."""
+        messages = []
+        
+        if system_message:
+            messages.append({
+                "role": "system",
+                "content": system_message,
+            })
+        
+        messages.append({
+            "role": "user",
+            "content": user_message,
+        })
+        
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "stream": True,
+        }
+        
+        try:
+            response = requests.post(
+                self.api_url,
+                headers=self.headers,
+                json=payload,
+                timeout=120,
+                stream=True,
+            )
+            response.raise_for_status()
+            
+            for line in response.iter_lines():
+                if line:
+                    line = line.decode('utf-8')
+                    if line.startswith('data: '):
+                        data = line[6:]  # Remove 'data: ' prefix
+                        if data == '[DONE]':
+                            break
+                        try:
+                            chunk = json.loads(data)
+                            if 'choices' in chunk and len(chunk['choices']) > 0:
+                                delta = chunk['choices'][0].get('delta', {})
+                                content = delta.get('content', '')
+                                if content:
+                                    yield content
+                        except json.JSONDecodeError:
+                            continue
+        
+        except requests.exceptions.RequestException as e:
+            logger.error(f"NVIDIA NIM API streaming error: {e}")
+            raise RuntimeError(f"Failed to get streaming response from NVIDIA NIM: {e}") from e
 
 
 class LegalRAGChain:
@@ -274,7 +329,7 @@ class LegalRAGChain:
                 "number": i,
                 "citation_id": result.citation_id,
                 "citation": result.citation,
-                "score": round(result.score, 4),
+                "score": float(round(result.score, 4)),
                 "metadata": {
                     **result.metadata,
                     "text": result.text[:500] if result.text else "",  # Include text snippet
@@ -298,7 +353,13 @@ class LegalRAGChain:
         return sources
     
     def _assess_confidence(self, results: list[SearchResult]) -> ConfidenceScore:
-        """Assess confidence based on retrieval scores with numeric value."""
+        """
+        Assess confidence using multi-factor heuristics:
+        1. Retrieval scores (top + average)
+        2. Document type authority (UU > PP > Perpres > Permen)
+        3. Score distribution (consistency across results)
+        4. Number of relevant documents found
+        """
         if not results:
             return ConfidenceScore(
                 numeric=0.0,
@@ -307,21 +368,82 @@ class LegalRAGChain:
                 avg_score=0.0,
             )
         
-        top_score = results[0].score
-        avg_score = sum(r.score for r in results) / len(results)
+        scores = [r.score for r in results]
+        top_score = scores[0]
+        avg_score = sum(scores) / len(scores)
         
-        # Calculate numeric confidence (weighted combination)
-        # top_score weighted 60%, avg_score weighted 40%
-        numeric = (top_score * 0.6) + (avg_score * 0.4)
+        # Factor 1: Base retrieval score (40% weight)
+        # Normalize and weight top score more heavily
+        base_score = (top_score * 0.7) + (avg_score * 0.3)
+        
+        # Factor 2: Document authority hierarchy (20% weight)
+        # Higher authority documents = more confidence
+        authority_weights = {
+            'UU': 1.0,      # Undang-Undang (highest)
+            'PP': 0.9,      # Peraturan Pemerintah
+            'Perpres': 0.8, # Peraturan Presiden
+            'Permen': 0.7,  # Peraturan Menteri
+            'Perda': 0.6,   # Peraturan Daerah
+        }
+        
+        authority_scores = []
+        for r in results[:3]:  # Consider top 3 results
+            doc_type = r.metadata.get('jenis_dokumen', '')
+            authority = authority_weights.get(doc_type, 0.5)
+            authority_scores.append(authority * r.score)
+        
+        authority_factor = sum(authority_scores) / len(authority_scores) if authority_scores else 0.5
+        
+        # Factor 3: Score distribution / consistency (20% weight)
+        # If scores are consistent (low variance), higher confidence
+        if len(scores) > 1:
+            score_variance = sum((s - avg_score) ** 2 for s in scores) / len(scores)
+            # Lower variance = higher consistency factor (inverse relationship)
+            consistency_factor = max(0.3, 1.0 - (score_variance * 2))
+        else:
+            consistency_factor = 0.7  # Single result, moderate confidence
+        
+        # Factor 4: Result count factor (20% weight)
+        # More relevant results = higher confidence (up to a point)
+        high_quality_results = sum(1 for s in scores if s > 0.3)
+        if high_quality_results >= 4:
+            count_factor = 1.0
+        elif high_quality_results >= 2:
+            count_factor = 0.8
+        elif high_quality_results >= 1:
+            count_factor = 0.6
+        else:
+            count_factor = 0.3
+        
+        # Combine all factors with weights
+        numeric = (
+            base_score * 0.40 +
+            authority_factor * 0.20 +
+            consistency_factor * 0.20 +
+            count_factor * 0.20
+        )
+        
+        # Apply calibration to make scores more realistic
+        # Boost mid-range scores, cap very high scores
+        if numeric > 0.85:
+            numeric = 0.85 + (numeric - 0.85) * 0.5  # Diminishing returns above 85%
+        elif numeric < 0.3:
+            numeric = numeric * 0.8  # Penalize low scores more
+        
         numeric = min(1.0, max(0.0, numeric))  # Clamp to 0-1
         
-        # Determine label based on thresholds
-        if top_score > 0.5 and avg_score > 0.3:
+        # Determine label based on calibrated thresholds
+        if numeric >= 0.65:
             label = "tinggi"
-        elif top_score > 0.3 and avg_score > 0.15:
+        elif numeric >= 0.40:
             label = "sedang"
         else:
             label = "rendah"
+        
+        logger.debug(
+            f"Confidence calculation: base={base_score:.3f}, authority={authority_factor:.3f}, "
+            f"consistency={consistency_factor:.3f}, count={count_factor:.3f} -> final={numeric:.3f}"
+        )
         
         return ConfidenceScore(
             numeric=numeric,
@@ -515,6 +637,98 @@ class LegalRAGChain:
             None,
             lambda: self.query(question, filter_jenis_dokumen, top_k)
         )
+    
+    def query_stream(
+        self,
+        question: str,
+        filter_jenis_dokumen: str | None = None,
+        top_k: int | None = None,
+    ):
+        """
+        Streaming version of query() that yields answer chunks.
+        
+        Yields tuples of (event_type, data):
+        - ("metadata", {citations, sources, confidence_score})
+        - ("chunk", "text chunk")
+        - ("done", {validation})
+        """
+        k = top_k or self.top_k
+        
+        # Step 1: Retrieve relevant documents
+        logger.info(f"Retrieving documents for: {question[:50]}...")
+        
+        if filter_jenis_dokumen:
+            results = self.retriever.search_by_document_type(
+                query=question,
+                jenis_dokumen=filter_jenis_dokumen,
+                top_k=k,
+            )
+        else:
+            results = self.retriever.hybrid_search(
+                query=question,
+                top_k=k,
+            )
+        
+        # Handle no results
+        if not results:
+            yield ("metadata", {
+                "citations": [],
+                "sources": [],
+                "confidence_score": {
+                    "numeric": 0.0,
+                    "label": "tidak ada",
+                    "top_score": 0.0,
+                    "avg_score": 0.0,
+                },
+            })
+            yield ("chunk", "Maaf, saya tidak menemukan dokumen yang relevan dengan pertanyaan Anda dalam database.")
+            yield ("done", {
+                "validation": {
+                    "is_valid": True,
+                    "citation_coverage": 0.0,
+                    "warnings": [],
+                    "hallucination_risk": "low",
+                    "missing_citations": [],
+                }
+            })
+            return
+        
+        # Step 2: Format context and send metadata first
+        context, citations = self._format_context(results)
+        sources = self._extract_sources(citations)
+        confidence = self._assess_confidence(results)
+        
+        # Send metadata immediately so frontend can show sources while waiting for answer
+        yield ("metadata", {
+            "citations": citations,
+            "sources": sources,
+            "confidence_score": confidence.to_dict(),
+        })
+        
+        # Step 3: Generate answer using streaming LLM
+        user_prompt = USER_PROMPT_TEMPLATE.format(
+            context=context,
+            question=question,
+        )
+        
+        logger.info(f"Streaming answer with NVIDIA NIM {NVIDIA_MODEL}...")
+        
+        full_answer = ""
+        for chunk in self.llm_client.generate_stream(
+            user_message=user_prompt,
+            system_message=SYSTEM_PROMPT,
+        ):
+            full_answer += chunk
+            yield ("chunk", chunk)
+        
+        # Step 4: Validate answer for citation accuracy
+        validation = self._validate_answer(full_answer, citations)
+        if validation.warnings:
+            logger.warning(f"Answer validation warnings: {validation.warnings}")
+        
+        yield ("done", {
+            "validation": validation.to_dict(),
+        })
 
 
 def main():

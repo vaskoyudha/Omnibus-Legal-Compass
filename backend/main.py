@@ -14,7 +14,7 @@ from typing import Any
 
 from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from pypdf import PdfReader
@@ -449,6 +449,78 @@ async def ask_question(request: QuestionRequest):
             status_code=500,
             detail=f"Failed to process question: {str(e)}",
         )
+
+
+@app.post("/api/ask/stream", tags=["Q&A"])
+async def ask_question_stream(request: QuestionRequest):
+    """
+    Streaming version of Q&A endpoint using Server-Sent Events.
+    
+    Returns a stream of events:
+    - metadata: Citations and sources (sent first)
+    - chunk: Text chunks of the answer
+    - done: Final validation info
+    
+    ## Example Usage (JavaScript)
+    
+    ```javascript
+    const response = await fetch('/api/ask/stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: 'Apa itu PT?' })
+    });
+    
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        const text = decoder.decode(value);
+        // Parse SSE events
+    }
+    ```
+    """
+    global rag_chain
+
+    if rag_chain is None:
+        raise HTTPException(
+            status_code=503,
+            detail="RAG chain not initialized. Please check system health.",
+        )
+
+    import json
+
+    def event_generator():
+        start_time = time.perf_counter()
+        
+        try:
+            for event_type, data in rag_chain.query_stream(
+                question=request.question,
+                filter_jenis_dokumen=request.jenis_dokumen,
+                top_k=request.top_k,
+            ):
+                if event_type == "metadata":
+                    yield f"event: metadata\ndata: {json.dumps(data)}\n\n"
+                elif event_type == "chunk":
+                    yield f"event: chunk\ndata: {json.dumps({'text': data})}\n\n"
+                elif event_type == "done":
+                    processing_time = (time.perf_counter() - start_time) * 1000
+                    data["processing_time_ms"] = round(processing_time, 2)
+                    yield f"event: done\ndata: {json.dumps(data)}\n\n"
+        except Exception as e:
+            logger.error(f"Error in stream: {e}", exc_info=True)
+            yield f"event: error\ndata: {json.dumps({'error': str(e)})}\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )
 
 
 @app.post("/api/ask/followup", response_model=QuestionResponse, tags=["Q&A"])
