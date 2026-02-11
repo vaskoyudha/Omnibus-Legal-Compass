@@ -52,7 +52,7 @@ uniform float uFade;
 #define R_H 150.0
 #define R_V 150.0
 #define FLARE_HEIGHT 16.0
-#define FLARE_AMOUNT 6.0
+#define FLARE_AMOUNT 7.0
 #define FLARE_EXP 2.0
 #define TOP_FADE_START 0.1
 #define TOP_FADE_EXP 1.0

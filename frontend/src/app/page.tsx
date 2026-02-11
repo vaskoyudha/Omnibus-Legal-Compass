@@ -165,10 +165,10 @@ export default function Home() {
         >
           <LaserFlow
             horizontalBeamOffset={0.0}
-            verticalBeamOffset={-0.4}
+            verticalBeamOffset={-0.32}
             color="#AAFF00"
             verticalSizing={2.0}
-            horizontalSizing={0.35}
+            horizontalSizing={0.55}
             wispDensity={1.5}
             wispSpeed={12}
             wispIntensity={5.0}
@@ -281,11 +281,11 @@ export default function Home() {
           <div
             className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none z-[-1]"
             style={{
-              width: '16rem',
-              height: '4rem',
-              marginTop: '-1.5rem',
-              background: 'radial-gradient(ellipse at center bottom, rgba(170,255,0,0.5) 0%, rgba(170,255,0,0.15) 40%, transparent 70%)',
-              filter: 'blur(12px)',
+              width: '70%',
+              height: '5rem',
+              marginTop: '-2rem',
+              background: 'radial-gradient(ellipse at center bottom, rgba(170,255,0,0.45) 0%, rgba(170,255,0,0.12) 35%, transparent 65%)',
+              filter: 'blur(16px)',
             }}
           />
           {/* Card with green glowing border — brighter at top */}
@@ -295,9 +295,9 @@ export default function Home() {
               background: 'rgba(10, 10, 15, 0.92)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
-              border: '1px solid rgba(170, 255, 0, 0.25)',
-              borderTopColor: 'rgba(170, 255, 0, 0.5)',
-              boxShadow: '0 0 40px rgba(170,255,0,0.08), 0 0 80px rgba(170,255,0,0.04), inset 0 1px 0 rgba(170,255,0,0.12)',
+              border: '2px solid rgba(170, 255, 0, 0.55)',
+              borderTopColor: 'rgba(170, 255, 0, 0.85)',
+              boxShadow: '0 0 25px rgba(170,255,0,0.18), 0 0 50px rgba(170,255,0,0.1), inset 0 1px 0 rgba(170,255,0,0.25)',
             }}
           >
               <SearchBar onSearch={handleSearch} isLoading={isLoading || isStreaming} />
