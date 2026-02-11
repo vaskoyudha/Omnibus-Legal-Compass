@@ -1,12 +1,8 @@
 {
-  "active_plan": null,
-  "started_at": "2026-02-08T19:15:13.247Z",
-  "completed_at": "2026-02-09T16:58:00.000Z",
-  "session_ids": [
-    "ses_3c1a406e9ffeKRA6z3ylVUHmjG",
-    "ses_3bd46f3a0ffeCHbsKFss1CYA4K"
-  ],
-  "plan_name": "omnibus-legal-compass",
-  "status": "completed",
+  "active_plan": "C:\\Project Vasko\\Regulatory Harmonization Engine\\.sisyphus\\plans\\oss-transformation.md",
+  "started_at": "2026-02-11T08:21:37.000Z",
+  "session_ids": [],
+  "plan_name": "oss-transformation",
+  "status": "in_progress",
   "agent": "atlas"
 }
