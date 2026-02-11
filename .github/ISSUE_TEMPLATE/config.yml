@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://github.com/vaskoyudha/Regulatory-Harmonization-Engine
+    about: Check the documentation before opening an issue
