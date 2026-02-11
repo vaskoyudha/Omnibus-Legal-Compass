@@ -119,6 +119,16 @@ export default function Footer() {
                     </div>
                 </div>
 
+                {/* Legal Disclaimer */}
+                <div className="mb-6 px-4 py-3 rounded-lg bg-white/[0.02] border border-border">
+                    <p className="text-[11px] text-text-muted/70 leading-relaxed text-center">
+                        <span className="font-medium text-text-muted/90">Disclaimer:</span>{' '}
+                        This tool provides informational guidance only and does not constitute legal advice.
+                        Always consult a qualified attorney for legal matters. OMNIBUS is not a law firm and
+                        does not provide legal representation.
+                    </p>
+                </div>
+
                 {/* Bottom Bar */}
                 <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
                     <p className="text-xs text-text-muted">
