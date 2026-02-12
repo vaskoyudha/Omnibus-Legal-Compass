@@ -147,8 +147,7 @@ class HybridRetriever:
         # Get collection info
         collection_info = self.client.get_collection(self.collection_name)
         total_points = collection_info.points_count
-        
-        if total_points == 0:
+        if total_points is None or total_points == 0:
             self._corpus = []
             self._bm25 = None
             return
@@ -167,9 +166,12 @@ class HybridRetriever:
         
         for record in records:
             payload = record.payload
+            if payload is None:
+                continue
+            text = payload.get("text", "")
             doc = {
                 "id": record.id,
-                "text": payload.get("text", ""),
+                "text": text,
                 "citation": payload.get("citation", ""),
                 "citation_id": payload.get("citation_id", ""),
                 "metadata": {
@@ -178,7 +180,7 @@ class HybridRetriever:
                 },
             }
             self._corpus.append(doc)
-            tokenized_corpus.append(tokenize_indonesian(doc["text"]))
+            tokenized_corpus.append(tokenize_indonesian(str(text)))
         
         # Initialize BM25 index
         if tokenized_corpus:
@@ -313,8 +315,10 @@ class HybridRetriever:
         search_results = []
         for hit in query_response.points:
             payload = hit.payload
+            if payload is None:
+                continue
             search_results.append(SearchResult(
-                id=hit.id,
+                id=int(hit.id),
                 text=payload.get("text", ""),
                 citation=payload.get("citation", ""),
                 citation_id=payload.get("citation_id", ""),

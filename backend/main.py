@@ -16,6 +16,10 @@ from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from starlette.requests import Request
 
 from pypdf import PdfReader
 import io
@@ -296,6 +300,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Rate limiting (in-memory, per IP)
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 
 # =============================================================================
 # Exception Handlers
@@ -336,7 +345,7 @@ async def health_check():
     if rag_chain is not None:
         try:
             # Check Qdrant connection
-            collection_info = rag_chain.retriever.qdrant_client.get_collection(
+            collection_info = rag_chain.retriever.client.get_collection(
                 rag_chain.retriever.collection_name
             )
             qdrant_connected = True
@@ -357,12 +366,15 @@ async def health_check():
 
 
 @app.post("/api/ask", response_model=QuestionResponse, tags=["Q&A"])
-async def ask_question(request: QuestionRequest):
+@limiter.limit("20/minute")
+async def ask_question(request: Request, body: QuestionRequest):
     """
     Tanya jawab hukum Indonesia.
 
     Ajukan pertanyaan tentang peraturan perundang-undangan Indonesia.
     Jawaban akan disertai dengan sitasi ke dokumen sumber.
+
+    Rate limited: 20 requests per minute per IP
 
     ## Contoh Request
 
@@ -394,9 +406,9 @@ async def ask_question(request: QuestionRequest):
     try:
         # Query RAG chain
         response: RAGResponse = rag_chain.query(
-            question=request.question,
-            filter_jenis_dokumen=request.jenis_dokumen,
-            top_k=request.top_k,
+            question=body.question,
+            filter_jenis_dokumen=body.jenis_dokumen,
+            top_k=body.top_k,
         )
 
         processing_time = (time.perf_counter() - start_time) * 1000
@@ -452,9 +464,12 @@ async def ask_question(request: QuestionRequest):
 
 
 @app.post("/api/ask/stream", tags=["Q&A"])
-async def ask_question_stream(request: QuestionRequest):
+@limiter.limit("20/minute")
+async def ask_question_stream(request: Request, body: QuestionRequest):
     """
     Streaming version of Q&A endpoint using Server-Sent Events.
+
+    Rate limited: 20 requests per minute per IP
     
     Returns a stream of events:
     - metadata: Citations and sources (sent first)
@@ -496,9 +511,9 @@ async def ask_question_stream(request: QuestionRequest):
         
         try:
             for event_type, data in rag_chain.query_stream(
-                question=request.question,
-                filter_jenis_dokumen=request.jenis_dokumen,
-                top_k=request.top_k,
+                question=body.question,
+                filter_jenis_dokumen=body.jenis_dokumen,
+                top_k=body.top_k,
             ):
                 if event_type == "metadata":
                     yield f"event: metadata\ndata: {json.dumps(data)}\n\n"
@@ -524,12 +539,15 @@ async def ask_question_stream(request: QuestionRequest):
 
 
 @app.post("/api/ask/followup", response_model=QuestionResponse, tags=["Q&A"])
-async def ask_followup(request: FollowUpRequest):
+@limiter.limit("20/minute")
+async def ask_followup(request: Request, body: FollowUpRequest):
     """
     Pertanyaan lanjutan dengan konteks percakapan.
 
     Gunakan endpoint ini untuk pertanyaan lanjutan yang membutuhkan
     konteks dari percakapan sebelumnya.
+
+    Rate limited: 20 requests per minute per IP
 
     ## Contoh Request
 
@@ -557,10 +575,10 @@ async def ask_followup(request: FollowUpRequest):
 
     try:
         response: RAGResponse = rag_chain.query_with_history(
-            question=request.question,
-            chat_history=request.chat_history,
-            filter_jenis_dokumen=request.jenis_dokumen,
-            top_k=request.top_k,
+            question=body.question,
+            chat_history=body.chat_history,
+            filter_jenis_dokumen=body.jenis_dokumen,
+            top_k=body.top_k,
         )
 
         processing_time = (time.perf_counter() - start_time) * 1000
@@ -638,7 +656,9 @@ async def get_document_types():
 
 
 @app.post("/api/compliance/check", response_model=ComplianceResponse, tags=["Compliance"])
+@limiter.limit("10/minute")
 async def check_compliance(
+    request: Request,
     business_description: str = Form(None),
     pdf_file: UploadFile = File(None),
 ):
@@ -646,6 +666,8 @@ async def check_compliance(
     Periksa kepatuhan bisnis terhadap peraturan Indonesia.
 
     Dapat menerima deskripsi teks **ATAU** file PDF.
+
+    Rate limited: 10 requests per minute per IP
 
     ## Input Options
 
@@ -943,13 +965,16 @@ def extract_permits(answer: str) -> list[str]:
 
 
 @app.post("/api/guidance", response_model=GuidanceResponse, tags=["Guidance"])
-async def get_business_guidance(request: GuidanceRequest):
+@limiter.limit("20/minute")
+async def get_business_guidance(request: Request, body: GuidanceRequest):
     """
     Panduan pendirian usaha berdasarkan jenis badan usaha.
 
     Endpoint ini memberikan panduan langkah demi langkah untuk mendirikan
     berbagai jenis badan usaha di Indonesia, termasuk persyaratan dokumen,
     estimasi waktu, dan biaya yang diperlukan.
+
+    Rate limited: 20 requests per minute per IP
 
     **Jenis Badan Usaha yang Didukung:**
     - PT (Perseroan Terbatas)
@@ -974,8 +999,8 @@ async def get_business_guidance(request: GuidanceRequest):
         )
 
     # Validate business type
-    business_type = request.business_type.upper()
-    if business_type not in BUSINESS_TYPE_NAMES and request.business_type not in BUSINESS_TYPE_NAMES:
+    business_type = body.business_type.upper()
+    if business_type not in BUSINESS_TYPE_NAMES and body.business_type not in BUSINESS_TYPE_NAMES:
         # Try to match common variations
         type_mapping = {
             "PERSEROAN": "PT",
@@ -985,15 +1010,15 @@ async def get_business_guidance(request: GuidanceRequest):
             "USAHA PERORANGAN": "Perorangan",
             "UD": "Perorangan",
         }
-        business_type = type_mapping.get(business_type, request.business_type)
+        business_type = type_mapping.get(business_type, body.business_type)
 
     business_type_name = BUSINESS_TYPE_NAMES.get(
-        business_type, BUSINESS_TYPE_NAMES.get(request.business_type, request.business_type)
+        business_type, BUSINESS_TYPE_NAMES.get(body.business_type, body.business_type)
     )
 
     # Build the query for RAG
-    industry_context = f" di sektor {request.industry}" if request.industry else ""
-    location_context = f" di {request.location}" if request.location else ""
+    industry_context = f" di sektor {body.industry}" if body.industry else ""
+    location_context = f" di {body.location}" if body.location else ""
 
     query = f"""Berikan panduan lengkap langkah demi langkah untuk mendirikan {business_type_name} ({business_type}){industry_context}{location_context}.
 
