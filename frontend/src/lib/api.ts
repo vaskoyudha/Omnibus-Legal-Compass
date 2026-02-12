@@ -267,3 +267,120 @@ export async function askQuestionStream(
     throw err;
   }
 }
+
+// Knowledge Graph Types
+export type GraphNodeType = 'law' | 'government_regulation' | 'presidential_regulation' | 'ministerial_regulation' | 'chapter' | 'article';
+export type GraphNodeStatus = 'active' | 'amended' | 'repealed';
+
+export interface GraphNode {
+  id: string;
+  node_type: GraphNodeType;
+  number: number | string;
+  year?: number;
+  title?: string;
+  about?: string;
+  status?: GraphNodeStatus;
+  full_text?: string;
+  children?: GraphNode[];
+}
+
+export interface GraphHierarchy {
+  law: GraphNode;
+  implementing_regulations: GraphNode[];
+  amendments: GraphNode[];
+}
+
+export interface GraphReference {
+  source_id: string;
+  target_id: string;
+  edge_type: string;
+  source_node: GraphNode;
+  target_node: GraphNode;
+}
+
+export interface GraphStats {
+  total_nodes: number;
+  total_edges: number;
+  nodes_by_type: Record<string, number>;
+  edges_by_type: Record<string, number>;
+}
+
+export async function fetchGraphLaws(filters?: {
+  status?: string;
+  year?: number;
+  node_type?: string;
+}): Promise<GraphNode[]> {
+  const params = new URLSearchParams();
+  if (filters?.status) params.set('status', filters.status);
+  if (filters?.year) params.set('year', String(filters.year));
+  if (filters?.node_type) params.set('node_type', filters.node_type);
+
+  const query = params.toString();
+  const url = `${API_URL}/api/v1/graph/laws${query ? `?${query}` : ''}`;
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal memuat data graf' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+export async function fetchGraphLaw(lawId: string): Promise<GraphNode> {
+  const response = await fetch(`${API_URL}/api/v1/graph/law/${encodeURIComponent(lawId)}`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Regulasi tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+export async function fetchGraphHierarchy(lawId: string): Promise<GraphHierarchy> {
+  const response = await fetch(`${API_URL}/api/v1/graph/law/${encodeURIComponent(lawId)}/hierarchy`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Hierarki tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+export async function fetchGraphArticleReferences(articleId: string): Promise<GraphReference[]> {
+  const response = await fetch(`${API_URL}/api/v1/graph/article/${encodeURIComponent(articleId)}/references`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Referensi tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+export async function fetchGraphSearch(query: string, nodeType?: string): Promise<GraphNode[]> {
+  const params = new URLSearchParams({ q: query });
+  if (nodeType) params.set('node_type', nodeType);
+
+  const response = await fetch(`${API_URL}/api/v1/graph/search?${params.toString()}`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Pencarian gagal' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+export async function fetchGraphStats(): Promise<GraphStats> {
+  const response = await fetch(`${API_URL}/api/v1/graph/stats`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal memuat statistik' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}

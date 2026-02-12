@@ -251,7 +251,7 @@ class GuidanceResponse(BaseModel):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize resources on startup, cleanup on shutdown."""
-    global rag_chain
+    global rag_chain, knowledge_graph
 
     logger.info("Starting up Omnibus Legal Compass API...")
 
@@ -323,6 +323,10 @@ tags_metadata = [
     {
         "name": "Chat",
         "description": "Multi-turn chat session management.",
+    },
+    {
+        "name": "Knowledge Graph",
+        "description": "Legal document knowledge graph with hierarchy, cross-references, and search.",
     },
 ]
 
@@ -1248,6 +1252,134 @@ async def delete_chat_session(session_id: str):
     if not removed:
         raise HTTPException(status_code=404, detail="Session not found or expired")
     return {"detail": "Session deleted", "session_id": session_id}
+
+
+# =============================================================================
+# Knowledge Graph API Endpoints
+# =============================================================================
+
+
+def _require_knowledge_graph() -> LegalKnowledgeGraph:
+    """Return the global knowledge graph or raise 503 if unavailable."""
+    if knowledge_graph is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Knowledge graph not loaded. Please check system health.",
+        )
+    return knowledge_graph
+
+
+@api_router.get("/graph/laws", tags=["Knowledge Graph"])
+async def list_laws(
+    status: str | None = Query(default=None, description="Filter by status: active, amended, repealed"),
+    year: int | None = Query(default=None, description="Filter by year of enactment"),
+    node_type: str | None = Query(default=None, description="Filter by node type: law, government_regulation, presidential_regulation, ministerial_regulation"),
+):
+    """
+    Daftar semua peraturan dalam knowledge graph.
+
+    Returns daftar UU, PP, Perpres, dan Permen yang ada dalam graf.
+    Dapat difilter berdasarkan status, tahun, atau jenis peraturan.
+    """
+    kg = _require_knowledge_graph()
+
+    # Default to regulation types (not chapters/articles)
+    reg_types = {"law", "government_regulation", "presidential_regulation", "ministerial_regulation"}
+    if node_type and node_type in reg_types:
+        allowed_types = {node_type}
+    else:
+        allowed_types = reg_types
+
+    results: list[dict[str, object]] = []
+    for _, data in kg.graph.nodes(data=True):
+        nt = data.get("node_type", "")
+        if nt not in allowed_types:
+            continue
+        if status and data.get("status") != status:
+            continue
+        if year and data.get("year") != year:
+            continue
+        results.append(dict(data))
+
+    return results
+
+
+@api_router.get("/graph/law/{law_id}", tags=["Knowledge Graph"])
+async def get_law(law_id: str):
+    """
+    Ambil detail satu peraturan berdasarkan ID.
+
+    Returns data peraturan lengkap termasuk bab dan pasal yang terkandung.
+    ID format: {jenis_dokumen}_{nomor}_{tahun} (contoh: uu_11_2020)
+    """
+    kg = _require_knowledge_graph()
+    hierarchy = kg.get_hierarchy(law_id)
+    if not hierarchy:
+        raise HTTPException(status_code=404, detail=f"Regulation '{law_id}' not found")
+    return hierarchy
+
+
+@api_router.get("/graph/law/{law_id}/hierarchy", tags=["Knowledge Graph"])
+async def get_law_hierarchy(law_id: str):
+    """
+    Ambil hierarki peraturan pelaksana dari sebuah UU.
+
+    Returns PP, Perpres, dan Permen yang mengimplementasikan UU tertentu,
+    beserta peraturan yang mengamendemen.
+    """
+    kg = _require_knowledge_graph()
+    reg = kg.get_regulation(law_id)
+    if reg is None:
+        raise HTTPException(status_code=404, detail=f"Regulation '{law_id}' not found")
+    return {
+        "regulation": reg,
+        "implementing_regulations": kg.get_implementing_regulations(law_id),
+        "amendments": kg.get_amendments(law_id),
+    }
+
+
+@api_router.get("/graph/article/{article_id}/references", tags=["Knowledge Graph"])
+async def get_article_references(article_id: str):
+    """
+    Ambil referensi silang dari/ke sebuah pasal.
+
+    Returns daftar pasal yang direferensikan oleh pasal ini,
+    dan pasal yang mereferensikan pasal ini.
+    """
+    kg = _require_knowledge_graph()
+    article = kg.get_regulation(article_id)
+    if article is None:
+        raise HTTPException(status_code=404, detail=f"Article '{article_id}' not found")
+    return {
+        "article": article,
+        "references": kg.get_references(article_id),
+    }
+
+
+@api_router.get("/graph/search", tags=["Knowledge Graph"])
+async def search_graph(
+    q: str = Query(..., min_length=1, description="Search query"),
+    node_type: str | None = Query(default=None, description="Filter by node type"),
+):
+    """
+    Cari node dalam knowledge graph berdasarkan teks.
+
+    Mencari di judul, tentang, dan teks pasal.
+    Dapat difilter berdasarkan jenis node.
+    """
+    kg = _require_knowledge_graph()
+    return kg.search_nodes(q, node_type=node_type)
+
+
+@api_router.get("/graph/stats", tags=["Knowledge Graph"])
+async def get_graph_stats():
+    """
+    Statistik knowledge graph.
+
+    Returns jumlah total node, edge, dan rincian per jenis.
+    """
+    kg = _require_knowledge_graph()
+    return kg.get_stats()
 
 
 # =============================================================================
