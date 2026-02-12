@@ -25,6 +25,7 @@ from pypdf import PdfReader
 import io
 
 from rag_chain import LegalRAGChain, RAGResponse  # pyright: ignore[reportImplicitRelativeImport]
+from knowledge_graph.graph import LegalKnowledgeGraph  # pyright: ignore[reportImplicitRelativeImport]
 
 # Configure logging
 logging.basicConfig(
@@ -35,6 +36,8 @@ logger = logging.getLogger(__name__)
 
 # Global RAG chain instance (initialized on startup)
 rag_chain: LegalRAGChain | None = None
+# Global Knowledge Graph instance (loaded from JSON on startup)
+knowledge_graph: LegalKnowledgeGraph | None = None
 
 
 # =============================================================================
@@ -250,11 +253,34 @@ async def lifespan(app: FastAPI):
         # Don't raise - allow app to start for health checks
         rag_chain = None
 
+    # Load Knowledge Graph from JSON
+    try:
+        from knowledge_graph.persistence import load_graph as _load_kg  # pyright: ignore[reportImplicitRelativeImport]
+        import os as _os
+
+        kg_path = _os.path.join(
+            _os.path.dirname(__file__), "..", "data", "knowledge_graph.json"
+        )
+        if _os.path.exists(kg_path):
+            knowledge_graph = _load_kg(kg_path)
+            stats = knowledge_graph.get_stats()
+            logger.info(
+                "Knowledge graph loaded: %d nodes, %d edges",
+                stats["total_nodes"],
+                stats["total_edges"],
+            )
+        else:
+            logger.warning("Knowledge graph file not found, graph features disabled")
+    except Exception as e:
+        logger.error(f"Failed to load knowledge graph: {e}")
+        knowledge_graph = None
+
     yield
 
     # Cleanup
     logger.info("Shutting down Omnibus Legal Compass API...")
     rag_chain = None
+    knowledge_graph = None
 
 
 # =============================================================================

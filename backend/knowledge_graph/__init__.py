@@ -19,6 +19,8 @@ from .schema import (
     RegulationType,
 )
 from .graph import LegalKnowledgeGraph
+from .persistence import load_graph, save_graph
+from .ingest import ingest_from_json, ingest_all
 
 __all__ = [
     "Law",
@@ -32,4 +34,8 @@ __all__ = [
     "BaseNode",
     "NodeType",
     "RegulationType",
+    "load_graph",
+    "save_graph",
+    "ingest_from_json",
+    "ingest_all",
 ]

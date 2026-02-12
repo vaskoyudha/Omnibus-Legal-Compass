@@ -1,0 +1,240 @@
+{
+  "nodes": [
+    {
+      "id": "uu_11_2020",
+      "node_type": "law",
+      "number": 11,
+      "year": 2020,
+      "title": "Cipta Kerja",
+      "about": "Penciptaan Lapangan Kerja",
+      "status": "active",
+      "enactment_date": null
+    },
+    {
+      "id": "pp_24_2018",
+      "node_type": "government_regulation",
+      "number": 24,
+      "year": 2018,
+      "title": "Perizinan Berusaha Terintegrasi",
+      "about": "Pelayanan Perizinan Berusaha Terintegrasi Secara Elektronik",
+      "parent_law_id": null
+    },
+    {
+      "id": "uu_27_2022",
+      "node_type": "law",
+      "number": 27,
+      "year": 2022,
+      "title": "Pelindungan Data Pribadi",
+      "about": "Perlindungan Data Pribadi",
+      "status": "active",
+      "enactment_date": null
+    },
+    {
+      "id": "perpres_49_2021",
+      "node_type": "presidential_regulation",
+      "number": 49,
+      "year": 2021,
+      "title": "NIB",
+      "about": "Perubahan atas Peraturan Presiden Nomor 91 Tahun 2017 tentang Percepatan Pelaksanaan Berusaha",
+      "parent_law_id": null
+    },
+    {
+      "id": "uu_40_2007",
+      "node_type": "law",
+      "number": 40,
+      "year": 2007,
+      "title": "Perseroan Terbatas",
+      "about": "Perseroan Terbatas",
+      "status": "active",
+      "enactment_date": null
+    },
+    {
+      "id": "uu_11_2020_bab_I",
+      "node_type": "chapter",
+      "number": "I",
+      "title": null,
+      "parent_regulation_id": "uu_11_2020"
+    },
+    {
+      "id": "uu_11_2020_bab_III",
+      "node_type": "chapter",
+      "number": "III",
+      "title": null,
+      "parent_regulation_id": "uu_11_2020"
+    },
+    {
+      "id": "uu_27_2022_bab_II",
+      "node_type": "chapter",
+      "number": "II",
+      "title": null,
+      "parent_regulation_id": "uu_27_2022"
+    },
+    {
+      "id": "uu_27_2022_bab_III",
+      "node_type": "chapter",
+      "number": "III",
+      "title": null,
+      "parent_regulation_id": "uu_27_2022"
+    },
+    {
+      "id": "uu_40_2007_bab_I",
+      "node_type": "chapter",
+      "number": "I",
+      "title": null,
+      "parent_regulation_id": "uu_40_2007"
+    },
+    {
+      "id": "uu_11_2020_pasal_1",
+      "node_type": "article",
+      "number": "1",
+      "content_summary": "Dalam Undang-Undang ini yang dimaksud dengan: a. Penanaman Modal adalah kegiatan menanamkan modal untuk melakukan usaha di wilayah Negara Kesatuan Republik Indonesia. b. Penanam Modal adalah pihak yan",
+      "full_text": "Dalam Undang-Undang ini yang dimaksud dengan: a. Penanaman Modal adalah kegiatan menanamkan modal untuk melakukan usaha di wilayah Negara Kesatuan Republik Indonesia. b. Penanam Modal adalah pihak yang melakukan penanaman modal di wilayah Negara Kesatuan Republik Indonesia.",
+      "parent_chapter_id": "uu_11_2020_bab_I",
+      "parent_regulation_id": "uu_11_2020"
+    },
+    {
+      "id": "uu_11_2020_pasal_5",
+      "node_type": "article",
+      "number": "5",
+      "content_summary": "Ayat (1): Setiap penanam modal berhak mendapatkan kemudahan dan perlindungan untuk menanamkan modalnya di Indonesia sesuai dengan ketentuan peraturan perundang-undangan.\nAyat (2): Pemerintah Pusat dan",
+      "full_text": "Ayat (1): Setiap penanam modal berhak mendapatkan kemudahan dan perlindungan untuk menanamkan modalnya di Indonesia sesuai dengan ketentuan peraturan perundang-undangan.\nAyat (2): Pemerintah Pusat dan Pemerintah Daerah wajib memberikan kemudahan dan perlindungan sebagaimana dimaksud pada ayat (1) dalam rangka mendorong penanaman modal.",
+      "parent_chapter_id": "uu_11_2020_bab_III",
+      "parent_regulation_id": "uu_11_2020"
+    },
+    {
+      "id": "pp_24_2018_pasal_1",
+      "node_type": "article",
+      "number": "1",
+      "content_summary": null,
+      "full_text": "Ayat (1): Perizinan Berusaha adalah lisensi yang diberikan oleh Pemerintah Pusat kepada pelaku usaha untuk memulai dan menjalankan usaha dan/atau kegiatannya.",
+      "parent_chapter_id": null,
+      "parent_regulation_id": "pp_24_2018"
+    },
+    {
+      "id": "pp_24_2018_pasal_3",
+      "node_type": "article",
+      "number": "3",
+      "content_summary": null,
+      "full_text": "Setiap Perizinan Berusaha yang menjadi kewenangan Pemerintah Pusat wajib diterbitkan melalui OSS.",
+      "parent_chapter_id": null,
+      "parent_regulation_id": "pp_24_2018"
+    },
+    {
+      "id": "uu_27_2022_pasal_2",
+      "node_type": "article",
+      "number": "2",
+      "content_summary": null,
+      "full_text": "Setiap Orang wajib melindungi data pribadi miliknya dan milik orang lain yang berada dalam kekuasaan atau penggunaannya.",
+      "parent_chapter_id": "uu_27_2022_bab_II",
+      "parent_regulation_id": "uu_27_2022"
+    },
+    {
+      "id": "uu_27_2022_pasal_15",
+      "node_type": "article",
+      "number": "15",
+      "content_summary": "Pengendali Data Pribadi wajib memenuhi prinsip hukum pengendalian data pribadi meliputi: a. tujuan dan kegunaan; b. keberlakuan; c. keterbukaan; d. akurasi; e. kerahasiaan; f. keamanan; dan g. pertang",
+      "full_text": "Pengendali Data Pribadi wajib memenuhi prinsip hukum pengendalian data pribadi meliputi: a. tujuan dan kegunaan; b. keberlakuan; c. keterbukaan; d. akurasi; e. kerahasiaan; f. keamanan; dan g. pertanggungjawaban.",
+      "parent_chapter_id": "uu_27_2022_bab_III",
+      "parent_regulation_id": "uu_27_2022"
+    },
+    {
+      "id": "perpres_49_2021_pasal_3",
+      "node_type": "article",
+      "number": "3",
+      "content_summary": null,
+      "full_text": "NIB merupakan identitas pelaku usaha yang diperoleh setelah pelaku usaha melakukan pendaftaran melalui OSS.",
+      "parent_chapter_id": null,
+      "parent_regulation_id": "perpres_49_2021"
+    },
+    {
+      "id": "perpres_49_2021_pasal_4",
+      "node_type": "article",
+      "number": "4",
+      "content_summary": null,
+      "full_text": "NIB berlaku selama pelaku usaha masih menjalankan kegiatan usahanya dan tidak berlaku apabila pelaku usaha melakukan pembubaran atau pembatalan pendiriannya.",
+      "parent_chapter_id": null,
+      "parent_regulation_id": "perpres_49_2021"
+    },
+    {
+      "id": "uu_40_2007_pasal_1",
+      "node_type": "article",
+      "number": "1",
+      "content_summary": "Ayat (1): Perseroan Terbatas yang selanjutnya disebut Perseroan adalah badan hukum yang merupakan persekutuan modal, didirikan untuk melaksanakan kegiatan usaha dengan modal dasarnya terbagi dalam sah",
+      "full_text": "Ayat (1): Perseroan Terbatas yang selanjutnya disebut Perseroan adalah badan hukum yang merupakan persekutuan modal, didirikan untuk melaksanakan kegiatan usaha dengan modal dasarnya terbagi dalam saham.",
+      "parent_chapter_id": "uu_40_2007_bab_I",
+      "parent_regulation_id": "uu_40_2007"
+    }
+  ],
+  "edges": [
+    {
+      "source": "uu_11_2020",
+      "target": "uu_11_2020_bab_I",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_11_2020",
+      "target": "uu_11_2020_bab_III",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "pp_24_2018",
+      "target": "pp_24_2018_pasal_1",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "pp_24_2018",
+      "target": "pp_24_2018_pasal_3",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_27_2022",
+      "target": "uu_27_2022_bab_II",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_27_2022",
+      "target": "uu_27_2022_bab_III",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "perpres_49_2021",
+      "target": "perpres_49_2021_pasal_3",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "perpres_49_2021",
+      "target": "perpres_49_2021_pasal_4",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_40_2007",
+      "target": "uu_40_2007_bab_I",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_11_2020_bab_I",
+      "target": "uu_11_2020_pasal_1",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_11_2020_bab_III",
+      "target": "uu_11_2020_pasal_5",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_27_2022_bab_II",
+      "target": "uu_27_2022_pasal_2",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_27_2022_bab_III",
+      "target": "uu_27_2022_pasal_15",
+      "edge_type": "CONTAINS"
+    },
+    {
+      "source": "uu_40_2007_bab_I",
+      "target": "uu_40_2007_pasal_1",
+      "edge_type": "CONTAINS"
+    }
+  ]
+}
