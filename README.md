@@ -1,10 +1,12 @@
 <div align="center">
 
+<img src="frontend/public/logo.png" alt="Omnibus Legal Compass" width="120" />
+
 # Omnibus Legal Compass
 
 **AI-Powered Indonesian Legal Intelligence Platform**
 
-[![CI](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/actions/workflows/ci.yml)
+[![CI](https://github.com/vaskoyudha/Omnibus-intelligence/actions/workflows/ci.yml/badge.svg)](https://github.com/vaskoyudha/Omnibus-intelligence/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
@@ -13,7 +15,7 @@
 
 Navigate Indonesian regulations with confidence. Ask legal questions, check compliance, get business guidance — all backed by hybrid search, cross-encoder reranking, and source citations.
 
-[**Documentation**](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/) · [**Report Bug**](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new?template=bug_report.yml) · [**Request Feature**](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new?template=feature_request.yml)
+[**Documentation**](https://vaskoyudha.github.io/Omnibus-intelligence/) · [**Report Bug**](https://github.com/vaskoyudha/Omnibus-intelligence/issues/new?template=bug_report.yml) · [**Request Feature**](https://github.com/vaskoyudha/Omnibus-intelligence/issues/new?template=feature_request.yml)
 
 </div>
 
@@ -135,8 +137,8 @@ Heat map and bar chart visualization of regulatory coverage across legal domains
 ### 1. Clone & Configure
 
 ```bash
-git clone https://github.com/vaskoyudha/Regulatory-Harmonization-Engine.git
-cd "Regulatory Harmonization Engine"
+git clone https://github.com/vaskoyudha/Omnibus-intelligence.git
+cd "Omnibus-intelligence"
 cp .env.example .env
 # Edit .env and add your NVIDIA_API_KEY
 ```
@@ -182,7 +184,7 @@ npm run dev
 
 ## API Preview
 
-All endpoints are versioned under `/api/v1/`. Full reference in [API Documentation](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/api-reference).
+All endpoints are versioned under `/api/v1/`. Full reference in [API Documentation](https://vaskoyudha.github.io/Omnibus-intelligence/api-reference).
 
 ```bash
 # Legal Q&A
@@ -226,7 +228,7 @@ How does Omnibus Legal Compass compare to other legal AI projects?
 
 > **Note**: Comparison based on publicly available repositories as of Feb 2025. Omnibus is the only Indonesian-focused legal AI with a full-stack production architecture.
 
-For detailed analysis, see [Competitive Comparison](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/comparison).
+For detailed analysis, see [Competitive Comparison](https://vaskoyudha.github.io/Omnibus-intelligence/comparison).
 
 ---
 
@@ -344,7 +346,7 @@ Omnibus Legal Compass is an **AI-assisted research tool**. It does **not** const
 
 <div align="center">
 
-**[Documentation](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/)** · **[Report Bug](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new?template=bug_report.yml)** · **[Request Feature](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new?template=feature_request.yml)**
+**[Documentation](https://vaskoyudha.github.io/Omnibus-intelligence/)** · **[Report Bug](https://github.com/vaskoyudha/Omnibus-intelligence/issues/new?template=bug_report.yml)** · **[Request Feature](https://github.com/vaskoyudha/Omnibus-intelligence/issues/new?template=feature_request.yml)**
 
 Built for Indonesian Legal Tech
 

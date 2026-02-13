@@ -52,8 +52,17 @@ venv/
 # _replacements.txt is temp filter-repo artifact
 _replacements.txt
 
-# screenshots (dev artifacts)
+# screenshots (dev artifacts, allow logos)
 *.png
+!frontend/public/logo.png
+!docs/public/logo.png
+
+# agent planning files
+.sisyphus/
+
+# build artifacts
+docs/.vitepress/dist/
+.coverage
 
 # Windows device files
 nul
