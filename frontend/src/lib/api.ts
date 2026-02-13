@@ -53,19 +53,28 @@ export interface AskResponse {
   confidence_score?: ConfidenceScore;
   validation?: ValidationResult;
   processing_time_ms: number;
+  session_id?: string;
 }
 
 export interface AskRequest {
   question: string;
   top_k?: number;
   document_type?: string;
+  session_id?: string;
 }
 
-export async function askQuestion(question: string, topK: number = 5): Promise<AskResponse> {
+export async function askQuestion(
+  question: string,
+  topK: number = 5,
+  sessionId?: string
+): Promise<AskResponse> {
+  const body: Record<string, unknown> = { question, top_k: topK };
+  if (sessionId) body.session_id = sessionId;
+
   const response = await fetch(`${API_URL}/api/v1/ask`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, top_k: topK })
+    body: JSON.stringify(body),
   });
   
   if (!response.ok) {
@@ -74,6 +83,39 @@ export async function askQuestion(question: string, topK: number = 5): Promise<A
   }
   
   return response.json();
+}
+
+// Chat Session Types & API
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface ChatHistoryResponse {
+  session_id: string;
+  messages: ChatMessage[];
+}
+
+export async function fetchChatHistory(sessionId: string): Promise<ChatHistoryResponse> {
+  const response = await fetch(`${API_URL}/api/v1/chat/sessions/${encodeURIComponent(sessionId)}`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Sesi tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+export async function deleteChatSession(sessionId: string): Promise<void> {
+  const response = await fetch(`${API_URL}/api/v1/chat/sessions/${encodeURIComponent(sessionId)}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal menghapus sesi' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
 }
 
 export async function checkHealth(): Promise<{ status: string; qdrant_connected: boolean }> {
