@@ -27,6 +27,8 @@ import io
 from rag_chain import LegalRAGChain, RAGResponse  # pyright: ignore[reportImplicitRelativeImport]
 from knowledge_graph.graph import LegalKnowledgeGraph  # pyright: ignore[reportImplicitRelativeImport]
 from chat.session import SessionManager  # pyright: ignore[reportImplicitRelativeImport]
+from dashboard.coverage import CoverageComputer  # pyright: ignore[reportImplicitRelativeImport]
+from dashboard.metrics import MetricsAggregator  # pyright: ignore[reportImplicitRelativeImport]
 
 # Configure logging
 logging.basicConfig(
@@ -1380,6 +1382,56 @@ async def get_graph_stats():
     """
     kg = _require_knowledge_graph()
     return kg.get_stats()
+
+
+# =============================================================================
+# Dashboard Endpoints
+# =============================================================================
+
+
+@api_router.get("/dashboard/coverage", tags=["Dashboard"])
+async def dashboard_coverage():
+    """
+    Coverage data per regulation for heat map visualization.
+
+    Returns a list of coverage metrics for every regulation in the
+    Knowledge Graph, including total articles, indexed articles,
+    coverage percentage, and domain classification.
+    """
+    kg = _require_knowledge_graph()
+    computer = CoverageComputer(kg)
+    return [c.model_dump() for c in computer.compute_all_coverage()]
+
+
+@api_router.get("/dashboard/stats", tags=["Dashboard"])
+async def dashboard_stats():
+    """
+    Aggregate dashboard statistics.
+
+    Returns overall coverage percentage, total regulations, articles,
+    domains, and most/least covered domains.
+    """
+    kg = _require_knowledge_graph()
+    computer = CoverageComputer(kg)
+    aggregator = MetricsAggregator(kg, computer)
+    return aggregator.compute_stats().model_dump()
+
+
+@api_router.get("/dashboard/coverage/{domain}", tags=["Dashboard"])
+async def dashboard_domain_coverage(domain: str):
+    """
+    Coverage detail for a specific legal domain.
+
+    Returns aggregated coverage metrics and per-law breakdown
+    for the specified domain.
+    """
+    kg = _require_knowledge_graph()
+    computer = CoverageComputer(kg)
+    domains = computer.compute_domain_coverage()
+    for d in domains:
+        if d.domain == domain:
+            return d.model_dump()
+    raise HTTPException(status_code=404, detail=f"Domain '{domain}' not found")
 
 
 # =============================================================================
