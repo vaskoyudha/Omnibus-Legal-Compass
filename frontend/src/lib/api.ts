@@ -426,3 +426,72 @@ export async function fetchGraphStats(): Promise<GraphStats> {
 
   return response.json();
 }
+
+// Dashboard Types & API
+export interface LawCoverage {
+  regulation_id: string;
+  regulation_type: string;
+  title: string;
+  about: string;
+  domain: string;
+  total_articles: number;
+  indexed_articles: number;
+  missing_articles: string[];
+  coverage_percent: number;
+  total_chapters: number;
+}
+
+export interface DomainCoverage {
+  domain: string;
+  total_articles: number;
+  indexed_articles: number;
+  coverage_percent: number;
+  regulation_count: number;
+  laws: LawCoverage[];
+}
+
+export interface DashboardStats {
+  overall_coverage_percent: number;
+  total_regulations: number;
+  total_articles: number;
+  total_chapters: number;
+  indexed_articles: number;
+  total_edges: number;
+  domain_count: number;
+  most_covered_domain: string | null;
+  least_covered_domain: string | null;
+  last_updated: string;
+}
+
+export async function fetchDashboardCoverage(): Promise<LawCoverage[]> {
+  const response = await fetch(`${API_URL}/api/v1/dashboard/coverage`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal memuat data coverage' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+export async function fetchDashboardStats(): Promise<DashboardStats> {
+  const response = await fetch(`${API_URL}/api/v1/dashboard/stats`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal memuat statistik dashboard' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+export async function fetchDomainCoverage(domain: string): Promise<DomainCoverage> {
+  const response = await fetch(`${API_URL}/api/v1/dashboard/coverage/${encodeURIComponent(domain)}`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Domain tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
