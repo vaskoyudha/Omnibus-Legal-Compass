@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -82,12 +83,14 @@ const SUGGESTIONS = [
 ];
 
 export default function ChatPage() {
+  const searchParams = useSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const hasAutoSubmitted = useRef(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -96,6 +99,20 @@ export default function ChatPage() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
+
+  // Auto-submit question from query param
+  useEffect(() => {
+    const question = searchParams.get('question');
+    if (question && !hasAutoSubmitted.current) {
+      hasAutoSubmitted.current = true;
+      const decodedQuestion = decodeURIComponent(question);
+      setInputValue(decodedQuestion);
+      // Small delay to ensure UI is ready, then submit
+      setTimeout(() => {
+        handleSendMessage(decodedQuestion);
+      }, 500);
+    }
+  }, [searchParams]);
 
   const handleSendMessage = useCallback(async (text: string = inputValue) => {
     if (!text.trim() || isLoading) return;
