@@ -216,7 +216,8 @@ class LegalKnowledgeGraph:
         kg = cls()
         for node in data.get("nodes", []):
             node_data = {k: v for k, v in node.items()}
-            node_id = node_data.pop("id")
+            node_id = node_data.get("id", "")
+            # Keep 'id' in attributes so queries return it
             kg._graph.add_node(node_id, **node_data)
 
         for edge in data.get("edges", []):
