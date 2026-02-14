@@ -62,8 +62,12 @@ Heat map and bar chart visualization of regulatory coverage across legal domains
 | ![Q&A](docs/screenshots/qa-page.png) | ![Compliance](docs/screenshots/compliance-page.png) | ![Guidance](docs/screenshots/guidance-page.png) |
 
 | Multi-Turn Chat | Knowledge Graph | Dashboard |
-|:-:|:-:|:-:|
+:-:|:-:|:-:|
 | ![Chat](docs/screenshots/chat-page.png) | ![KG](docs/screenshots/knowledge-graph-page.png) | ![Dashboard](docs/screenshots/dashboard-page.png) |
+
+| Dashboard Coverage | Dashboard Heat Map |
+:-:|:-:|
+| ![Dashboard Coverage](docs/screenshots/dashboard-page.png) | ![Dashboard Heat Map](docs/screenshots/dashboard-page-scrolled.png) |
 
 ---
 

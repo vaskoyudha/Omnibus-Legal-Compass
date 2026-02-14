@@ -28,6 +28,16 @@ from rag_chain import LegalRAGChain, RAGResponse  # pyright: ignore[reportImplic
 from knowledge_graph.graph import LegalKnowledgeGraph  # pyright: ignore[reportImplicitRelativeImport]
 from chat.session import SessionManager  # pyright: ignore[reportImplicitRelativeImport]
 from dashboard.coverage import CoverageComputer  # pyright: ignore[reportImplicitRelativeImport]
+
+# Sample indexed articles for demo purposes (simulates real Qdrant coverage)
+SAMPLE_INDEXED_ARTICLES: set[str] = {
+    # UU 11/2020 Cipta Kerja
+    "uu_11_2020_pasal_1",
+    # UU 27/2022 Perlindungan Data Pribadi
+    "uu_27_2022_pasal_2",
+    # UU 40/2007 Perseroan Terbatas
+    "uu_40_2007_pasal_1",
+}
 from dashboard.metrics import MetricsAggregator  # pyright: ignore[reportImplicitRelativeImport]
 
 # Configure logging
@@ -1397,9 +1407,12 @@ async def dashboard_coverage():
     Returns a list of coverage metrics for every regulation in the
     Knowledge Graph, including total articles, indexed articles,
     coverage percentage, and domain classification.
+    
+    Note: Uses sample data for demo purposes. In production, this would
+    cross-reference with actual Qdrant indexed articles.
     """
     kg = _require_knowledge_graph()
-    computer = CoverageComputer(kg)
+    computer = CoverageComputer(kg, indexed_article_ids=SAMPLE_INDEXED_ARTICLES)
     return [c.model_dump() for c in computer.compute_all_coverage()]
 
 
@@ -1410,9 +1423,12 @@ async def dashboard_stats():
 
     Returns overall coverage percentage, total regulations, articles,
     domains, and most/least covered domains.
+    
+    Note: Uses sample data for demo purposes. In production, this would
+    cross-reference with actual Qdrant indexed articles.
     """
     kg = _require_knowledge_graph()
-    computer = CoverageComputer(kg)
+    computer = CoverageComputer(kg, indexed_article_ids=SAMPLE_INDEXED_ARTICLES)
     aggregator = MetricsAggregator(kg, computer)
     return aggregator.compute_stats().model_dump()
 
@@ -1424,9 +1440,12 @@ async def dashboard_domain_coverage(domain: str):
 
     Returns aggregated coverage metrics and per-law breakdown
     for the specified domain.
+    
+    Note: Uses sample data for demo purposes. In production, this would
+    cross-reference with actual Qdrant indexed articles.
     """
     kg = _require_knowledge_graph()
-    computer = CoverageComputer(kg)
+    computer = CoverageComputer(kg, indexed_article_ids=SAMPLE_INDEXED_ARTICLES)
     domains = computer.compute_domain_coverage()
     for d in domains:
         if d.domain == domain:
