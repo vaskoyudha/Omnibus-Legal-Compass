@@ -241,7 +241,7 @@ export default function Home() {
               boxShadow: '0 0 25px rgba(170,255,0,0.18), 0 0 50px rgba(170,255,0,0.1), inset 0 1px 0 rgba(170,255,0,0.25)',
             }}
           >
-              <SearchBar onSearch={handleSearch} isLoading={isLoading || isStreaming} />
+              <SearchBar onSearch={handleSearch} isLoading={isLoading} />
 
               {/* Example Questions */}
               <div className="mt-4 pt-4 border-t border-border">
@@ -251,7 +251,7 @@ export default function Home() {
                     <motion.button
                       key={question}
                       onClick={() => handleSearch(question)}
-                      disabled={isLoading || isStreaming}
+                      disabled={isLoading}
                       className="text-sm px-4 py-2 glass rounded-full text-text-secondary hover:text-[#AAFF00] hover:border-[#AAFF00]/30 border border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
