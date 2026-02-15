@@ -980,6 +980,440 @@ def create_expanded_dataset() -> list[dict]:
             doc["ayat"] = art["ayat"]
         documents.append(doc)
     
+
+    # === UU 42/1999 - Jaminan Fidusia ===
+    jaminan_fidusia_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Fidusia adalah pengalihan hak kepemilikan suatu benda atas dasar kepercayaan dengan ketentuan bahwa benda yang hak kepemilikannya dialihkan tersebut tetap dalam penguasaan pemilik benda. 2. Jaminan Fidusia adalah hak jaminan atas benda bergerak baik yang berwujud maupun yang tidak berwujud dan benda tidak bergerak khususnya bangunan yang tidak dapat dibebani hak tanggungan sebagaimana dimaksud dalam Undang-Undang Nomor 4 Tahun 1996 tentang Hak Tanggungan yang tetap berada dalam penguasaan Pemberi Fidusia, sebagai agunan bagi pelunasan utang tertentu, yang memberikan kedudukan yang diutamakan kepada Penerima Fidusia terhadap kreditor lainnya. 3. Piutang adalah hak untuk menerima pembayaran. 4. Benda adalah segala sesuatu yang dapat dimiliki dan dialihkan, baik yang berwujud maupun yang tidak berwujud, yang terdaftar maupun yang tidak terdaftar, yang bergerak maupun yang tidak bergerak yang tidak dapat dibebani hak tanggungan atau hipotek.'},
+        {"bab": "II", "pasal": "4", "text": 'Jaminan Fidusia merupakan perjanjian ikutan dari suatu perjanjian pokok yang menimbulkan kewajiban bagi para pihak untuk memenuhi suatu prestasi yang berupa memberikan sesuatu, berbuat sesuatu, atau tidak berbuat sesuatu, yang dapat dinilai dengan uang.'},
+        {"bab": "III", "pasal": "11", "ayat": "1", "text": 'Benda yang dibebani dengan Jaminan Fidusia wajib didaftarkan pada Kantor Pendaftaran Fidusia.'},
+        {"bab": "III", "pasal": "12", "ayat": "1", "text": 'Pendaftaran Jaminan Fidusia sebagaimana dimaksud dalam Pasal 11 ayat (1) dilakukan pada Kantor Pendaftaran Fidusia dengan melampirkan pernyataan pendaftaran Jaminan Fidusia yang memuat: a. identitas pihak Pemberi dan Penerima Fidusia; b. tanggal, nomor akta Jaminan Fidusia, nama, dan tempat kedudukan notaris yang membuat akta Jaminan Fidusia; c. data perjanjian pokok yang dijamin fidusia; d. uraian mengenai benda yang menjadi objek Jaminan Fidusia; e. nilai penjaminan; dan f. nilai benda yang menjadi objek Jaminan Fidusia.'},
+        {"bab": "III", "pasal": "14", "ayat": "1", "text": 'Kantor Pendaftaran Fidusia menerbitkan dan menyerahkan kepada Penerima Fidusia Sertifikat Jaminan Fidusia pada tanggal yang sama dengan tanggal penerimaan permohonan pendaftaran.'},
+        {"bab": "V", "pasal": "29", "ayat": "1", "text": 'Apabila debitor atau Pemberi Fidusia cidera janji, eksekusi terhadap benda yang menjadi objek Jaminan Fidusia dapat dilakukan dengan cara: a. pelaksanaan titel eksekutorial sebagaimana dimaksud dalam Pasal 15 ayat (2) oleh Penerima Fidusia; b. penjualan benda yang menjadi objek Jaminan Fidusia atas kekuasaan Penerima Fidusia sendiri melalui pelelangan umum serta mengambil pelunasan piutangnya dari hasil penjualan; c. penjualan di bawah tangan yang dilakukan berdasarkan kesepakatan Pemberi dan Penerima Fidusia jika dengan cara demikian dapat diperoleh harga tertinggi yang menguntungkan para pihak.'},
+        {"bab": "VI", "pasal": "35", "text": 'Setiap orang yang dengan sengaja memalsukan, mengubah, menghilangkan atau dengan cara apapun memberikan keterangan secara menyesatkan, yang jika hal tersebut diketahui oleh salah satu pihak tidak melahirkan perjanjian Jaminan Fidusia, dipidana dengan pidana penjara paling singkat 1 (satu) tahun dan paling lama 5 (lima) tahun dan denda paling sedikit Rp10.000.000,00 (sepuluh juta rupiah) dan paling banyak Rp100.000.000,00 (seratus juta rupiah).'},
+        {"bab": "VI", "pasal": "36", "text": 'Pemberi Fidusia yang mengalihkan, menggadaikan, atau menyewakan benda yang menjadi objek Jaminan Fidusia sebagaimana dimaksud dalam Pasal 23 ayat (2) yang dilakukan tanpa persetujuan tertulis terlebih dahulu dari Penerima Fidusia, dipidana dengan pidana penjara paling lama 2 (dua) tahun dan denda paling banyak Rp50.000.000,00 (lima puluh juta rupiah).'},
+    ]
+
+    for art in jaminan_fidusia_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "42",
+            "tahun": 1999,
+            "judul": "Jaminan Fidusia",
+            "tentang": "Jaminan Fidusia",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 4/1996 - Hak Tanggungan ===
+    hak_tanggungan_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Hak Tanggungan atas tanah beserta benda-benda yang berkaitan dengan tanah, yang selanjutnya disebut Hak Tanggungan, adalah hak jaminan yang dibebankan pada hak atas tanah sebagaimana dimaksud dalam Undang-Undang Nomor 5 Tahun 1960 tentang Peraturan Dasar Pokok-Pokok Agraria, berikut atau tidak berikut benda-benda lain yang merupakan satu kesatuan dengan tanah itu, untuk pelunasan utang tertentu, yang memberikan kedudukan yang diutamakan kepada kreditor tertentu terhadap kreditor-kreditor lain. 2. Kreditor adalah pihak yang berpiutang dalam suatu hubungan utang-piutang tertentu. 3. Debitor adalah pihak yang berutang dalam suatu hubungan utang-piutang tertentu. 4. Pejabat Pembuat Akta Tanah, yang selanjutnya disebut PPAT, adalah pejabat umum yang diberi wewenang untuk membuat akta pemindahan hak atas tanah, akta pembebanan hak atas tanah, dan akta pemberian kuasa membebankan Hak Tanggungan menurut peraturan perundang-undangan yang berlaku.'},
+        {"bab": "II", "pasal": "4", "ayat": "1", "text": 'Hak atas tanah yang dapat dibebani Hak Tanggungan adalah: a. Hak Milik; b. Hak Guna Usaha; c. Hak Guna Bangunan.'},
+        {"bab": "II", "pasal": "4", "ayat": "2", "text": 'Selain hak-hak atas tanah sebagaimana dimaksud pada ayat (1), Hak Pakai atas tanah Negara yang menurut ketentuan yang berlaku wajib didaftar dan menurut sifatnya dapat dipindahtangankan dapat juga dibebani Hak Tanggungan.'},
+        {"bab": "II", "pasal": "6", "text": 'Apabila debitor cidera janji, pemegang Hak Tanggungan pertama mempunyai hak untuk menjual objek Hak Tanggungan atas kekuasaan sendiri melalui pelelangan umum serta mengambil pelunasan piutangnya dari hasil penjualan tersebut.'},
+        {"bab": "IV", "pasal": "13", "ayat": "1", "text": 'Pemberian Hak Tanggungan wajib didaftarkan pada Kantor Pertanahan.'},
+        {"bab": "IV", "pasal": "13", "ayat": "2", "text": 'Selambat-lambatnya 7 (tujuh) hari kerja setelah penandatanganan Akta Pemberian Hak Tanggungan sebagaimana dimaksud dalam Pasal 10 ayat (2), PPAT wajib mengirimkan Akta Pemberian Hak Tanggungan yang bersangkutan dan warkah lain yang diperlukan kepada Kantor Pertanahan.'},
+        {"bab": "IV", "pasal": "14", "ayat": "1", "text": 'Sebagai tanda bukti adanya Hak Tanggungan, Kantor Pertanahan menerbitkan Sertifikat Hak Tanggungan sesuai dengan peraturan perundang-undangan yang berlaku.'},
+        {"bab": "V", "pasal": "20", "ayat": "1", "text": 'Apabila debitor cidera janji, maka berdasarkan: a. hak pemegang Hak Tanggungan pertama untuk menjual objek Hak Tanggungan sebagaimana dimaksud dalam Pasal 6; atau b. titel eksekutorial yang terdapat dalam Sertifikat Hak Tanggungan sebagaimana dimaksud dalam Pasal 14 ayat (2), objek Hak Tanggungan dijual melalui pelelangan umum menurut tata cara yang ditentukan dalam peraturan perundang-undangan untuk pelunasan piutang pemegang Hak Tanggungan dengan hak mendahulu daripada kreditor-kreditor lainnya.'},
+    ]
+
+    for art in hak_tanggungan_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "4",
+            "tahun": 1996,
+            "judul": "Hak Tanggungan",
+            "tentang": "Hak Tanggungan atas Tanah Beserta Benda-Benda yang Berkaitan dengan Tanah",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 30/1999 - Arbitrase dan Alternatif Penyelesaian Sengketa ===
+    arbitrase_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Arbitrase adalah cara penyelesaian suatu sengketa perdata di luar peradilan umum yang didasarkan pada perjanjian arbitrase yang dibuat secara tertulis oleh para pihak yang bersengketa. 2. Para Pihak adalah subjek hukum, baik menurut hukum perdata maupun hukum publik. 3. Perjanjian Arbitrase adalah suatu kesepakatan berupa klausula arbitrase yang tercantum dalam suatu perjanjian tertulis yang dibuat para pihak sebelum timbul sengketa, atau suatu perjanjian arbitrase tersendiri yang dibuat para pihak setelah timbul sengketa. 4. Pengadilan Negeri adalah Pengadilan Negeri yang daerah hukumnya meliputi tempat tinggal termohon. 5. Pemohon adalah pihak yang mengajukan permohonan penyelesaian sengketa melalui arbitrase. 6. Termohon adalah pihak lawan dari Pemohon dalam penyelesaian sengketa melalui arbitrase.'},
+        {"bab": "II", "pasal": "7", "text": 'Para pihak dapat menyetujui suatu sengketa yang terjadi atau yang akan terjadi antara mereka untuk diselesaikan melalui arbitrase.'},
+        {"bab": "II", "pasal": "9", "text": 'Dalam hal para pihak memilih penyelesaian sengketa melalui arbitrase setelah sengketa terjadi, persetujuan mengenai hal tersebut harus dibuat dalam suatu perjanjian tertulis yang ditandatangani oleh para pihak. Dalam hal para pihak tidak dapat menandatangani perjanjian tertulis sebagaimana dimaksud pada ayat (1), perjanjian tertulis tersebut harus dibuat dalam bentuk akta notaris. Perjanjian tertulis sebagaimana dimaksud pada ayat (1) harus memuat: a. masalah yang dipersengketakan; b. nama lengkap dan tempat tinggal para pihak; c. nama lengkap dan tempat tinggal arbiter atau majelis arbitrase; d. tempat arbiter atau majelis arbitrase akan mengambil keputusan; e. nama lengkap sekretaris; f. jangka waktu penyelesaian sengketa; g. pernyataan kesediaan dari arbiter; dan h. pernyataan kesediaan dari pihak yang bersengketa untuk menanggung segala biaya yang diperlukan untuk penyelesaian sengketa melalui arbitrase.'},
+        {"bab": "III", "pasal": "12", "ayat": "1", "text": 'Yang dapat ditunjuk atau diangkat sebagai arbiter harus memenuhi syarat: a. cakap melakukan tindakan hukum; b. berumur paling rendah 35 tahun; c. tidak mempunyai hubungan keluarga sedarah atau semenda sampai dengan derajat kedua dengan salah satu pihak bersengketa; d. tidak mempunyai kepentingan finansial atau kepentingan lain atas putusan arbitrase; dan e. memiliki pengalaman serta menguasai secara aktif di bidangnya paling sedikit 15 tahun.'},
+        {"bab": "IV", "pasal": "54", "ayat": "1", "text": "Putusan arbitrase harus memuat: a. kepala putusan yang berbunyi 'DEMI KEADILAN BERDASARKAN KETUHANAN YANG MAHA ESA'; b. nama lengkap dan alamat para pihak; c. uraian singkat sengketa; d. pendirian para pihak; e. nama lengkap dan alamat arbiter; f. pertimbangan dan kesimpulan arbiter atau majelis arbitrase mengenai keseluruhan sengketa; g. pendapat tiap-tiap arbiter dalam hal terdapat perbedaan pendapat dalam majelis arbitrase; h. amar putusan; i. tempat dan tanggal putusan; dan j. tanda tangan arbiter atau majelis arbitrase."},
+        {"bab": "IV", "pasal": "57", "text": 'Putusan diucapkan dalam waktu paling lama 30 (tiga puluh) hari setelah pemeriksaan ditutup. Dalam waktu paling lama 14 (empat belas) hari setelah putusan diterima, para pihak dapat mengajukan permohonan kepada arbiter atau majelis arbitrase untuk melakukan koreksi terhadap kekeliruan administratif dan/atau menambah atau mengurangi sesuatu tuntutan putusan.'},
+        {"bab": "V", "pasal": "59", "ayat": "1", "text": 'Dalam waktu paling lama 30 (tiga puluh) hari terhitung sejak tanggal putusan diucapkan, lembar asli atau salinan otentik putusan arbitrase diserahkan dan didaftarkan oleh arbiter atau kuasanya kepada Panitera Pengadilan Negeri.'},
+        {"bab": "V", "pasal": "70", "text": 'Terhadap putusan arbitrase para pihak dapat mengajukan permohonan pembatalan apabila putusan tersebut diduga mengandung unsur-unsur sebagai berikut: a. surat atau dokumen yang diajukan dalam pemeriksaan, setelah putusan dijatuhkan, diakui palsu atau dinyatakan palsu; b. setelah putusan diambil ditemukan dokumen yang bersifat menentukan, yang disembunyikan oleh pihak lawan; c. putusan diambil dari hasil tipu muslihat yang dilakukan oleh salah satu pihak dalam pemeriksaan sengketa.'},
+    ]
+
+    for art in arbitrase_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "30",
+            "tahun": 1999,
+            "judul": "Arbitrase dan Alternatif Penyelesaian Sengketa",
+            "tentang": "Arbitrase dan Alternatif Penyelesaian Sengketa",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 2/2004 - Penyelesaian Perselisihan Hubungan Industrial ===
+    pphi_articles = [
+        {"bab": "I", "pasal": "2", "text": 'Jenis perselisihan hubungan industrial meliputi: a. perselisihan hak; b. perselisihan kepentingan; c. perselisihan pemutusan hubungan kerja; dan d. perselisihan antar serikat pekerja/serikat buruh hanya dalam satu perusahaan.'},
+        {"bab": "II", "pasal": "3", "ayat": "1", "text": 'Perselisihan hubungan industrial wajib diupayakan penyelesaiannya terlebih dahulu melalui perundingan bipartit secara musyawarah untuk mencapai mufakat.'},
+        {"bab": "II", "pasal": "4", "ayat": "1", "text": 'Dalam hal perundingan bipartit gagal sebagaimana dimaksud dalam Pasal 3 ayat (3), maka salah satu atau kedua belah pihak mencatatkan perselisihannya kepada instansi yang bertanggung jawab di bidang ketenagakerjaan setempat dengan melampirkan bukti bahwa upaya-upaya penyelesaian melalui perundingan bipartit telah dilakukan.'},
+        {"bab": "III", "pasal": "8", "text": 'Penyelesaian perselisihan melalui mediasi dilakukan oleh mediator yang berada di setiap kantor instansi yang bertanggung jawab di bidang ketenagakerjaan Kabupaten/Kota.'},
+        {"bab": "III", "pasal": "10", "text": 'Dalam hal tidak tercapai kesepakatan penyelesaian perselisihan hubungan industrial melalui mediasi, maka: a. mediator mengeluarkan anjuran tertulis; b. anjuran tertulis sebagaimana dimaksud pada huruf a dalam waktu selambat-lambatnya 10 (sepuluh) hari kerja sejak sidang mediasi pertama harus sudah disampaikan kepada para pihak; c. para pihak harus sudah memberikan jawaban secara tertulis kepada mediator yang isinya menyetujui atau menolak anjuran tertulis dalam waktu selambat-lambatnya 10 (sepuluh) hari kerja setelah menerima anjuran tertulis.'},
+        {"bab": "IV", "pasal": "17", "text": 'Penyelesaian perselisihan melalui konsiliasi dilakukan oleh konsiliator yang terdaftar pada kantor instansi yang bertanggung jawab di bidang ketenagakerjaan Kabupaten/Kota.'},
+        {"bab": "VII", "pasal": "55", "text": 'Pengadilan Hubungan Industrial merupakan pengadilan khusus yang dibentuk di lingkungan pengadilan negeri yang berwenang memeriksa, mengadili, dan memberi putusan terhadap perselisihan hubungan industrial.'},
+        {"bab": "VII", "pasal": "56", "text": 'Pengadilan Hubungan Industrial bertugas dan berwenang memeriksa dan memutus: a. di tingkat pertama mengenai perselisihan hak; b. di tingkat pertama dan terakhir mengenai perselisihan kepentingan; c. di tingkat pertama mengenai perselisihan pemutusan hubungan kerja; d. di tingkat pertama dan terakhir mengenai perselisihan antar serikat pekerja/serikat buruh dalam satu perusahaan.'},
+    ]
+
+    for art in pphi_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "2",
+            "tahun": 2004,
+            "judul": "Penyelesaian Perselisihan Hubungan Industrial",
+            "tentang": "Penyelesaian Perselisihan Hubungan Industrial",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 6/2011 - Keimigrasian ===
+    keimigrasian_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Keimigrasian adalah hal ihwal lalu lintas orang yang masuk atau keluar Wilayah Indonesia serta pengawasannya dalam rangka menjaga tegaknya kedaulatan negara. 2. Wilayah Indonesia adalah seluruh wilayah Negara Kesatuan Republik Indonesia yang meliputi darat, laut termasuk dasar laut dan tanah di bawahnya serta ruang udara di atasnya termasuk seluruh kepulauan. 3. Orang Asing adalah orang yang bukan warga negara Indonesia. 4. Visa Republik Indonesia yang selanjutnya disebut Visa adalah keterangan tertulis yang diberikan oleh pejabat yang berwenang di Perwakilan Republik Indonesia atau di tempat lain yang ditetapkan oleh Pemerintah Republik Indonesia yang memuat persetujuan bagi Orang Asing untuk melakukan perjalanan ke Wilayah Indonesia dan menjadi dasar untuk pemberian Izin Tinggal.'},
+        {"bab": "IV", "pasal": "34", "text": 'Visa terdiri atas: a. Visa diplomatik; b. Visa dinas; c. Visa kunjungan; dan d. Visa tinggal terbatas.'},
+        {"bab": "IV", "pasal": "38", "ayat": "1", "text": 'Visa tinggal terbatas diberikan kepada Orang Asing: a. sebagai rohaniwan, tenaga ahli, pekerja, peneliti, pelajar, investor, lanjut usia, dan keluarganya, serta Orang Asing yang kawin secara sah dengan warga negara Indonesia, yang akan melakukan perjalanan ke Wilayah Indonesia untuk bertempat tinggal dalam jangka waktu yang terbatas; atau b. dalam rangka bergabung untuk bekerja di atas kapal, alat apung, atau instalasi yang beroperasi di wilayah perairan nusantara, laut teritorial, landas kontinen, dan/atau Zona Ekonomi Eksklusif Indonesia.'},
+        {"bab": "V", "pasal": "48", "ayat": "1", "text": 'Setiap Orang Asing yang berada di Wilayah Indonesia wajib memiliki Izin Tinggal.'},
+        {"bab": "V", "pasal": "48", "ayat": "2", "text": 'Izin Tinggal sebagaimana dimaksud pada ayat (1) terdiri atas: a. Izin Tinggal diplomatik; b. Izin Tinggal dinas; c. Izin Tinggal kunjungan; d. Izin Tinggal terbatas; dan e. Izin Tinggal Tetap.'},
+        {"bab": "V", "pasal": "52", "ayat": "1", "text": 'Izin Tinggal Tetap dapat diberikan kepada: a. Orang Asing pemegang Izin Tinggal terbatas sebagai rohaniwan, pekerja, investor, dan lanjut usia; b. keluarga karena perkawinan campuran; c. suami atau istri, dan anak dari Orang Asing pemegang Izin Tinggal Tetap; dan d. Orang Asing eks warga negara Indonesia dan eks subjek anak berkewarganegaraan ganda Republik Indonesia.'},
+        {"bab": "VII", "pasal": "75", "ayat": "1", "text": 'Pejabat Imigrasi berwenang melakukan Tindakan Administratif Keimigrasian terhadap Orang Asing yang berada di Wilayah Indonesia yang melakukan kegiatan berbahaya dan patut diduga membahayakan keamanan dan ketertiban umum atau tidak menghormati atau tidak menaati peraturan perundang-undangan.'},
+        {"bab": "VII", "pasal": "75", "ayat": "2", "text": 'Tindakan Administratif Keimigrasian sebagaimana dimaksud pada ayat (1) dapat berupa: a. pencantuman dalam daftar Pencegahan atau Penangkalan; b. pembatasan, perubahan, atau pembatalan Izin Tinggal; c. larangan untuk berada di satu atau beberapa tempat tertentu di Wilayah Indonesia; d. keharusan untuk bertempat tinggal di suatu tempat tertentu di Wilayah Indonesia; e. pengenaan biaya beban; dan/atau f. Deportasi dari Wilayah Indonesia.'},
+        {"bab": "VII", "pasal": "83", "ayat": "1", "text": 'Pejabat Imigrasi berwenang menempatkan Orang Asing dalam Rumah Detensi Imigrasi atau Ruang Detensi Imigrasi apabila Orang Asing tersebut: a. berada di Wilayah Indonesia tanpa memiliki Izin Tinggal yang sah atau memiliki Izin Tinggal yang tidak berlaku lagi; b. berada di Wilayah Indonesia tanpa memiliki Dokumen Perjalanan yang sah; c. dikenai Tindakan Administratif Keimigrasian berupa Deportasi menunggu proses pemulangan; atau d. menunggu pelaksanaan Deportasi.'},
+    ]
+
+    for art in keimigrasian_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "6",
+            "tahun": 2011,
+            "judul": "Keimigrasian",
+            "tentang": "Keimigrasian",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 16/2001 - Yayasan ===
+    yayasan_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Yayasan adalah badan hukum yang terdiri atas kekayaan yang dipisahkan dan diperuntukkan untuk mencapai tujuan tertentu di bidang sosial, keagamaan, dan kemanusiaan, yang tidak mempunyai anggota. 2. Organ Yayasan adalah Pembina, Pengurus, dan Pengawas. 3. Kekayaan Yayasan adalah seluruh harta kekayaan Yayasan baik berupa uang, barang, maupun kekayaan lain yang diperoleh Yayasan berdasarkan Undang-Undang ini.'},
+        {"bab": "II", "pasal": "9", "ayat": "1", "text": 'Yayasan didirikan oleh satu orang atau lebih dengan memisahkan sebagian harta kekayaan pendirinya, sebagai kekayaan awal.'},
+        {"bab": "II", "pasal": "9", "ayat": "2", "text": 'Pendirian Yayasan sebagaimana dimaksud dalam ayat (1) dilakukan dengan akta notaris dan dibuat dalam bahasa Indonesia.'},
+        {"bab": "IV", "pasal": "14", "text": 'Organ Yayasan terdiri atas Pembina, Pengurus, dan Pengawas.'},
+        {"bab": "V", "pasal": "26", "ayat": "1", "text": 'Kekayaan Yayasan berasal dari sejumlah kekayaan yang dipisahkan dalam bentuk uang atau barang.'},
+        {"bab": "VI", "pasal": "35", "ayat": "1", "text": 'Pengurus Yayasan bertanggung jawab penuh atas kepengurusan Yayasan untuk kepentingan dan tujuan Yayasan serta berhak mewakili Yayasan baik di dalam maupun di luar Pengadilan.'},
+        {"bab": "VII", "pasal": "37", "ayat": "1", "text": 'Pengurus wajib membuat dan menyimpan catatan atau tulisan yang berisi keterangan mengenai hak dan kewajiban serta hal lain yang berkaitan dengan kegiatan usaha Yayasan.'},
+        {"bab": "X", "pasal": "68", "ayat": "1", "text": 'Kekayaan sisa hasil likuidasi diserahkan kepada Yayasan lain yang mempunyai kesamaan kegiatan dengan Yayasan yang bubar.'},
+    ]
+
+    for art in yayasan_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "16",
+            "tahun": 2001,
+            "judul": "Yayasan",
+            "tentang": "Yayasan",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 25/1992 - Koperasi ===
+    koperasi_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Koperasi adalah badan usaha yang beranggotakan orang-seorang atau badan hukum Koperasi dengan melandaskan kegiatannya berdasarkan prinsip Koperasi sekaligus sebagai gerakan ekonomi rakyat yang berdasar atas asas kekeluargaan. 2. Perkoperasian adalah segala sesuatu yang menyangkut kehidupan Koperasi. 3. Koperasi Primer adalah Koperasi yang didirikan oleh dan beranggotakan orang-seorang. 4. Koperasi Sekunder adalah Koperasi yang didirikan oleh dan beranggotakan Koperasi.'},
+        {"bab": "II", "pasal": "3", "text": 'Koperasi bertujuan memajukan kesejahteraan anggota pada khususnya dan masyarakat pada umumnya serta ikut membangun tatanan perekonomian nasional dalam rangka mewujudkan masyarakat yang maju, adil, dan makmur berlandaskan Pancasila dan Undang-Undang Dasar 1945.'},
+        {"bab": "II", "pasal": "5", "ayat": "1", "text": 'Koperasi melaksanakan prinsip Koperasi sebagai berikut: a. keanggotaan bersifat sukarela dan terbuka; b. pengelolaan dilakukan secara demokratis; c. pembagian sisa hasil usaha dilakukan secara adil sebanding dengan besarnya jasa usaha masing-masing anggota; d. pemberian balas jasa yang terbatas terhadap modal; e. kemandirian.'},
+        {"bab": "IV", "pasal": "15", "text": 'Koperasi dapat berbentuk Koperasi Primer atau Koperasi Sekunder.'},
+        {"bab": "VII", "pasal": "41", "ayat": "1", "text": 'Modal Koperasi terdiri dari modal sendiri dan modal pinjaman.'},
+        {"bab": "VII", "pasal": "41", "ayat": "2", "text": 'Modal sendiri dapat berasal dari: a. simpanan pokok; b. simpanan wajib; c. dana cadangan; d. hibah.'},
+        {"bab": "IX", "pasal": "45", "ayat": "1", "text": 'Sisa Hasil Usaha Koperasi merupakan pendapatan Koperasi yang diperoleh dalam satu tahun buku dikurangi dengan biaya, penyusutan, dan kewajiban lainnya termasuk pajak dalam tahun buku yang bersangkutan.'},
+        {"bab": "IX", "pasal": "45", "ayat": "2", "text": 'Sisa Hasil Usaha setelah dikurangi dana cadangan, dibagikan kepada anggota sebanding dengan jasa usaha yang dilakukan oleh masing-masing anggota dengan Koperasi, serta digunakan untuk keperluan pendidikan perkoperasian dan keperluan lain dari Koperasi, sesuai dengan keputusan Rapat Anggota.'},
+    ]
+
+    for art in koperasi_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "25",
+            "tahun": 1992,
+            "judul": "Koperasi",
+            "tentang": "Perkoperasian",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 21/2011 - OJK ===
+    ojk_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Otoritas Jasa Keuangan, yang selanjutnya disingkat OJK, adalah lembaga yang independen dan bebas dari campur tangan pihak lain, yang mempunyai fungsi, tugas, dan wewenang pengaturan, pengawasan, pemeriksaan, dan penyidikan sebagaimana dimaksud dalam Undang-Undang ini. 2. Dewan Komisioner adalah pimpinan tertinggi OJK yang bersifat kolektif dan kolegial.'},
+        {"bab": "II", "pasal": "4", "text": 'OJK dibentuk dengan tujuan agar keseluruhan kegiatan di dalam sektor jasa keuangan: a. terselenggara secara teratur, adil, transparan, dan akuntabel; b. mampu mewujudkan sistem keuangan yang tumbuh secara berkelanjutan dan stabil; dan c. mampu melindungi kepentingan Konsumen dan masyarakat.'},
+        {"bab": "III", "pasal": "5", "text": 'OJK berfungsi menyelenggarakan sistem pengaturan dan pengawasan yang terintegrasi terhadap keseluruhan kegiatan di dalam sektor jasa keuangan.'},
+        {"bab": "III", "pasal": "6", "text": 'OJK melaksanakan tugas pengaturan dan pengawasan terhadap: a. kegiatan jasa keuangan di sektor Perbankan; b. kegiatan jasa keuangan di sektor Pasar Modal; dan c. kegiatan jasa keuangan di sektor Perasuransian, Dana Pensiun, Lembaga Pembiayaan, dan Lembaga Jasa Keuangan Lainnya.'},
+        {"bab": "III", "pasal": "7", "text": 'Untuk melaksanakan tugas pengaturan dan pengawasan di sektor Perbankan sebagaimana dimaksud dalam Pasal 6 huruf a, OJK mempunyai wewenang: a. pengaturan dan pengawasan mengenai kelembagaan bank yang meliputi perizinan untuk pendirian bank, pembukaan kantor bank, anggaran dasar, rencana kerja, kepemilikan, kepengurusan dan sumber daya manusia, merger, konsolidasi dan akuisisi bank, serta pencabutan izin usaha bank; b. pengaturan dan pengawasan mengenai kesehatan bank yang meliputi likuiditas, rentabilitas, solvabilitas, kualitas aset, rasio kecukupan modal minimum, batas maksimum pemberian kredit, rasio pinjaman terhadap simpanan, dan pencadangan bank.'},
+        {"bab": "III", "pasal": "9", "text": 'Untuk melaksanakan tugas pengawasan sebagaimana dimaksud dalam Pasal 6, OJK mempunyai wewenang: a. menetapkan kebijakan operasional pengawasan terhadap kegiatan jasa keuangan; b. mengawasi pelaksanaan tugas pengawasan yang dilaksanakan oleh Kepala Eksekutif; c. melakukan pengawasan, pemeriksaan, penyidikan, perlindungan Konsumen, dan tindakan lain terhadap Lembaga Jasa Keuangan, pelaku, dan/atau penunjang kegiatan jasa keuangan sebagaimana dimaksud dalam peraturan perundang-undangan di sektor jasa keuangan.'},
+        {"bab": "VI", "pasal": "28", "text": 'Untuk perlindungan Konsumen dan masyarakat, OJK berwenang melakukan tindakan pencegahan kerugian Konsumen dan masyarakat, yang meliputi: a. memberikan informasi dan edukasi kepada masyarakat atas karakteristik sektor jasa keuangan, layanan, dan produknya; b. meminta Lembaga Jasa Keuangan untuk menghentikan kegiatannya apabila kegiatan tersebut berpotensi merugikan masyarakat; dan c. tindakan lain yang dianggap perlu sesuai dengan ketentuan peraturan perundang-undangan di sektor jasa keuangan.'},
+    ]
+
+    for art in ojk_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "21",
+            "tahun": 2011,
+            "judul": "OJK",
+            "tentang": "Otoritas Jasa Keuangan",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 40/2014 - Perasuransian ===
+    perasuransian_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Asuransi adalah perjanjian antara dua pihak, yaitu perusahaan asuransi dan pemegang polis, yang menjadi dasar bagi penerimaan premi oleh perusahaan asuransi sebagai imbalan untuk: a. memberikan penggantian kepada tertanggung atau pemegang polis karena kerugian, kerusakan, biaya yang timbul, kehilangan keuntungan, atau tanggung jawab hukum kepada pihak ketiga yang mungkin diderita tertanggung atau pemegang polis karena terjadinya suatu peristiwa yang tidak pasti; atau b. memberikan pembayaran yang didasarkan pada meninggalnya tertanggung atau pembayaran yang didasarkan pada hidupnya tertanggung dengan manfaat yang besarnya telah ditetapkan dan/atau didasarkan pada hasil pengelolaan dana.'},
+        {"bab": "II", "pasal": "2", "ayat": "1", "text": 'Perasuransian terdiri atas: a. Usaha Perasuransian, yang terdiri atas usaha asuransi umum, usaha asuransi jiwa, usaha asuransi umum syariah, dan usaha asuransi jiwa syariah; dan b. Usaha Penunjang Usaha Perasuransian.'},
+        {"bab": "III", "pasal": "6", "ayat": "1", "text": 'Untuk mendapatkan izin usaha sebagaimana dimaksud dalam Pasal 5 ayat (1), Perusahaan Perasuransian wajib memenuhi persyaratan mengenai: a. anggaran dasar; b. susunan organisasi; c. modal disetor; d. dana jaminan; e. kepemilikan; f. kelayakan dan kepatutan pemegang saham dan Pengendali; g. kelayakan dan kepatutan anggota direksi dan anggota dewan komisaris; h. tenaga ahli; i. kelayakan rencana kerja; dan j. kelayakan sistem manajemen risiko.'},
+        {"bab": "IV", "pasal": "17", "ayat": "1", "text": 'Pemegang Polis, Tertanggung, atau Peserta berhak atas manfaat sebagaimana dinyatakan dalam Polis, sertifikat asuransi, atau akad.'},
+        {"bab": "V", "pasal": "26", "text": 'Perusahaan Asuransi dan Perusahaan Reasuransi wajib membentuk cadangan teknis sesuai dengan jenis asuransi yang diselenggarakan.'},
+        {"bab": "VI", "pasal": "31", "ayat": "1", "text": 'Perusahaan Asuransi wajib mereasuransikan sebagian risiko kepada perusahaan reasuransi yang memiliki izin usaha dari OJK.'},
+        {"bab": "X", "pasal": "53", "ayat": "1", "text": 'OJK melakukan pengawasan terhadap Perusahaan Perasuransian dalam rangka melindungi kepentingan Pemegang Polis, Tertanggung, atau Peserta.'},
+        {"bab": "X", "pasal": "53", "ayat": "2", "text": 'Pengawasan sebagaimana dimaksud pada ayat (1) meliputi pengawasan langsung dan tidak langsung terhadap penyelenggaraan usaha Perasuransian.'},
+    ]
+
+    for art in perasuransian_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "40",
+            "tahun": 2014,
+            "judul": "Perasuransian",
+            "tentang": "Perasuransian",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 7/2014 - Perdagangan ===
+    perdagangan_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Perdagangan adalah tatanan kegiatan yang terkait dengan transaksi Barang dan/atau Jasa di dalam negeri dan melampaui batas wilayah negara dengan tujuan pengalihan hak atas Barang dan/atau Jasa untuk memperoleh imbalan atau kompensasi. 2. Perdagangan Dalam Negeri adalah Perdagangan Barang dan/atau Jasa dalam wilayah Negara Kesatuan Republik Indonesia. 3. Perdagangan Luar Negeri adalah Perdagangan yang mencakup kegiatan Ekspor dan/atau Impor atas Barang dan/atau Perdagangan Jasa yang melampaui batas wilayah negara.'},
+        {"bab": "III", "pasal": "4", "ayat": "1", "text": 'Kebijakan Perdagangan Dalam Negeri diarahkan untuk: a. meningkatkan kelancaran distribusi Barang dan Jasa; b. meningkatkan ketersediaan Barang dan Jasa yang diperdagangkan; c. menstabilkan harga Barang dan Jasa; d. meningkatkan keamanan Perdagangan.'},
+        {"bab": "IV", "pasal": "24", "ayat": "1", "text": 'Pemerintah melakukan pengaturan Distribusi Barang yang diperdagangkan untuk memperlancar arus Barang dalam rangka menjamin ketersediaan Barang di seluruh wilayah Negara Kesatuan Republik Indonesia.'},
+        {"bab": "V", "pasal": "38", "ayat": "1", "text": 'Kebijakan Perdagangan Luar Negeri meliputi kebijakan umum dan kebijakan khusus di bidang Ekspor dan Impor.'},
+        {"bab": "V", "pasal": "47", "text": 'Eksportir dilarang mengekspor Barang yang ditetapkan sebagai Barang yang dilarang Ekspornya, meliputi: a. Barang yang berkaitan dengan pelestarian sumber daya alam dan lingkungan hidup; b. Barang kebutuhan dalam negeri yang persediaannya terbatas; dan c. Barang yang peredarannya dilarang berdasarkan ketentuan peraturan perundang-undangan.'},
+        {"bab": "V", "pasal": "49", "ayat": "1", "text": 'Setiap Importir wajib mengimpor Barang dalam keadaan baru, kecuali ditentukan lain berdasarkan ketentuan peraturan perundang-undangan.'},
+        {"bab": "V", "pasal": "52", "text": 'Pemerintah dapat mengenakan tindakan pengamanan Perdagangan (safeguard) terhadap Barang Impor apabila terdapat lonjakan jumlah Barang Impor baik secara absolut maupun secara relatif terhadap Barang produksi dalam negeri yang sejenis atau Barang yang secara langsung bersaing.'},
+        {"bab": "VIII", "pasal": "65", "ayat": "1", "text": 'Setiap Pelaku Usaha yang memperdagangkan Barang dan/atau Jasa dengan menggunakan sistem elektronik wajib menyediakan data dan/atau informasi secara lengkap dan benar.'},
+    ]
+
+    for art in perdagangan_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "7",
+            "tahun": 2014,
+            "judul": "Perdagangan",
+            "tentang": "Perdagangan",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 3/2014 - Perindustrian ===
+    perindustrian_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Perindustrian adalah tatanan dan segala kegiatan yang bertalian dengan kegiatan Industri. 2. Industri adalah seluruh bentuk kegiatan ekonomi yang mengolah bahan baku dan/atau memanfaatkan sumber daya Industri sehingga menghasilkan barang yang mempunyai nilai tambah atau manfaat lebih tinggi, termasuk jasa Industri. 3. Kawasan Industri adalah kawasan tempat pemusatan kegiatan Industri yang dilengkapi dengan sarana dan prasarana penunjang yang dikembangkan dan dikelola oleh Perusahaan Kawasan Industri.'},
+        {"bab": "II", "pasal": "3", "text": 'Perindustrian diselenggarakan dengan tujuan: a. mewujudkan Industri nasional sebagai pilar dan penggerak perekonomian nasional; b. mewujudkan kedalaman dan kekuatan struktur Industri; c. mewujudkan Industri yang mandiri, berdaya saing, dan maju, serta Industri Hijau; d. mewujudkan kepastian berusaha, persaingan yang sehat, serta mencegah pemusatan atau penguasaan Industri oleh satu kelompok atau perseorangan yang merugikan masyarakat.'},
+        {"bab": "IV", "pasal": "14", "ayat": "1", "text": 'Pemerintah menyusun Rencana Induk Pembangunan Industri Nasional untuk jangka waktu 20 (dua puluh) tahun.'},
+        {"bab": "VII", "pasal": "33", "ayat": "1", "text": 'Setiap kegiatan usaha Industri wajib berlokasi di Kawasan Industri, kecuali bagi kegiatan usaha Industri yang berlokasi di daerah kabupaten/kota yang belum memiliki Kawasan Industri atau bagi kegiatan usaha Industri yang tidak berpotensi menimbulkan pencemaran lingkungan hidup yang berdampak luas.'},
+        {"bab": "IX", "pasal": "64", "ayat": "1", "text": 'Standar Nasional Indonesia yang selanjutnya disingkat SNI adalah standar yang ditetapkan oleh lembaga yang menyelenggarakan pengembangan dan pembinaan di bidang standardisasi.'},
+        {"bab": "IX", "pasal": "64", "ayat": "2", "text": 'Pemerintah dan/atau Pemerintah Daerah dapat memberlakukan SNI secara wajib terhadap Barang dan/atau Jasa Industri yang diperdagangkan di dalam negeri melalui penerbitan regulasi teknis.'},
+        {"bab": "XI", "pasal": "101", "ayat": "1", "text": 'Setiap kegiatan usaha Industri wajib memiliki Izin Usaha Industri.'},
+        {"bab": "XI", "pasal": "101", "ayat": "2", "text": 'Izin Usaha Industri sebagaimana dimaksud pada ayat (1) diberikan oleh Menteri kepada setiap orang yang mendirikan usaha Industri.'},
+    ]
+
+    for art in perindustrian_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "3",
+            "tahun": 2014,
+            "judul": "Perindustrian",
+            "tentang": "Perindustrian",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 2/2017 - Jasa Konstruksi ===
+    jasa_konstruksi_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Jasa Konstruksi adalah layanan jasa konsultansi konstruksi dan/atau pekerjaan konstruksi. 2. Konsultansi Konstruksi adalah layanan keseluruhan atau sebagian kegiatan yang meliputi pengkajian, perencanaan, perancangan, pengawasan, dan manajemen penyelenggaraan konstruksi suatu bangunan. 3. Pekerjaan Konstruksi adalah keseluruhan atau sebagian kegiatan yang meliputi pembangunan, pengoperasian, pemeliharaan, pembongkaran, dan pembangunan kembali suatu bangunan.'},
+        {"bab": "III", "pasal": "4", "text": 'Jasa Konstruksi mencakup: a. jasa konsultansi konstruksi; dan b. pekerjaan konstruksi.'},
+        {"bab": "IV", "pasal": "11", "ayat": "1", "text": 'Usaha Jasa Konstruksi meliputi: a. usaha jasa konsultansi konstruksi; dan b. usaha pekerjaan konstruksi.'},
+        {"bab": "V", "pasal": "30", "ayat": "1", "text": 'Penyelenggaraan Jasa Konstruksi dilaksanakan berdasarkan Kontrak Kerja Konstruksi antara pengguna jasa dan penyedia jasa.'},
+        {"bab": "V", "pasal": "42", "text": 'Pengguna Jasa dan/atau Penyedia Jasa wajib memenuhi Standar Keamanan, Keselamatan, Kesehatan, dan Keberlanjutan dalam penyelenggaraan Jasa Konstruksi.'},
+        {"bab": "VI", "pasal": "55", "ayat": "1", "text": 'Setiap tenaga kerja konstruksi yang bekerja di sektor Jasa Konstruksi wajib memiliki Sertifikat Kompetensi Kerja.'},
+        {"bab": "VII", "pasal": "65", "text": 'Kegagalan Bangunan merupakan keadaan bangunan yang tidak berfungsi, baik secara keseluruhan maupun sebagian dari segi teknis, manfaat, keselamatan, dan kesehatan kerja, dan/atau keselamatan umum sebagai akibat kesalahan Penyedia Jasa dan/atau Pengguna Jasa setelah penyerahan akhir pekerjaan konstruksi.'},
+        {"bab": "X", "pasal": "84", "text": 'Penyelesaian sengketa Jasa Konstruksi dapat ditempuh melalui: a. musyawarah untuk mufakat; b. mediasi; c. konsiliasi; d. arbitrase; atau e. pengadilan.'},
+    ]
+
+    for art in jasa_konstruksi_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "2",
+            "tahun": 2017,
+            "judul": "Jasa Konstruksi",
+            "tentang": "Jasa Konstruksi",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 31/2000 - Desain Industri ===
+    desain_industri_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Desain Industri adalah suatu kreasi tentang bentuk, konfigurasi, atau komposisi garis atau warna, atau garis dan warna, atau gabungan daripadanya yang berbentuk tiga dimensi atau dua dimensi yang memberikan kesan estetis dan dapat diwujudkan dalam pola tiga dimensi atau dua dimensi serta dapat dipakai untuk menghasilkan suatu produk, barang, komoditas industri, atau kerajinan tangan. 2. Pendesain adalah seorang atau beberapa orang yang menghasilkan Desain Industri.'},
+        {"bab": "II", "pasal": "2", "ayat": "1", "text": 'Hak Desain Industri diberikan untuk Desain Industri yang baru.'},
+        {"bab": "II", "pasal": "5", "ayat": "1", "text": 'Hak Desain Industri diberikan atas dasar permohonan.'},
+        {"bab": "III", "pasal": "9", "text": 'Permohonan pendaftaran Desain Industri diajukan secara tertulis dalam bahasa Indonesia kepada Direktorat Jenderal dengan membayar biaya sebagaimana diatur dalam Undang-Undang ini.'},
+        {"bab": "III", "pasal": "12", "text": 'Direktorat Jenderal melakukan pemeriksaan terhadap Permohonan pendaftaran Desain Industri untuk menentukan apakah permohonan tersebut telah memenuhi persyaratan administratif.'},
+        {"bab": "IV", "pasal": "25", "text": 'Hak Desain Industri dapat beralih atau dialihkan dengan: a. pewarisan; b. hibah; c. wasiat; d. perjanjian tertulis; atau e. sebab-sebab lain yang dibenarkan oleh peraturan perundang-undangan.'},
+        {"bab": "V", "pasal": "32", "text": 'Perlindungan terhadap Hak Desain Industri diberikan untuk jangka waktu 10 (sepuluh) tahun terhitung sejak tanggal penerimaan.'},
+        {"bab": "VII", "pasal": "38", "text": 'Gugatan pembatalan pendaftaran Desain Industri dapat diajukan oleh pihak yang berkepentingan dengan alasan Desain Industri tersebut seharusnya tidak dapat didaftarkan atau bertentangan dengan peraturan perundang-undangan yang berlaku, ketertiban umum, agama, atau kesusilaan.'},
+    ]
+
+    for art in desain_industri_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "31",
+            "tahun": 2000,
+            "judul": "Desain Industri",
+            "tentang": "Desain Industri",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 30/2000 - Rahasia Dagang ===
+    rahasia_dagang_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Rahasia Dagang adalah informasi yang tidak diketahui oleh umum di bidang teknologi dan/atau bisnis, mempunyai nilai ekonomi karena berguna dalam kegiatan usaha, dan dijaga kerahasiaannya oleh pemilik Rahasia Dagang.'},
+        {"bab": "II", "pasal": "2", "text": 'Lingkup perlindungan Rahasia Dagang meliputi metode produksi, metode pengolahan, metode penjualan, atau informasi lain di bidang teknologi dan/atau bisnis yang memiliki nilai ekonomi dan tidak diketahui oleh masyarakat umum.'},
+        {"bab": "II", "pasal": "3", "ayat": "1", "text": 'Rahasia Dagang mendapat perlindungan apabila informasi tersebut bersifat rahasia, mempunyai nilai ekonomi, dan dijaga kerahasiaannya melalui upaya sebagaimana mestinya.'},
+        {"bab": "III", "pasal": "4", "text": 'Pemilik Rahasia Dagang memiliki hak untuk: a. menggunakan sendiri Rahasia Dagang yang dimilikinya; b. memberikan Lisensi kepada atau melarang pihak lain untuk menggunakan Rahasia Dagang atau mengungkapkan Rahasia Dagang itu kepada pihak ketiga untuk kepentingan yang bersifat komersial.'},
+        {"bab": "IV", "pasal": "5", "ayat": "1", "text": 'Pemilik Rahasia Dagang atau pemegang Lisensi dapat menggugat siapa pun yang dengan sengaja dan tanpa hak melakukan perbuatan sebagaimana dimaksud dalam Pasal 4, berupa: a. gugatan ganti rugi; dan/atau b. penghentian semua perbuatan sebagaimana dimaksud dalam Pasal 4.'},
+        {"bab": "V", "pasal": "8", "text": 'Seseorang dianggap melanggar Rahasia Dagang pihak lain apabila ia memperoleh atau menguasai Rahasia Dagang tersebut dengan cara yang bertentangan dengan peraturan perundang-undangan yang berlaku.'},
+        {"bab": "VII", "pasal": "11", "text": 'Penyelesaian sengketa Rahasia Dagang dapat diselesaikan melalui Pengadilan Negeri atau melalui arbitrase atau alternatif penyelesaian sengketa.'},
+        {"bab": "IX", "pasal": "13", "text": 'Pelanggaran Rahasia Dagang juga terjadi apabila seseorang dengan sengaja mengungkapkan Rahasia Dagang, mengingkari kesepakatan atau mengingkari kewajiban tertulis atau tidak tertulis untuk menjaga Rahasia Dagang yang bersangkutan.'},
+        {"bab": "X", "pasal": "17", "ayat": "1", "text": 'Barangsiapa dengan sengaja dan tanpa hak menggunakan Rahasia Dagang pihak lain atau melakukan perbuatan sebagaimana dimaksud dalam Pasal 13 atau Pasal 14 dipidana dengan pidana penjara paling lama 2 (dua) tahun dan/atau denda paling banyak Rp300.000.000,00 (tiga ratus juta rupiah).'},
+    ]
+
+    for art in rahasia_dagang_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "30",
+            "tahun": 2000,
+            "judul": "Rahasia Dagang",
+            "tentang": "Rahasia Dagang",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 17/2006 - Kepabeanan ===
+    kepabeanan_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Kepabeanan adalah segala sesuatu yang berhubungan dengan pengawasan atas lalu lintas barang yang masuk atau keluar daerah pabean serta pemungutan bea masuk dan bea keluar. 2. Daerah Pabean adalah wilayah Republik Indonesia yang meliputi wilayah darat, perairan, dan ruang udara di atasnya, serta tempat-tempat tertentu di Zona Ekonomi Eksklusif dan landas kontinen yang di dalamnya berlaku Undang-Undang ini.'},
+        {"bab": "II", "pasal": "2", "ayat": "1", "text": 'Barang yang dimasukkan ke dalam daerah pabean diperlakukan sebagai barang impor dan terutang bea masuk.'},
+        {"bab": "III", "pasal": "10A", "ayat": "1", "text": 'Importir wajib memberitahukan rencana kedatangan sarana pengangkut ke kantor pabean tujuan sebelum kedatangan sarana pengangkut.'},
+        {"bab": "IV", "pasal": "16", "ayat": "1", "text": 'Pejabat Bea dan Cukai dapat menetapkan tarif terhadap barang impor sebelum atau sesudah pemberitahuan pabean diserahkan.'},
+        {"bab": "IV", "pasal": "25", "ayat": "1", "text": 'Nilai pabean untuk penghitungan bea masuk adalah nilai transaksi dari barang impor yang bersangkutan.'},
+        {"bab": "VI", "pasal": "44", "text": 'Barang impor yang belum diselesaikan kewajiban pabeannya dapat ditimbun di Tempat Penimbunan Sementara untuk jangka waktu paling lama 30 (tiga puluh) hari sejak tanggal penimbunan.'},
+        {"bab": "VII", "pasal": "53", "text": 'Menteri dapat menetapkan suatu kawasan sebagai Kawasan Pabean, Kawasan Perdagangan Bebas dan Pelabuhan Bebas, Tempat Penimbunan Berikat, atau kawasan ekonomi lainnya yang diberikan fasilitas di bidang kepabeanan.'},
+        {"bab": "X", "pasal": "82", "ayat": "1", "text": 'Pejabat Bea dan Cukai berwenang melakukan pemeriksaan pabean atas barang impor atau barang ekspor setelah pemberitahuan pabean diserahkan.'},
+    ]
+
+    for art in kepabeanan_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "17",
+            "tahun": 2006,
+            "judul": "Kepabeanan",
+            "tentang": "Kepabeanan",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
+    # === UU 39/2007 - Cukai ===
+    cukai_articles = [
+        {"bab": "I", "pasal": "1", "text": 'Dalam Undang-Undang ini yang dimaksud dengan: 1. Cukai adalah pungutan negara yang dikenakan terhadap barang-barang tertentu yang mempunyai sifat atau karakteristik yang ditetapkan dalam Undang-Undang ini. 2. Pabrik adalah tempat tertentu termasuk bangunan, halaman, dan lapangan yang merupakan bagian daripadanya, yang dipergunakan untuk menghasilkan Barang Kena Cukai dan/atau untuk mengemas Barang Kena Cukai dalam kemasan untuk penjualan eceran.'},
+        {"bab": "II", "pasal": "2", "ayat": "1", "text": 'Barang-barang tertentu yang mempunyai sifat atau karakteristik sebagai berikut dikenai Cukai: a. konsumsinya perlu dikendalikan; b. peredarannya perlu diawasi; c. pemakaiannya dapat menimbulkan dampak negatif bagi masyarakat atau lingkungan hidup; atau d. pemakaiannya perlu pembebanan pungutan negara demi keadilan dan keseimbangan.'},
+        {"bab": "III", "pasal": "4", "ayat": "1", "text": 'Cukai dikenakan terhadap Barang Kena Cukai yang terdiri dari: a. etil alkohol atau etanol, dengan tidak mengindahkan bahan yang digunakan dan proses pembuatannya; b. minuman yang mengandung etil alkohol dalam kadar berapa pun, dengan tidak mengindahkan bahan yang digunakan dan proses pembuatannya, termasuk konsentrat yang mengandung etil alkohol; c. hasil tembakau, yang meliputi sigaret, cerutu, rokok daun, tembakau iris, dan hasil pengolahan tembakau lainnya, dengan tidak mengindahkan digunakan atau tidak bahan pengganti atau bahan pembantu dalam pembuatannya.'},
+        {"bab": "IV", "pasal": "5", "ayat": "1", "text": 'Barang Kena Cukai berupa hasil tembakau dikenai Cukai berdasarkan tarif paling tinggi: a. untuk yang dibuat di Indonesia sebesar 57% (lima puluh tujuh persen) dari harga jual eceran; atau b. untuk yang diimpor sebesar 57% (lima puluh tujuh persen) dari harga jual eceran.'},
+        {"bab": "IV", "pasal": "7", "ayat": "1", "text": 'Harga dasar yang digunakan untuk penghitungan Cukai atas Barang Kena Cukai yang dibuat di Indonesia adalah Harga Jual Pabrik atau Harga Jual Eceran.'},
+        {"bab": "V", "pasal": "9", "ayat": "1", "text": 'Pembebasan Cukai dapat diberikan atas Barang Kena Cukai tertentu, antara lain: a. untuk keperluan penelitian dan pengembangan ilmu pengetahuan; b. untuk keperluan perwakilan negara asing beserta para pejabatnya yang bertugas di Indonesia berdasarkan asas timbal balik; c. yang digunakan sebagai bahan baku atau bahan penolong dalam pembuatan barang hasil akhir yang bukan merupakan Barang Kena Cukai.'},
+        {"bab": "VI", "pasal": "14", "ayat": "1", "text": 'Setiap orang yang akan menjalankan kegiatan sebagai Pengusaha Pabrik, Pengusaha Tempat Penyimpanan, Importir Barang Kena Cukai, atau Penyalur wajib memiliki Nomor Pokok Pengusaha Barang Kena Cukai (NPPBKC) dari Menteri.'},
+        {"bab": "VIII", "pasal": "29", "ayat": "1", "text": 'Barang Kena Cukai yang pelunasan Cukainya dengan cara pelekatan pita cukai, wajib dilekati pita cukai yang dicetak oleh Pemerintah.'},
+    ]
+
+    for art in cukai_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "39",
+            "tahun": 2007,
+            "judul": "Cukai",
+            "tentang": "Cukai",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+
     return documents
 
 

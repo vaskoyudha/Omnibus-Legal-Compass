@@ -238,5 +238,113 @@
     "question": "Apa itu PKPU (Penundaan Kewajiban Pembayaran Utang)?",
     "expected_answer_contains": ["PKPU", "penundaan", "pembayaran", "utang"],
     "regulations": ["UU 37/2004"]
+  },
+  {
+    "id": "qa_041",
+    "question": "Apa definisi Jaminan Fidusia menurut UU 42/1999?",
+    "expected_answer_contains": ["fidusia", "hak jaminan", "benda bergerak", "penguasaan"],
+    "regulations": ["UU 42/1999"]
+  },
+  {
+    "id": "qa_042",
+    "question": "Bagaimana cara mendaftarkan Jaminan Fidusia?",
+    "expected_answer_contains": ["pendaftaran", "Kantor Pendaftaran Fidusia", "Sertifikat"],
+    "regulations": ["UU 42/1999"]
+  },
+  {
+    "id": "qa_043",
+    "question": "Apa itu Hak Tanggungan menurut UU 4/1996?",
+    "expected_answer_contains": ["hak jaminan", "tanah", "pelunasan utang", "kreditor"],
+    "regulations": ["UU 4/1996"]
+  },
+  {
+    "id": "qa_044",
+    "question": "Hak atas tanah apa saja yang dapat dibebani Hak Tanggungan?",
+    "expected_answer_contains": ["Hak Milik", "Hak Guna Usaha", "Hak Guna Bangunan"],
+    "regulations": ["UU 4/1996"]
+  },
+  {
+    "id": "qa_045",
+    "question": "Bagaimana penyelesaian sengketa melalui arbitrase menurut UU 30/1999?",
+    "expected_answer_contains": ["arbitrase", "sengketa", "perjanjian", "tertulis"],
+    "regulations": ["UU 30/1999"]
+  },
+  {
+    "id": "qa_046",
+    "question": "Apa jenis perselisihan hubungan industrial menurut UU 2/2004?",
+    "expected_answer_contains": ["perselisihan hak", "kepentingan", "pemutusan hubungan kerja"],
+    "regulations": ["UU 2/2004"]
+  },
+  {
+    "id": "qa_047",
+    "question": "Apa jenis-jenis visa menurut UU Keimigrasian?",
+    "expected_answer_contains": ["visa diplomatik", "visa dinas", "visa kunjungan", "visa tinggal terbatas"],
+    "regulations": ["UU 6/2011"]
+  },
+  {
+    "id": "qa_048",
+    "question": "Apa definisi Yayasan menurut UU 16/2001?",
+    "expected_answer_contains": ["badan hukum", "kekayaan yang dipisahkan", "sosial", "kemanusiaan"],
+    "regulations": ["UU 16/2001"]
+  },
+  {
+    "id": "qa_049",
+    "question": "Apa prinsip-prinsip Koperasi menurut UU 25/1992?",
+    "expected_answer_contains": ["sukarela", "demokratis", "sisa hasil usaha", "kemandirian"],
+    "regulations": ["UU 25/1992"]
+  },
+  {
+    "id": "qa_050",
+    "question": "Apa fungsi dan tugas OJK menurut UU 21/2011?",
+    "expected_answer_contains": ["OJK", "pengaturan", "pengawasan", "jasa keuangan"],
+    "regulations": ["UU 21/2011"]
+  },
+  {
+    "id": "qa_051",
+    "question": "Apa definisi asuransi menurut UU 40/2014?",
+    "expected_answer_contains": ["asuransi", "perjanjian", "premi", "perusahaan asuransi"],
+    "regulations": ["UU 40/2014"]
+  },
+  {
+    "id": "qa_052",
+    "question": "Apa ketentuan perdagangan elektronik menurut UU 7/2014?",
+    "expected_answer_contains": ["elektronik", "data", "informasi", "lengkap dan benar"],
+    "regulations": ["UU 7/2014"]
+  },
+  {
+    "id": "qa_053",
+    "question": "Apa tujuan penyelenggaraan perindustrian menurut UU 3/2014?",
+    "expected_answer_contains": ["Industri", "pilar", "perekonomian", "berdaya saing"],
+    "regulations": ["UU 3/2014"]
+  },
+  {
+    "id": "qa_054",
+    "question": "Apa definisi Desain Industri menurut UU 31/2000?",
+    "expected_answer_contains": ["kreasi", "bentuk", "estetis", "produk"],
+    "regulations": ["UU 31/2000"]
+  },
+  {
+    "id": "qa_055",
+    "question": "Apa itu Rahasia Dagang menurut UU 30/2000?",
+    "expected_answer_contains": ["informasi", "rahasia", "nilai ekonomi", "kerahasiaan"],
+    "regulations": ["UU 30/2000"]
+  },
+  {
+    "id": "qa_056",
+    "question": "Apa itu kepabeanan dan bea masuk menurut UU 17/2006?",
+    "expected_answer_contains": ["kepabeanan", "lalu lintas barang", "bea masuk", "daerah pabean"],
+    "regulations": ["UU 17/2006"]
+  },
+  {
+    "id": "qa_057",
+    "question": "Barang apa saja yang dikenai cukai menurut UU 39/2007?",
+    "expected_answer_contains": ["etil alkohol", "minuman", "tembakau", "cukai"],
+    "regulations": ["UU 39/2007"]
+  },
+  {
+    "id": "qa_058",
+    "question": "Apa saja persyaratan tenaga kerja konstruksi menurut UU 2/2017?",
+    "expected_answer_contains": ["Sertifikat Kompetensi", "tenaga kerja konstruksi", "Jasa Konstruksi"],
+    "regulations": ["UU 2/2017"]
   }
 ]

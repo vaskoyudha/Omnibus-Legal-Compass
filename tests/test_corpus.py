@@ -18,8 +18,8 @@ VALID_JENIS = {"UU", "PP", "Perpres", "Permen", "Perda"}
 
 # ── Minimum thresholds ───────────────────────────────────────────────────────
 
-MIN_TOTAL_DOCUMENTS = 250
-MIN_UNIQUE_REGULATIONS = 25
+MIN_TOTAL_DOCUMENTS = 390
+MIN_UNIQUE_REGULATIONS = 40
 MIN_TEXT_LENGTH = 30
 
 
@@ -214,6 +214,25 @@ class TestDomainCoverage:
         ("UU", "13", "2016"),   # Paten
         ("UU", "20", "2016"),   # Merek
         ("UU", "37", "2004"),   # Kepailitan
+        # Batch 1
+        ("UU", "42", "1999"),   # Jaminan Fidusia
+        ("UU", "4", "1996"),    # Hak Tanggungan
+        ("UU", "30", "1999"),   # Arbitrase
+        ("UU", "2", "2004"),    # PPHI
+        ("UU", "6", "2011"),    # Keimigrasian
+        # Batch 2
+        ("UU", "16", "2001"),   # Yayasan
+        ("UU", "25", "1992"),   # Koperasi
+        ("UU", "21", "2011"),   # OJK
+        ("UU", "40", "2014"),   # Perasuransian
+        ("UU", "7", "2014"),    # Perdagangan
+        ("UU", "3", "2014"),    # Perindustrian
+        # Batch 3
+        ("UU", "2", "2017"),    # Jasa Konstruksi
+        ("UU", "31", "2000"),   # Desain Industri
+        ("UU", "30", "2000"),   # Rahasia Dagang
+        ("UU", "17", "2006"),   # Kepabeanan
+        ("UU", "39", "2007"),   # Cukai
     ]
 
     def test_all_key_regulations_present(self, corpus: list[dict]):

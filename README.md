@@ -53,7 +53,7 @@ dengan akurat. Silakan konsultasikan dengan ahli hukum."
 Multi-factor confidence scoring considers retrieval scores, document authority hierarchy (UU > PP > Perpres), score consistency, and result count.
 
 ### 📊 Embedding Retrieval Evaluation
-Offline evaluation framework (`eval_embeddings.py`) measures retrieval quality using 40 golden QA pairs across 13 regulations:
+Offline evaluation framework (`eval_embeddings.py`) measures retrieval quality using 58 golden QA pairs across 29 regulations:
 - **MRR (Mean Reciprocal Rank)**: 0.67
 - **Recall@5**: 80% — correct regulation appears in top 5 results
 - **Recall@10**: 85%
@@ -102,10 +102,10 @@ Conversational interface with session memory. Ask follow-up questions without re
 Visual tree-view of legal document relationships: hierarchies, cross-references, and amendments. Understand how regulations connect.
 
 ### Compliance Dashboard
-Heat map and bar chart visualization of regulatory coverage across legal domains. See where your compliance gaps are. **272 document segments across 28 regulations.**
+Heat map and bar chart visualization of regulatory coverage across legal domains. See where your compliance gaps are. **401 document segments across 44 regulations.**
 
 ### Accuracy Evaluation
-Offline embedding evaluation with golden QA dataset (40 pairs across 13 regulations). Tracks MRR, Recall@K metrics. Red-team adversarial testing with 25 trick questions.
+Offline embedding evaluation with golden QA dataset (58 pairs across 29 regulations). Tracks MRR, Recall@K metrics. Red-team adversarial testing with 25 trick questions.
 
 ---
 
