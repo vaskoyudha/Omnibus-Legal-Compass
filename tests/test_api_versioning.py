@@ -76,6 +76,9 @@ class TestV1RoutesExist:
                 json={"question": "Apa itu PT?"},
             )
         assert resp.status_code == 200
+        assert "text/event-stream" in resp.headers.get("content-type", "")
+        body = resp.text
+        assert "event: metadata" in body or "event: chunk" in body
 
     def test_v1_followup(self, test_client):
         """POST /api/v1/ask/followup returns 200."""
@@ -92,6 +95,9 @@ class TestV1RoutesExist:
                 },
             )
         assert resp.status_code == 200
+        data = resp.json()
+        assert "answer" in data
+        assert "citations" in data
 
     def test_v1_document_types(self, test_client):
         """GET /api/v1/document-types returns document type list."""
@@ -150,6 +156,9 @@ class TestLegacyRoutesStillWork:
                 json={"question": "Apa itu UU Cipta Kerja?"},
             )
         assert resp.status_code == 200
+        data = resp.json()
+        assert "answer" in data
+        assert "citations" in data
 
     def test_legacy_document_types(self, test_client):
         """GET /api/document-types still works."""
@@ -166,6 +175,8 @@ class TestLegacyRoutesStillWork:
                 data={"business_description": "Perusahaan perdagangan umum dengan NIB."},
             )
         assert resp.status_code == 200
+        data = resp.json()
+        assert "compliant" in data or "answer" in data
 
 
 # ===========================================================================

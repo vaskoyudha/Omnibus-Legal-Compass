@@ -126,7 +126,10 @@ class TestAskEndpoint:
                 },
             )
 
-        assert response.status_code == 200
+        data = response.json()
+        assert "answer" in data
+        assert "citations" in data
+        assert isinstance(data["answer"], str)
 
     def test_ask_with_custom_top_k(self, test_client):
         """POST /api/ask with custom top_k."""
@@ -142,6 +145,9 @@ class TestAskEndpoint:
             )
 
         assert response.status_code == 200
+        data = response.json()
+        assert "answer" in data
+        assert "citations" in data
 
     def test_ask_rag_chain_not_initialized(self, test_client):
         """POST /api/ask when rag_chain is None → 503."""
@@ -420,6 +426,8 @@ class TestComplianceEndpoint:
             )
 
         assert response.status_code == 200
+        data = response.json()
+        assert "compliant" in data or "answer" in data
 
 
 # ---------------------------------------------------------------------------
