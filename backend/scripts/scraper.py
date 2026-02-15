@@ -756,6 +756,230 @@ def create_expanded_dataset() -> list[dict]:
             doc["ayat"] = art["ayat"]
         documents.append(doc)
     
+    # === UU 31/1999 - Pemberantasan Tindak Pidana Korupsi ===
+    antikorupsi_articles = [
+        {"bab": "I", "pasal": "1", "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Korporasi adalah kumpulan orang dan/atau kekayaan yang terorganisasi baik merupakan badan hukum maupun bukan badan hukum. 2. Pegawai Negeri meliputi pegawai negeri sebagaimana dimaksud dalam Undang-Undang tentang Kepegawaian, pegawai negeri sebagaimana dimaksud dalam KUHP, orang yang menerima gaji atau upah dari keuangan negara atau daerah, serta orang yang menerima gaji atau upah dari suatu korporasi yang mempergunakan modal atau fasilitas dari negara atau masyarakat."},
+        {"bab": "II", "pasal": "2", "ayat": "1", "text": "Setiap orang yang secara melawan hukum melakukan perbuatan memperkaya diri sendiri atau orang lain atau suatu korporasi yang dapat merugikan keuangan negara atau perekonomian negara, dipidana penjara dengan penjara seumur hidup atau pidana penjara paling singkat 4 (empat) tahun dan paling lama 20 (dua puluh) tahun dan denda paling sedikit Rp200.000.000,00 (dua ratus juta rupiah) dan paling banyak Rp1.000.000.000,00 (satu miliar rupiah)."},
+        {"bab": "II", "pasal": "3", "text": "Setiap orang yang dengan tujuan menguntungkan diri sendiri atau orang lain atau suatu korporasi, menyalahgunakan kewenangan, kesempatan atau sarana yang ada padanya karena jabatan atau kedudukan yang dapat merugikan keuangan negara atau perekonomian negara, dipidana dengan pidana penjara seumur hidup atau pidana penjara paling singkat 1 (satu) tahun dan paling lama 20 (dua puluh) tahun dan/atau denda paling sedikit Rp50.000.000,00 (lima puluh juta rupiah) dan paling banyak Rp1.000.000.000,00 (satu miliar rupiah)."},
+        {"bab": "II", "pasal": "5", "ayat": "1", "text": "Dipidana dengan pidana penjara paling singkat 1 (satu) tahun dan paling lama 5 (lima) tahun dan/atau pidana denda paling sedikit Rp50.000.000,00 (lima puluh juta rupiah) dan paling banyak Rp250.000.000,00 (dua ratus lima puluh juta rupiah) setiap orang yang: a. memberi atau menjanjikan sesuatu kepada pegawai negeri atau penyelenggara negara dengan maksud supaya pegawai negeri atau penyelenggara negara tersebut berbuat atau tidak berbuat sesuatu dalam jabatannya, yang bertentangan dengan kewajibannya; atau b. memberi sesuatu kepada pegawai negeri atau penyelenggara negara karena atau berhubungan dengan sesuatu yang bertentangan dengan kewajiban, dilakukan atau tidak dilakukan dalam jabatannya."},
+        {"bab": "II", "pasal": "6", "ayat": "1", "text": "Dipidana dengan pidana penjara paling singkat 3 (tiga) tahun dan paling lama 15 (lima belas) tahun dan pidana denda paling sedikit Rp150.000.000,00 (seratus lima puluh juta rupiah) dan paling banyak Rp750.000.000,00 (tujuh ratus lima puluh juta rupiah) setiap orang yang memberi atau menjanjikan sesuatu kepada hakim dengan maksud untuk mempengaruhi putusan perkara yang diserahkan kepadanya untuk diadili."},
+        {"bab": "II", "pasal": "8", "text": "Dipidana dengan pidana penjara paling singkat 3 (tiga) tahun dan paling lama 15 (lima belas) tahun dan pidana denda paling sedikit Rp150.000.000,00 (seratus lima puluh juta rupiah) dan paling banyak Rp750.000.000,00 (tujuh ratus lima puluh juta rupiah) pegawai negeri atau orang selain pegawai negeri yang ditugaskan menjalankan suatu jabatan umum secara terus menerus atau untuk sementara waktu, dengan sengaja menggelapkan uang atau surat berharga yang disimpan karena jabatannya, atau membiarkan uang atau surat berharga tersebut diambil atau digelapkan oleh orang lain."},
+        {"bab": "II", "pasal": "9", "text": "Pegawai negeri atau orang selain pegawai negeri yang diberi tugas menjalankan suatu jabatan umum secara terus menerus atau untuk sementara waktu, dengan sengaja memalsu buku-buku atau daftar-daftar yang khusus untuk pemeriksaan administrasi, dipidana dengan pidana penjara paling singkat 1 (satu) tahun dan paling lama 5 (lima) tahun dan pidana denda paling sedikit Rp50.000.000,00 (lima puluh juta rupiah) dan paling banyak Rp250.000.000,00 (dua ratus lima puluh juta rupiah)."},
+        {"bab": "II", "pasal": "12B", "ayat": "1", "text": "Setiap gratifikasi kepada pegawai negeri atau penyelenggara negara dianggap pemberian suap, apabila berhubungan dengan jabatannya dan yang berlawanan dengan kewajiban atau tugasnya, dengan ketentuan: a. yang nilainya Rp10.000.000,00 (sepuluh juta rupiah) atau lebih, pembuktian bahwa gratifikasi tersebut bukan merupakan suap dilakukan oleh penerima gratifikasi; b. yang nilainya kurang dari Rp10.000.000,00 (sepuluh juta rupiah), pembuktian bahwa gratifikasi tersebut suap dilakukan oleh penuntut umum."},
+        {"bab": "II", "pasal": "12C", "ayat": "1", "text": "Ketentuan sebagaimana dimaksud dalam Pasal 12B ayat (1) tidak berlaku, jika penerima melaporkan gratifikasi yang diterimanya kepada Komisi Pemberantasan Tindak Pidana Korupsi paling lambat 30 (tiga puluh) hari kerja terhitung sejak tanggal gratifikasi tersebut diterima."},
+        {"bab": "III", "pasal": "18", "ayat": "1", "text": "Selain pidana tambahan sebagaimana dimaksud dalam Kitab Undang-Undang Hukum Pidana, sebagai pidana tambahan adalah: a. perampasan barang bergerak yang berwujud atau yang tidak berwujud atau barang tidak bergerak yang digunakan untuk atau yang diperoleh dari tindak pidana korupsi, termasuk perusahaan milik terpidana; b. pembayaran uang pengganti yang jumlahnya sebanyak-banyaknya sama dengan harta benda yang diperoleh dari tindak pidana korupsi; c. penutupan seluruh atau sebagian perusahaan untuk waktu paling lama 1 (satu) tahun; d. pencabutan seluruh atau sebagian hak-hak tertentu atau penghapusan seluruh atau sebagian keuntungan tertentu."},
+    ]
+    
+    for art in antikorupsi_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "31",
+            "tahun": 1999,
+            "judul": "Pemberantasan Tindak Pidana Korupsi",
+            "tentang": "Pemberantasan Tindak Pidana Korupsi",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+    
+    # === UU 5/1999 - Larangan Praktek Monopoli dan Persaingan Usaha Tidak Sehat ===
+    antimonopoli_articles = [
+        {"bab": "I", "pasal": "1", "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Monopoli adalah penguasaan atas produksi dan/atau pemasaran barang dan/atau atas penggunaan jasa tertentu oleh satu pelaku usaha atau satu kelompok pelaku usaha. 2. Praktek Monopoli adalah pemusatan kekuatan ekonomi oleh satu atau lebih pelaku usaha yang mengakibatkan dikuasainya produksi dan/atau pemasaran atas barang dan/atau jasa tertentu sehingga menimbulkan persaingan usaha tidak sehat dan dapat merugikan kepentingan umum. 3. Persaingan Usaha Tidak Sehat adalah persaingan antar pelaku usaha dalam menjalankan kegiatan produksi dan/atau pemasaran barang dan/atau jasa yang dilakukan dengan cara tidak jujur atau melawan hukum atau menghambat persaingan usaha."},
+        {"bab": "III", "pasal": "4", "ayat": "1", "text": "Pelaku usaha dilarang membuat perjanjian dengan pelaku usaha lain untuk secara bersama-sama melakukan penguasaan produksi dan/atau pemasaran barang dan/atau jasa yang dapat mengakibatkan terjadinya praktek monopoli dan/atau persaingan usaha tidak sehat."},
+        {"bab": "III", "pasal": "5", "ayat": "1", "text": "Pelaku usaha dilarang membuat perjanjian dengan pelaku usaha pesaingnya untuk menetapkan harga atas suatu barang dan/atau jasa yang harus dibayar oleh konsumen atau pelanggan pada pasar bersangkutan yang sama."},
+        {"bab": "III", "pasal": "9", "text": "Pelaku usaha dilarang membuat perjanjian dengan pelaku usaha pesaingnya yang bertujuan untuk membagi wilayah pemasaran atau alokasi pasar terhadap barang dan/atau jasa sehingga dapat mengakibatkan terjadinya praktek monopoli dan/atau persaingan usaha tidak sehat."},
+        {"bab": "III", "pasal": "11", "text": "Pelaku usaha dilarang membuat perjanjian dengan pelaku usaha pesaingnya yang bermaksud untuk mempengaruhi harga dengan mengatur produksi dan/atau pemasaran suatu barang dan/atau jasa, yang dapat mengakibatkan terjadinya praktek monopoli dan/atau persaingan usaha tidak sehat."},
+        {"bab": "IV", "pasal": "17", "ayat": "1", "text": "Pelaku usaha dilarang melakukan penguasaan atas produksi dan/atau pemasaran barang dan/atau jasa yang dapat mengakibatkan terjadinya praktek monopoli dan/atau persaingan usaha tidak sehat."},
+        {"bab": "IV", "pasal": "19", "text": "Pelaku usaha dilarang melakukan satu atau beberapa kegiatan, baik sendiri maupun bersama pelaku usaha lain, yang dapat mengakibatkan terjadinya praktek monopoli dan/atau persaingan usaha tidak sehat berupa: a. menolak dan/atau menghalangi pelaku usaha tertentu untuk melakukan kegiatan usaha yang sama pada pasar bersangkutan; b. menghalangi konsumen atau pelanggan pelaku usaha pesaingnya untuk tidak melakukan hubungan usaha dengan pelaku usaha pesaingnya itu."},
+        {"bab": "V", "pasal": "25", "ayat": "1", "text": "Pelaku usaha dilarang menggunakan posisi dominan baik secara langsung maupun tidak langsung untuk: a. menetapkan syarat-syarat perdagangan dengan tujuan untuk mencegah dan/atau menghalangi konsumen memperoleh barang dan/atau jasa yang bersaing; b. membatasi pasar dan pengembangan teknologi; atau c. menghambat pelaku usaha lain yang berpotensi menjadi pesaing untuk memasuki pasar bersangkutan."},
+        {"bab": "V", "pasal": "28", "ayat": "1", "text": "Pelaku usaha dilarang melakukan penggabungan atau peleburan badan usaha yang dapat mengakibatkan terjadinya praktek monopoli dan/atau persaingan usaha tidak sehat."},
+        {"bab": "VIII", "pasal": "47", "ayat": "1", "text": "Komisi berwenang menjatuhkan tindakan administratif terhadap pelaku usaha yang melanggar ketentuan Undang-Undang ini."},
+        {"bab": "VIII", "pasal": "47", "ayat": "2", "text": "Tindakan administratif sebagaimana dimaksud dalam ayat (1) dapat berupa: a. penetapan pembatalan perjanjian; b. perintah kepada pelaku usaha untuk menghentikan integrasi vertikal; c. perintah kepada pelaku usaha untuk menghentikan kegiatan yang terbukti menimbulkan praktek monopoli; d. penetapan pembayaran ganti rugi; e. pengenaan denda serendah-rendahnya Rp1.000.000.000,00 (satu miliar rupiah) dan setinggi-tingginya Rp25.000.000.000,00 (dua puluh lima miliar rupiah)."},
+    ]
+    
+    for art in antimonopoli_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "5",
+            "tahun": 1999,
+            "judul": "Larangan Praktek Monopoli dan Persaingan Usaha Tidak Sehat",
+            "tentang": "Larangan Praktek Monopoli dan Persaingan Usaha Tidak Sehat",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+    
+    # === UU 10/1998 - Perbankan ===
+    perbankan_articles = [
+        {"bab": "I", "pasal": "1", "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Perbankan adalah segala sesuatu yang menyangkut tentang bank, mencakup kelembagaan, kegiatan usaha, serta cara dan proses dalam melaksanakan kegiatan usahanya. 2. Bank adalah badan usaha yang menghimpun dana dari masyarakat dalam bentuk simpanan dan menyalurkannya kepada masyarakat dalam bentuk kredit dan/atau bentuk-bentuk lainnya dalam rangka meningkatkan taraf hidup rakyat banyak. 3. Bank Umum adalah bank yang melaksanakan kegiatan usaha secara konvensional dan/atau berdasarkan Prinsip Syariah yang dalam kegiatannya memberikan jasa dalam lalu lintas pembayaran. 4. Bank Perkreditan Rakyat adalah bank yang melaksanakan kegiatan usaha secara konvensional atau berdasarkan Prinsip Syariah yang dalam kegiatannya tidak memberikan jasa dalam lalu lintas pembayaran."},
+        {"bab": "III", "pasal": "5", "ayat": "1", "text": "Menurut jenisnya, bank terdiri dari: a. Bank Umum; dan b. Bank Perkreditan Rakyat."},
+        {"bab": "IV", "pasal": "10", "text": "Bank Umum dilarang: a. melakukan penyertaan modal, kecuali sebagaimana dimaksud dalam Pasal 7 huruf b dan huruf c; b. melakukan usaha perasuransian; c. melakukan usaha lain di luar kegiatan usaha sebagaimana dimaksud dalam Pasal 6 dan Pasal 7."},
+        {"bab": "IV", "pasal": "16", "ayat": "1", "text": "Setiap pihak yang melakukan kegiatan menghimpun dana dari masyarakat dalam bentuk simpanan wajib terlebih dahulu memperoleh izin usaha sebagai Bank Umum atau Bank Perkreditan Rakyat dari Pimpinan Bank Indonesia, kecuali apabila kegiatan menghimpun dana dari masyarakat dimaksud diatur dengan Undang-Undang tersendiri."},
+        {"bab": "V", "pasal": "22", "ayat": "1", "text": "Bank Umum hanya dapat didirikan oleh: a. warga negara Indonesia dan/atau badan hukum Indonesia; atau b. warga negara Indonesia dan/atau badan hukum Indonesia dengan warga negara asing dan/atau badan hukum asing secara kemitraan."},
+        {"bab": "VII", "pasal": "29", "ayat": "1", "text": "Pembinaan dan pengawasan bank dilakukan oleh Bank Indonesia."},
+        {"bab": "VII", "pasal": "29", "ayat": "2", "text": "Bank wajib memelihara tingkat kesehatan bank sesuai dengan ketentuan kecukupan modal, kualitas aset, kualitas manajemen, likuiditas, rentabilitas, solvabilitas, dan aspek lain yang berhubungan dengan usaha bank."},
+        {"bab": "VII", "pasal": "40", "ayat": "1", "text": "Bank wajib merahasiakan keterangan mengenai Nasabah Penyimpan dan simpanannya, kecuali dalam hal sebagaimana dimaksud dalam Pasal 41, Pasal 41A, Pasal 42, Pasal 43, dan Pasal 44A."},
+        {"bab": "VII", "pasal": "42", "ayat": "1", "text": "Untuk kepentingan pemeriksaan dalam perkara pidana, Pimpinan Bank Indonesia dapat memberikan izin kepada polisi, jaksa, atau hakim untuk memperoleh keterangan dari bank mengenai simpanan tersangka atau terdakwa pada bank."},
+    ]
+    
+    for art in perbankan_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "10",
+            "tahun": 1998,
+            "judul": "Perbankan",
+            "tentang": "Perubahan atas Undang-Undang Nomor 7 Tahun 1992 tentang Perbankan",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+    
+    # === UU 8/1995 - Pasar Modal ===
+    pasar_modal_articles = [
+        {"bab": "I", "pasal": "1", "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Pasar Modal adalah kegiatan yang bersangkutan dengan Penawaran Umum dan perdagangan Efek, Perusahaan Publik yang berkaitan dengan Efek yang diterbitkannya, serta lembaga dan profesi yang berkaitan dengan Efek. 2. Efek adalah surat berharga, yaitu surat pengakuan utang, surat berharga komersial, saham, obligasi, tanda bukti utang, Unit Penyertaan kontrak investasi kolektif, kontrak berjangka atas Efek, dan setiap derivatif dari Efek. 3. Bursa Efek adalah Pihak yang menyelenggarakan dan menyediakan sistem dan/atau sarana untuk mempertemukan penawaran jual dan beli Efek Pihak-Pihak lain dengan tujuan memperdagangkan Efek di antara mereka."},
+        {"bab": "VI", "pasal": "70", "ayat": "1", "text": "Yang dapat melakukan Penawaran Umum hanyalah Emiten yang telah menyampaikan Pernyataan Pendaftaran kepada Badan Pengawas Pasar Modal untuk menawarkan atau menjual Efek kepada masyarakat dan Pernyataan Pendaftaran tersebut telah efektif."},
+        {"bab": "VI", "pasal": "73", "text": "Setiap Pihak dilarang menawarkan atau menjual Efek dalam Penawaran Umum, kecuali pembeli atau pemesan telah menerima atau berkesempatan membaca Prospektus berkenaan dengan Efek yang bersangkutan sebelum atau pada saat pemesanan dilakukan."},
+        {"bab": "VIII", "pasal": "86", "ayat": "1", "text": "Emiten yang Pernyataan Pendaftarannya telah menjadi efektif atau Perusahaan Publik wajib: a. menyampaikan laporan secara berkala kepada Badan Pengawas Pasar Modal dan mengumumkan laporan tersebut kepada masyarakat; dan b. menyampaikan laporan kepada Badan Pengawas Pasar Modal dan mengumumkan kepada masyarakat tentang peristiwa material yang dapat mempengaruhi harga Efek selambat-lambatnya pada akhir hari kerja ke-2 (kedua) setelah terjadinya peristiwa tersebut."},
+        {"bab": "IX", "pasal": "91", "text": "Setiap Pihak dilarang melakukan tindakan, baik langsung maupun tidak langsung, dengan tujuan untuk menciptakan gambaran semu atau menyesatkan mengenai kegiatan perdagangan, keadaan pasar, atau harga Efek di Bursa Efek."},
+        {"bab": "IX", "pasal": "92", "text": "Setiap Pihak, baik sendiri-sendiri maupun bersama-sama dengan Pihak lain, dilarang melakukan 2 (dua) transaksi Efek atau lebih, baik langsung maupun tidak langsung, sehingga menyebabkan harga Efek di Bursa Efek tetap, naik, atau turun dengan tujuan mempengaruhi Pihak lain untuk membeli, menjual, atau menahan Efek."},
+        {"bab": "IX", "pasal": "95", "text": "Orang dalam dari Emiten atau Perusahaan Publik yang mempunyai informasi orang dalam dilarang melakukan pembelian atau penjualan atas Efek: a. Emiten atau Perusahaan Publik dimaksud; atau b. perusahaan lain yang melakukan transaksi dengan Emiten atau Perusahaan Publik yang bersangkutan."},
+        {"bab": "IX", "pasal": "97", "text": "Setiap Pihak yang berusaha untuk memperoleh informasi orang dalam dari orang dalam secara melawan hukum dan kemudian memperolehnya dikenakan larangan yang sama dengan larangan yang berlaku bagi orang dalam sebagaimana dimaksud dalam Pasal 95 dan Pasal 96."},
+        {"bab": "XV", "pasal": "104", "text": "Setiap Pihak yang melanggar ketentuan sebagaimana dimaksud dalam Pasal 90, Pasal 91, Pasal 92, Pasal 93, Pasal 95, Pasal 96, Pasal 97 ayat (1), dan Pasal 98 diancam dengan pidana penjara paling lama 10 (sepuluh) tahun dan denda paling banyak Rp15.000.000.000,00 (lima belas miliar rupiah)."},
+    ]
+    
+    for art in pasar_modal_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "8",
+            "tahun": 1995,
+            "judul": "Pasar Modal",
+            "tentang": "Pasar Modal",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+    
+    # === UU 28/2014 - Hak Cipta ===
+    hak_cipta_articles = [
+        {"bab": "I", "pasal": "1", "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Hak Cipta adalah hak eksklusif pencipta yang timbul secara otomatis berdasarkan prinsip deklaratif setelah suatu ciptaan diwujudkan dalam bentuk nyata tanpa mengurangi pembatasan sesuai dengan ketentuan peraturan perundang-undangan. 2. Pencipta adalah seorang atau beberapa orang yang secara sendiri-sendiri atau bersama-sama menghasilkan suatu ciptaan yang bersifat khas dan pribadi. 3. Ciptaan adalah setiap hasil karya cipta di bidang ilmu pengetahuan, seni, dan sastra yang dihasilkan atas inspirasi, kemampuan, pikiran, imajinasi, kecekatan, keterampilan, atau keahlian yang diekspresikan dalam bentuk nyata."},
+        {"bab": "II", "pasal": "5", "ayat": "1", "text": "Hak moral sebagaimana dimaksud dalam Pasal 4 merupakan hak yang melekat secara abadi pada diri Pencipta untuk: a. tetap mencantumkan atau tidak mencantumkan namanya pada salinan sehubungan dengan pemakaian Ciptaannya untuk umum; b. menggunakan nama aliasnya atau samarannya; c. mengubah Ciptaannya sesuai dengan kepatutan dalam masyarakat; d. mengubah judul dan anak judul Ciptaan; dan e. mempertahankan haknya dalam hal terjadi distorsi Ciptaan, mutilasi Ciptaan, modifikasi Ciptaan, atau hal yang bersifat merugikan kehormatan diri atau reputasinya."},
+        {"bab": "II", "pasal": "8", "text": "Hak ekonomi merupakan hak eksklusif Pencipta atau Pemegang Hak Cipta untuk mendapatkan manfaat ekonomi atas Ciptaan."},
+        {"bab": "II", "pasal": "9", "ayat": "1", "text": "Pencipta atau Pemegang Hak Cipta sebagaimana dimaksud dalam Pasal 8 memiliki hak ekonomi untuk melakukan: a. penerbitan Ciptaan; b. penggandaan Ciptaan dalam segala bentuknya; c. penerjemahan Ciptaan; d. pengadaptasian, pengaransemenan, atau pentransformasian Ciptaan; e. pendistribusian Ciptaan atau salinannya; f. pertunjukan Ciptaan; g. pengumuman Ciptaan; h. komunikasi Ciptaan; dan i. penyewaan Ciptaan."},
+        {"bab": "V", "pasal": "40", "ayat": "1", "text": "Ciptaan yang dilindungi meliputi Ciptaan dalam bidang ilmu pengetahuan, seni, dan sastra, terdiri atas: a. buku, pamflet, perwajahan karya tulis yang diterbitkan, dan semua hasil karya tulis lainnya; b. ceramah, kuliah, pidato, dan Ciptaan sejenis lainnya; c. alat peraga yang dibuat untuk kepentingan pendidikan dan ilmu pengetahuan; d. lagu dan/atau musik dengan atau tanpa teks; e. drama, drama musikal, tari, koreografi, pewayangan, dan pantomim; f. karya seni rupa dalam segala bentuk seperti lukisan, gambar, ukiran, kaligrafi, seni pahat, patung, atau kolase; g. karya arsitektur; h. peta; i. karya seni batik atau seni motif lain; j. karya fotografi; k. potret; l. karya sinematografi; m. terjemahan, tafsir, saduran, bunga rampai, basis data, adaptasi, aransemen, modifikasi dan karya lain dari hasil transformasi; n. kompilasi Ciptaan atau data; o. kompilasi ekspresi budaya tradisional; p. permainan video; dan q. program Komputer."},
+        {"bab": "V", "pasal": "43", "text": "Perbuatan yang tidak dianggap sebagai pelanggaran Hak Cipta meliputi: a. pengumuman, pendistribusian, komunikasi, dan/atau penggandaan lambang negara dan lagu kebangsaan menurut sifatnya yang asli; b. pengumuman, pendistribusian, komunikasi, dan/atau penggandaan segala sesuatu yang dilaksanakan oleh atau atas nama pemerintah; c. pengambilan berita aktual, baik seluruhnya maupun sebagian dari kantor berita, Lembaga Penyiaran, dan surat kabar atau sumber sejenis lainnya dengan ketentuan sumbernya harus disebutkan secara lengkap."},
+        {"bab": "VII", "pasal": "58", "ayat": "1", "text": "Pelindungan Hak Cipta atas Ciptaan: a. buku, pamflet, dan semua hasil karya tulis lainnya; b. ceramah, kuliah, pidato, dan Ciptaan sejenis lainnya; c. alat peraga yang dibuat untuk kepentingan pendidikan dan ilmu pengetahuan; d. lagu dan/atau musik dengan atau tanpa teks; e. drama, drama musikal, tari, koreografi, pewayangan, dan pantomim; f. karya seni rupa dalam segala bentuk; dan g. karya arsitektur, berlaku selama hidup Pencipta dan terus berlangsung selama 70 (tujuh puluh) tahun setelah Pencipta meninggal dunia, terhitung mulai tanggal 1 Januari tahun berikutnya."},
+        {"bab": "X", "pasal": "80", "ayat": "1", "text": "Kecuali diperjanjikan lain, pemegang Hak Cipta atau pemilik Hak Terkait berhak memberikan Lisensi kepada pihak lain berdasarkan perjanjian tertulis untuk melaksanakan perbuatan sebagaimana dimaksud dalam Pasal 9 ayat (1), Pasal 23 ayat (2), Pasal 24 ayat (2), dan Pasal 25 ayat (2)."},
+        {"bab": "XVII", "pasal": "113", "ayat": "3", "text": "Setiap Orang yang dengan tanpa hak dan/atau tanpa izin Pencipta atau pemegang Hak Cipta melakukan pelanggaran hak ekonomi Pencipta sebagaimana dimaksud dalam Pasal 9 ayat (1) huruf a, huruf b, huruf e, dan/atau huruf g untuk Penggunaan Secara Komersial dipidana dengan pidana penjara paling lama 4 (empat) tahun dan/atau pidana denda paling banyak Rp1.000.000.000,00 (satu miliar rupiah)."},
+    ]
+    
+    for art in hak_cipta_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "28",
+            "tahun": 2014,
+            "judul": "Hak Cipta",
+            "tentang": "Hak Cipta",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+    
+    # === UU 13/2016 - Paten ===
+    paten_articles = [
+        {"bab": "I", "pasal": "1", "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Paten adalah hak eksklusif yang diberikan oleh negara kepada inventor atas hasil invensinya di bidang teknologi untuk jangka waktu tertentu melaksanakan sendiri invensi tersebut atau memberikan persetujuan kepada pihak lain untuk melaksanakannya. 2. Invensi adalah ide inventor yang dituangkan ke dalam suatu kegiatan pemecahan masalah yang spesifik di bidang teknologi berupa produk atau proses, atau penyempurnaan dan pengembangan produk atau proses. 3. Inventor adalah seorang atau beberapa orang yang secara bersama-sama melaksanakan ide yang dituangkan ke dalam kegiatan yang menghasilkan Invensi."},
+        {"bab": "II", "pasal": "2", "ayat": "1", "text": "Pelindungan Paten diberikan untuk Invensi yang baru, mengandung langkah inventif, dan dapat diterapkan dalam industri."},
+        {"bab": "II", "pasal": "3", "ayat": "1", "text": "Paten sederhana diberikan untuk setiap Invensi baru berupa pengembangan dari produk atau proses yang telah ada dan dapat diterapkan dalam industri."},
+        {"bab": "II", "pasal": "4", "text": "Invensi dianggap baru sebagaimana dimaksud dalam Pasal 2 ayat (1) jika pada Tanggal Penerimaan, Invensi tersebut tidak sama dengan teknologi yang diungkapkan sebelumnya. Teknologi yang diungkapkan sebelumnya mencakup dokumen Permohonan yang diajukan di Indonesia dan di luar negeri."},
+        {"bab": "II", "pasal": "9", "text": "Invensi yang tidak dapat diberi Paten meliputi: a. proses atau produk yang pengumuman, penggunaan, atau pelaksanaannya bertentangan dengan peraturan perundang-undangan, agama, ketertiban umum, atau kesusilaan; b. metode pemeriksaan, perawatan, pengobatan dan/atau pembedahan yang diterapkan terhadap manusia dan/atau hewan; c. teori dan metode di bidang ilmu pengetahuan dan matematika; d. makhluk hidup, kecuali jasad renik; atau e. proses biologis yang esensial untuk memproduksi tanaman atau hewan, kecuali proses nonbiologis atau proses mikrobiologis."},
+        {"bab": "III", "pasal": "22", "ayat": "1", "text": "Paten diberikan untuk jangka waktu 20 (dua puluh) tahun terhitung sejak Tanggal Penerimaan. Jangka waktu sebagaimana dimaksud tidak dapat diperpanjang."},
+        {"bab": "III", "pasal": "22", "ayat": "2", "text": "Paten sederhana diberikan untuk jangka waktu 10 (sepuluh) tahun terhitung sejak Tanggal Penerimaan. Jangka waktu sebagaimana dimaksud tidak dapat diperpanjang."},
+        {"bab": "IX", "pasal": "82", "ayat": "1", "text": "Lisensi wajib merupakan Lisensi untuk melaksanakan Paten yang diberikan berdasarkan keputusan Menteri atas dasar permohonan dengan alasan: a. Pemegang Paten tidak melaksanakan kewajiban untuk membuat produk atau menggunakan proses di Indonesia sebagaimana dimaksud dalam Pasal 20 dalam jangka waktu 36 (tiga puluh enam) bulan setelah diberikan Paten; b. Paten telah dilaksanakan oleh Pemegang Paten atau penerima Lisensi dalam bentuk dan dengan cara yang merugikan kepentingan masyarakat; atau c. Paten hasil pengembangan dari Paten yang telah diberikan sebelumnya tidak dapat dilaksanakan tanpa menggunakan Paten pihak lain yang masih dalam pelindungan."},
+    ]
+    
+    for art in paten_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "13",
+            "tahun": 2016,
+            "judul": "Paten",
+            "tentang": "Paten",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+    
+    # === UU 20/2016 - Merek dan Indikasi Geografis ===
+    merek_articles = [
+        {"bab": "I", "pasal": "1", "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Merek adalah tanda yang dapat ditampilkan secara grafis berupa gambar, logo, nama, kata, huruf, angka, susunan warna, dalam bentuk 2 (dua) dimensi dan/atau 3 (tiga) dimensi, suara, hologram, atau kombinasi dari 2 (dua) atau lebih unsur tersebut untuk membedakan barang dan/atau jasa yang diproduksi oleh orang atau badan hukum dalam kegiatan perdagangan barang dan/atau jasa. 2. Merek Dagang adalah Merek yang digunakan pada barang yang diperdagangkan oleh seseorang atau beberapa orang secara bersama-sama atau badan hukum untuk membedakan dengan barang sejenis lainnya. 3. Merek Jasa adalah Merek yang digunakan pada jasa yang diperdagangkan oleh seseorang atau beberapa orang secara bersama-sama atau badan hukum untuk membedakan dengan jasa sejenis lainnya."},
+        {"bab": "II", "pasal": "3", "text": "Hak atas Merek diperoleh setelah Merek tersebut terdaftar. Pendaftaran Merek sebagaimana dimaksud dilakukan oleh Menteri yang menyelenggarakan urusan pemerintahan di bidang hukum."},
+        {"bab": "III", "pasal": "4", "ayat": "1", "text": "Permohonan pendaftaran Merek diajukan oleh Pemohon atau Kuasanya kepada Menteri secara elektronik atau nonelektronik dalam bahasa Indonesia."},
+        {"bab": "III", "pasal": "20", "text": "Merek tidak dapat didaftar jika: a. bertentangan dengan ideologi negara, peraturan perundang-undangan, moralitas, agama, kesusilaan, atau ketertiban umum; b. sama dengan, berkaitan dengan, atau hanya menyebut barang dan/atau jasa yang dimohonkan pendaftarannya; c. memuat unsur yang dapat menyesatkan masyarakat tentang asal, kualitas, jenis, ukuran, macam, tujuan penggunaan barang dan/atau jasa yang dimohonkan pendaftarannya atau merupakan nama varietas tanaman yang dilindungi untuk barang dan/atau jasa yang sejenis; d. memuat keterangan yang tidak sesuai dengan kualitas, manfaat, atau khasiat dari barang dan/atau jasa yang diproduksi; e. tidak memiliki daya pembeda; dan/atau f. merupakan nama umum dan/atau lambang milik umum."},
+        {"bab": "III", "pasal": "21", "ayat": "1", "text": "Permohonan ditolak jika Merek tersebut mempunyai persamaan pada pokoknya atau keseluruhannya dengan: a. Merek terdaftar milik pihak lain atau dimohonkan lebih dahulu oleh pihak lain untuk barang dan/atau jasa sejenis; b. Merek terkenal milik pihak lain untuk barang dan/atau jasa sejenis; c. Merek terkenal milik pihak lain untuk barang dan/atau jasa tidak sejenis yang memenuhi persyaratan tertentu; atau d. Indikasi Geografis terdaftar."},
+        {"bab": "V", "pasal": "35", "ayat": "1", "text": "Merek terdaftar mendapat pelindungan hukum untuk jangka waktu 10 (sepuluh) tahun sejak Tanggal Penerimaan."},
+        {"bab": "V", "pasal": "35", "ayat": "2", "text": "Jangka waktu pelindungan sebagaimana dimaksud pada ayat (1) dapat diperpanjang untuk jangka waktu yang sama setiap kali perpanjangan dengan membayar biaya."},
+        {"bab": "XIV", "pasal": "100", "ayat": "1", "text": "Setiap Orang yang dengan tanpa hak menggunakan Merek yang sama pada keseluruhannya dengan Merek terdaftar milik pihak lain untuk barang dan/atau jasa sejenis yang diproduksi dan/atau diperdagangkan, dipidana dengan pidana penjara paling lama 5 (lima) tahun dan/atau pidana denda paling banyak Rp2.000.000.000,00 (dua miliar rupiah)."},
+    ]
+    
+    for art in merek_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "20",
+            "tahun": 2016,
+            "judul": "Merek dan Indikasi Geografis",
+            "tentang": "Merek dan Indikasi Geografis",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+    
+    # === UU 37/2004 - Kepailitan dan PKPU ===
+    kepailitan_articles = [
+        {"bab": "I", "pasal": "1", "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Kepailitan adalah sita umum atas semua kekayaan Debitor Pailit yang pengurusan dan pemberesannya dilakukan oleh Kurator di bawah pengawasan Hakim Pengawas sebagaimana diatur dalam Undang-Undang ini. 2. Kreditor adalah orang yang mempunyai piutang karena perjanjian atau Undang-Undang yang dapat ditagih di muka pengadilan. 3. Debitor adalah orang yang mempunyai utang karena perjanjian atau undang-undang yang pelunasannya dapat ditagih di muka pengadilan. 4. Kurator adalah Balai Harta Peninggalan atau orang perseorangan yang diangkat oleh Pengadilan untuk mengurus dan membereskan harta Debitor Pailit di bawah pengawasan Hakim Pengawas."},
+        {"bab": "II", "pasal": "2", "ayat": "1", "text": "Debitor yang mempunyai dua atau lebih Kreditor dan tidak membayar lunas sedikitnya satu utang yang telah jatuh waktu dan dapat ditagih, dinyatakan pailit dengan putusan Pengadilan, baik atas permohonannya sendiri maupun atas permohonan satu atau lebih kreditornya."},
+        {"bab": "II", "pasal": "6", "ayat": "1", "text": "Permohonan pernyataan pailit diajukan kepada Ketua Pengadilan Niaga yang daerah hukumnya meliputi daerah tempat kedudukan hukum Debitor."},
+        {"bab": "II", "pasal": "7", "ayat": "1", "text": "Permohonan pernyataan pailit harus diajukan oleh seorang advokat kecuali apabila permohonan diajukan oleh kejaksaan, Bank Indonesia, Badan Pengawas Pasar Modal, atau Menteri Keuangan."},
+        {"bab": "II", "pasal": "15", "ayat": "1", "text": "Dalam putusan pernyataan pailit, harus diangkat Kurator dan seorang Hakim Pengawas yang ditunjuk dari hakim Pengadilan. Dalam hal Debitor, Kreditor, atau pihak yang berwenang mengajukan permohonan pernyataan pailit tidak mengajukan usul pengangkatan Kurator kepada Pengadilan, maka Balai Harta Peninggalan diangkat selaku Kurator."},
+        {"bab": "II", "pasal": "21", "text": "Kepailitan meliputi seluruh kekayaan Debitor pada saat putusan pernyataan pailit diucapkan serta segala sesuatu yang diperoleh selama kepailitan. Ketentuan sebagaimana dimaksud tidak berlaku terhadap: a. benda, termasuk hewan yang benar-benar dibutuhkan oleh Debitor sehubungan dengan pekerjaannya, perlengkapannya, alat-alat medis yang dipergunakan untuk kesehatan; b. segala sesuatu yang diperoleh Debitor dari pekerjaannya sendiri sebagai penggajian dari suatu jabatan atau jasa, sebagai upah, pensiun, uang tunggu atau uang tunjangan."},
+        {"bab": "V", "pasal": "144", "text": "Debitor Pailit berhak untuk menawarkan suatu perdamaian kepada semua Kreditor. Rencana perdamaian tersebut harus diajukan dalam jangka waktu paling lambat 8 (delapan) hari sebelum rapat pencocokan piutang dan disediakan di Kepaniteraan Pengadilan agar dapat dilihat dengan cuma-cuma oleh setiap orang yang berkepentingan."},
+        {"bab": "X", "pasal": "222", "ayat": "1", "text": "Penundaan Kewajiban Pembayaran Utang diajukan oleh Debitor yang mempunyai lebih dari 1 (satu) Kreditor atau oleh Kreditor yang memperkirakan bahwa Debitor tidak dapat melanjutkan membayar utangnya yang sudah jatuh waktu dan dapat ditagih, dengan maksud untuk mengajukan rencana perdamaian yang meliputi tawaran pembayaran sebagian atau seluruh utang kepada Kreditornya."},
+    ]
+    
+    for art in kepailitan_articles:
+        doc = {
+            "jenis_dokumen": "UU",
+            "nomor": "37",
+            "tahun": 2004,
+            "judul": "Kepailitan dan PKPU",
+            "tentang": "Kepailitan dan Penundaan Kewajiban Pembayaran Utang",
+            "bab": art.get("bab"),
+            "pasal": art["pasal"],
+            "text": art["text"]
+        }
+        if "ayat" in art:
+            doc["ayat"] = art["ayat"]
+        documents.append(doc)
+    
     return documents
 
 
