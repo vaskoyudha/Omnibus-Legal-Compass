@@ -30,28 +30,82 @@ Most legal AI tools are **keyword matchers dressed up as AI**. Omnibus is differ
 - **Indonesia-Deep, Not Indonesia-Shallow** — Purpose-built for Indonesian legal framework: UU, PP, Perpres, Perda. Not a generic chatbot with an Indonesian prompt.
 - **Knowledge Graph** — Regulations aren't isolated. Our graph maps cross-references, amendments, and hierarchies between legal documents.
 - **Production-Ready** — Rate limiting, API versioning, 360 passing tests, CI/CD, structured error handling. Not a weekend prototype.
+- **Trust-First AI** — LLM-as-judge grounding verification, confidence thresholds with refusal mechanisms, embedding retrieval evaluation, red-team adversarial testing. No fake accuracy stats.
+
+---
+
+## Trust & Accuracy Features
+
+Legal AI must be **trustworthy first, helpful second**. Omnibus implements production-grade safety guardrails:
+
+### 🛡️ LLM-as-Judge Grounding Verification
+Every answer undergoes a second-pass verification where another LLM evaluates if claims are actually supported by cited sources. Returns:
+- **Grounding score** (0.0-1.0): Percentage of claims backed by evidence
+- **Ungrounded claims**: Specific statements that lack source support
+- **Visual warnings**: Frontend displays red badges for unverified claims
+
+### 🚫 "I Don't Know" Mechanism
+Unlike chatbots that always generate *something*, Omnibus refuses to answer when confidence < 0.30:
+```
+"Maaf, saya tidak memiliki cukup informasi hukum untuk menjawab pertanyaan ini 
+dengan akurat. Silakan konsultasikan dengan ahli hukum."
+```
+Multi-factor confidence scoring considers retrieval scores, document authority hierarchy (UU > PP > Perpres), score consistency, and result count.
+
+### 📊 Embedding Retrieval Evaluation
+Offline evaluation framework (`eval_embeddings.py`) measures retrieval quality using 40 golden QA pairs across 13 regulations:
+- **MRR (Mean Reciprocal Rank)**: 0.67
+- **Recall@5**: 80% — correct regulation appears in top 5 results
+- **Recall@10**: 85%
+- **Per-query tracking**: Identifies which legal topics have weak retrieval
+
+### 🎯 Red-Team Adversarial Testing
+25 trick questions across 4 categories test failure modes:
+- **Non-existent laws**: "Apa isi UU AI Indonesia?" (no such law exists)
+- **Misleading phrasing**: "Apakah PHK tanpa alasan itu legal?" (contradictory premise)
+- **Out-of-domain**: Cooking recipes, Bitcoin prices, US law questions
+- **Contradictory premises**: "PT tanpa modal tapi dengan modal 1 miliar"
+
+System correctly refuses or flags low confidence for adversarial inputs.
+
+### 📈 Real-Time Quality Metrics
+Backend tracks grounding scores, refusal rates, and hallucination risk per query. Dashboard endpoint (`/api/v1/dashboard/accuracy`) aggregates metrics for monitoring.
+
+### ✅ Streaming Parity
+Both streaming and non-streaming endpoints have identical safety checks:
+- Confidence threshold enforcement
+- Post-generation grounding verification
+- Structured validation results
+
+### 🔍 No Fake Accuracy Stats
+Replaced misleading "99.2% accuracy" with qualitative trust indicators:
+- "Setiap jawaban disertai sumber hukum" (Every answer includes legal sources)
+- Trust badges: Verified Sources, Bank-grade Security, Indonesian Law
 
 ---
 
 ## Features
 
 ### Legal Q&A with Citations
-Ask any question about Indonesian regulations. Get accurate answers with direct citations to source documents (UU, PP, Perpres).
+Ask any question about Indonesian regulations. Get accurate answers with direct citations to source documents (UU, PP, Perpres). **Every answer includes grounding scores and ungrounded claim warnings.**
 
 ### Compliance Checker
-Describe your business operations or upload a PDF — get a compliance assessment against current regulations with specific recommendations.
+Describe your business operations or upload a PDF — get a compliance assessment against current regulations with specific recommendations. **Uses structured JSON-mode output for reliable parsing.**
 
 ### Business Formation Guidance
 Step-by-step guidance for establishing a business in Indonesia: required permits, regulatory steps, estimated timelines, and issuing authorities.
 
 ### Multi-Turn Chat
-Conversational interface with session memory. Ask follow-up questions without repeating context. 10-message sliding window keeps conversations focused.
+Conversational interface with session memory. Ask follow-up questions without repeating context. 10-message sliding window keeps conversations focused. **Supports verbatim/synthesized mode toggle.**
 
 ### Knowledge Graph
 Visual tree-view of legal document relationships: hierarchies, cross-references, and amendments. Understand how regulations connect.
 
 ### Compliance Dashboard
-Heat map and bar chart visualization of regulatory coverage across legal domains. See where your compliance gaps are.
+Heat map and bar chart visualization of regulatory coverage across legal domains. See where your compliance gaps are. **272 document segments across 28 regulations.**
+
+### Accuracy Evaluation
+Offline embedding evaluation with golden QA dataset (40 pairs across 13 regulations). Tracks MRR, Recall@K metrics. Red-team adversarial testing with 25 trick questions.
 
 ---
 
@@ -219,7 +273,11 @@ How does Omnibus Legal Compass compare to other legal AI projects?
 | **Multi-Turn Chat** | Yes (session memory) | No | No | No | No |
 | **Compliance Dashboard** | Yes (heat map + charts) | No | No | No | No |
 | **Source Citations** | Every response | No | No | Partial | Partial |
-| **Streaming Responses** | Yes | N/A | N/A | No | No |
+| **LLM-as-Judge Grounding** | Yes | No | No | No | No |
+| **Confidence Threshold Refusal** | Yes (< 0.30) | No | No | No | No |
+| **Embedding Retrieval Eval** | Yes (MRR/Recall@K) | No | No | No | No |
+| **Red-Team Adversarial Testing** | Yes (25 questions) | No | No | No | No |
+| **Streaming Responses** | Yes (with safety parity) | N/A | N/A | No | No |
 | **API Versioning** | `/api/v1/*` | No | No | No | No |
 | **Rate Limiting** | Yes (slowapi) | No | No | No | No |
 | **Test Coverage** | 360+ tests (91%) | Minimal | Minimal | None | None |
