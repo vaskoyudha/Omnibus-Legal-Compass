@@ -8,6 +8,8 @@ import SearchBar from '@/components/SearchBar';
 import DecryptedText from '@/components/reactbits/DecryptedText';
 import CountUp from '@/components/reactbits/CountUp';
 import SpotlightCard from '@/components/reactbits/SpotlightCard';
+
+
 import {
   askQuestion,
   AskResponse,
