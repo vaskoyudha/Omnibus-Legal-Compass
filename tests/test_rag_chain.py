@@ -333,7 +333,8 @@ class TestQueryEndToEnd:
         assert len(resp.citations) == 3
         assert len(resp.sources) == 3
         assert resp.confidence in ("tinggi", "sedang", "rendah")
-        mock_l.generate.assert_called_once()
+        # generate is called twice: once for main answer, once for grounding check (Task 1.3)
+        assert mock_l.generate.call_count == 2
 
     def test_query_with_document_filter(self):
         results = _make_results(2)
@@ -381,3 +382,145 @@ class TestQueryEndToEnd:
         assert "metadata" in event_types
         assert "chunk" in event_types
         assert "done" in event_types
+
+
+# ---------------------------------------------------------------------------
+# JSON metadata extraction tests (Task 2.1)
+# ---------------------------------------------------------------------------
+
+
+class TestExtractJsonMetadata:
+    """Tests for LegalRAGChain._extract_json_metadata."""
+
+    def test_extract_json_with_code_fence(self):
+        """JSON block wrapped in ```json ... ``` at end of answer."""
+        raw = (
+            "Pendirian PT diatur dalam UU No. 40 Tahun 2007 [1].\n\n"
+            "```json\n"
+            '{"cited_sources": [1, 2]}\n'
+            "```"
+        )
+        clean, meta = LegalRAGChain._extract_json_metadata(raw)
+        assert meta is not None
+        assert meta["cited_sources"] == [1, 2]
+        assert "```json" not in clean
+        assert "Pendirian PT" in clean
+
+    def test_extract_json_bare_object(self):
+        """Bare JSON object at end without code fence."""
+        raw = (
+            "Jawaban berdasarkan [1] dan [2].\n\n"
+            '{"cited_sources": [1, 2, 3]}'
+        )
+        clean, meta = LegalRAGChain._extract_json_metadata(raw)
+        assert meta is not None
+        assert meta["cited_sources"] == [1, 2, 3]
+        assert "Jawaban berdasarkan" in clean
+
+    def test_extract_json_no_json_present(self):
+        """No JSON block in the answer — returns None."""
+        raw = "Jawaban sederhana tanpa JSON apapun [1]."
+        clean, meta = LegalRAGChain._extract_json_metadata(raw)
+        assert meta is None
+        assert clean == raw
+
+    def test_extract_json_invalid_json(self):
+        """Malformed JSON block — returns None for metadata."""
+        raw = (
+            "Jawaban [1].\n\n"
+            "```json\n"
+            '{"cited_sources": [1, 2,}\n'  # invalid JSON
+            "```"
+        )
+        clean, meta = LegalRAGChain._extract_json_metadata(raw)
+        assert meta is None
+
+    def test_extract_json_empty_sources(self):
+        """JSON with empty cited_sources array."""
+        raw = (
+            "Jawaban tanpa sitasi.\n\n"
+            "```json\n"
+            '{"cited_sources": []}\n'
+            "```"
+        )
+        clean, meta = LegalRAGChain._extract_json_metadata(raw)
+        assert meta is not None
+        assert meta["cited_sources"] == []
+
+
+class TestValidateAnswerWithJsonSources:
+    """Tests for _validate_answer with json_cited_sources parameter."""
+
+    def _make_chain(self):
+        return LegalRAGChain(retriever=MagicMock(), llm_client=MagicMock())
+
+    def test_json_sources_used_when_provided(self):
+        """When json_cited_sources is provided, use it instead of regex."""
+        chain = self._make_chain()
+        citations = [
+            {"number": 1, "citation": "UU 40/2007"},
+            {"number": 2, "citation": "PP 5/2021"},
+        ]
+        # Answer text has [1] only, but JSON says [1, 2]
+        vr = chain._validate_answer(
+            "Jawaban berdasarkan [1].",
+            citations,
+            json_cited_sources=[1, 2],
+        )
+        assert vr.citation_coverage == 1.0  # Both sources cited via JSON
+        assert vr.hallucination_risk == "low"
+
+    def test_regex_fallback_when_json_is_none(self):
+        """When json_cited_sources is None, fall back to regex."""
+        chain = self._make_chain()
+        citations = [
+            {"number": 1, "citation": "UU 40/2007"},
+            {"number": 2, "citation": "PP 5/2021"},
+        ]
+        vr = chain._validate_answer(
+            "Jawaban berdasarkan [1].",
+            citations,
+            json_cited_sources=None,
+        )
+        assert vr.citation_coverage == 0.5  # Only [1] found via regex
+
+    def test_json_parse_fallback_to_regex(self):
+        """Full end-to-end: LLM returns no JSON → regex fallback works."""
+        results = _make_results(2)
+        mock_r = MagicMock()
+        mock_r.hybrid_search.return_value = results
+        mock_l = MagicMock()
+        # LLM returns plain text without JSON block
+        mock_l.generate.return_value = "Berdasarkan [1] dan [2], jawabannya..."
+
+        chain = LegalRAGChain(retriever=mock_r, llm_client=mock_l)
+        resp = chain.query("Apa itu PT?")
+
+        assert resp.answer == "Berdasarkan [1] dan [2], jawabannya..."
+        assert resp.validation is not None
+        assert resp.validation.citation_coverage == 1.0  # Both cited via regex
+        assert resp.validation.hallucination_risk == "low"
+
+    def test_json_parse_success_extracts_answer(self):
+        """Full end-to-end: LLM returns JSON → answer is cleaned, sources extracted."""
+        results = _make_results(3)
+        mock_r = MagicMock()
+        mock_r.hybrid_search.return_value = results
+        mock_l = MagicMock()
+        # LLM returns answer with JSON metadata block
+        mock_l.generate.return_value = (
+            "Berdasarkan UU No. 40 [1], syarat PT adalah...\n\n"
+            "```json\n"
+            '{"cited_sources": [1, 3]}\n'
+            "```"
+        )
+
+        chain = LegalRAGChain(retriever=mock_r, llm_client=mock_l)
+        resp = chain.query("Apa itu PT?")
+
+        # Answer should be cleaned (no JSON block)
+        assert "```json" not in resp.answer
+        assert "cited_sources" not in resp.answer
+        assert "Berdasarkan UU No. 40" in resp.answer
+        # Validation should use JSON-extracted sources
+        assert resp.validation is not None

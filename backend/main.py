@@ -7,7 +7,9 @@ Provides legal document search, Q&A with citations, and health checks.
 
 from __future__ import annotations
 
+import json
 import logging
+import re
 import time
 from contextlib import asynccontextmanager
 from typing import Any
@@ -356,6 +358,182 @@ class GuidanceResponse(BaseModel):
         default=[], description="Sitasi peraturan terkait"
     )
     processing_time_ms: float = Field(description="Waktu pemrosesan dalam milidetik")
+
+
+# =============================================================================
+# Structured LLM Output Models (Task 2.1 — JSON-mode parsing)
+# =============================================================================
+
+
+class LLMComplianceIssue(BaseModel):
+    """Structured compliance issue from LLM JSON output."""
+    issue: str = ""
+    severity: str = "sedang"
+    regulation: str = ""
+    pasal: str | None = None
+    recommendation: str = ""
+
+
+class LLMComplianceResult(BaseModel):
+    """Structured compliance result parsed from LLM JSON output."""
+    status: str = "partial"  # compliant, non_compliant, partial
+    risk_level: str = "sedang"  # rendah, sedang, tinggi
+    summary: str = ""
+    issues: list[LLMComplianceIssue] = []
+    recommendations: list[str] = []
+
+
+class LLMGuidanceStep(BaseModel):
+    """Structured guidance step from LLM JSON output."""
+    title: str = ""
+    description: str = ""
+    requirements: list[str] = []
+    estimated_time: str = "1-2 minggu"
+    fees: str | None = None
+
+
+class LLMGuidanceResult(BaseModel):
+    """Structured guidance result parsed from LLM JSON output."""
+    steps: list[LLMGuidanceStep] = []
+
+
+def _extract_json_from_response(response_text: str) -> dict[str, Any] | None:
+    """
+    Extract JSON block from LLM response text.
+    
+    Tries multiple patterns:
+    1. ```json ... ``` code fence at end
+    2. Bare JSON object at end
+    3. JSON object anywhere in the response
+    
+    Returns parsed dict or None if extraction fails.
+    """
+    # Pattern 1: ```json\n{...}\n```
+    json_block_match = re.search(
+        r'```json\s*\n?\s*(\{.*?\})\s*\n?\s*```',
+        response_text,
+        re.DOTALL,
+    )
+    if json_block_match:
+        try:
+            return json.loads(json_block_match.group(1))
+        except json.JSONDecodeError:
+            pass
+    
+    # Pattern 2: Find the last JSON object in the response
+    # Look for { ... } that starts with a known key
+    last_json_start = response_text.rfind('{')
+    if last_json_start >= 0:
+        # Find matching closing brace
+        brace_depth = 0
+        for i in range(last_json_start, len(response_text)):
+            if response_text[i] == '{':
+                brace_depth += 1
+            elif response_text[i] == '}':
+                brace_depth -= 1
+                if brace_depth == 0:
+                    json_str = response_text[last_json_start:i + 1]
+                    try:
+                        return json.loads(json_str)
+                    except json.JSONDecodeError:
+                        break
+    
+    return None
+
+
+def _parse_compliance_response(
+    answer: str,
+) -> tuple[bool, str, str, list[ComplianceIssue], list[str]]:
+    """
+    Parse compliance analysis response. Tries JSON-mode first, falls back to regex.
+    
+    Returns:
+        Tuple of (is_compliant, risk_level, summary, issues, recommendations)
+    """
+    # Try JSON-mode parsing first
+    parsed = _extract_json_from_response(answer)
+    if parsed:
+        try:
+            result = LLMComplianceResult.model_validate(parsed)
+            logger.info("Compliance response parsed via JSON-mode")
+            
+            # Map status to boolean
+            is_compliant = result.status == "compliant"
+            
+            # Map risk_level (handle both English and Indonesian)
+            risk_map = {"low": "rendah", "medium": "sedang", "high": "tinggi"}
+            risk_level = risk_map.get(result.risk_level, result.risk_level)
+            if risk_level not in ("rendah", "sedang", "tinggi"):
+                risk_level = "sedang"
+            
+            # Convert issues
+            issues = [
+                ComplianceIssue(
+                    issue=i.issue or "Masalah kepatuhan terdeteksi",
+                    severity=i.severity,
+                    regulation=i.regulation or "Lihat sitasi untuk detail peraturan",
+                    pasal=i.pasal,
+                    recommendation=i.recommendation or "Konsultasikan dengan ahli hukum",
+                )
+                for i in result.issues
+            ]
+            
+            # Summary
+            summary = result.summary or (answer[:500] + "..." if len(answer) > 500 else answer)
+            
+            return is_compliant, risk_level, summary, issues, result.recommendations[:5]
+        except Exception as e:
+            logger.warning(f"JSON compliance parsing succeeded but validation failed: {e}")
+    
+    # Fallback: regex/keyword parsing (original logic)
+    logger.info("Compliance response parsed via regex/keyword fallback")
+    answer_lower = answer.lower()
+    
+    # Determine compliance status
+    is_compliant = "patuh" in answer_lower and "tidak patuh" not in answer_lower
+    
+    # Determine risk level
+    if "tingkat risiko: tinggi" in answer_lower or "risiko tinggi" in answer_lower:
+        risk_level = "tinggi"
+    elif "tingkat risiko: rendah" in answer_lower or "risiko rendah" in answer_lower:
+        risk_level = "rendah"
+    else:
+        risk_level = "sedang"
+    
+    # Extract recommendations
+    recommendations: list[str] = []
+    if "rekomendasi" in answer_lower:
+        lines = answer.split("\n")
+        in_recommendations = False
+        for line in lines:
+            if "rekomendasi" in line.lower():
+                in_recommendations = True
+                continue
+            if in_recommendations and line.strip().startswith("-"):
+                rec = line.strip().lstrip("-").strip()
+                if rec and len(rec) > 5:
+                    recommendations.append(rec)
+            elif in_recommendations and line.strip() and not line.strip().startswith("-"):
+                if "masalah" in line.lower() or "**" in line:
+                    in_recommendations = False
+    
+    # Extract issues
+    issues: list[ComplianceIssue] = []
+    if "masalah" in answer_lower and "tidak" in answer_lower:
+        if risk_level == "tinggi":
+            issues.append(
+                ComplianceIssue(
+                    issue="Potensi pelanggaran terdeteksi berdasarkan analisis",
+                    severity="tinggi",
+                    regulation="Lihat sitasi untuk detail peraturan",
+                    pasal=None,
+                    recommendation="Konsultasikan dengan ahli hukum untuk detail lebih lanjut",
+                )
+            )
+    
+    summary = answer[:500] + "..." if len(answer) > 500 else answer
+    
+    return is_compliant, risk_level, summary, issues, recommendations[:5]
 
 
 # =============================================================================
@@ -993,7 +1171,7 @@ async def check_compliance(
         logger.warning(f"Truncated input to {max_chars} characters")
 
     try:
-        # Build compliance analysis prompt
+        # Build compliance analysis prompt — instruct LLM to return JSON
         compliance_prompt = f"""Anda adalah ahli hukum Indonesia yang menganalisis kepatuhan bisnis.
 
 Analisis deskripsi bisnis berikut terhadap peraturan Indonesia yang relevan:
@@ -1002,15 +1180,28 @@ Analisis deskripsi bisnis berikut terhadap peraturan Indonesia yang relevan:
 {text_content}
 ---
 
-Berikan analisis kepatuhan dengan format berikut:
+Berikan analisis kepatuhan dalam format teks naratif DIIKUTI dengan blok JSON terstruktur di akhir.
 
-1. **KESIMPULAN**: Apakah bisnis ini kemungkinan PATUH atau TIDAK PATUH
-2. **TINGKAT RISIKO**: tinggi / sedang / rendah
-3. **RINGKASAN**: Ringkasan singkat hasil analisis (2-3 kalimat)
-4. **MASALAH YANG TERDETEKSI** (jika ada):
-   - Masalah 1: [deskripsi], Peraturan: [nama peraturan], Pasal: [nomor], Tingkat: [tinggi/sedang/rendah], Rekomendasi: [saran]
-   - Masalah 2: ...
-5. **REKOMENDASI UMUM**: Daftar langkah-langkah yang harus diambil
+Pertama, tulis analisis naratif singkat (2-3 paragraf) tentang kepatuhan bisnis ini.
+
+Kemudian, di akhir jawaban, WAJIB tambahkan blok JSON berikut:
+```json
+{{
+  "status": "compliant" atau "non_compliant" atau "partial",
+  "risk_level": "rendah" atau "sedang" atau "tinggi",
+  "summary": "Ringkasan singkat hasil analisis (2-3 kalimat)",
+  "issues": [
+    {{
+      "issue": "Deskripsi masalah",
+      "severity": "rendah/sedang/tinggi",
+      "regulation": "Nama peraturan terkait",
+      "pasal": "Nomor pasal jika ada atau null",
+      "recommendation": "Saran perbaikan"
+    }}
+  ],
+  "recommendations": ["Rekomendasi 1", "Rekomendasi 2"]
+}}
+```
 
 Jika informasi tidak cukup untuk memberikan analisis yang akurat, sampaikan keterbatasan tersebut.
 Selalu kutip sumber peraturan yang relevan."""
@@ -1023,37 +1214,10 @@ Selalu kutip sumber peraturan yang relevan."""
 
         processing_time = (time.perf_counter() - start_time) * 1000
 
-        # Parse the response to extract structured data
-        answer_lower = response.answer.lower()
-        
-        # Determine compliance status
-        is_compliant = "patuh" in answer_lower and "tidak patuh" not in answer_lower
-        
-        # Determine risk level
-        if "tingkat risiko: tinggi" in answer_lower or "risiko tinggi" in answer_lower:
-            risk_level = "tinggi"
-        elif "tingkat risiko: rendah" in answer_lower or "risiko rendah" in answer_lower:
-            risk_level = "rendah"
-        else:
-            risk_level = "sedang"
-
-        # Extract recommendations from the answer
-        recommendations = []
-        if "rekomendasi" in answer_lower:
-            # Simple extraction - lines after "rekomendasi"
-            lines = response.answer.split("\n")
-            in_recommendations = False
-            for line in lines:
-                if "rekomendasi" in line.lower():
-                    in_recommendations = True
-                    continue
-                if in_recommendations and line.strip().startswith("-"):
-                    rec = line.strip().lstrip("-").strip()
-                    if rec and len(rec) > 5:
-                        recommendations.append(rec)
-                elif in_recommendations and line.strip() and not line.strip().startswith("-"):
-                    if "masalah" in line.lower() or "**" in line:
-                        in_recommendations = False
+        # Parse the response using JSON-mode with regex fallback
+        is_compliant, risk_level, summary, issues, recommendations = _parse_compliance_response(
+            response.answer
+        )
 
         # Build citations
         citations = [
@@ -1067,27 +1231,12 @@ Selalu kutip sumber peraturan yang relevan."""
             for c in response.citations
         ]
 
-        # Extract issues (simplified - could be enhanced with more parsing)
-        issues: list[ComplianceIssue] = []
-        if "masalah" in answer_lower and "tidak" in answer_lower:
-            # There are likely issues - create a generic one based on risk
-            if risk_level == "tinggi":
-                issues.append(
-                    ComplianceIssue(
-                        issue="Potensi pelanggaran terdeteksi berdasarkan analisis",
-                        severity="tinggi",
-                        regulation="Lihat sitasi untuk detail peraturan",
-                        pasal=None,
-                        recommendation="Konsultasikan dengan ahli hukum untuk detail lebih lanjut",
-                    )
-                )
-
         return ComplianceResponse(
             compliant=is_compliant,
             risk_level=risk_level,
-            summary=response.answer[:500] + "..." if len(response.answer) > 500 else response.answer,
+            summary=summary,
             issues=issues,
-            recommendations=recommendations[:5],  # Limit to 5 recommendations
+            recommendations=recommendations,
             citations=citations,
             processing_time_ms=round(processing_time, 2),
         )
@@ -1215,6 +1364,40 @@ def extract_permits(answer: str) -> list[str]:
     return list(set(permits))[:10]  # Limit to 10 unique permits
 
 
+def _parse_guidance_response(answer: str) -> list[GuidanceStep]:
+    """
+    Parse guidance response. Tries JSON-mode first, falls back to regex.
+    
+    Returns:
+        List of GuidanceStep objects.
+    """
+    # Try JSON-mode parsing first
+    parsed = _extract_json_from_response(answer)
+    if parsed and "steps" in parsed:
+        try:
+            result = LLMGuidanceResult.model_validate(parsed)
+            if result.steps:
+                logger.info(f"Guidance response parsed via JSON-mode: {len(result.steps)} steps")
+                steps = [
+                    GuidanceStep(
+                        step_number=i + 1,
+                        title=s.title or f"Langkah {i + 1}",
+                        description=s.description or "",
+                        requirements=s.requirements,
+                        estimated_time=s.estimated_time or "1-2 minggu",
+                        fees=s.fees,
+                    )
+                    for i, s in enumerate(result.steps)
+                ]
+                return steps
+        except Exception as e:
+            logger.warning(f"JSON guidance parsing succeeded but validation failed: {e}")
+    
+    # Fallback: regex parsing (original logic)
+    logger.info("Guidance response parsed via regex fallback")
+    return parse_guidance_steps(answer)
+
+
 @api_router.post("/guidance", response_model=GuidanceResponse, tags=["Guidance"])
 @limiter.limit("20/minute")
 async def get_business_guidance(request: Request, body: GuidanceRequest):
@@ -1281,14 +1464,27 @@ Jelaskan secara detail:
 5. Izin-izin yang diperlukan
 6. Dasar hukum dan peraturan yang berlaku
 
-Gunakan format bernomor untuk setiap langkah."""
+Setelah jawaban naratif, WAJIB tambahkan blok JSON terstruktur di akhir:
+```json
+{{
+  "steps": [
+    {{
+      "title": "Judul langkah",
+      "description": "Deskripsi detail langkah",
+      "requirements": ["Dokumen 1", "Dokumen 2"],
+      "estimated_time": "1-2 minggu",
+      "fees": "Rp X.XXX.XXX atau null jika gratis"
+    }}
+  ]
+}}
+```"""
 
     try:
         # Query the RAG chain
         response = await rag_chain.aquery(query)
 
-        # Parse the response into structured steps
-        steps = parse_guidance_steps(response.answer)
+        # Parse the response into structured steps (JSON-mode with regex fallback)
+        steps = _parse_guidance_response(response.answer)
 
         # Extract required permits
         required_permits = extract_permits(response.answer)

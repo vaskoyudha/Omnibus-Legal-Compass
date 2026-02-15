@@ -117,6 +117,11 @@ INSTRUKSI:
 - Pisahkan paragraf dengan baris kosong untuk keterbacaan
 - Gunakan Bahasa Indonesia formal yang mudah dipahami
 - Akhiri dengan satu kalimat singkat tentang tingkat keyakinan jawaban
+- PENTING: Setelah jawaban selesai, WAJIB tambahkan blok JSON metadata di baris baru terpisah dengan format:
+```json
+{{"cited_sources": [1, 2, 3]}}
+```
+  Isi cited_sources dengan nomor-nomor sumber yang benar-benar dikutip dalam jawaban.
 
 JAWABAN:"""
 
@@ -345,6 +350,57 @@ class LegalRAGChain:
         
         self.top_k = top_k
     
+    @staticmethod
+    def _extract_json_metadata(raw_answer: str) -> tuple[str, dict[str, Any] | None]:
+        """
+        Extract JSON metadata block from the end of an LLM response.
+        
+        The LLM is instructed to append a JSON block like:
+        ```json
+        {"cited_sources": [1, 2, 3]}
+        ```
+        
+        Returns:
+            Tuple of (clean_answer_text, parsed_json_or_None)
+        """
+        # Try to find JSON block at the end (with or without ```json wrapper)
+        # Pattern 1: ```json\n{...}\n```
+        json_block_match = re.search(
+            r'```json\s*\n?\s*(\{[^`]*?\})\s*\n?\s*```\s*$',
+            raw_answer,
+            re.DOTALL,
+        )
+        if json_block_match:
+            json_str = json_block_match.group(1)
+            clean_answer = raw_answer[:json_block_match.start()].rstrip()
+            try:
+                parsed = json.loads(json_str)
+                logger.info(f"Successfully parsed JSON metadata from LLM response: {list(parsed.keys())}")
+                return clean_answer, parsed
+            except json.JSONDecodeError as e:
+                logger.warning(f"Found JSON block but failed to parse: {e}")
+                return clean_answer, None
+        
+        # Pattern 2: bare JSON object at the end (no code fence)
+        bare_json_match = re.search(
+            r'\n\s*(\{"cited_sources"\s*:\s*\[[\d,\s]*\]\})\s*$',
+            raw_answer,
+        )
+        if bare_json_match:
+            json_str = bare_json_match.group(1)
+            clean_answer = raw_answer[:bare_json_match.start()].rstrip()
+            try:
+                parsed = json.loads(json_str)
+                logger.info(f"Successfully parsed bare JSON metadata from LLM response")
+                return clean_answer, parsed
+            except json.JSONDecodeError as e:
+                logger.warning(f"Found bare JSON but failed to parse: {e}")
+                return clean_answer, None
+        
+        # No JSON found — return original answer
+        logger.debug("No JSON metadata block found in LLM response, will use regex fallback")
+        return raw_answer, None
+
     def _format_context(self, results: list[SearchResult]) -> tuple[str, list[dict]]:
         """Format search results into context with numbered citations."""
         context_parts = []
@@ -483,12 +539,27 @@ class LegalRAGChain:
         self,
         answer: str,
         citations: list[dict],
+        json_cited_sources: list[int] | None = None,
     ) -> ValidationResult:
-        """Validate answer for citation accuracy and hallucination risk."""
+        """Validate answer for citation accuracy and hallucination risk.
+        
+        Args:
+            answer: The LLM-generated answer text.
+            citations: List of citation dicts with 'number' keys.
+            json_cited_sources: If provided (from structured JSON output),
+                use these directly instead of regex extraction. Falls back
+                to regex if None.
+        """
         warnings: list[str] = []
         
-        # Extract citation references from answer [1], [2], etc.
-        cited_refs = set(int(m) for m in re.findall(r'\[(\d+)\]', answer))
+        # Extract citation references — prefer JSON-extracted, fallback to regex
+        if json_cited_sources is not None:
+            cited_refs = set(json_cited_sources)
+            logger.debug(f"Using JSON-extracted cited_sources: {cited_refs}")
+        else:
+            # Fallback: regex extraction from answer text [1], [2], etc.
+            cited_refs = set(int(m) for m in re.findall(r'\[(\d+)\]', answer))
+            logger.debug(f"Using regex-extracted cited_sources: {cited_refs}")
         available_refs = set(c["number"] for c in citations)
         
         # Check for invalid citations (references that don't exist)
@@ -702,13 +773,26 @@ JSON:"""
         logger.info(f"Generating answer with NVIDIA NIM {NVIDIA_MODEL} (mode: {mode})...")
         # Use different system prompt based on mode
         system_msg = VERBATIM_SYSTEM_PROMPT if mode == "verbatim" else SYSTEM_PROMPT
-        answer = self.llm_client.generate(
+        raw_answer = self.llm_client.generate(
             user_message=user_prompt,
             system_message=system_msg,
         )
         
+        # Step 3.5: Extract structured JSON metadata from LLM response
+        answer, json_metadata = self._extract_json_metadata(raw_answer)
+        
         # Step 4: Validate answer for citation accuracy
-        validation = self._validate_answer(answer, citations)
+        # If JSON metadata has cited_sources, pass them to validation; otherwise regex fallback
+        json_cited_sources: list[int] | None = None
+        if json_metadata and "cited_sources" in json_metadata:
+            try:
+                json_cited_sources = [int(s) for s in json_metadata["cited_sources"]]
+                logger.info(f"Using JSON-extracted cited_sources: {json_cited_sources}")
+            except (TypeError, ValueError) as e:
+                logger.warning(f"Invalid cited_sources in JSON metadata: {e}")
+                json_cited_sources = None
+        
+        validation = self._validate_answer(answer, citations, json_cited_sources=json_cited_sources)
         if validation.warnings:
             logger.warning(f"Answer validation warnings: {validation.warnings}")
         

@@ -668,3 +668,234 @@ class TestParseGuidanceSteps:
         steps = parse_guidance_steps(answer)
         assert len(steps) == 2
 
+
+class TestExtractJsonFromResponse:
+    """Tests for _extract_json_from_response utility."""
+
+    def test_extract_json_code_fence(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _extract_json_from_response
+
+        answer = (
+            "Berikut analisis singkat.\n"
+            "```json\n"
+            "{\"status\": \"compliant\", \"risk_level\": \"rendah\", \"summary\": \"Semua baik\"}\n"
+            "```"
+        )
+        parsed = _extract_json_from_response(answer)
+        assert isinstance(parsed, dict)
+        assert parsed.get("status") == "compliant"
+        assert parsed.get("risk_level") == "rendah"
+
+    def test_extract_json_bare_object(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _extract_json_from_response
+
+        answer = "Analisis akhir. {\"status\": \"non_compliant\", \"risk_level\": \"tinggi\"}"
+        parsed = _extract_json_from_response(answer)
+        assert isinstance(parsed, dict)
+        assert parsed["status"] == "non_compliant"
+        assert parsed["risk_level"] == "tinggi"
+
+    def test_extract_json_no_json(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _extract_json_from_response
+
+        answer = "Ini hanyalah teks biasa tanpa JSON terstruktur. Tidak ada data." 
+        parsed = _extract_json_from_response(answer)
+        assert parsed is None
+
+    def test_extract_json_invalid(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _extract_json_from_response
+
+        # Malformed JSON inside code fence should return None
+        answer = (
+            "Penjelasan...\n```json\n{\"status\": \"compliant\", \"risk_level\": rendah}\n```")
+        parsed = _extract_json_from_response(answer)
+        assert parsed is None
+
+    def test_extract_json_nested_braces(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _extract_json_from_response
+
+        # JSON with nested objects should parse correctly
+        answer = (
+            "Detail: ...\n```json\n"
+            "{\"status\": \"non_compliant\", \"risk_level\": \"medium\", "
+            "\"details\": {\"found\": true, \"counts\": {\"issues\": 2}}}\n"
+            "```"
+        )
+        parsed = _extract_json_from_response(answer)
+        assert isinstance(parsed, dict)
+        assert parsed.get("details", {}).get("counts", {}).get("issues") == 2
+
+
+class TestParseComplianceResponse:
+    """Tests for _parse_compliance_response covering JSON-mode and regex fallback."""
+
+    def test_json_mode_compliant(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_compliance_response
+
+        answer = (
+            "Ringkasan: bisnis terlihat patuh.\n```json\n"
+            "{\"status\": \"compliant\", \"risk_level\": \"rendah\", "
+            "\"summary\": \"Tidak ditemukan isu signifikan\", \"issues\": [], \"recommendations\": []}"
+            "\n```"
+        )
+        is_compliant, risk_level, summary, issues, recommendations = _parse_compliance_response(answer)
+        assert is_compliant is True
+        assert risk_level == "rendah"
+        assert isinstance(summary, str)
+        assert len(issues) == 0
+        assert recommendations == []
+
+    def test_json_mode_non_compliant(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_compliance_response
+
+        answer = (
+            "Analisis: ditemukan pelanggaran.\n```json\n"
+            "{\"status\": \"non_compliant\", \"risk_level\": \"tinggi\", "
+            "\"summary\": \"Tidak memiliki izin usaha\", "
+            "\"issues\": [{\"issue\": \"Tidak memiliki izin\", \"severity\": \"tinggi\", \"regulation\": \"UU No. X\", \"pasal\": null, \"recommendation\": \"Segera urus izin\"}], "
+            "\"recommendations\": [\"Daftarkan izin usaha melalui OSS\"]}"
+            "\n```"
+        )
+        is_compliant, risk_level, summary, issues, recommendations = _parse_compliance_response(answer)
+        assert is_compliant is False
+        assert risk_level == "tinggi"
+        assert "izin" in summary.lower()
+        assert len(issues) == 1
+        assert issues[0].issue == "Tidak memiliki izin"
+        assert issues[0].severity == "tinggi"
+        assert isinstance(recommendations, list) and len(recommendations) == 1
+
+    def test_json_mode_english_risk_level(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_compliance_response
+
+        answer = (
+            "Detail: ...\n```json\n"
+            "{\"status\": \"non_compliant\", \"risk_level\": \"high\", \"summary\": \"Masalah serius\", \"issues\": [], \"recommendations\": []}"
+            "\n```"
+        )
+        is_compliant, risk_level, summary, issues, recommendations = _parse_compliance_response(answer)
+        assert is_compliant is False
+        assert risk_level == "tinggi"
+
+    def test_regex_fallback_patuh(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_compliance_response
+
+        answer = "Hasil: BISNIS INI PATUH. Tingkat Risiko: rendah. Tidak ada rekomendasi khusus."
+        is_compliant, risk_level, summary, issues, recommendations = _parse_compliance_response(answer)
+        assert is_compliant is True
+        assert risk_level == "rendah"
+
+    def test_regex_fallback_tidak_patuh(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_compliance_response
+
+        answer = (
+            "Analisis menunjukkan: TIDAK PATUH.\nTingkat Risiko: tinggi\n"
+            "Rekomendasi:\n- Daftarkan izin usaha melalui OSS segera\n- Konsultasikan dengan notaris untuk akta pendirian\n"
+        )
+        is_compliant, risk_level, summary, issues, recommendations = _parse_compliance_response(answer)
+        assert is_compliant is False
+        assert risk_level == "tinggi"
+        assert len(recommendations) >= 2
+        assert any("OSS" in r for r in recommendations)
+
+    def test_regex_fallback_default_risk(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_compliance_response
+
+        answer = "Analisis singkat tanpa menyebut tingkat risiko atau kata kunci risiko lainnya."
+        is_compliant, risk_level, summary, issues, recommendations = _parse_compliance_response(answer)
+        assert risk_level == "sedang"
+
+
+class TestParseGuidanceResponse:
+    """Tests for _parse_guidance_response covering JSON-mode and regex fallback."""
+
+    def test_json_mode_with_steps(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_guidance_response
+
+        answer = (
+            "Penjelasan...\n```json\n"
+            "{\"steps\": [ {\"title\": \"Pemesanan Nama\", \"description\": \"Ajukan nama PT.\", \"requirements\": [\"KTP\", \"NPWP\"], \"estimated_time\": \"1-2 minggu\", \"fees\": \"Rp 1.000.000\"} ] }\n```")
+        steps = _parse_guidance_response(answer)
+        assert isinstance(steps, list)
+        assert len(steps) >= 1
+        s = steps[0]
+        assert s.step_number == 1
+        assert "Pemesanan Nama" in s.title
+        assert "Ajukan nama" in s.description
+        assert s.requirements == ["KTP", "NPWP"]
+        assert "1-2 minggu" in s.estimated_time
+        assert s.fees == "Rp 1.000.000"
+
+    def test_json_mode_empty_steps(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_guidance_response
+
+        # JSON with empty steps should fall back to regex parsing of textual steps
+        answer = (
+            "Berikut panduan singkat:\n1. Pemesanan Nama\nAjukan pemesanan nama melalui AHU Online.\n```")
+        # Append an explicit empty JSON block
+        answer += "\n```json\n{\"steps\": []}\n```"
+
+        steps = _parse_guidance_response(answer)
+        assert isinstance(steps, list)
+        assert len(steps) >= 1
+        assert steps[0].step_number == 1
+
+    def test_regex_fallback(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_guidance_response
+
+        answer = (
+            "1. Pemesanan Nama PT\nAjukan pemesanan nama melalui AHU Online.\n\n"
+            "2. Akta Pendirian\nBuat akta pendirian oleh notaris."
+        )
+        steps = _parse_guidance_response(answer)
+        assert isinstance(steps, list)
+        assert len(steps) >= 2
+        assert steps[0].step_number == 1
+        assert steps[1].step_number == 2
+
+    def test_json_mode_multiple_steps(self):
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+        from main import _parse_guidance_response
+
+        answer = (
+            "Intro...\n```json\n{\"steps\": ["
+            "{\"title\": \"Langkah Satu\", \"description\": \"Deskripsi 1\", \"requirements\": [], \"estimated_time\": \"1 minggu\", \"fees\": null},"
+            "{\"title\": \"Langkah Dua\", \"description\": \"Deskripsi 2\", \"requirements\": [], \"estimated_time\": \"2 minggu\", \"fees\": null},"
+            "{\"title\": \"Langkah Tiga\", \"description\": \"Deskripsi 3\", \"requirements\": [], \"estimated_time\": \"3 minggu\", \"fees\": null}"
+            "]}\n```"
+        )
+        steps = _parse_guidance_response(answer)
+        assert isinstance(steps, list)
+        assert len(steps) == 3
+        assert steps[0].step_number == 1
+        assert steps[1].step_number == 2
+        assert steps[2].step_number == 3
