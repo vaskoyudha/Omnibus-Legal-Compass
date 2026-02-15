@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -83,6 +83,23 @@ const SUGGESTIONS = [
 ];
 
 export default function ChatPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen pt-24 pb-10 px-4">
+        <div className="max-w-4xl mx-auto flex items-center justify-center min-h-[400px]">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-8 h-8 border-2 border-[#AAFF00]/30 border-t-[#AAFF00] rounded-full animate-spin" />
+            <p className="text-text-muted text-sm">Memuat percakapan...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <ChatPageInner />
+    </Suspense>
+  );
+}
+
+function ChatPageInner() {
   const searchParams = useSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
