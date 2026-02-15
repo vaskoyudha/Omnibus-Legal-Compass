@@ -55,14 +55,14 @@ const featureCards = [
 ];
 
 const stats = [
-  { value: 10000, suffix: '+', label: 'Pertanyaan Dijawab' },
-  { value: 500, suffix: '+', label: 'Regulasi Tercakup' },
+  { value: 28, suffix: '', label: 'Regulasi Terindeks' },
+  { value: 272, suffix: '', label: 'Segmen Dokumen' },
   { qualitative: true, label: 'Setiap jawaban disertai sumber hukum' },
 ];
 
 const trustBadges = [
-  { icon: '🔒', label: 'Bank-grade Security' },
-  { icon: '⚡', label: '24/7 Available' },
+  { icon: '🔍', label: 'Grounding Verified' },
+  { icon: '🛡️', label: 'Refuses If Unsure' },
   { icon: '✅', label: 'Verified Sources' },
   { icon: '🇮🇩', label: 'Indonesian Law' },
 ];
@@ -312,7 +312,7 @@ export default function Home() {
           </div>
         </motion.div>
 
-      {/* Social Proof / Trusted By */}
+      {/* Methodology Transparency */}
       <motion.div
         className="max-w-4xl mx-auto px-4 mt-12"
           initial={{ opacity: 0 }}
@@ -320,27 +320,39 @@ export default function Home() {
           transition={{ delay: 0.8, duration: 0.6 }}
         >
           <div className="text-center mb-6">
-            <p className="text-xs uppercase tracking-widest text-text-muted">Dipercaya oleh profesional hukum</p>
+            <p className="text-xs uppercase tracking-widest text-text-muted">Mengapa Anda bisa percaya</p>
           </div>
-          <div className="flex items-center justify-center gap-6 sm:gap-10 opacity-40">
-            {['Universitas Indonesia', 'Fakultas Hukum', 'BKPM', 'OJK', 'Kemenkumham'].map((name) => (
-              <div key={name} className="text-sm font-semibold text-text-muted tracking-wide whitespace-nowrap">
-                {name}
+          <div className="flex items-center justify-center gap-4 sm:gap-8 flex-wrap">
+            {[
+              { icon: '📂', label: 'Open Source', desc: 'Kode sumber terbuka di GitHub' },
+              { icon: '📜', label: 'MIT Licensed', desc: 'Lisensi bebas & transparan' },
+              { icon: '🔍', label: 'Grounding Verified', desc: 'Setiap jawaban diverifikasi AI' },
+              { icon: '🧪', label: '360+ Tests', desc: 'Teruji otomatis secara menyeluruh' },
+            ].map((item) => (
+              <div key={item.label} className="flex flex-col items-center text-center max-w-[120px]">
+                <span className="text-2xl mb-1">{item.icon}</span>
+                <span className="text-sm font-semibold text-text-primary">{item.label}</span>
+                <span className="text-xs text-text-muted leading-tight mt-0.5">{item.desc}</span>
               </div>
             ))}
           </div>
 
-          {/* Testimonial */}
-          <div className="mt-8 glass-strong rounded-2xl p-6 max-w-2xl mx-auto text-center">
-            <svg className="w-8 h-8 text-[#AAFF00]/30 mx-auto mb-3" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-            </svg>
-            <p className="text-text-secondary text-sm leading-relaxed italic mb-4">
-              &quot;OMNIBUS membantu tim kami menganalisis ribuan dokumen hukum dalam hitungan menit. Akurasi dan kecepatan yang luar biasa.&quot;
-            </p>
-            <div>
-              <p className="text-sm font-semibold text-text-primary">Dr. Sari Wulandari</p>
-              <p className="text-xs text-text-muted">Head of Legal Affairs, Jakarta</p>
+          {/* How It Works — replaces fake testimonial */}
+          <div className="mt-8 glass-strong rounded-2xl p-6 max-w-2xl mx-auto">
+            <h3 className="text-sm font-semibold text-text-primary text-center mb-4">Bagaimana Kami Menjaga Akurasi</h3>
+            <div className="space-y-3">
+              {[
+                { step: '1', text: 'Pencarian hybrid (BM25 + vektor semantik) menemukan dokumen hukum yang paling relevan' },
+                { step: '2', text: 'CrossEncoder reranking menyaring hasil agar presisi tinggi' },
+                { step: '3', text: 'AI menghasilkan jawaban beserta kutipan pasal dan ayat' },
+                { step: '4', text: 'LLM-as-judge memverifikasi apakah jawaban benar-benar didukung sumber' },
+                { step: '5', text: 'Jika kepercayaan rendah, sistem menolak menjawab daripada memberikan informasi salah' },
+              ].map((item) => (
+                <div key={item.step} className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#AAFF00]/10 text-[#AAFF00] text-xs font-bold flex items-center justify-center">{item.step}</span>
+                  <p className="text-sm text-text-secondary leading-relaxed">{item.text}</p>
+                </div>
+              ))}
             </div>
           </div>
         </motion.div>
