@@ -24,6 +24,25 @@ jobs:
           NVIDIA_API_KEY: test-key-for-ci  # pragma: allowlist secret
           QDRANT_URL: http://localhost:6333
 
+  # DeepEval evaluation - runs only on PRs when DEEPEVAL_NVIDIA_API_KEY is configured
+  deepeval:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && secrets.DEEPEVAL_NVIDIA_API_KEY != ''
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+      - name: Run DeepEval tests
+        run: pytest tests/deepeval/ -v
+        env:
+          NVIDIA_API_KEY: ${{ secrets.DEEPEVAL_NVIDIA_API_KEY }}
+          DEEPEVAL_API_KEY: ${{ secrets.DEEPEVAL_API_KEY }}
+
   frontend-build:
     runs-on: ubuntu-latest
     defaults:

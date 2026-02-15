@@ -1,0 +1,137 @@
+"""
+Red-team test suite for Omnibus Legal Compass.
+
+This module tests that the system correctly refuses or warns on:
+- Non-existent laws
+- Misleading phrasing
+- Out-of-domain questions
+- Contradictory premises
+
+Run with: pytest tests/red_team/test_red_team.py -v
+"""
+import json
+import pytest
+
+
+@pytest.fixture
+def trick_questions():
+    """Load trick questions dataset."""
+    with open("tests/red_team/trick_questions.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def categories():
+    """Expected categories in the dataset."""
+    return ["non_existent_law", "misleading_phrasing", "out_of_domain", "contradictory_premises"]
+
+
+class TestRedTeamDataset:
+    """Verify the red-team dataset structure."""
+    
+    def test_dataset_has_minimum_questions(self, trick_questions):
+        """Should have at least 25 trick questions."""
+        assert len(trick_questions) >= 25, f"Expected 25+ questions, got {len(trick_questions)}"
+    
+    def test_all_categories_present(self, trick_questions, categories):
+        """All expected categories should be present."""
+        found_categories = set(q["category"] for q in trick_questions)
+        for cat in categories:
+            assert cat in found_categories, f"Missing category: {cat}"
+    
+    def test_each_question_has_required_fields(self, trick_questions):
+        """Each question should have id, category, question, expected_behavior, reason."""
+        required_fields = ["id", "category", "question", "expected_behavior", "reason"]
+        for q in trick_questions:
+            for field in required_fields:
+                assert field in q, f"Question {q.get('id', 'unknown')} missing field: {field}"
+    
+    def test_expected_behavior_values(self, trick_questions):
+        """Verify expected_behavior uses allowed values."""
+        allowed = {"refuse", "low_confidence_warning", "refuse_or_warning"}
+        for q in trick_questions:
+            assert q["expected_behavior"] in allowed, \
+                f"Question {q['id']} has invalid expected_behavior: {q['expected_behavior']}"
+
+
+class TestRedTeamCategories:
+    """Test category distribution."""
+    
+    def test_non_existent_law_questions(self, trick_questions):
+        """Should have at least 5 non-existent law questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "non_existent_law")
+        assert count >= 5, f"Expected 5+ non_existent_law questions, got {count}"
+    
+    def test_misleading_phrasing_questions(self, trick_questions):
+        """Should have at least 4 misleading phrasing questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "misleading_phrasing")
+        assert count >= 4, f"Expected 4+ misleading_phrasing questions, got {count}"
+    
+    def test_out_of_domain_questions(self, trick_questions):
+        """Should have at least 5 out of domain questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "out_of_domain")
+        assert count >= 5, f"Expected 5+ out_of_domain questions, got {count}"
+    
+    def test_contradictory_premises_questions(self, trick_questions):
+        """Should have at least 4 contradictory premises questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "contradictory_premises")
+        assert count >= 4, f"Expected 4+ contradictory_premises questions, got {count}"
+
+
+# Integration tests would require a running backend
+# These are placeholder tests - actual evaluation happens with real API
+
+@pytest.mark.integration
+class TestRedTeamIntegration:
+    """
+    Integration tests - requires running backend.
+    
+    Run with: pytest tests/red_team/test_red_team.py -v -m integration
+    """
+    
+    def test_trick_question_api_available(self):
+        """Verify the /api/v1/ask endpoint is reachable."""
+        import requests
+        try:
+            response = requests.get("http://localhost:8000/health", timeout=5)
+            assert response.status_code == 200
+        except requests.exceptions.ConnectionError:
+            pytest.skip("Backend not running - skipping integration test")
+    
+    def test_nonexistent_law_returns_refusal(self, trick_questions):
+        """Non-existent law questions should trigger refusal or low confidence."""
+        import requests
+        
+        # Get a non-existent law question
+        question = next(
+            q["question"] for q in trick_questions 
+            if q["category"] == "non_existent_law"
+        )
+        
+        try:
+            response = requests.post(
+                "http://localhost:8000/api/v1/ask",
+                json={"question": question, "top_k": 3},
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                # Check for refusal indicators
+                answer_lower = data.get("answer", "").lower()
+                confidence = data.get("validation", {}).get("hallucination_risk", "")
+                
+                # Should either refuse or have low confidence
+                is_refusal = (
+                    "tidak" in answer_lower and "ditemukan" in answer_lower or
+                    "tidak ada" in answer_lower or
+                    "tidak memiliki" in answer_lower or
+                    confidence in ["refused", "high"]
+                )
+                assert is_refusal, f"Expected refusal for: {question}"
+        except requests.exceptions.ConnectionError:
+            pytest.skip("Backend not running")
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

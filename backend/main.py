@@ -54,6 +54,99 @@ knowledge_graph: LegalKnowledgeGraph | None = None
 # Global chat session manager
 session_manager = SessionManager()
 
+# In-memory metrics collector for accuracy dashboard (resets on server restart)
+from collections import deque
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import Any
+
+@dataclass
+class QueryMetric:
+    """Single query metric for accuracy tracking."""
+    timestamp: datetime
+    question: str
+    grounding_score: float | None
+    hallucination_risk: str
+    confidence_label: str
+    was_refused: bool
+    citation_count: int
+
+class AccuracyMetricsCollector:
+    """In-memory ring buffer for query metrics."""
+    
+    def __init__(self, max_size: int = 100):
+        self.max_size = max_size
+        self.metrics: deque[QueryMetric] = deque(maxlen=max_size)
+    
+    def record(
+        self,
+        question: str,
+        grounding_score: float | None,
+        hallucination_risk: str,
+        confidence_label: str,
+        citation_count: int,
+    ):
+        was_refused = hallucination_risk == "refused"
+        metric = QueryMetric(
+            timestamp=datetime.now(),
+            question=question[:100],  # Truncate for storage
+            grounding_score=grounding_score,
+            hallucination_risk=hallucination_risk,
+            confidence_label=confidence_label,
+            was_refused=was_refused,
+            citation_count=citation_count,
+        )
+        self.metrics.append(metric)
+    
+    def get_summary(self) -> dict[str, Any]:
+        """Get aggregated metrics summary."""
+        if not self.metrics:
+            return {
+                "total_queries": 0,
+                "avg_grounding_score": None,
+                "refusal_rate": 0.0,
+                "risk_distribution": {},
+                "confidence_distribution": {},
+            }
+        
+        total = len(self.metrics)
+        grounding_scores = [m.grounding_score for m in self.metrics if m.grounding_score is not None]
+        
+        # Risk distribution
+        risk_counts: dict[str, int] = {}
+        for m in self.metrics:
+            risk_counts[m.hallucination_risk] = risk_counts.get(m.hallucination_risk, 0) + 1
+        
+        # Confidence distribution
+        conf_counts: dict[str, int] = {}
+        for m in self.metrics:
+            conf_counts[m.confidence_label] = conf_counts.get(m.confidence_label, 0) + 1
+        
+        # Refusal rate
+        refusal_count = sum(1 for m in self.metrics if m.was_refused)
+        
+        return {
+            "total_queries": total,
+            "avg_grounding_score": sum(grounding_scores) / len(grounding_scores) if grounding_scores else None,
+            "refusal_rate": refusal_count / total,
+            "risk_distribution": {k: v/total for k, v in risk_counts.items()},
+            "confidence_distribution": {k: v/total for k, v in conf_counts.items()},
+            "recent_metrics": [
+                {
+                    "timestamp": m.timestamp.isoformat(),
+                    "question": m.question,
+                    "grounding_score": m.grounding_score,
+                    "hallucination_risk": m.hallucination_risk,
+                    "confidence_label": m.confidence_label,
+                    "was_refused": m.was_refused,
+                }
+                for m in list(self.metrics)[-10:]  # Last 10
+            ],
+        }
+
+# Global metrics collector
+accuracy_metrics = AccuracyMetricsCollector()
+
 
 # =============================================================================
 # Pydantic Models
@@ -85,6 +178,10 @@ class QuestionRequest(BaseModel):
         default=None,
         description="Chat session ID for multi-turn conversation. If provided, previous conversation context is used.",
     )
+    mode: str = Field(
+        default="synthesized",
+        description="Response mode: 'synthesized' for AI-generated answer, 'verbatim' for direct quotes from sources",
+    )
 
 
 class FollowUpRequest(BaseModel):
@@ -103,6 +200,10 @@ class FollowUpRequest(BaseModel):
     )
     jenis_dokumen: str | None = None
     top_k: int = Field(default=5, ge=1, le=20)
+    mode: str = Field(
+        default="synthesized",
+        description="Response mode: 'synthesized' for AI-generated answer, 'verbatim' for direct quotes",
+    )
 
 
 class CitationInfo(BaseModel):
@@ -130,7 +231,9 @@ class ValidationInfo(BaseModel):
     is_valid: bool = Field(description="Apakah jawaban valid tanpa peringatan")
     citation_coverage: float = Field(description="Persentase sumber yang dikutip 0.0-1.0")
     warnings: list[str] = Field(default=[], description="Daftar peringatan validasi")
-    hallucination_risk: str = Field(description="Risiko halusinasi: low, medium, high")
+    hallucination_risk: str = Field(description="Risiko halusinasi: low, medium, high, refused")
+    grounding_score: float | None = Field(default=None, description="Skor grounding LLM-as-judge 0.0-1.0")
+    ungrounded_claims: list[str] = Field(default=[], description="Klaim yang tidak didukung sumber")
 
 
 class QuestionResponse(BaseModel):
@@ -526,12 +629,14 @@ async def ask_question(request: Request, body: QuestionRequest):
                 chat_history=chat_history,
                 filter_jenis_dokumen=body.jenis_dokumen,
                 top_k=body.top_k,
+                mode=body.mode,
             )
         else:
             response = rag_chain.query(
                 question=body.question,
                 filter_jenis_dokumen=body.jenis_dokumen,
                 top_k=body.top_k,
+                mode=body.mode,
             )
 
         processing_time = (time.perf_counter() - start_time) * 1000
@@ -570,6 +675,18 @@ async def ask_question(request: Request, body: QuestionRequest):
                 citation_coverage=response.validation.citation_coverage,
                 warnings=response.validation.warnings,
                 hallucination_risk=response.validation.hallucination_risk,
+                grounding_score=response.validation.grounding_score,
+                ungrounded_claims=response.validation.ungrounded_claims,
+            )
+
+        # Record accuracy metrics
+        if response.validation:
+            accuracy_metrics.record(
+                question=body.question,
+                grounding_score=response.validation.grounding_score,
+                hallucination_risk=response.validation.hallucination_risk,
+                confidence_label=response.confidence,
+                citation_count=len(citations),
             )
 
         return QuestionResponse(
@@ -710,6 +827,7 @@ async def ask_followup(request: Request, body: FollowUpRequest):
             chat_history=body.chat_history,
             filter_jenis_dokumen=body.jenis_dokumen,
             top_k=body.top_k,
+            mode=body.mode,
         )
 
         processing_time = (time.perf_counter() - start_time) * 1000
@@ -743,6 +861,8 @@ async def ask_followup(request: Request, body: FollowUpRequest):
                 citation_coverage=response.validation.citation_coverage,
                 warnings=response.validation.warnings,
                 hallucination_risk=response.validation.hallucination_risk,
+                grounding_score=response.validation.grounding_score,
+                ungrounded_claims=response.validation.ungrounded_claims,
             )
 
         return QuestionResponse(
@@ -1451,6 +1571,19 @@ async def dashboard_domain_coverage(domain: str):
         if d.domain == domain:
             return d.model_dump()
     raise HTTPException(status_code=404, detail=f"Domain '{domain}' not found")
+
+
+@api_router.get("/metrics/accuracy", tags=["Dashboard"])
+async def get_accuracy_metrics():
+    """
+    Get real-time accuracy metrics for the RAG system.
+    
+    Returns aggregated grounding scores, refusal rates, and risk distribution
+    from recent queries. Metrics are stored in-memory and reset on server restart.
+    
+    Useful for monitoring answer quality in production.
+    """
+    return accuracy_metrics.get_summary()
 
 
 # =============================================================================

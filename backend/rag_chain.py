@@ -80,6 +80,29 @@ Berdasarkan dokumen yang tersedia, jawaban ini memiliki tingkat keyakinan tinggi
 - Jangan gunakan format yang kaku atau template"""
 
 
+# Verbatim mode - direct quotes without synthesis
+VERBATIM_SYSTEM_PROMPT = """Anda adalah asisten hukum Indonesia. Tugas Anda adalah memberikan KUTIPAN LANGSUNG dari peraturan perundang-undangan.
+
+## ATURAN KHUSUS MODE VERBATIM:
+
+1. JANGAN membuat jawaban sendiri - hanya kutipkan teks dari dokumen yang diberikan
+2. Untuk setiap fakta, gunakan format: "[nomor sumber] Kutipan teks asli dari dokumen"
+3. Jika ada beberapa sumber yang mendukung fakta yang sama, cantumkan semua nomor: [1], [2]
+4. Pertahankan bahasa asli dalam dokumen - jangan ubah kata-kata
+5. Jika dokumen tidak memiliki informasi yang ditanyakan, katakan: "Tidak ditemukan informasi tentang [topik] dalam dokumen yang tersedia."
+
+## CONTOH OUTPUT VERBATIM:
+
+"Menurut Pasal 1 ayat (1) Undang-Undang Nomor 40 Tahun 2007 tentang Perseroan Terbatas, Perseroan Terbatas adalah badan hukum yang didirikan berdasarkan perjanjian... [1]
+
+Pasal 7 ayat (1) menyatakan bahwa Pendirian Perseroan требует minimum dua pendiri... [1]"
+
+## YANG HARUS DIHINDARI:
+- Jangan menambahkan interpretasi atau penjelasan sendiri
+- Jangan menggunakan kata "menurut saya" atau "analisis saya"
+- Jangan menyimpang dari teks asli dalam dokumen"""
+
+
 USER_PROMPT_TEMPLATE = """Berdasarkan dokumen hukum berikut, jawab pertanyaan dengan jelas dan terstruktur.
 
 DOKUMEN HUKUM:
@@ -123,8 +146,10 @@ class ValidationResult:
     is_valid: bool
     citation_coverage: float  # 0.0 to 1.0
     warnings: list[str] = field(default_factory=list)
-    hallucination_risk: str = "low"  # low, medium, high
+    hallucination_risk: str = "low"  # low, medium, high, refused
     missing_citations: list[int] = field(default_factory=list)
+    grounding_score: float | None = None  # LLM-as-judge grounding score 0-1
+    ungrounded_claims: list[str] = field(default_factory=list)  # Claims not supported by sources
     
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -133,6 +158,8 @@ class ValidationResult:
             "warnings": self.warnings,
             "hallucination_risk": self.hallucination_risk,
             "missing_citations": self.missing_citations,
+            "grounding_score": self.grounding_score,
+            "ungrounded_claims": self.ungrounded_claims,
         }
 
 
@@ -495,11 +522,97 @@ class LegalRAGChain:
             missing_citations=sorted(invalid_refs),
         )
     
+    def _verify_grounding(
+        self,
+        answer: str,
+        citations: list[dict[str, Any]],
+    ) -> tuple[float | None, list[str]]:
+        """
+        Use LLM-as-judge to verify that answer claims are grounded in cited sources.
+        
+        Returns:
+            Tuple of (grounding_score, ungrounded_claims)
+        """
+        if not citations:
+            return None, ["Tidak ada sumber untuk diverifikasi"]
+        
+        # Format sources for grounding prompt
+        sources_text = "\n\n".join([
+            f"[{c.get('number', i+1)}] {c.get('citation', c.get('text', ''))[:500]}"
+            for i, c in enumerate(citations[:5])  # Limit to top 5 sources
+        ])
+        
+        grounding_prompt = f"""Anda adalah hakim yang mengevaluasi kualitas jawaban hukum.
+
+Sumber hukum:
+{sources_text}
+
+Jawaban yang akan dievaluasi:
+{answer}
+
+Tugas Anda: Evaluasi setiap klaim dalam jawaban apakah didukung oleh sumber hukum di atas.
+
+Instruksi:
+1. Identifikasi klaim-klaim utama dalam jawaban
+2. Untuk setiap klaim, tentukan apakah didukung oleh sumber yang diberikan
+3. Jika ada klaim yang TIDAK didukung oleh sumber,cantumkan
+
+Respons dalam format JSON:
+{{
+  "grounding_score": <skor 0.0-1.0 indicating percentage of claims fully supported>,
+  "ungrounded_claims": [<list of claim descriptions that are not supported by sources>],
+  "grounded_claims": [<list of claim descriptions that ARE supported>]
+}}
+
+JSON:"""
+
+        try:
+            import json
+            import time
+            
+            start_time = time.time()
+            timeout = 5.0  # 5 second timeout
+            
+            response = self.llm_client.generate(
+                user_message=grounding_prompt,
+                system_message="Anda adalah evaluasi jawaban hukum yang objektif. Selalu respond dengan JSON yang valid.",
+            )
+            
+            elapsed = time.time() - start_time
+            logger.info(f"Grounding verification took {elapsed:.2f}s")
+            
+            # Parse JSON response
+            # Find JSON in response (in case there's extra text
+            json_start = response.find('{')
+            json_end = response.rfind('}') + 1
+            
+            if json_start >= 0 and json_end > json_start:
+                json_str = response[json_start:json_end]
+                result = json.loads(json_str)
+                
+                grounding_score = float(result.get('grounding_score', 0.5))
+                ungrounded = result.get('ungrounded_claims', [])
+                
+                # Clamp score to 0-1
+                grounding_score = max(0.0, min(1.0, grounding_score))
+                
+                logger.info(f"Grounding score: {grounding_score:.2f}, ungrounded claims: {len(ungrounded)}")
+                return grounding_score, ungrounded
+            else:
+                logger.warning("Could not parse JSON from grounding response")
+                return None, []
+                
+        except Exception as e:
+            error_type = type(e).__name__
+            logger.warning(f"Grounding verification failed ({error_type}): {e}")
+            return None, []
+    
     def query(
         self,
         question: str,
         filter_jenis_dokumen: str | None = None,
         top_k: int | None = None,
+        mode: str = "synthesized",
     ) -> RAGResponse:
         """
         Query the RAG chain with a question.
@@ -508,6 +621,7 @@ class LegalRAGChain:
             question: User question in Indonesian
             filter_jenis_dokumen: Optional filter by document type (UU, PP, Perpres, etc.)
             top_k: Number of documents to retrieve
+            mode: Response mode - "synthesized" for AI answer, "verbatim" for direct quotes
         
         Returns:
             RAGResponse with answer, citations, and sources
@@ -558,16 +672,39 @@ class LegalRAGChain:
         sources = self._extract_sources(citations)
         confidence = self._assess_confidence(results)
         
+        # Step 2.5: Check confidence threshold - refuse if too low
+        CONFIDENCE_THRESHOLD = 0.30
+        if confidence.numeric < CONFIDENCE_THRESHOLD:
+            refusal_text = "Maaf, saya tidak memiliki cukup informasi hukum untuk menjawab pertanyaan ini dengan akurat. Silakan konsultasikan dengan ahli hukum."
+            logger.info(f"Low confidence ({confidence.numeric:.3f} < {CONFIDENCE_THRESHOLD}) - refusing to answer")
+            return RAGResponse(
+                answer=refusal_text,
+                citations=citations,
+                sources=sources,
+                confidence="rendah",
+                confidence_score=confidence,
+                raw_context=context,
+                validation=ValidationResult(
+                    is_valid=True,
+                    citation_coverage=0.0,
+                    warnings=["Pertanyaan di luar jangkauan basis pengetahuan"],
+                    hallucination_risk="refused",
+                    missing_citations=[],
+                ),
+            )
+        
         # Step 3: Generate answer using LLM
         user_prompt = USER_PROMPT_TEMPLATE.format(
             context=context,
             question=question,
         )
         
-        logger.info(f"Generating answer with NVIDIA NIM {NVIDIA_MODEL}...")
+        logger.info(f"Generating answer with NVIDIA NIM {NVIDIA_MODEL} (mode: {mode})...")
+        # Use different system prompt based on mode
+        system_msg = VERBATIM_SYSTEM_PROMPT if mode == "verbatim" else SYSTEM_PROMPT
         answer = self.llm_client.generate(
             user_message=user_prompt,
-            system_message=SYSTEM_PROMPT,
+            system_message=system_msg,
         )
         
         # Step 4: Validate answer for citation accuracy
@@ -575,7 +712,12 @@ class LegalRAGChain:
         if validation.warnings:
             logger.warning(f"Answer validation warnings: {validation.warnings}")
         
-        # Step 5: Build response
+        # Step 5: LLM-as-judge grounding verification
+        grounding_score, ungrounded_claims = self._verify_grounding(answer, citations)
+        validation.grounding_score = grounding_score
+        validation.ungrounded_claims = ungrounded_claims
+        
+        # Step 6: Build response
         return RAGResponse(
             answer=answer,
             citations=citations,

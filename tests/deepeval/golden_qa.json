@@ -1,0 +1,92 @@
+[
+  {
+    "id": "qa_001",
+    "question": "Apa syarat pendirian Perseroan Terbatas (PT)?",
+    "expected_answer_contains": ["2 orang", "akta notaris", "minimal modal"],
+    "regulations": ["UU 40/2007"]
+  },
+  {
+    "id": "qa_002",
+    "question": "Berapa minimal modal dasar PT?",
+    "expected_answer_contains": ["Rp50.000.000", "50 juta", "25%"],
+    "regulations": ["UU 40/2007"]
+  },
+  {
+    "id": "qa_003",
+    "question": "Apa itu Undang-Undang Cipta Kerja?",
+    "expected_answer_contains": ["UU 11/2020", "Cipta Kerja", "tenaga kerja"],
+    "regulations": ["UU 11/2020"]
+  },
+  {
+    "id": "qa_004",
+    "question": "Bagaimana ketentuan cuti melahirkan menurut UU Cipta Kerja?",
+    "expected_answer_contains": ["cuti", "melahirkan", "3 bulan"],
+    "regulations": ["UU 11/2020"]
+  },
+  {
+    "id": "qa_005",
+    "question": "Apa definisi berusaha menurut PP 24/2018?",
+    "expected_answer_contains": ["berusaha", "kepentingan sendiri"],
+    "regulations": ["PP 24/2018"]
+  },
+  {
+    "id": "qa_006",
+    "question": "Apa itu Nomor Induk Berusaha (NIB)?",
+    "expected_answer_contains": ["NIB", "identitas", "berusaha"],
+    "regulations": ["PP 24/2018"]
+  },
+  {
+    "id": "qa_007",
+    "question": "Bagaimana perlindungan data pribadi menurut UU 27/2022?",
+    "expected_answer_contains": ["data pribadi", "perlindungan", "UU 27/2022"],
+    "regulations": ["UU 27/2022"]
+  },
+  {
+    "id": "qa_008",
+    "question": "Apa hak pekerja according to UU Cipta Kerja?",
+    "expected_answer_contains": ["hak pekerja", "cuti", "upah"],
+    "regulations": ["UU 11/2020"]
+  },
+  {
+    "id": "qa_009",
+    "question": "Apa itu RUPS?",
+    "expected_answer_contains": ["RUPS", "Pemegang Saham", "keputusan"],
+    "regulations": ["UU 40/2007"]
+  },
+  {
+    "id": "qa_010",
+    "question": "Bagaimana prosedur PHK menurut UU Cipta Kerja?",
+    "expected_answer_contains": ["PHK", "pesangon", "peringatan"],
+    "regulations": ["UU 11/2020"]
+  },
+  {
+    "id": "qa_011",
+    "question": "Apa saja jenis-jenis предприятие в Indonesia?",
+    "expected_answer_contains": ["PT", "CV", "Firma", "Koperasi"],
+    "regulations": ["UU 40/2007"]
+  },
+  {
+    "id": "qa_012",
+    "question": "Bagaimana ketentuan uang pesangon?",
+    "expected_answer_contains": ["pesangon", "PHK", "bulan kerja"],
+    "regulations": ["UU 11/2020"]
+  },
+  {
+    "id": "qa_013",
+    "question": "Apa itu Perpres 49/2021?",
+    "expected_answer_contains": ["Perpres 49/2021", "BPOM"],
+    "regulations": ["Perpres 49/2021"]
+  },
+  {
+    "id": "qa_014",
+    "question": "Bagaimana registrasi BPOM untuk makanan?",
+    "expected_answer_contains": ["BPOM", "makanan", "izin"],
+    "regulations": ["Perpres 49/2021"]
+  },
+  {
+    "id": "qa_015",
+    "question": "Apa itu statusз asosiasi dalam UU PT?",
+    "expected_answer_contains": ["PT", "status", "asosiasi"],
+    "regulations": ["UU 40/2007"]
+  }
+]

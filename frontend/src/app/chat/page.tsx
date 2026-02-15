@@ -88,6 +88,7 @@ export default function ChatPage() {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [responseMode, setResponseMode] = useState<'synthesized' | 'verbatim'>('synthesized');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasAutoSubmitted = useRef(false);
@@ -129,7 +130,7 @@ export default function ChatPage() {
     setIsLoading(true);
 
     try {
-      const response: AskResponse = await askQuestion(text, 5, sessionId || undefined);
+      const response: AskResponse = await askQuestion(text, 5, sessionId || undefined, responseMode);
       
       if (response.session_id) {
         setSessionId(response.session_id);
@@ -336,6 +337,22 @@ export default function ChatPage() {
 
           {/* Input Area */}
           <div className="p-4 bg-black/40 border-t border-white/10 backdrop-blur-md">
+            {/* Mode Toggle */}
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <span className={`text-xs ${responseMode === 'synthesized' ? 'text-[#AAFF00]' : 'text-text-muted'}`}>Sintesis</span>
+              <button
+                onClick={() => setResponseMode(responseMode === 'synthesized' ? 'verbatim' : 'synthesized')}
+                className="relative w-12 h-6 rounded-full bg-white/10 border border-white/20 transition-colors"
+              >
+                <div
+                  className={`absolute top-0.5 w-5 h-5 rounded-full bg-[#AAFF00] transition-transform shadow-md ${
+                    responseMode === 'verbatim' ? 'translate-x-6' : 'translate-x-0.5'
+                  }`}
+                />
+              </button>
+              <span className={`text-xs ${responseMode === 'verbatim' ? 'text-[#AAFF00]' : 'text-text-muted'}`}>Kutipan Langsung</span>
+            </div>
+            
             <div className="flex gap-3 relative">
               <input
                 ref={inputRef}

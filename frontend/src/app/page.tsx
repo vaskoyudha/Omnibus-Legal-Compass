@@ -57,7 +57,7 @@ const featureCards = [
 const stats = [
   { value: 10000, suffix: '+', label: 'Pertanyaan Dijawab' },
   { value: 500, suffix: '+', label: 'Regulasi Tercakup' },
-  { value: 99.2, suffix: '%', label: 'Akurasi Jawaban' },
+  { qualitative: true, label: 'Setiap jawaban disertai sumber hukum' },
 ];
 
 const trustBadges = [
@@ -175,18 +175,34 @@ export default function Home() {
             >
               {stats.map((stat, i) => (
                 <div key={stat.label} className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-[#AAFF00]">
-                    <CountUp
-                      to={stat.value}
-                      from={0}
-                      duration={2}
-                      delay={0.3 + i * 0.2}
-                      separator=","
-                      className="text-2xl sm:text-3xl font-bold"
-                    />
-                    <span className="text-[#AAFF00]">{stat.suffix}</span>
-                  </div>
-                  <div className="text-xs text-text-muted mt-1">{stat.label}</div>
+                  {'qualitative' in stat ? (
+                    // Qualitative stat - show icon + text instead of animated number
+                    <div className="flex flex-col items-center">
+                      <div className="flex items-center gap-2 mb-1">
+                        <svg className="w-6 h-6 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        <span className="text-2xl sm:text-3xl font-bold text-[#AAFF00]">Terverifikasi</span>
+                      </div>
+                      <div className="text-xs text-text-muted mt-1">{stat.label}</div>
+                    </div>
+                  ) : (
+                    // Quantitative stat - show animated number
+                    <div>
+                      <div className="text-2xl sm:text-3xl font-bold text-[#AAFF00]">
+                        <CountUp
+                          to={stat.value}
+                          from={0}
+                          duration={2}
+                          delay={0.3 + i * 0.2}
+                          separator=","
+                          className="text-2xl sm:text-3xl font-bold"
+                        />
+                        <span className="text-[#AAFF00]">{stat.suffix}</span>
+                      </div>
+                      <div className="text-xs text-text-muted mt-1">{stat.label}</div>
+                    </div>
+                  )}
                 </div>
               ))}
             </motion.div>

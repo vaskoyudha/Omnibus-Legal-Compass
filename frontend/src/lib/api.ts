@@ -41,7 +41,7 @@ export interface ValidationResult {
   is_valid: boolean;
   citation_coverage: number;
   warnings: string[];
-  hallucination_risk: 'low' | 'medium' | 'high';
+  hallucination_risk: 'low' | 'medium' | 'high' | 'refused';
   grounding_score?: number | null;
   ungrounded_claims?: string[];
 }
@@ -61,14 +61,16 @@ export interface AskRequest {
   top_k?: number;
   document_type?: string;
   session_id?: string;
+  mode?: 'synthesized' | 'verbatim';
 }
 
 export async function askQuestion(
   question: string,
   topK: number = 5,
-  sessionId?: string
+  sessionId?: string,
+  mode: 'synthesized' | 'verbatim' = 'synthesized'
 ): Promise<AskResponse> {
-  const body: Record<string, unknown> = { question, top_k: topK };
+  const body: Record<string, unknown> = { question, top_k: topK, mode };
   if (sessionId) body.session_id = sessionId;
 
   const response = await fetch(`${API_URL}/api/v1/ask`, {
@@ -490,6 +492,36 @@ export async function fetchDomainCoverage(domain: string): Promise<DomainCoverag
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: 'Domain tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}
+
+// Accuracy Metrics Types & API
+export interface AccuracyMetric {
+  timestamp: string;
+  question: string;
+  grounding_score: number | null;
+  hallucination_risk: string;
+  confidence_label: string;
+  was_refused: boolean;
+}
+
+export interface AccuracyMetrics {
+  total_queries: number;
+  avg_grounding_score: number | null;
+  refusal_rate: number;
+  risk_distribution: Record<string, number>;
+  confidence_distribution: Record<string, number>;
+  recent_metrics: AccuracyMetric[];
+}
+
+export async function fetchAccuracyMetrics(): Promise<AccuracyMetrics> {
+  const response = await fetch(`${API_URL}/api/v1/metrics/accuracy`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal memuat metrik accuracy' }));
     throw new Error(error.detail || 'Terjadi kesalahan pada server');
   }
 
