@@ -11,7 +11,7 @@
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)](https://fastapi.tiangolo.com)
-[![Tests](https://img.shields.io/badge/Tests-333%20passing-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-360%20passing-brightgreen)](tests/)
 
 Navigate Indonesian regulations with confidence. Ask legal questions, check compliance, get business guidance — all backed by hybrid search, cross-encoder reranking, and source citations.
 
@@ -29,7 +29,7 @@ Most legal AI tools are **keyword matchers dressed up as AI**. Omnibus is differ
 - **Source Citations on Every Answer** — Every response links back to specific regulation articles. Verify, don't trust blindly.
 - **Indonesia-Deep, Not Indonesia-Shallow** — Purpose-built for Indonesian legal framework: UU, PP, Perpres, Perda. Not a generic chatbot with an Indonesian prompt.
 - **Knowledge Graph** — Regulations aren't isolated. Our graph maps cross-references, amendments, and hierarchies between legal documents.
-- **Production-Ready** — Rate limiting, API versioning, 333 passing tests, CI/CD, structured error handling. Not a weekend prototype.
+- **Production-Ready** — Rate limiting, API versioning, 360 passing tests, CI/CD, structured error handling. Not a weekend prototype.
 
 ---
 
@@ -119,7 +119,7 @@ Heat map and bar chart visualization of regulatory coverage across legal domains
 | **Frontend** | [Next.js 16](https://nextjs.org/) + React 19 | UI with Tailwind CSS + Framer Motion |
 | **Visualization** | [Recharts](https://recharts.org/) | Dashboard charts and heat maps |
 | **Graph** | [NetworkX](https://networkx.org/) | Knowledge graph storage & traversal |
-| **Testing** | pytest + Vitest | 333 backend + 23 frontend tests |
+| **Testing** | pytest + Vitest | 360 backend + 23 frontend tests |
 | **CI/CD** | GitHub Actions | Automated testing & docs deployment |
 | **Docs** | [VitePress](https://vitepress.dev/) | Documentation site on GitHub Pages |
 
@@ -222,7 +222,7 @@ How does Omnibus Legal Compass compare to other legal AI projects?
 | **Streaming Responses** | Yes | N/A | N/A | No | No |
 | **API Versioning** | `/api/v1/*` | No | No | No | No |
 | **Rate Limiting** | Yes (slowapi) | No | No | No | No |
-| **Test Coverage** | 333+ tests (91%) | Minimal | Minimal | None | None |
+| **Test Coverage** | 360+ tests (91%) | Minimal | Minimal | None | None |
 | **CI/CD** | GitHub Actions | No | No | No | No |
 | **Documentation Site** | VitePress | Minimal | README only | README only | README only |
 
@@ -261,7 +261,8 @@ Regulatory Harmonization Engine/
 │   │   ├── coverage.py            # Coverage computation engine
 │   │   └── metrics.py             # Pydantic response models
 │   └── scripts/
-│       └── ingest.py              # Vector DB document ingestion
+│       ├── ingest.py              # Vector DB document ingestion
+│       └── eval_embeddings.py     # Embedding retrieval evaluation
 ├── frontend/
 │   └── src/
 │       ├── app/
@@ -275,7 +276,7 @@ Regulatory Harmonization Engine/
 │       │   └── Navbar.tsx             # Navigation (6 pages)
 │       └── lib/
 │           └── api.ts                 # API client (all endpoints)
-├── tests/                         # 333 backend tests (91% coverage)
+├── tests/                         # 360 backend tests (91% coverage)
 ├── docs/                          # VitePress documentation site
 ├── .github/
 │   ├── workflows/ci.yml           # CI pipeline
@@ -295,19 +296,24 @@ Regulatory Harmonization Engine/
 ## Testing
 
 ```bash
-# Run all backend tests (333 tests)
+# Run all backend tests (360 tests)
 python -m pytest tests/test_api.py tests/test_api_versioning.py \
   tests/test_chat.py tests/test_rag_chain.py tests/test_retriever_unit.py \
   tests/test_rate_limit.py tests/test_knowledge_graph.py \
   tests/test_knowledge_graph_ingest.py tests/test_graph_api.py \
-  tests/test_dashboard.py tests/test_corpus.py -v --tb=short
+  tests/test_dashboard.py tests/test_corpus.py \
+  tests/test_eval_embeddings.py -v --tb=short
 
 # Run with coverage
 python -m pytest tests/test_api.py tests/test_api_versioning.py \
   tests/test_chat.py tests/test_rag_chain.py tests/test_retriever_unit.py \
   tests/test_rate_limit.py tests/test_knowledge_graph.py \
   tests/test_knowledge_graph_ingest.py tests/test_graph_api.py \
-  tests/test_dashboard.py tests/test_corpus.py --cov=backend --cov-report=term-missing
+  tests/test_dashboard.py tests/test_corpus.py \
+  tests/test_eval_embeddings.py --cov=backend --cov-report=term-missing
+
+# Run embedding evaluation (offline, no Qdrant needed)
+python -m backend.scripts.eval_embeddings
 
 # Run frontend tests
 cd frontend && npm test

@@ -61,7 +61,7 @@
   },
   {
     "id": "qa_011",
-    "question": "Apa saja jenis-jenis предприятие в Indonesia?",
+    "question": "Apa saja jenis-jenis badan usaha di Indonesia?",
     "expected_answer_contains": ["PT", "CV", "Firma", "Koperasi"],
     "regulations": ["UU 40/2007"]
   },
@@ -85,8 +85,158 @@
   },
   {
     "id": "qa_015",
-    "question": "Apa itu statusз asosiasi dalam UU PT?",
-    "expected_answer_contains": ["PT", "status", "asosiasi"],
+    "question": "Apa itu status badan hukum dalam UU PT?",
+    "expected_answer_contains": ["PT", "status", "badan hukum"],
     "regulations": ["UU 40/2007"]
+  },
+  {
+    "id": "qa_016",
+    "question": "Apa definisi tindak pidana korupsi menurut UU 31/1999?",
+    "expected_answer_contains": ["melawan hukum", "memperkaya", "keuangan negara"],
+    "regulations": ["UU 31/1999"]
+  },
+  {
+    "id": "qa_017",
+    "question": "Berapa ancaman hukuman untuk korupsi yang merugikan keuangan negara?",
+    "expected_answer_contains": ["penjara", "pidana", "denda"],
+    "regulations": ["UU 31/1999"]
+  },
+  {
+    "id": "qa_018",
+    "question": "Apa yang dimaksud dengan penyalahgunaan kewenangan dalam korupsi?",
+    "expected_answer_contains": ["kewenangan", "menguntungkan", "korporasi"],
+    "regulations": ["UU 31/1999"]
+  },
+  {
+    "id": "qa_019",
+    "question": "Apa itu monopoli menurut UU 5/1999?",
+    "expected_answer_contains": ["monopoli", "penguasaan", "produksi", "pemasaran"],
+    "regulations": ["UU 5/1999"]
+  },
+  {
+    "id": "qa_020",
+    "question": "Apa yang dilarang dalam perjanjian penetapan harga (price fixing)?",
+    "expected_answer_contains": ["harga", "perjanjian", "pelaku usaha", "pesaing"],
+    "regulations": ["UU 5/1999"]
+  },
+  {
+    "id": "qa_021",
+    "question": "Apa peran KPPU dalam persaingan usaha?",
+    "expected_answer_contains": ["KPPU", "pengawas", "persaingan"],
+    "regulations": ["UU 5/1999"]
+  },
+  {
+    "id": "qa_022",
+    "question": "Apa saja jenis bank menurut UU Perbankan?",
+    "expected_answer_contains": ["Bank Umum", "Bank Perkreditan Rakyat", "BPR"],
+    "regulations": ["UU 10/1998"]
+  },
+  {
+    "id": "qa_023",
+    "question": "Apa yang dilarang dilakukan oleh Bank Umum?",
+    "expected_answer_contains": ["penyertaan modal", "perasuransian", "dilarang"],
+    "regulations": ["UU 10/1998"]
+  },
+  {
+    "id": "qa_024",
+    "question": "Apa itu rahasia bank menurut UU Perbankan?",
+    "expected_answer_contains": ["rahasia", "bank", "nasabah"],
+    "regulations": ["UU 10/1998"]
+  },
+  {
+    "id": "qa_025",
+    "question": "Apa definisi Pasar Modal menurut UU 8/1995?",
+    "expected_answer_contains": ["Pasar Modal", "Efek", "Penawaran Umum"],
+    "regulations": ["UU 8/1995"]
+  },
+  {
+    "id": "qa_026",
+    "question": "Apa syarat melakukan Penawaran Umum di pasar modal?",
+    "expected_answer_contains": ["Emiten", "Pernyataan Pendaftaran", "Badan Pengawas"],
+    "regulations": ["UU 8/1995"]
+  },
+  {
+    "id": "qa_027",
+    "question": "Apa itu insider trading atau perdagangan orang dalam?",
+    "expected_answer_contains": ["informasi", "orang dalam", "Efek"],
+    "regulations": ["UU 8/1995"]
+  },
+  {
+    "id": "qa_028",
+    "question": "Apa definisi Hak Cipta menurut UU 28/2014?",
+    "expected_answer_contains": ["hak eksklusif", "pencipta", "otomatis", "deklaratif"],
+    "regulations": ["UU 28/2014"]
+  },
+  {
+    "id": "qa_029",
+    "question": "Apa itu hak moral pencipta?",
+    "expected_answer_contains": ["hak moral", "melekat", "pencipta", "mencantumkan"],
+    "regulations": ["UU 28/2014"]
+  },
+  {
+    "id": "qa_030",
+    "question": "Apa perbedaan hak ekonomi dan hak moral dalam hak cipta?",
+    "expected_answer_contains": ["hak ekonomi", "manfaat ekonomi", "Ciptaan"],
+    "regulations": ["UU 28/2014"]
+  },
+  {
+    "id": "qa_031",
+    "question": "Apa definisi Paten menurut UU 13/2016?",
+    "expected_answer_contains": ["hak eksklusif", "inventor", "invensi", "negara"],
+    "regulations": ["UU 13/2016"]
+  },
+  {
+    "id": "qa_032",
+    "question": "Apa syarat suatu invensi bisa dipatenkan?",
+    "expected_answer_contains": ["baru", "langkah inventif", "industri"],
+    "regulations": ["UU 13/2016"]
+  },
+  {
+    "id": "qa_033",
+    "question": "Apa itu paten sederhana?",
+    "expected_answer_contains": ["paten sederhana", "pengembangan", "produk", "proses"],
+    "regulations": ["UU 13/2016"]
+  },
+  {
+    "id": "qa_034",
+    "question": "Apa definisi Merek menurut UU 20/2016?",
+    "expected_answer_contains": ["Merek", "tanda", "grafis", "gambar"],
+    "regulations": ["UU 20/2016"]
+  },
+  {
+    "id": "qa_035",
+    "question": "Bagaimana cara mendaftarkan merek di Indonesia?",
+    "expected_answer_contains": ["pendaftaran", "Merek", "Menteri", "Pemohon"],
+    "regulations": ["UU 20/2016"]
+  },
+  {
+    "id": "qa_036",
+    "question": "Kapan hak atas merek diperoleh?",
+    "expected_answer_contains": ["terdaftar", "hak", "Merek"],
+    "regulations": ["UU 20/2016"]
+  },
+  {
+    "id": "qa_037",
+    "question": "Apa itu kepailitan menurut UU 37/2004?",
+    "expected_answer_contains": ["kepailitan", "sita umum", "kekayaan", "Debitor"],
+    "regulations": ["UU 37/2004"]
+  },
+  {
+    "id": "qa_038",
+    "question": "Apa syarat untuk mengajukan pernyataan pailit?",
+    "expected_answer_contains": ["dua", "Kreditor", "utang", "jatuh waktu"],
+    "regulations": ["UU 37/2004"]
+  },
+  {
+    "id": "qa_039",
+    "question": "Ke mana permohonan pailit harus diajukan?",
+    "expected_answer_contains": ["Pengadilan Niaga", "Ketua", "kedudukan hukum"],
+    "regulations": ["UU 37/2004"]
+  },
+  {
+    "id": "qa_040",
+    "question": "Apa itu PKPU (Penundaan Kewajiban Pembayaran Utang)?",
+    "expected_answer_contains": ["PKPU", "penundaan", "pembayaran", "utang"],
+    "regulations": ["UU 37/2004"]
   }
 ]

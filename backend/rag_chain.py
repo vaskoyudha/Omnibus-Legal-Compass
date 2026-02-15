@@ -926,6 +926,28 @@ JSON:"""
         sources = self._extract_sources(citations)
         confidence = self._assess_confidence(results)
         
+        # Step 2.5: Check confidence threshold - refuse if too low
+        CONFIDENCE_THRESHOLD = 0.30
+        if confidence.numeric < CONFIDENCE_THRESHOLD:
+            refusal_text = "Maaf, saya tidak memiliki cukup informasi hukum untuk menjawab pertanyaan ini dengan akurat. Silakan konsultasikan dengan ahli hukum."
+            logger.info(f"Low confidence ({confidence.numeric:.3f} < {CONFIDENCE_THRESHOLD}) - refusing to answer (streaming)")
+            yield ("metadata", {
+                "citations": citations,
+                "sources": sources,
+                "confidence_score": confidence.to_dict(),
+            })
+            yield ("chunk", refusal_text)
+            yield ("done", {
+                "validation": {
+                    "is_valid": True,
+                    "citation_coverage": 0.0,
+                    "warnings": ["Pertanyaan di luar jangkauan basis pengetahuan"],
+                    "hallucination_risk": "refused",
+                    "missing_citations": [],
+                }
+            })
+            return
+        
         # Send metadata immediately so frontend can show sources while waiting for answer
         yield ("metadata", {
             "citations": citations,
@@ -953,6 +975,15 @@ JSON:"""
         validation = self._validate_answer(full_answer, citations)
         if validation.warnings:
             logger.warning(f"Answer validation warnings: {validation.warnings}")
+        
+        # Step 5: LLM-as-judge grounding verification (streaming post-generation)
+        logger.info("Performing grounding verification for streaming response...")
+        grounding_score, ungrounded_claims = self._verify_grounding(full_answer, citations)
+        validation.grounding_score = grounding_score
+        validation.ungrounded_claims = ungrounded_claims
+        
+        if grounding_score is not None and grounding_score < 0.5:
+            logger.warning(f"Low grounding score ({grounding_score:.2f}) detected in streaming response")
         
         yield ("done", {
             "validation": validation.to_dict(),

@@ -65,6 +65,9 @@ _replacements.txt
 docs/.vitepress/dist/
 .coverage
 
+# evaluation reports (generated)
+eval_results.json
+
 # Windows device files
 nul
 backend/nul
