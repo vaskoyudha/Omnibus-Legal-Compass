@@ -491,3 +491,4 @@ class TestRetrieverInit:
                     with patch("sentence_transformers.CrossEncoder", side_effect=RuntimeError("model fail")):
                         ret = HybridRetriever(use_reranker=True)
                         assert ret.reranker is None
+

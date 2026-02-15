@@ -267,6 +267,7 @@ class HealthResponse(BaseModel):
     status: str
     qdrant_connected: bool
     llm_configured: bool
+    llm_responding: bool = False
     collection_count: int | None
     version: str
 
@@ -774,16 +775,18 @@ async def health_check():
     Health check endpoint for monitoring.
 
     Returns system status including Qdrant connection and LLM configuration.
+    Tests actual connectivity to external services.
     """
     global rag_chain
 
     qdrant_connected = False
     collection_count = None
     llm_configured = False
+    llm_responding = False
 
     if rag_chain is not None:
+        # Check Qdrant connection
         try:
-            # Check Qdrant connection
             collection_info = rag_chain.retriever.client.get_collection(
                 rag_chain.retriever.collection_name
             )
@@ -792,13 +795,25 @@ async def health_check():
         except Exception as e:
             logger.warning(f"Qdrant health check failed: {e}")
 
-        # Check LLM client
+        # Check LLM client configuration
         llm_configured = rag_chain.llm_client is not None
+        
+        # Test actual LLM connectivity with a simple request
+        if llm_configured:
+            try:
+                test_response = rag_chain.llm_client.generate(
+                    user_message="OK"
+                )
+                llm_responding = test_response is not None and len(test_response) > 0
+            except Exception as e:
+                logger.warning(f"LLM health check failed: {e}")
+                llm_responding = False
 
     return HealthResponse(
-        status="healthy" if (qdrant_connected and llm_configured) else "degraded",
+        status="healthy" if (qdrant_connected and llm_responding) else "degraded",
         qdrant_connected=qdrant_connected,
         llm_configured=llm_configured,
+        llm_responding=llm_responding,
         collection_count=collection_count,
         version="1.0.0",
     )

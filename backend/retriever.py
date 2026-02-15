@@ -484,6 +484,7 @@ class HybridRetriever:
         filter_conditions: dict[str, Any] | None = None,
         use_reranking: bool = True,
         expand_queries: bool = True,
+        min_score: float | None = None,
     ) -> list[SearchResult]:
         """
         Perform hybrid search combining dense and sparse retrieval.
@@ -503,6 +504,7 @@ class HybridRetriever:
             filter_conditions: Optional filter for dense search
             use_reranking: Whether to apply CrossEncoder re-ranking (default: True)
             expand_queries: Whether to expand query with synonyms (default: True)
+            min_score: Minimum score threshold to filter results (default: None)
         
         Returns:
             List of SearchResult objects with RRF-fused (and optionally re-ranked) scores
@@ -560,6 +562,11 @@ class HybridRetriever:
             ))
         
         # Apply CrossEncoder re-ranking if enabled (always re-rank against original query)
+        # Apply minimum score filtering if specified
+        if min_score is not None:
+            candidates = [r for r in candidates if r.score >= min_score]
+            logger.debug(f"Filtered to {len(candidates)} results with min_score={min_score}")
+        
         if use_reranking and self.reranker:
             return self._rerank(query, candidates, top_k)
         
