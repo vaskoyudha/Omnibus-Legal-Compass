@@ -151,7 +151,7 @@ export default function DashboardPage() {
       setCoverage(cov);
       setStats(st);
     } catch (err) {
-      console.error('Dashboard fetch error:', err);
+      // Dashboard fetch failed; user notified
       toast.error('Gagal memuat data dashboard');
     } finally {
       setLoading(false);

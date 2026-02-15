@@ -184,17 +184,17 @@ export default function KnowledgeGraphPage() {
   // Initial Load
   useEffect(() => {
     const init = async () => {
-      try {
-        const [statsData, lawsData] = await Promise.all([
-          fetchGraphStats(),
-          fetchGraphLaws()
-        ]);
-        setStats(statsData);
-        setLaws(lawsData);
-      } catch (error) {
-        toast.error('Gagal memuat data graf');
-        console.error(error);
-      } finally {
+    try {
+      const [statsData, lawsData] = await Promise.all([
+        fetchGraphStats(),
+        fetchGraphLaws()
+      ]);
+      setStats(statsData);
+      setLaws(lawsData);
+    } catch (error) {
+      // Graph load failed; user notified
+      toast.error('Gagal memuat data graf');
+    } finally {
         setLoading(false);
       }
     };

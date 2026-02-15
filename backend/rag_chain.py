@@ -12,6 +12,7 @@ import os
 import re
 import json
 import logging
+import time
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -32,7 +33,7 @@ NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 NVIDIA_MODEL = "moonshotai/kimi-k2-instruct"  # Correct model name per NVIDIA docs
 MAX_TOKENS = 4096
-TEMPERATURE = 0.7
+TEMPERATURE = 0.15
 
 # Retriever configuration
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
@@ -233,34 +234,49 @@ class NVIDIANimClient:
             "stream": False,
         }
         
-        try:
-            response = requests.post(
-                self.api_url,
-                headers=self.headers,
-                json=payload,
-                timeout=120,
-            )
-            response.raise_for_status()
-            
-            result = response.json()
-            message = result["choices"][0]["message"]
-            
-            # Some models may return 'reasoning' or 'reasoning_content' instead of 'content'
-            content = (
-                message.get("content") 
-                or message.get("reasoning") 
-                or message.get("reasoning_content") 
-                or ""
-            )
-            
-            if not content:
-                logger.warning(f"Empty response from model. Full message: {message}")
+        max_retries = 3
+        last_exception: Exception | None = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(
+                    self.api_url,
+                    headers=self.headers,
+                    json=payload,
+                    timeout=120,
+                )
+                response.raise_for_status()
                 
-            return content
+                result = response.json()
+                message = result["choices"][0]["message"]
+                
+                # Some models may return 'reasoning' or 'reasoning_content' instead of 'content'
+                content = (
+                    message.get("content") 
+                    or message.get("reasoning") 
+                    or message.get("reasoning_content") 
+                    or ""
+                )
+                
+                if not content:
+                    logger.warning(f"Empty response from model. Full message: {message}")
+                    
+                return content
+            
+            except requests.exceptions.RequestException as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt  # 1s, 2s, 4s
+                    logger.warning(
+                        f"NVIDIA NIM API attempt {attempt + 1}/{max_retries} failed: {e}. "
+                        f"Retrying in {wait_time}s..."
+                    )
+                    time.sleep(wait_time)
+                else:
+                    logger.error(f"NVIDIA NIM API error after {max_retries} attempts: {e}")
         
-        except requests.exceptions.RequestException as e:
-            logger.error(f"NVIDIA NIM API error: {e}")
-            raise RuntimeError(f"Failed to get response from NVIDIA NIM: {e}") from e
+        raise RuntimeError(
+            "Gagal mendapatkan respons dari layanan AI. Silakan coba lagi nanti."
+        ) from last_exception
     
     def generate_stream(
         self,
@@ -289,36 +305,52 @@ class NVIDIANimClient:
             "stream": True,
         }
         
-        try:
-            response = requests.post(
-                self.api_url,
-                headers=self.headers,
-                json=payload,
-                timeout=120,
-                stream=True,
-            )
-            response.raise_for_status()
+        max_retries = 3
+        last_exception: Exception | None = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(
+                    self.api_url,
+                    headers=self.headers,
+                    json=payload,
+                    timeout=120,
+                    stream=True,
+                )
+                response.raise_for_status()
+                
+                for line in response.iter_lines():
+                    if line:
+                        line = line.decode('utf-8')
+                        if line.startswith('data: '):
+                            data = line[6:]  # Remove 'data: ' prefix
+                            if data == '[DONE]':
+                                break
+                            try:
+                                chunk = json.loads(data)
+                                if 'choices' in chunk and len(chunk['choices']) > 0:
+                                    delta = chunk['choices'][0].get('delta', {})
+                                    content = delta.get('content', '')
+                                    if content:
+                                        yield content
+                            except json.JSONDecodeError:
+                                continue
+                return  # Success — exit retry loop
             
-            for line in response.iter_lines():
-                if line:
-                    line = line.decode('utf-8')
-                    if line.startswith('data: '):
-                        data = line[6:]  # Remove 'data: ' prefix
-                        if data == '[DONE]':
-                            break
-                        try:
-                            chunk = json.loads(data)
-                            if 'choices' in chunk and len(chunk['choices']) > 0:
-                                delta = chunk['choices'][0].get('delta', {})
-                                content = delta.get('content', '')
-                                if content:
-                                    yield content
-                        except json.JSONDecodeError:
-                            continue
+            except requests.exceptions.RequestException as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt  # 1s, 2s, 4s
+                    logger.warning(
+                        f"NVIDIA NIM API streaming attempt {attempt + 1}/{max_retries} failed: {e}. "
+                        f"Retrying in {wait_time}s..."
+                    )
+                    time.sleep(wait_time)
+                else:
+                    logger.error(f"NVIDIA NIM API streaming error after {max_retries} attempts: {e}")
         
-        except requests.exceptions.RequestException as e:
-            logger.error(f"NVIDIA NIM API streaming error: {e}")
-            raise RuntimeError(f"Failed to get streaming response from NVIDIA NIM: {e}") from e
+        raise RuntimeError(
+            "Gagal mendapatkan respons streaming dari layanan AI. Silakan coba lagi nanti."
+        ) from last_exception
 
 
 class LegalRAGChain:

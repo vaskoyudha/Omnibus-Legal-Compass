@@ -732,8 +732,8 @@ app.add_middleware(
         "http://127.0.0.1:3001",
     ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # Rate limiting (in-memory, per IP)
@@ -933,7 +933,7 @@ async def ask_question(request: Request, body: QuestionRequest):
         logger.error(f"Error processing question: {e}", exc_info=True)
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to process question: {str(e)}",
+            detail="Terjadi kesalahan saat memproses pertanyaan. Silakan coba lagi nanti.",
         )
 
 
@@ -1002,7 +1002,7 @@ async def ask_question_stream(request: Request, body: QuestionRequest):
                     yield f"event: done\ndata: {json.dumps(done_data)}\n\n"
         except Exception as e:
             logger.error(f"Error in stream: {e}", exc_info=True)
-            yield f"event: error\ndata: {json.dumps({'error': str(e)})}\n\n"
+            yield f"event: error\ndata: {json.dumps({'error': 'Terjadi kesalahan saat memproses permintaan streaming.'})}\n\n"
 
     return StreamingResponse(
         event_generator(),
@@ -1108,7 +1108,7 @@ async def ask_followup(request: Request, body: FollowUpRequest):
         logger.error(f"Error processing followup: {e}", exc_info=True)
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to process followup: {str(e)}",
+            detail="Terjadi kesalahan saat memproses pertanyaan lanjutan. Silakan coba lagi nanti.",
         )
 
 
@@ -1209,7 +1209,7 @@ async def check_compliance(
             logger.error(f"Failed to parse PDF: {e}")
             raise HTTPException(
                 status_code=400,
-                detail=f"Gagal membaca file PDF: {str(e)}",
+                detail="Gagal membaca file PDF. Pastikan file tidak rusak dan coba lagi.",
             )
 
     # Option 2: Text description provided
@@ -1311,7 +1311,7 @@ Selalu kutip sumber peraturan yang relevan."""
         logger.error(f"Error processing compliance check: {e}", exc_info=True)
         raise HTTPException(
             status_code=500,
-            detail=f"Gagal memproses pemeriksaan kepatuhan: {str(e)}",
+            detail="Gagal memproses pemeriksaan kepatuhan. Silakan coba lagi nanti.",
         )
 
 
@@ -1596,7 +1596,7 @@ Setelah jawaban naratif, WAJIB tambahkan blok JSON terstruktur di akhir:
         logger.error(f"Error processing guidance request: {e}", exc_info=True)
         raise HTTPException(
             status_code=500,
-            detail=f"Gagal memproses permintaan panduan: {str(e)}",
+            detail="Gagal memproses permintaan panduan. Silakan coba lagi nanti.",
         )
 
 

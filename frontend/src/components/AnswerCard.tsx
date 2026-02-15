@@ -24,7 +24,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      // Clipboard copy failed silently
     }
   }, [response.answer]);
 
@@ -54,7 +54,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
       try {
         await navigator.share(shareData);
       } catch (err) {
-        console.log('Share cancelled');
+        // Share cancelled by user
       }
     } else {
       await navigator.clipboard.writeText(window.location.href);

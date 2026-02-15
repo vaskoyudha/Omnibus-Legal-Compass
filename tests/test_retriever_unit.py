@@ -451,7 +451,7 @@ class TestRetrieverInit:
             )
             # Should have called QdrantClient with api_key
             mock_qclient_cls.assert_called_with(
-                url=ret.qdrant_url, api_key="test-key"  # pragma: allowlist secret
+                url=ret.qdrant_url, api_key="test-key", timeout=10  # pragma: allowlist secret
             )
 
     def test_init_without_api_key(self):
@@ -468,7 +468,7 @@ class TestRetrieverInit:
             ret = HybridRetriever(
                 qdrant_api_key=None, use_reranker=False
             )
-            mock_qclient_cls.assert_called_with(url=ret.qdrant_url)
+            mock_qclient_cls.assert_called_with(url=ret.qdrant_url, timeout=10)
 
     def test_init_with_reranker_failure(self):
         """CrossEncoder import failure should not crash init."""

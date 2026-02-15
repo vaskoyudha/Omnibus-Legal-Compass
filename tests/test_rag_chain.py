@@ -155,14 +155,18 @@ class TestNVIDIANimClient:
         result = client.generate("q")
         assert result == "reasoning answer"
 
+    @patch("rag_chain.time.sleep")
     @patch("rag_chain.requests.post")
-    def test_generate_api_error(self, mock_post):
+    def test_generate_api_error(self, mock_post, mock_sleep):
         import requests as req
         mock_post.side_effect = req.exceptions.ConnectionError("timeout")
 
         client = NVIDIANimClient(api_key="test-key")
-        with pytest.raises(RuntimeError, match="Failed to get response"):
+        with pytest.raises(RuntimeError, match="Gagal mendapatkan respons"):
             client.generate("q")
+        # Verify retry was attempted (3 total calls, 2 sleeps)
+        assert mock_post.call_count == 3
+        assert mock_sleep.call_count == 2
 
     @patch("rag_chain.requests.post")
     def test_generate_stream_yields_chunks(self, mock_post):

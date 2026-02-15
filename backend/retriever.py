@@ -118,9 +118,9 @@ class HybridRetriever:
         
         # Initialize Qdrant client (with API key for cloud)
         if qdrant_api_key:
-            self.client = QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
+            self.client = QdrantClient(url=qdrant_url, api_key=qdrant_api_key, timeout=10)
         else:
-            self.client = QdrantClient(url=qdrant_url)
+            self.client = QdrantClient(url=qdrant_url, timeout=10)
         
         # Initialize embeddings (same model as ingestion)
         self.embedder = HuggingFaceEmbeddings(model_name=embedding_model)

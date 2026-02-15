@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import AmbientBackground from "@/components/AmbientBackground";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { Toaster } from "sonner";
 
 const geistMono = Geist_Mono({
@@ -38,7 +39,9 @@ export default function RootLayout({
         <Navbar />
         <main className="pt-16 min-h-screen">
           <PageTransition>
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </PageTransition>
         </main>
         <Footer />

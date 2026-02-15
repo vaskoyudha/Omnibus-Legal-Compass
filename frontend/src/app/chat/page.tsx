@@ -165,7 +165,7 @@ function ChatPageInner() {
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      console.error('Error sending message:', error);
+      // Error sending message handled by toast notification
       toast.error('Gagal mengirim pertanyaan. Silakan coba lagi.');
     } finally {
       setIsLoading(false);

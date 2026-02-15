@@ -8,9 +8,6 @@ import SearchBar from '@/components/SearchBar';
 import DecryptedText from '@/components/reactbits/DecryptedText';
 import CountUp from '@/components/reactbits/CountUp';
 import SpotlightCard from '@/components/reactbits/SpotlightCard';
-import TiltCard from '@/components/reactbits/TiltCard';
-import GlowingOrb from '@/components/reactbits/GlowingOrb';
-import ShinyText from '@/components/reactbits/ShinyText';
 
 const LaserFlow = dynamic(() => import('@/components/reactbits/LaserFlow'), {
   ssr: false,
@@ -391,375 +388,562 @@ export default function Home() {
           </div>
         </motion.div>
 
-      {/* Feature Cards with TiltCard — Premium 3D effect */}
+      {/* ── Visual Transition: Search → Features ── */}
+      <div className="relative max-w-5xl mx-auto px-4 mt-16 mb-8">
+        {/* Fading center line */}
+        <motion.div
+          className="mx-auto h-px w-full max-w-xs"
+          style={{
+            background: 'linear-gradient(90deg, transparent, rgba(170,255,0,0.3), transparent)',
+          }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        />
+        {/* Vertical drop line */}
+        <motion.div
+          className="mx-auto w-px h-10"
+          style={{
+            background: 'linear-gradient(180deg, rgba(170,255,0,0.3), transparent)',
+          }}
+          initial={{ scaleY: 0, opacity: 0 }}
+          whileInView={{ scaleY: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+        />
+        {/* Glowing dot at intersection */}
+        <motion.div
+          className="mx-auto w-2 h-2 rounded-full bg-[#AAFF00]"
+          style={{ boxShadow: '0 0 12px rgba(170,255,0,0.6), 0 0 30px rgba(170,255,0,0.2)' }}
+          initial={{ scale: 0, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.6 }}
+        />
+      </div>
+
+      {/* Feature Cards — Editorial Layout with SpotlightCards */}
       <motion.div
-        className="max-w-4xl mx-auto px-4 mt-10 relative"
+        className="max-w-5xl mx-auto px-4 mt-4"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        {/* Background Glow Orb */}
-        <GlowingOrb 
-          color="#AAFF00" 
-          size={400} 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none"
-          duration={10}
-        />
+        {/* Section Heading */}
+        <div className="text-center mb-14">
+          <motion.p
+            className="text-xs uppercase tracking-widest text-[#AAFF00]/60 font-mono mb-3"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Fitur Utama
+          </motion.p>
+          <motion.h2
+            className="text-4xl md:text-5xl font-bold tracking-tight"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.05 }}
+          >
+            <span className="text-white">Built for </span>
+            <span className="text-[#AAFF00]">Legal Precision</span>
+          </motion.h2>
+          <motion.p
+            className="text-base text-gray-400 mt-3 max-w-lg mx-auto"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            Platform intelijen hukum dengan fitur yang dirancang untuk akurasi dan kecepatan
+          </motion.p>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {featureCards.map((card, i) => (
             <motion.div
               key={card.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
+              transition={{ 
+                duration: 0.6, 
+                ease: [0.22, 1, 0.36, 1] as [number, number, number, number], 
+                delay: i * 0.12 
+              }}
             >
-              <TiltCard 
-                className="h-full group"
-                tiltAmount={12}
-                glareEnabled={true}
-                glareColor="rgba(170, 255, 0, 0.15)"
+              <SpotlightCard
+                className="h-full"
+                spotlightColor={
+                  i === 0 ? 'rgba(170, 255, 0, 0.15)' :
+                  i === 1 ? 'rgba(0, 217, 255, 0.15)' :
+                  'rgba(255, 184, 0, 0.15)'
+                }
               >
-                <div className="relative p-6 rounded-xl glass-strong border border-white/10 hover:border-[#AAFF00]/30 transition-all h-full overflow-hidden">
-                  {/* Animated gradient border on hover */}
-                  <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(170,255,0,0.2) 0%, transparent 50%, rgba(170,255,0,0.2) 100%)',
-                      backgroundSize: '200% 200%',
-                      animation: 'gradient-shift 3s ease infinite'
-                    }}
+                <div className="relative p-7 h-full group">
+                  {/* Top accent line with per-card color */}
+                  <div className={`absolute top-0 left-6 right-6 h-px ${
+                    i === 0 ? 'bg-gradient-to-r from-transparent via-[#AAFF00]/40 to-transparent' :
+                    i === 1 ? 'bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent' :
+                    'bg-gradient-to-r from-transparent via-amber-400/40 to-transparent'
+                  }`} />
+
+                  {/* Step number */}
+                  <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">
+                    0{i + 1}
+                  </span>
+
+                  {/* Icon with glow */}
+                  <div className="relative mt-5 mb-5">
+                    <div className={`absolute -inset-3 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                      i === 0 ? 'bg-[#AAFF00]/20' :
+                      i === 1 ? 'bg-cyan-400/20' :
+                      'bg-amber-400/20'
+                    }`} />
+                    <motion.div
+                      className={`relative w-10 h-10 ${
+                        i === 0 ? 'text-[#AAFF00]' :
+                        i === 1 ? 'text-cyan-400' :
+                        'text-amber-400'
+                      }`}
+                      whileHover={{ scale: 1.15, rotate: 5 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                    >
+                      {card.icon}
+                    </motion.div>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-bold text-white mb-2 leading-tight">
+                    {card.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    {card.description}
+                  </p>
+
+                  {/* Bottom hover indicator */}
+                  <motion.div
+                    className={`absolute bottom-0 left-0 right-0 h-0.5 origin-left ${
+                      i === 0 ? 'bg-gradient-to-r from-[#AAFF00]/60 to-transparent' :
+                      i === 1 ? 'bg-gradient-to-r from-cyan-400/60 to-transparent' :
+                      'bg-gradient-to-r from-amber-400/60 to-transparent'
+                    }`}
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 + i * 0.15, duration: 0.8, ease: 'easeOut' }}
                   />
-
-                  {/* Bottom accent bar */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#AAFF00] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  {/* ShinyText label */}
-                  <div className="mb-3">
-                    <ShinyText 
-                      text={i === 0 ? 'Core Feature' : i === 1 ? 'Fitur Utama' : 'Advanced'}
-                      className="text-[10px] uppercase tracking-widest text-[#AAFF00]/70 font-bold"
-                    />
-                  </div>
-
-                  {/* Large animated icon with glow */}
-                  <div className="relative w-16 h-16 mb-5">
-                    {/* Glowing background circle */}
-                    <motion.div 
-                      className="absolute inset-0 rounded-full bg-[#AAFF00]/20 blur-xl"
-                      animate={{ 
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.5, 0.3]
-                      }}
-                      transition={{ 
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    />
-                    <div className="relative w-16 h-16 rounded-xl bg-[#AAFF00]/10 flex items-center justify-center text-[#AAFF00] group-hover:bg-[#AAFF00]/20 transition-all">
-                      <div className="w-10 h-10">
-                        {card.icon}
-                      </div>
-                    </div>
-                  </div>
-
-                  <h3 className="text-text-primary font-bold mb-2 text-lg">{card.title}</h3>
-                  <p className="text-sm text-text-muted leading-relaxed">{card.description}</p>
-                </div>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Methodology Transparency — Premium Trust Section */}
-      <motion.div
-        className="max-w-4xl mx-auto px-4 mt-16"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="text-center mb-8">
-          <p className="text-xs uppercase tracking-widest text-text-muted">Mengapa Anda bisa percaya</p>
-        </div>
-
-        {/* Trust Badges with Proper SVG Icons */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
-          {[
-            { 
-              label: 'Open Source', 
-              desc: 'Kode sumber terbuka di GitHub',
-              icon: (
-                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
-              )
-            },
-            { 
-              label: 'MIT Licensed', 
-              desc: 'Lisensi bebas & transparan',
-              icon: (
-                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              )
-            },
-            { 
-              label: 'Grounding Verified', 
-              desc: 'Setiap jawaban diverifikasi AI',
-              icon: (
-                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              )
-            },
-            { 
-              label: '360+ Tests', 
-              desc: 'Teruji otomatis secara menyeluruh',
-              icon: (
-                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                </svg>
-              )
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-            >
-              <SpotlightCard className="h-full group" spotlightColor="rgba(170, 255, 0, 0.12)">
-                <div className="p-5 text-center">
-                  <div className="relative w-14 h-14 mx-auto mb-3">
-                    {/* Glowing circle background */}
-                    <div className="absolute inset-0 rounded-full bg-[#AAFF00]/20 group-hover:bg-[#AAFF00]/30 transition-colors duration-300" />
-                    <div className="relative w-14 h-14 rounded-full bg-[#AAFF00]/10 flex items-center justify-center text-[#AAFF00] group-hover:scale-110 transition-transform duration-300">
-                      {item.icon}
-                    </div>
-                  </div>
-                  <div className="text-sm font-bold text-text-primary mb-1">{item.label}</div>
-                  <div className="text-xs text-text-muted leading-tight">{item.desc}</div>
                 </div>
               </SpotlightCard>
             </motion.div>
           ))}
         </div>
+      </motion.div>
 
-        {/* Visual Pipeline — How We Ensure Accuracy */}
-        <div className="glass-strong rounded-2xl p-8 max-w-3xl mx-auto relative overflow-hidden">
-          {/* Background glow */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#AAFF00]/5 rounded-full blur-3xl pointer-events-none" />
+      {/* Trust Badges — Horizontal Scrolling Marquee */}
+      <motion.div
+        className="max-w-full mx-auto mt-16 border-y border-white/5 relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Edge fade gradients */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0A0A0F] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0A0A0F] to-transparent z-10 pointer-events-none" />
 
-          <h3 className="text-lg font-bold text-text-primary text-center mb-8 relative z-10">
-            Bagaimana Kami Menjaga Akurasi
-          </h3>
-
-          {/* Desktop: Horizontal Pipeline */}
-          <div className="hidden lg:flex items-center justify-between gap-2 relative">
-            {[
-              { 
-                step: '1', 
-                text: 'Pencarian hybrid (BM25 + vektor semantik)',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                )
-              },
-              { 
-                step: '2', 
-                text: 'CrossEncoder reranking',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                  </svg>
-                )
-              },
-              { 
-                step: '3', 
-                text: 'AI menghasilkan jawaban',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                )
-              },
-              { 
-                step: '4', 
-                text: 'LLM-as-judge memverifikasi',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                )
-              },
-              { 
-                step: '5', 
-                text: 'Sistem menolak jika tidak yakin',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                )
-              },
-            ].map((item, i, arr) => (
-              <motion.div
-                key={item.step}
-                className="flex items-center gap-2"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.5 }}
-              >
-                {/* Step Node */}
-                <div className="flex flex-col items-center">
-                  <motion.div 
-                    className="relative w-12 h-12 rounded-full bg-[#AAFF00]/20 border-2 border-[#AAFF00] flex items-center justify-center"
-                    animate={{ 
-                      boxShadow: ['0 0 0px rgba(170,255,0,0.5)', '0 0 20px rgba(170,255,0,0.8)', '0 0 0px rgba(170,255,0,0.5)']
-                    }}
-                    transition={{ 
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.4
-                    }}
-                  >
-                    <div className="text-[#AAFF00]">{item.icon}</div>
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#0A0A0F] border border-[#AAFF00] flex items-center justify-center text-[10px] font-bold text-[#AAFF00]">
-                      {item.step}
+        <div className="py-8">
+          <motion.div
+            className="flex items-center gap-8 whitespace-nowrap"
+            animate={{ x: [0, -1200] }}
+            transition={{
+              duration: 30,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          >
+            {/* Duplicate array for seamless infinite scroll */}
+            {[...Array(2)].map((_, groupIndex) => (
+              <div key={groupIndex} className="flex items-center gap-8">
+                {[
+                  { 
+                    label: 'Open Source', 
+                    desc: 'Kode sumber terbuka di GitHub',
+                    icon: (
+                      <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    label: 'MIT Licensed', 
+                    desc: 'Lisensi bebas & transparan',
+                    icon: (
+                      <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    label: 'Grounding Verified', 
+                    desc: 'Setiap jawaban diverifikasi AI',
+                    icon: (
+                      <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    label: '360+ Tests', 
+                    desc: 'Teruji otomatis secara menyeluruh',
+                    icon: (
+                      <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                      </svg>
+                    )
+                  },
+                ].map((item, i) => (
+                  <div key={`${groupIndex}-${i}`}>
+                    <div className="inline-flex items-center gap-4">
+                      {/* Icon */}
+                      <div className="text-white/40">
+                        {item.icon}
+                      </div>
+                      
+                      {/* Label + description */}
+                      <div className="flex flex-col">
+                        <span className="text-4xl font-bold uppercase tracking-tighter text-white">
+                          {item.label}
+                        </span>
+                        <span className="text-sm font-mono text-gray-500 mt-1">
+                          {item.desc}
+                        </span>
+                      </div>
                     </div>
-                  </motion.div>
-                  <p className="text-[10px] text-text-muted text-center mt-2 max-w-[80px] leading-tight">{item.text}</p>
-                </div>
-
-                {/* Connecting Line with Pulse Animation */}
-                {i < arr.length - 1 && (
-                  <div className="relative w-12 h-0.5 bg-white/10">
-                    <motion.div 
-                      className="absolute inset-0 h-full bg-gradient-to-r from-[#AAFF00] to-transparent"
-                      initial={{ scaleX: 0 }}
-                      whileInView={{ scaleX: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.3, duration: 0.5 }}
-                      style={{ transformOrigin: 'left' }}
-                    />
-                    {/* Pulsing dot traveling along line */}
-                    <motion.div
-                      className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#AAFF00]"
-                      animate={{ 
-                        left: ['0%', '100%']
-                      }}
-                      transition={{ 
-                        duration: 1.5,
-                        repeat: Infinity,
-                        delay: i * 0.3,
-                        ease: 'linear'
-                      }}
-                    />
+                    
+                    {/* Dot divider */}
+                    <span className="inline-block mx-8 text-white/20 text-2xl">•</span>
                   </div>
-                )}
-              </motion.div>
+                ))}
+              </div>
             ))}
-          </div>
-
-          {/* Mobile: Vertical Pipeline */}
-          <div className="lg:hidden space-y-4">
-            {[
-              { 
-                step: '1', 
-                text: 'Pencarian hybrid (BM25 + vektor semantik) menemukan dokumen hukum yang paling relevan',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                )
-              },
-              { 
-                step: '2', 
-                text: 'CrossEncoder reranking menyaring hasil agar presisi tinggi',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                  </svg>
-                )
-              },
-              { 
-                step: '3', 
-                text: 'AI menghasilkan jawaban beserta kutipan pasal dan ayat',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                )
-              },
-              { 
-                step: '4', 
-                text: 'LLM-as-judge memverifikasi apakah jawaban benar-benar didukung sumber',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                )
-              },
-              { 
-                step: '5', 
-                text: 'Jika kepercayaan rendah, sistem menolak menjawab daripada memberikan informasi salah',
-                icon: (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                )
-              },
-            ].map((item, i, arr) => (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-              >
-                <div className="flex items-start gap-4">
-                  <motion.div 
-                    className="relative flex-shrink-0 w-10 h-10 rounded-full bg-[#AAFF00]/20 border-2 border-[#AAFF00] flex items-center justify-center"
-                    animate={{ 
-                      boxShadow: ['0 0 0px rgba(170,255,0,0.5)', '0 0 15px rgba(170,255,0,0.8)', '0 0 0px rgba(170,255,0,0.5)']
-                    }}
-                    transition={{ 
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.4
-                    }}
-                  >
-                    <div className="text-[#AAFF00]">{item.icon}</div>
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#0A0A0F] border border-[#AAFF00] flex items-center justify-center text-[10px] font-bold text-[#AAFF00]">
-                      {item.step}
-                    </div>
-                  </motion.div>
-                  <p className="text-sm text-text-secondary leading-relaxed pt-1">{item.text}</p>
-                </div>
-                {/* Connecting line */}
-                {i < arr.length - 1 && (
-                  <div className="relative ml-5 h-6 w-0.5 bg-white/10">
-                    <motion.div 
-                      className="absolute inset-0 w-full bg-gradient-to-b from-[#AAFF00] to-transparent"
-                      initial={{ scaleY: 0 }}
-                      whileInView={{ scaleY: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 + 0.3, duration: 0.4 }}
-                      style={{ transformOrigin: 'top' }}
-                    />
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
+          </motion.div>
         </div>
       </motion.div>
+
+      {/* Accuracy Pipeline — Immersive Vertical Flow */}
+      <motion.div
+        className="relative max-w-5xl mx-auto px-4 mt-24 mb-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Section Heading */}
+        <div className="text-center mb-16">
+          <motion.p
+            className="text-sm font-mono tracking-[0.3em] uppercase text-[#AAFF00]/60 mb-3"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            5-Stage Pipeline
+          </motion.p>
+          <motion.h3
+            className="text-3xl md:text-4xl font-bold text-white mb-4"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            Bagaimana Kami Menjaga Akurasi
+          </motion.h3>
+          <motion.p
+            className="text-text-secondary max-w-lg mx-auto"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            Setiap jawaban melewati 5 tahap verifikasi sebelum sampai ke Anda
+          </motion.p>
+        </div>
+
+        {/* Pipeline Steps */}
+        <div className="relative">
+          {/* Central animated connecting line (desktop) */}
+          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px">
+            <div className="h-full w-full bg-gradient-to-b from-[#AAFF00]/40 via-cyan-400/30 to-purple-500/20" />
+            {/* Traveling pulse */}
+            <motion.div
+              className="absolute left-1/2 -translate-x-1/2 w-1 h-24 rounded-full"
+              style={{ background: 'linear-gradient(to bottom, transparent, #AAFF00, transparent)' }}
+              animate={{ top: ['-10%', '110%'] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+            />
+          </div>
+          {/* Mobile connecting line */}
+          <div className="md:hidden absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-[#AAFF00]/30 via-white/10 to-transparent" />
+
+          {[
+            {
+              step: '01',
+              title: 'Pencarian Hybrid',
+              subtitle: 'BM25 + Vektor Semantik',
+              description: 'Menemukan dokumen hukum yang paling relevan menggunakan kombinasi pencarian keyword dan pemahaman makna.',
+              accent: '#AAFF00',
+              accentBg: 'rgba(170, 255, 0, 0.08)',
+              accentBorder: 'rgba(170, 255, 0, 0.25)',
+              icon: (
+                <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              ),
+              metric: { value: '2x', label: 'Metode Pencarian' },
+            },
+            {
+              step: '02',
+              title: 'CrossEncoder Reranking',
+              subtitle: 'Presisi Tinggi',
+              description: 'Menyaring dan mengurutkan ulang hasil pencarian dengan model AI khusus untuk memastikan relevansi maksimal.',
+              accent: '#00D4FF',
+              accentBg: 'rgba(0, 212, 255, 0.08)',
+              accentBorder: 'rgba(0, 212, 255, 0.25)',
+              icon: (
+                <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                </svg>
+              ),
+              metric: { value: 'Top-K', label: 'Hasil Tersaring' },
+            },
+            {
+              step: '03',
+              title: 'AI Menghasilkan Jawaban',
+              subtitle: 'Dengan Kutipan Sumber',
+              description: 'Model bahasa besar menganalisis konteks hukum dan menghasilkan jawaban beserta kutipan pasal dan ayat yang spesifik.',
+              accent: '#A855F7',
+              accentBg: 'rgba(168, 85, 247, 0.08)',
+              accentBorder: 'rgba(168, 85, 247, 0.25)',
+              icon: (
+                <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              ),
+              metric: { value: '100%', label: 'Kutipan Sumber' },
+            },
+            {
+              step: '04',
+              title: 'LLM-as-Judge Verifikasi',
+              subtitle: 'Grounding Check',
+              description: 'Jawaban diperiksa ulang oleh model AI kedua — memastikan setiap klaim benar-benar didukung oleh sumber hukum.',
+              accent: '#F59E0B',
+              accentBg: 'rgba(245, 158, 11, 0.08)',
+              accentBorder: 'rgba(245, 158, 11, 0.25)',
+              icon: (
+                <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              ),
+              metric: { value: '0-1', label: 'Grounding Score' },
+            },
+            {
+              step: '05',
+              title: 'Menolak Jika Tidak Yakin',
+              subtitle: 'Confidence Threshold',
+              description: 'Sistem memilih untuk tidak menjawab daripada memberikan informasi yang salah. Threshold konfidiensi < 0.30 = penolakan.',
+              accent: '#EF4444',
+              accentBg: 'rgba(239, 68, 68, 0.08)',
+              accentBorder: 'rgba(239, 68, 68, 0.25)',
+              icon: (
+                <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              ),
+              metric: { value: '<0.3', label: 'Auto Reject' },
+            },
+          ].map((item, i) => {
+            const isEven = i % 2 === 0;
+            return (
+              <motion.div
+                key={item.step}
+                className="relative mb-8 last:mb-0"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ delay: i * 0.12, duration: 0.6, ease: 'easeOut' }}
+              >
+                {/* Desktop: alternating left/right layout */}
+                <div className={`hidden md:grid md:grid-cols-[1fr_60px_1fr] items-center gap-0`}>
+                  {/* Left content (even steps) or empty */}
+                  <div className={isEven ? '' : 'order-3'}>
+                    <motion.div
+                      className="group relative p-6 rounded-2xl border transition-all duration-500 cursor-default"
+                      style={{
+                        background: item.accentBg,
+                        borderColor: item.accentBorder,
+                      }}
+                      whileHover={{
+                        scale: 1.02,
+                        borderColor: item.accent,
+                        boxShadow: `0 0 30px ${item.accentBg}, 0 0 60px ${item.accentBg}`,
+                      }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                    >
+                      {/* Top accent line */}
+                      <div
+                        className="absolute top-0 left-6 right-6 h-px opacity-60 group-hover:opacity-100 transition-opacity"
+                        style={{ background: `linear-gradient(to right, transparent, ${item.accent}, transparent)` }}
+                      />
+
+                      {/* Step label + Icon row */}
+                      <div className="flex items-center gap-3 mb-3">
+                        <div
+                          className="flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300"
+                          style={{
+                            background: `linear-gradient(135deg, ${item.accentBg}, transparent)`,
+                            border: `1px solid ${item.accentBorder}`,
+                            color: item.accent,
+                          }}
+                        >
+                          {item.icon}
+                        </div>
+                        <span
+                          className="text-xs font-mono tracking-wider uppercase opacity-50"
+                          style={{ color: item.accent }}
+                        >
+                          Step {item.step}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h4 className="text-lg font-bold text-white mb-1 group-hover:text-white transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="text-sm font-medium mb-2" style={{ color: item.accent, opacity: 0.7 }}>
+                        {item.subtitle}
+                      </p>
+                      <p className="text-sm text-gray-400 leading-relaxed mb-4">
+                        {item.description}
+                      </p>
+
+                      {/* Metric badge */}
+                      <div
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono"
+                        style={{
+                          background: item.accentBg,
+                          border: `1px solid ${item.accentBorder}`,
+                          color: item.accent,
+                        }}
+                      >
+                        <span className="text-base font-bold">{item.metric.value}</span>
+                        <span className="opacity-60">{item.metric.label}</span>
+                      </div>
+
+                      {/* Connector arrow pointing to center */}
+                      <div
+                        className={`absolute top-1/2 -translate-y-1/2 w-4 h-px ${isEven ? '-right-4' : '-left-4'}`}
+                        style={{ background: item.accent, opacity: 0.4 }}
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* Center node */}
+                  <div className="flex flex-col items-center justify-center relative z-10">
+                    <motion.div
+                      className="relative w-12 h-12 rounded-full flex items-center justify-center font-mono text-sm font-bold"
+                      style={{
+                        background: `radial-gradient(circle, ${item.accentBg} 0%, #0A0A0F 70%)`,
+                        border: `2px solid ${item.accentBorder}`,
+                        color: item.accent,
+                      }}
+                      whileHover={{ scale: 1.15, borderColor: item.accent }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                    >
+                      {item.step}
+                      {/* Pulse ring */}
+                      <motion.div
+                        className="absolute inset-0 rounded-full"
+                        style={{ border: `1px solid ${item.accent}` }}
+                        animate={{ scale: [1, 1.6], opacity: [0.4, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* Right content (odd steps) or empty */}
+                  <div className={isEven ? 'order-3' : ''} />
+                </div>
+
+                {/* Mobile: stacked layout with left line */}
+                <div className="md:hidden relative pl-16">
+                  {/* Step node on the line */}
+                  <motion.div
+                    className="absolute left-0 top-0 w-12 h-12 rounded-full flex items-center justify-center font-mono text-sm font-bold z-10"
+                    style={{
+                      background: `radial-gradient(circle, ${item.accentBg} 0%, #0A0A0F 70%)`,
+                      border: `2px solid ${item.accentBorder}`,
+                      color: item.accent,
+                    }}
+                  >
+                    {item.step}
+                  </motion.div>
+
+                  <div
+                    className="group p-5 rounded-xl border transition-all duration-300"
+                    style={{
+                      background: item.accentBg,
+                      borderColor: item.accentBorder,
+                    }}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <div style={{ color: item.accent }}>{item.icon}</div>
+                      <span className="text-xs font-mono tracking-wider uppercase opacity-50" style={{ color: item.accent }}>
+                        Step {item.step}
+                      </span>
+                    </div>
+                    <h4 className="text-base font-bold text-white mb-1">{item.title}</h4>
+                    <p className="text-xs mb-2" style={{ color: item.accent, opacity: 0.7 }}>{item.subtitle}</p>
+                    <p className="text-sm text-gray-400 leading-relaxed mb-3">{item.description}</p>
+                    <div
+                      className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg text-xs font-mono"
+                      style={{
+                        background: item.accentBg,
+                        border: `1px solid ${item.accentBorder}`,
+                        color: item.accent,
+                      }}
+                    >
+                      <span className="text-sm font-bold">{item.metric.value}</span>
+                      <span className="opacity-60">{item.metric.label}</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+
+          {/* Bottom completion indicator */}
+          <motion.div
+            className="hidden md:flex flex-col items-center mt-8"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8 }}
+          >
+            <div className="w-10 h-10 rounded-full border border-[#AAFF00]/30 bg-[#AAFF00]/5 flex items-center justify-center">
+              <svg className="w-5 h-5 text-[#AAFF00]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p className="text-xs font-mono text-[#AAFF00]/40 mt-2 tracking-wider">JAWABAN TERVERIFIKASI</p>
+          </motion.div>
+        </div>
+      </motion.div>
+
 
       {/* ============================================
           1. USE CASES — Siapa yang Menggunakan
@@ -869,21 +1053,13 @@ export default function Home() {
           2. TECH STACK — Arsitektur Platform
           ============================================ */}
       <motion.div
-        className="max-w-6xl mx-auto px-4 mt-20 relative"
+        className="max-w-6xl mx-auto px-4 mt-20"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        {/* Background Glow Orb */}
-        <GlowingOrb 
-          color="#AAFF00" 
-          size={500} 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none"
-          duration={12}
-        />
-
-        <div className="text-center mb-10 relative z-10">
+        <div className="text-center mb-10">
           <motion.p
             className="text-xs uppercase tracking-widest text-text-muted mb-2"
             initial={{ opacity: 0, y: 10 }}
@@ -912,118 +1088,21 @@ export default function Home() {
           </motion.p>
         </div>
 
-        {/* Tech Pipeline Visual — Animated Glass Cards */}
-        <div className="glass-strong rounded-2xl p-8 mb-8 relative z-10 overflow-hidden">
-          <div className="flex items-center justify-between gap-3 overflow-x-auto pb-2">
-            {[
-              { 
-                label: 'Pertanyaan Anda',
-                icon: (
-                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                )
-              },
-              { 
-                label: 'Hybrid Search', 
-                sublabel: 'BM25 + Dense',
-                icon: (
-                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                )
-              },
-              { 
-                label: 'CrossEncoder Reranking', 
-                sublabel: 'Precision++',
-                icon: (
-                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                  </svg>
-                )
-              },
-              { 
-                label: 'NVIDIA NIM AI', 
-                sublabel: 'Kimi K2',
-                icon: (
-                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                )
-              },
-              { 
-                label: 'Jawaban Terverifikasi',
-                icon: (
-                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                )
-              },
-            ].map((step, i, arr) => (
-              <motion.div
-                key={step.label}
-                className="flex items-center gap-3 min-w-fit"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-              >
-                {/* Glass card node */}
-                <div className="glass rounded-xl p-4 border border-white/10 hover:border-[#AAFF00]/30 transition-all group">
-                  <div className="flex flex-col items-center text-center">
-                    <motion.div 
-                      className="w-12 h-12 rounded-lg bg-[#AAFF00]/10 flex items-center justify-center text-[#AAFF00] mb-2 group-hover:bg-[#AAFF00]/20 transition-colors"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      {step.icon}
-                    </motion.div>
-                    <div className="text-xs font-semibold text-text-primary whitespace-nowrap">{step.label}</div>
-                    {step.sublabel && (
-                      <div className="text-[10px] text-text-muted whitespace-nowrap mt-0.5">{step.sublabel}</div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Animated connecting arrow */}
-                {i < arr.length - 1 && (
-                  <div className="relative">
-                    {/* Arrow SVG with animated gradient */}
-                    <svg className="w-8 h-8 text-[#AAFF00]/50 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                    {/* Traveling pulse */}
-                    <motion.div
-                      className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-[#AAFF00]"
-                      animate={{
-                        x: [0, 32],
-                        opacity: [0, 1, 0]
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        repeat: Infinity,
-                        delay: i * 0.3,
-                        ease: 'linear'
-                      }}
-                    />
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Tech Stack Pills — Proper SVG Icons + 2-Row Grid */}
-        <div className="relative z-10">
-          {/* AI & Search Row */}
-          <div className="mb-4">
-            <p className="text-xs uppercase tracking-widest text-text-muted text-center mb-3">AI & Search</p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {/* Tech Stack — Text Directory List with Hover Reveals */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12">
+          {/* AI & Search Column */}
+          <div>
+            <p className="text-xs uppercase tracking-widest text-amber-400/60 font-mono mb-6">
+              AI & Search
+            </p>
+            
+            <div>
               {[
                 { 
                   name: 'NVIDIA NIM', 
                   role: 'Kimi K2 LLM',
                   icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   )
@@ -1032,7 +1111,7 @@ export default function Home() {
                   name: 'Qdrant', 
                   role: 'Vector Database',
                   icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
                     </svg>
                   )
@@ -1041,7 +1120,7 @@ export default function Home() {
                   name: 'CrossEncoder', 
                   role: 'Reranking',
                   icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                     </svg>
                   )
@@ -1050,7 +1129,7 @@ export default function Home() {
                   name: 'Hybrid Search', 
                   role: 'BM25 + Dense',
                   icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   )
@@ -1058,39 +1137,60 @@ export default function Home() {
               ].map((tech, i) => (
                 <motion.div
                   key={tech.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  className="relative group py-4 border-b border-white/5 last:border-0"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05, duration: 0.4 }}
+                  transition={{ delay: i * 0.08, duration: 0.5 }}
+                  whileHover={{ x: 4 }}
                 >
-                  <TiltCard className="h-full group" tiltAmount={8} glareEnabled={true}>
-                    <div className="glass-strong rounded-xl px-5 py-4 border border-white/10 hover:border-[#AAFF00]/40 transition-all h-full">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-[#AAFF00]/10 flex items-center justify-center text-[#AAFF00] flex-shrink-0 group-hover:bg-[#AAFF00]/20 transition-colors">
-                          {tech.icon}
-                        </div>
-                        <div>
-                          <div className="text-sm font-bold text-text-primary">{tech.name}</div>
-                          <div className="text-xs text-text-muted">{tech.role}</div>
-                        </div>
-                      </div>
+                  {/* Hover gradient reveal */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <div className="relative flex items-center gap-3">
+                    {/* Icon */}
+                    <div className="text-amber-400/40 group-hover:text-amber-400 transition-colors">
+                      {tech.icon}
                     </div>
-                  </TiltCard>
+
+                    {/* Name + Role */}
+                    <div className="flex-1">
+                      <span className="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors">
+                        {tech.name}
+                      </span>
+                      <span className="text-sm text-gray-500 font-mono ml-2">
+                        — {tech.role}
+                      </span>
+                    </div>
+
+                    {/* Arrow on hover */}
+                    <svg 
+                      className="w-4 h-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
 
-          {/* Frontend & Dev Row */}
+          {/* Frontend & Dev Column */}
           <div>
-            <p className="text-xs uppercase tracking-widest text-text-muted text-center mb-3">Frontend & Dev</p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <p className="text-xs uppercase tracking-widest text-amber-400/60 font-mono mb-6">
+              Frontend & Dev
+            </p>
+            
+            <div>
               {[
                 { 
                   name: 'FastAPI', 
                   role: 'Backend API',
                   icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
                     </svg>
                   )
@@ -1099,7 +1199,7 @@ export default function Home() {
                   name: 'Next.js 16', 
                   role: 'Frontend',
                   icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                     </svg>
                   )
@@ -1108,7 +1208,7 @@ export default function Home() {
                   name: 'Framer Motion', 
                   role: 'Animations',
                   icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
                   )
@@ -1117,7 +1217,7 @@ export default function Home() {
                   name: 'Tailwind CSS', 
                   role: 'Styling',
                   icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
                   )
@@ -1125,24 +1225,42 @@ export default function Home() {
               ].map((tech, i) => (
                 <motion.div
                   key={tech.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  className="relative group py-4 border-b border-white/5 last:border-0"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 + 0.2, duration: 0.4 }}
+                  transition={{ delay: i * 0.08 + 0.2, duration: 0.5 }}
+                  whileHover={{ x: 4 }}
                 >
-                  <TiltCard className="h-full group" tiltAmount={8} glareEnabled={true}>
-                    <div className="glass-strong rounded-xl px-5 py-4 border border-white/10 hover:border-[#AAFF00]/40 transition-all h-full">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-[#AAFF00]/10 flex items-center justify-center text-[#AAFF00] flex-shrink-0 group-hover:bg-[#AAFF00]/20 transition-colors">
-                          {tech.icon}
-                        </div>
-                        <div>
-                          <div className="text-sm font-bold text-text-primary">{tech.name}</div>
-                          <div className="text-xs text-text-muted">{tech.role}</div>
-                        </div>
-                      </div>
+                  {/* Hover gradient reveal */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <div className="relative flex items-center gap-3">
+                    {/* Icon */}
+                    <div className="text-amber-400/40 group-hover:text-amber-400 transition-colors">
+                      {tech.icon}
                     </div>
-                  </TiltCard>
+
+                    {/* Name + Role */}
+                    <div className="flex-1">
+                      <span className="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors">
+                        {tech.name}
+                      </span>
+                      <span className="text-sm text-gray-500 font-mono ml-2">
+                        — {tech.role}
+                      </span>
+                    </div>
+
+                    {/* Arrow on hover */}
+                    <svg 
+                      className="w-4 h-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </div>
                 </motion.div>
               ))}
             </div>
