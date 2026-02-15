@@ -6,6 +6,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import AmbientBackground from "@/components/AmbientBackground";
+import dynamic from 'next/dynamic';
+const SplashCursor = dynamic(() => import('@/components/reactbits/SplashCursor'), { ssr: false });
 import { Toaster } from "sonner";
 
 const geistMono = Geist_Mono({
@@ -35,6 +37,9 @@ export default function RootLayout({
     <html lang="id" suppressHydrationWarning>
       <body className={`${geistMono.variable} antialiased`}>
         <AmbientBackground />
+        <div className="fixed inset-0 z-[2] pointer-events-none" aria-hidden="true">
+          <SplashCursor TRANSPARENT={true} />
+        </div>
         <Navbar />
         <main className="pt-16 min-h-screen">
           <PageTransition>
