@@ -59,11 +59,11 @@ describe('Navbar', () => {
     expect(screen.getByText('OMNIBUS')).toBeInTheDocument();
   });
 
-  it('contains navigation links: Tanya Jawab, Kepatuhan, Panduan Usaha', () => {
+  it('contains navigation links: Beranda, Kepatuhan, Panduan', () => {
     render(<Navbar />);
-    expect(screen.getByText('Tanya Jawab')).toBeInTheDocument();
+    expect(screen.getByText('Beranda')).toBeInTheDocument();
     expect(screen.getByText('Kepatuhan')).toBeInTheDocument();
-    expect(screen.getByText('Panduan Usaha')).toBeInTheDocument();
+    expect(screen.getByText('Panduan')).toBeInTheDocument();
   });
 
   it('renders the CTA button "Mulai Gratis"', () => {

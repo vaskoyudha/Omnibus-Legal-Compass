@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import { AskResponse } from '@/lib/api';
 import CitationList from './CitationList';
+import html2pdf from 'html2pdf.js';
 
 interface AnswerCardProps {
   response: AskResponse;
@@ -38,7 +39,6 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
 
-      // @ts-ignore
       html2pdf().set(opt).from(element).save();
     }
   }, []);
@@ -252,7 +252,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         )}
 
         {/* Answer Content */}
-        <div className="p-6">
+        <div id="answer-content" className="p-6">
           <div className="prose prose-invert prose-lg max-w-none 
             prose-p:text-slate-300 prose-p:leading-relaxed prose-p:mb-4
             prose-strong:text-slate-100 prose-strong:font-semibold
