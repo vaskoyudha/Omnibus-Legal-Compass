@@ -191,7 +191,7 @@ class TestLoadGoldenQA:
     def test_loads_real_golden_qa(self):
         """Verify real golden_qa.json loads successfully."""
         qa = load_golden_qa(GOLDEN_QA_PATH)
-        assert len(qa) >= 40, f"Expected >= 40 QA pairs, got {len(qa)}"
+        assert len(qa) >= 88, f"Expected >= 88 QA pairs, got {len(qa)}"
 
     def test_qa_has_required_fields(self):
         """Each QA pair has id, question, regulations."""
@@ -221,6 +221,23 @@ class TestLoadGoldenQA:
         }
         missing = new_regs - all_regs
         assert not missing, f"Golden QA missing coverage for: {missing}"
+
+    def test_qa_covers_all_corpus_regulations(self):
+        """Golden QA covers ALL 44 regulations in the corpus (Phase 4.4)."""
+        qa = load_golden_qa(GOLDEN_QA_PATH)
+        corpus = load_corpus(CORPUS_PATH)
+
+        qa_regs = set()
+        for pair in qa:
+            qa_regs.update(pair["regulations"])
+
+        corpus_regs = set(doc["regulation_key"] for doc in corpus)
+
+        missing = corpus_regs - qa_regs
+        assert not missing, (
+            f"Golden QA is missing coverage for {len(missing)} corpus regulations: "
+            f"{sorted(missing)}"
+        )
 
     def test_missing_file_raises(self):
         """FileNotFoundError on missing QA file."""

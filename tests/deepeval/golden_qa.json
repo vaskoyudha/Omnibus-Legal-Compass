@@ -2,349 +2,1119 @@
   {
     "id": "qa_001",
     "question": "Apa syarat pendirian Perseroan Terbatas (PT)?",
-    "expected_answer_contains": ["2 orang", "akta notaris", "minimal modal"],
-    "regulations": ["UU 40/2007"]
+    "expected_answer_contains": [
+      "2 orang",
+      "akta notaris",
+      "minimal modal"
+    ],
+    "regulations": [
+      "UU 40/2007"
+    ]
   },
   {
     "id": "qa_002",
     "question": "Berapa minimal modal dasar PT?",
-    "expected_answer_contains": ["Rp50.000.000", "50 juta", "25%"],
-    "regulations": ["UU 40/2007"]
+    "expected_answer_contains": [
+      "Rp50.000.000",
+      "50 juta",
+      "25%"
+    ],
+    "regulations": [
+      "UU 40/2007"
+    ]
   },
   {
     "id": "qa_003",
     "question": "Apa itu Undang-Undang Cipta Kerja?",
-    "expected_answer_contains": ["UU 11/2020", "Cipta Kerja", "tenaga kerja"],
-    "regulations": ["UU 11/2020"]
+    "expected_answer_contains": [
+      "UU 11/2020",
+      "Cipta Kerja",
+      "tenaga kerja"
+    ],
+    "regulations": [
+      "UU 11/2020"
+    ]
   },
   {
     "id": "qa_004",
     "question": "Bagaimana ketentuan cuti melahirkan menurut UU Cipta Kerja?",
-    "expected_answer_contains": ["cuti", "melahirkan", "3 bulan"],
-    "regulations": ["UU 11/2020"]
+    "expected_answer_contains": [
+      "cuti",
+      "melahirkan",
+      "3 bulan"
+    ],
+    "regulations": [
+      "UU 11/2020"
+    ]
   },
   {
     "id": "qa_005",
     "question": "Apa definisi berusaha menurut PP 24/2018?",
-    "expected_answer_contains": ["berusaha", "kepentingan sendiri"],
-    "regulations": ["PP 24/2018"]
+    "expected_answer_contains": [
+      "berusaha",
+      "kepentingan sendiri"
+    ],
+    "regulations": [
+      "PP 24/2018"
+    ]
   },
   {
     "id": "qa_006",
     "question": "Apa itu Nomor Induk Berusaha (NIB)?",
-    "expected_answer_contains": ["NIB", "identitas", "berusaha"],
-    "regulations": ["PP 24/2018"]
+    "expected_answer_contains": [
+      "NIB",
+      "identitas",
+      "berusaha"
+    ],
+    "regulations": [
+      "PP 24/2018"
+    ]
   },
   {
     "id": "qa_007",
     "question": "Bagaimana perlindungan data pribadi menurut UU 27/2022?",
-    "expected_answer_contains": ["data pribadi", "perlindungan", "UU 27/2022"],
-    "regulations": ["UU 27/2022"]
+    "expected_answer_contains": [
+      "data pribadi",
+      "perlindungan",
+      "UU 27/2022"
+    ],
+    "regulations": [
+      "UU 27/2022"
+    ]
   },
   {
     "id": "qa_008",
     "question": "Apa hak pekerja according to UU Cipta Kerja?",
-    "expected_answer_contains": ["hak pekerja", "cuti", "upah"],
-    "regulations": ["UU 11/2020"]
+    "expected_answer_contains": [
+      "hak pekerja",
+      "cuti",
+      "upah"
+    ],
+    "regulations": [
+      "UU 11/2020"
+    ]
   },
   {
     "id": "qa_009",
     "question": "Apa itu RUPS?",
-    "expected_answer_contains": ["RUPS", "Pemegang Saham", "keputusan"],
-    "regulations": ["UU 40/2007"]
+    "expected_answer_contains": [
+      "RUPS",
+      "Pemegang Saham",
+      "keputusan"
+    ],
+    "regulations": [
+      "UU 40/2007"
+    ]
   },
   {
     "id": "qa_010",
     "question": "Bagaimana prosedur PHK menurut UU Cipta Kerja?",
-    "expected_answer_contains": ["PHK", "pesangon", "peringatan"],
-    "regulations": ["UU 11/2020"]
+    "expected_answer_contains": [
+      "PHK",
+      "pesangon",
+      "peringatan"
+    ],
+    "regulations": [
+      "UU 11/2020"
+    ]
   },
   {
     "id": "qa_011",
     "question": "Apa saja jenis-jenis badan usaha di Indonesia?",
-    "expected_answer_contains": ["PT", "CV", "Firma", "Koperasi"],
-    "regulations": ["UU 40/2007"]
+    "expected_answer_contains": [
+      "PT",
+      "CV",
+      "Firma",
+      "Koperasi"
+    ],
+    "regulations": [
+      "UU 40/2007"
+    ]
   },
   {
     "id": "qa_012",
     "question": "Bagaimana ketentuan uang pesangon?",
-    "expected_answer_contains": ["pesangon", "PHK", "bulan kerja"],
-    "regulations": ["UU 11/2020"]
+    "expected_answer_contains": [
+      "pesangon",
+      "PHK",
+      "bulan kerja"
+    ],
+    "regulations": [
+      "UU 11/2020"
+    ]
   },
   {
     "id": "qa_013",
     "question": "Apa itu Perpres 49/2021?",
-    "expected_answer_contains": ["Perpres 49/2021", "BPOM"],
-    "regulations": ["Perpres 49/2021"]
+    "expected_answer_contains": [
+      "Perpres 49/2021",
+      "BPOM"
+    ],
+    "regulations": [
+      "Perpres 49/2021"
+    ]
   },
   {
     "id": "qa_014",
     "question": "Bagaimana registrasi BPOM untuk makanan?",
-    "expected_answer_contains": ["BPOM", "makanan", "izin"],
-    "regulations": ["Perpres 49/2021"]
+    "expected_answer_contains": [
+      "BPOM",
+      "makanan",
+      "izin"
+    ],
+    "regulations": [
+      "Perpres 49/2021"
+    ]
   },
   {
     "id": "qa_015",
     "question": "Apa itu status badan hukum dalam UU PT?",
-    "expected_answer_contains": ["PT", "status", "badan hukum"],
-    "regulations": ["UU 40/2007"]
+    "expected_answer_contains": [
+      "PT",
+      "status",
+      "badan hukum"
+    ],
+    "regulations": [
+      "UU 40/2007"
+    ]
   },
   {
     "id": "qa_016",
     "question": "Apa definisi tindak pidana korupsi menurut UU 31/1999?",
-    "expected_answer_contains": ["melawan hukum", "memperkaya", "keuangan negara"],
-    "regulations": ["UU 31/1999"]
+    "expected_answer_contains": [
+      "melawan hukum",
+      "memperkaya",
+      "keuangan negara"
+    ],
+    "regulations": [
+      "UU 31/1999"
+    ]
   },
   {
     "id": "qa_017",
     "question": "Berapa ancaman hukuman untuk korupsi yang merugikan keuangan negara?",
-    "expected_answer_contains": ["penjara", "pidana", "denda"],
-    "regulations": ["UU 31/1999"]
+    "expected_answer_contains": [
+      "penjara",
+      "pidana",
+      "denda"
+    ],
+    "regulations": [
+      "UU 31/1999"
+    ]
   },
   {
     "id": "qa_018",
     "question": "Apa yang dimaksud dengan penyalahgunaan kewenangan dalam korupsi?",
-    "expected_answer_contains": ["kewenangan", "menguntungkan", "korporasi"],
-    "regulations": ["UU 31/1999"]
+    "expected_answer_contains": [
+      "kewenangan",
+      "menguntungkan",
+      "korporasi"
+    ],
+    "regulations": [
+      "UU 31/1999"
+    ]
   },
   {
     "id": "qa_019",
     "question": "Apa itu monopoli menurut UU 5/1999?",
-    "expected_answer_contains": ["monopoli", "penguasaan", "produksi", "pemasaran"],
-    "regulations": ["UU 5/1999"]
+    "expected_answer_contains": [
+      "monopoli",
+      "penguasaan",
+      "produksi",
+      "pemasaran"
+    ],
+    "regulations": [
+      "UU 5/1999"
+    ]
   },
   {
     "id": "qa_020",
     "question": "Apa yang dilarang dalam perjanjian penetapan harga (price fixing)?",
-    "expected_answer_contains": ["harga", "perjanjian", "pelaku usaha", "pesaing"],
-    "regulations": ["UU 5/1999"]
+    "expected_answer_contains": [
+      "harga",
+      "perjanjian",
+      "pelaku usaha",
+      "pesaing"
+    ],
+    "regulations": [
+      "UU 5/1999"
+    ]
   },
   {
     "id": "qa_021",
     "question": "Apa peran KPPU dalam persaingan usaha?",
-    "expected_answer_contains": ["KPPU", "pengawas", "persaingan"],
-    "regulations": ["UU 5/1999"]
+    "expected_answer_contains": [
+      "KPPU",
+      "pengawas",
+      "persaingan"
+    ],
+    "regulations": [
+      "UU 5/1999"
+    ]
   },
   {
     "id": "qa_022",
     "question": "Apa saja jenis bank menurut UU Perbankan?",
-    "expected_answer_contains": ["Bank Umum", "Bank Perkreditan Rakyat", "BPR"],
-    "regulations": ["UU 10/1998"]
+    "expected_answer_contains": [
+      "Bank Umum",
+      "Bank Perkreditan Rakyat",
+      "BPR"
+    ],
+    "regulations": [
+      "UU 10/1998"
+    ]
   },
   {
     "id": "qa_023",
     "question": "Apa yang dilarang dilakukan oleh Bank Umum?",
-    "expected_answer_contains": ["penyertaan modal", "perasuransian", "dilarang"],
-    "regulations": ["UU 10/1998"]
+    "expected_answer_contains": [
+      "penyertaan modal",
+      "perasuransian",
+      "dilarang"
+    ],
+    "regulations": [
+      "UU 10/1998"
+    ]
   },
   {
     "id": "qa_024",
     "question": "Apa itu rahasia bank menurut UU Perbankan?",
-    "expected_answer_contains": ["rahasia", "bank", "nasabah"],
-    "regulations": ["UU 10/1998"]
+    "expected_answer_contains": [
+      "rahasia",
+      "bank",
+      "nasabah"
+    ],
+    "regulations": [
+      "UU 10/1998"
+    ]
   },
   {
     "id": "qa_025",
     "question": "Apa definisi Pasar Modal menurut UU 8/1995?",
-    "expected_answer_contains": ["Pasar Modal", "Efek", "Penawaran Umum"],
-    "regulations": ["UU 8/1995"]
+    "expected_answer_contains": [
+      "Pasar Modal",
+      "Efek",
+      "Penawaran Umum"
+    ],
+    "regulations": [
+      "UU 8/1995"
+    ]
   },
   {
     "id": "qa_026",
     "question": "Apa syarat melakukan Penawaran Umum di pasar modal?",
-    "expected_answer_contains": ["Emiten", "Pernyataan Pendaftaran", "Badan Pengawas"],
-    "regulations": ["UU 8/1995"]
+    "expected_answer_contains": [
+      "Emiten",
+      "Pernyataan Pendaftaran",
+      "Badan Pengawas"
+    ],
+    "regulations": [
+      "UU 8/1995"
+    ]
   },
   {
     "id": "qa_027",
     "question": "Apa itu insider trading atau perdagangan orang dalam?",
-    "expected_answer_contains": ["informasi", "orang dalam", "Efek"],
-    "regulations": ["UU 8/1995"]
+    "expected_answer_contains": [
+      "informasi",
+      "orang dalam",
+      "Efek"
+    ],
+    "regulations": [
+      "UU 8/1995"
+    ]
   },
   {
     "id": "qa_028",
     "question": "Apa definisi Hak Cipta menurut UU 28/2014?",
-    "expected_answer_contains": ["hak eksklusif", "pencipta", "otomatis", "deklaratif"],
-    "regulations": ["UU 28/2014"]
+    "expected_answer_contains": [
+      "hak eksklusif",
+      "pencipta",
+      "otomatis",
+      "deklaratif"
+    ],
+    "regulations": [
+      "UU 28/2014"
+    ]
   },
   {
     "id": "qa_029",
     "question": "Apa itu hak moral pencipta?",
-    "expected_answer_contains": ["hak moral", "melekat", "pencipta", "mencantumkan"],
-    "regulations": ["UU 28/2014"]
+    "expected_answer_contains": [
+      "hak moral",
+      "melekat",
+      "pencipta",
+      "mencantumkan"
+    ],
+    "regulations": [
+      "UU 28/2014"
+    ]
   },
   {
     "id": "qa_030",
     "question": "Apa perbedaan hak ekonomi dan hak moral dalam hak cipta?",
-    "expected_answer_contains": ["hak ekonomi", "manfaat ekonomi", "Ciptaan"],
-    "regulations": ["UU 28/2014"]
+    "expected_answer_contains": [
+      "hak ekonomi",
+      "manfaat ekonomi",
+      "Ciptaan"
+    ],
+    "regulations": [
+      "UU 28/2014"
+    ]
   },
   {
     "id": "qa_031",
     "question": "Apa definisi Paten menurut UU 13/2016?",
-    "expected_answer_contains": ["hak eksklusif", "inventor", "invensi", "negara"],
-    "regulations": ["UU 13/2016"]
+    "expected_answer_contains": [
+      "hak eksklusif",
+      "inventor",
+      "invensi",
+      "negara"
+    ],
+    "regulations": [
+      "UU 13/2016"
+    ]
   },
   {
     "id": "qa_032",
     "question": "Apa syarat suatu invensi bisa dipatenkan?",
-    "expected_answer_contains": ["baru", "langkah inventif", "industri"],
-    "regulations": ["UU 13/2016"]
+    "expected_answer_contains": [
+      "baru",
+      "langkah inventif",
+      "industri"
+    ],
+    "regulations": [
+      "UU 13/2016"
+    ]
   },
   {
     "id": "qa_033",
     "question": "Apa itu paten sederhana?",
-    "expected_answer_contains": ["paten sederhana", "pengembangan", "produk", "proses"],
-    "regulations": ["UU 13/2016"]
+    "expected_answer_contains": [
+      "paten sederhana",
+      "pengembangan",
+      "produk",
+      "proses"
+    ],
+    "regulations": [
+      "UU 13/2016"
+    ]
   },
   {
     "id": "qa_034",
     "question": "Apa definisi Merek menurut UU 20/2016?",
-    "expected_answer_contains": ["Merek", "tanda", "grafis", "gambar"],
-    "regulations": ["UU 20/2016"]
+    "expected_answer_contains": [
+      "Merek",
+      "tanda",
+      "grafis",
+      "gambar"
+    ],
+    "regulations": [
+      "UU 20/2016"
+    ]
   },
   {
     "id": "qa_035",
     "question": "Bagaimana cara mendaftarkan merek di Indonesia?",
-    "expected_answer_contains": ["pendaftaran", "Merek", "Menteri", "Pemohon"],
-    "regulations": ["UU 20/2016"]
+    "expected_answer_contains": [
+      "pendaftaran",
+      "Merek",
+      "Menteri",
+      "Pemohon"
+    ],
+    "regulations": [
+      "UU 20/2016"
+    ]
   },
   {
     "id": "qa_036",
     "question": "Kapan hak atas merek diperoleh?",
-    "expected_answer_contains": ["terdaftar", "hak", "Merek"],
-    "regulations": ["UU 20/2016"]
+    "expected_answer_contains": [
+      "terdaftar",
+      "hak",
+      "Merek"
+    ],
+    "regulations": [
+      "UU 20/2016"
+    ]
   },
   {
     "id": "qa_037",
     "question": "Apa itu kepailitan menurut UU 37/2004?",
-    "expected_answer_contains": ["kepailitan", "sita umum", "kekayaan", "Debitor"],
-    "regulations": ["UU 37/2004"]
+    "expected_answer_contains": [
+      "kepailitan",
+      "sita umum",
+      "kekayaan",
+      "Debitor"
+    ],
+    "regulations": [
+      "UU 37/2004"
+    ]
   },
   {
     "id": "qa_038",
     "question": "Apa syarat untuk mengajukan pernyataan pailit?",
-    "expected_answer_contains": ["dua", "Kreditor", "utang", "jatuh waktu"],
-    "regulations": ["UU 37/2004"]
+    "expected_answer_contains": [
+      "dua",
+      "Kreditor",
+      "utang",
+      "jatuh waktu"
+    ],
+    "regulations": [
+      "UU 37/2004"
+    ]
   },
   {
     "id": "qa_039",
     "question": "Ke mana permohonan pailit harus diajukan?",
-    "expected_answer_contains": ["Pengadilan Niaga", "Ketua", "kedudukan hukum"],
-    "regulations": ["UU 37/2004"]
+    "expected_answer_contains": [
+      "Pengadilan Niaga",
+      "Ketua",
+      "kedudukan hukum"
+    ],
+    "regulations": [
+      "UU 37/2004"
+    ]
   },
   {
     "id": "qa_040",
     "question": "Apa itu PKPU (Penundaan Kewajiban Pembayaran Utang)?",
-    "expected_answer_contains": ["PKPU", "penundaan", "pembayaran", "utang"],
-    "regulations": ["UU 37/2004"]
+    "expected_answer_contains": [
+      "PKPU",
+      "penundaan",
+      "pembayaran",
+      "utang"
+    ],
+    "regulations": [
+      "UU 37/2004"
+    ]
   },
   {
     "id": "qa_041",
     "question": "Apa definisi Jaminan Fidusia menurut UU 42/1999?",
-    "expected_answer_contains": ["fidusia", "hak jaminan", "benda bergerak", "penguasaan"],
-    "regulations": ["UU 42/1999"]
+    "expected_answer_contains": [
+      "fidusia",
+      "hak jaminan",
+      "benda bergerak",
+      "penguasaan"
+    ],
+    "regulations": [
+      "UU 42/1999"
+    ]
   },
   {
     "id": "qa_042",
     "question": "Bagaimana cara mendaftarkan Jaminan Fidusia?",
-    "expected_answer_contains": ["pendaftaran", "Kantor Pendaftaran Fidusia", "Sertifikat"],
-    "regulations": ["UU 42/1999"]
+    "expected_answer_contains": [
+      "pendaftaran",
+      "Kantor Pendaftaran Fidusia",
+      "Sertifikat"
+    ],
+    "regulations": [
+      "UU 42/1999"
+    ]
   },
   {
     "id": "qa_043",
     "question": "Apa itu Hak Tanggungan menurut UU 4/1996?",
-    "expected_answer_contains": ["hak jaminan", "tanah", "pelunasan utang", "kreditor"],
-    "regulations": ["UU 4/1996"]
+    "expected_answer_contains": [
+      "hak jaminan",
+      "tanah",
+      "pelunasan utang",
+      "kreditor"
+    ],
+    "regulations": [
+      "UU 4/1996"
+    ]
   },
   {
     "id": "qa_044",
     "question": "Hak atas tanah apa saja yang dapat dibebani Hak Tanggungan?",
-    "expected_answer_contains": ["Hak Milik", "Hak Guna Usaha", "Hak Guna Bangunan"],
-    "regulations": ["UU 4/1996"]
+    "expected_answer_contains": [
+      "Hak Milik",
+      "Hak Guna Usaha",
+      "Hak Guna Bangunan"
+    ],
+    "regulations": [
+      "UU 4/1996"
+    ]
   },
   {
     "id": "qa_045",
     "question": "Bagaimana penyelesaian sengketa melalui arbitrase menurut UU 30/1999?",
-    "expected_answer_contains": ["arbitrase", "sengketa", "perjanjian", "tertulis"],
-    "regulations": ["UU 30/1999"]
+    "expected_answer_contains": [
+      "arbitrase",
+      "sengketa",
+      "perjanjian",
+      "tertulis"
+    ],
+    "regulations": [
+      "UU 30/1999"
+    ]
   },
   {
     "id": "qa_046",
     "question": "Apa jenis perselisihan hubungan industrial menurut UU 2/2004?",
-    "expected_answer_contains": ["perselisihan hak", "kepentingan", "pemutusan hubungan kerja"],
-    "regulations": ["UU 2/2004"]
+    "expected_answer_contains": [
+      "perselisihan hak",
+      "kepentingan",
+      "pemutusan hubungan kerja"
+    ],
+    "regulations": [
+      "UU 2/2004"
+    ]
   },
   {
     "id": "qa_047",
     "question": "Apa jenis-jenis visa menurut UU Keimigrasian?",
-    "expected_answer_contains": ["visa diplomatik", "visa dinas", "visa kunjungan", "visa tinggal terbatas"],
-    "regulations": ["UU 6/2011"]
+    "expected_answer_contains": [
+      "visa diplomatik",
+      "visa dinas",
+      "visa kunjungan",
+      "visa tinggal terbatas"
+    ],
+    "regulations": [
+      "UU 6/2011"
+    ]
   },
   {
     "id": "qa_048",
     "question": "Apa definisi Yayasan menurut UU 16/2001?",
-    "expected_answer_contains": ["badan hukum", "kekayaan yang dipisahkan", "sosial", "kemanusiaan"],
-    "regulations": ["UU 16/2001"]
+    "expected_answer_contains": [
+      "badan hukum",
+      "kekayaan yang dipisahkan",
+      "sosial",
+      "kemanusiaan"
+    ],
+    "regulations": [
+      "UU 16/2001"
+    ]
   },
   {
     "id": "qa_049",
     "question": "Apa prinsip-prinsip Koperasi menurut UU 25/1992?",
-    "expected_answer_contains": ["sukarela", "demokratis", "sisa hasil usaha", "kemandirian"],
-    "regulations": ["UU 25/1992"]
+    "expected_answer_contains": [
+      "sukarela",
+      "demokratis",
+      "sisa hasil usaha",
+      "kemandirian"
+    ],
+    "regulations": [
+      "UU 25/1992"
+    ]
   },
   {
     "id": "qa_050",
     "question": "Apa fungsi dan tugas OJK menurut UU 21/2011?",
-    "expected_answer_contains": ["OJK", "pengaturan", "pengawasan", "jasa keuangan"],
-    "regulations": ["UU 21/2011"]
+    "expected_answer_contains": [
+      "OJK",
+      "pengaturan",
+      "pengawasan",
+      "jasa keuangan"
+    ],
+    "regulations": [
+      "UU 21/2011"
+    ]
   },
   {
     "id": "qa_051",
     "question": "Apa definisi asuransi menurut UU 40/2014?",
-    "expected_answer_contains": ["asuransi", "perjanjian", "premi", "perusahaan asuransi"],
-    "regulations": ["UU 40/2014"]
+    "expected_answer_contains": [
+      "asuransi",
+      "perjanjian",
+      "premi",
+      "perusahaan asuransi"
+    ],
+    "regulations": [
+      "UU 40/2014"
+    ]
   },
   {
     "id": "qa_052",
     "question": "Apa ketentuan perdagangan elektronik menurut UU 7/2014?",
-    "expected_answer_contains": ["elektronik", "data", "informasi", "lengkap dan benar"],
-    "regulations": ["UU 7/2014"]
+    "expected_answer_contains": [
+      "elektronik",
+      "data",
+      "informasi",
+      "lengkap dan benar"
+    ],
+    "regulations": [
+      "UU 7/2014"
+    ]
   },
   {
     "id": "qa_053",
     "question": "Apa tujuan penyelenggaraan perindustrian menurut UU 3/2014?",
-    "expected_answer_contains": ["Industri", "pilar", "perekonomian", "berdaya saing"],
-    "regulations": ["UU 3/2014"]
+    "expected_answer_contains": [
+      "Industri",
+      "pilar",
+      "perekonomian",
+      "berdaya saing"
+    ],
+    "regulations": [
+      "UU 3/2014"
+    ]
   },
   {
     "id": "qa_054",
     "question": "Apa definisi Desain Industri menurut UU 31/2000?",
-    "expected_answer_contains": ["kreasi", "bentuk", "estetis", "produk"],
-    "regulations": ["UU 31/2000"]
+    "expected_answer_contains": [
+      "kreasi",
+      "bentuk",
+      "estetis",
+      "produk"
+    ],
+    "regulations": [
+      "UU 31/2000"
+    ]
   },
   {
     "id": "qa_055",
     "question": "Apa itu Rahasia Dagang menurut UU 30/2000?",
-    "expected_answer_contains": ["informasi", "rahasia", "nilai ekonomi", "kerahasiaan"],
-    "regulations": ["UU 30/2000"]
+    "expected_answer_contains": [
+      "informasi",
+      "rahasia",
+      "nilai ekonomi",
+      "kerahasiaan"
+    ],
+    "regulations": [
+      "UU 30/2000"
+    ]
   },
   {
     "id": "qa_056",
     "question": "Apa itu kepabeanan dan bea masuk menurut UU 17/2006?",
-    "expected_answer_contains": ["kepabeanan", "lalu lintas barang", "bea masuk", "daerah pabean"],
-    "regulations": ["UU 17/2006"]
+    "expected_answer_contains": [
+      "kepabeanan",
+      "lalu lintas barang",
+      "bea masuk",
+      "daerah pabean"
+    ],
+    "regulations": [
+      "UU 17/2006"
+    ]
   },
   {
     "id": "qa_057",
     "question": "Barang apa saja yang dikenai cukai menurut UU 39/2007?",
-    "expected_answer_contains": ["etil alkohol", "minuman", "tembakau", "cukai"],
-    "regulations": ["UU 39/2007"]
+    "expected_answer_contains": [
+      "etil alkohol",
+      "minuman",
+      "tembakau",
+      "cukai"
+    ],
+    "regulations": [
+      "UU 39/2007"
+    ]
   },
   {
     "id": "qa_058",
     "question": "Apa saja persyaratan tenaga kerja konstruksi menurut UU 2/2017?",
-    "expected_answer_contains": ["Sertifikat Kompetensi", "tenaga kerja konstruksi", "Jasa Konstruksi"],
-    "regulations": ["UU 2/2017"]
+    "expected_answer_contains": [
+      "Sertifikat Kompetensi",
+      "tenaga kerja konstruksi",
+      "Jasa Konstruksi"
+    ],
+    "regulations": [
+      "UU 2/2017"
+    ]
+  },
+  {
+    "id": "qa_059",
+    "question": "Apa itu Perjanjian Kerja Waktu Tertentu (PKWT) menurut PP 35/2021?",
+    "expected_answer_contains": [
+      "PKWT",
+      "perjanjian kerja",
+      "pekerja/buruh",
+      "pengusaha",
+      "waktu tertentu"
+    ],
+    "regulations": [
+      "PP 35/2021"
+    ]
+  },
+  {
+    "id": "qa_060",
+    "question": "Atas dasar apa PKWT dibuat menurut PP 35/2021?",
+    "expected_answer_contains": [
+      "jangka waktu",
+      "selesainya",
+      "pekerjaan tertentu"
+    ],
+    "regulations": [
+      "PP 35/2021"
+    ]
+  },
+  {
+    "id": "qa_061",
+    "question": "Apa itu Perizinan Berusaha Berbasis Risiko menurut PP 5/2021?",
+    "expected_answer_contains": [
+      "Perizinan Berusaha",
+      "tingkat risiko",
+      "kegiatan usaha"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ]
+  },
+  {
+    "id": "qa_062",
+    "question": "Apa saja tingkat risiko kegiatan usaha menurut PP 5/2021?",
+    "expected_answer_contains": [
+      "risiko rendah",
+      "risiko menengah",
+      "risiko tinggi"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ]
+  },
+  {
+    "id": "qa_063",
+    "question": "Apa itu Sistem Elektronik menurut PP 71/2019?",
+    "expected_answer_contains": [
+      "Sistem Elektronik",
+      "perangkat",
+      "prosedur elektronik",
+      "Informasi Elektronik"
+    ],
+    "regulations": [
+      "PP 71/2019"
+    ]
+  },
+  {
+    "id": "qa_064",
+    "question": "Apa kewajiban Penyelenggara Sistem Elektronik terkait Data Pribadi menurut PP 71/2019?",
+    "expected_answer_contains": [
+      "kerahasiaan",
+      "Data Pribadi",
+      "persetujuan",
+      "pemilik"
+    ],
+    "regulations": [
+      "PP 71/2019"
+    ]
+  },
+  {
+    "id": "qa_065",
+    "question": "Apa saja bidang usaha yang tertutup untuk penanaman modal menurut Perpres 10/2021?",
+    "expected_answer_contains": [
+      "narkotika",
+      "perjudian",
+      "senjata kimia",
+      "tertutup"
+    ],
+    "regulations": [
+      "Perpres 10/2021"
+    ]
+  },
+  {
+    "id": "qa_066",
+    "question": "Apa yang dimaksud bidang usaha prioritas menurut Perpres 10/2021?",
+    "expected_answer_contains": [
+      "prioritas",
+      "dukungan",
+      "Pemerintah Pusat",
+      "padat karya"
+    ],
+    "regulations": [
+      "Perpres 10/2021"
+    ]
+  },
+  {
+    "id": "qa_067",
+    "question": "Apa prinsip pelaksanaan Pengadaan Barang/Jasa Pemerintah menurut Perpres 12/2021?",
+    "expected_answer_contains": [
+      "efisien",
+      "efektif",
+      "transparan",
+      "terbuka",
+      "akuntabel"
+    ],
+    "regulations": [
+      "Perpres 12/2021"
+    ]
+  },
+  {
+    "id": "qa_068",
+    "question": "Apa tujuan Pengadaan Barang/Jasa Pemerintah menurut Perpres 12/2021?",
+    "expected_answer_contains": [
+      "tepat",
+      "kualitas",
+      "jumlah",
+      "waktu",
+      "biaya"
+    ],
+    "regulations": [
+      "Perpres 12/2021"
+    ]
+  },
+  {
+    "id": "qa_069",
+    "question": "Apa definisi ketenagakerjaan menurut UU 13/2003?",
+    "expected_answer_contains": [
+      "tenaga kerja",
+      "sebelum",
+      "selama",
+      "sesudah",
+      "masa kerja"
+    ],
+    "regulations": [
+      "UU 13/2003"
+    ]
+  },
+  {
+    "id": "qa_070",
+    "question": "Berapa jam waktu kerja per minggu menurut UU 13/2003?",
+    "expected_answer_contains": [
+      "40",
+      "jam",
+      "7 jam",
+      "8 jam",
+      "minggu"
+    ],
+    "regulations": [
+      "UU 13/2003"
+    ]
+  },
+  {
+    "id": "qa_071",
+    "question": "Apa definisi Informasi Elektronik menurut UU 19/2016 (UU ITE)?",
+    "expected_answer_contains": [
+      "data elektronik",
+      "tulisan",
+      "suara",
+      "gambar"
+    ],
+    "regulations": [
+      "UU 19/2016"
+    ]
+  },
+  {
+    "id": "qa_072",
+    "question": "Apa yang dilarang menurut Pasal 28 UU ITE (UU 19/2016)?",
+    "expected_answer_contains": [
+      "berita bohong",
+      "menyesatkan",
+      "kerugian konsumen",
+      "kebencian"
+    ],
+    "regulations": [
+      "UU 19/2016"
+    ]
+  },
+  {
+    "id": "qa_073",
+    "question": "Apa definisi Usaha Mikro menurut UU 20/2008?",
+    "expected_answer_contains": [
+      "Usaha Mikro",
+      "produktif",
+      "orang perorangan",
+      "badan usaha perorangan"
+    ],
+    "regulations": [
+      "UU 20/2008"
+    ]
+  },
+  {
+    "id": "qa_074",
+    "question": "Berapa batas kekayaan bersih untuk Usaha Mikro menurut UU 20/2008?",
+    "expected_answer_contains": [
+      "Rp50.000.000",
+      "kekayaan bersih",
+      "Rp300.000.000",
+      "penjualan tahunan"
+    ],
+    "regulations": [
+      "UU 20/2008"
+    ]
+  },
+  {
+    "id": "qa_075",
+    "question": "Apa asas penyelenggaraan penanaman modal menurut UU 25/2007?",
+    "expected_answer_contains": [
+      "kepastian hukum",
+      "keterbukaan",
+      "akuntabilitas",
+      "berkelanjutan"
+    ],
+    "regulations": [
+      "UU 25/2007"
+    ]
+  },
+  {
+    "id": "qa_076",
+    "question": "Apa hak penanam modal menurut UU 25/2007?",
+    "expected_answer_contains": [
+      "kepastian hak",
+      "perlindungan",
+      "informasi",
+      "pelayanan",
+      "fasilitas"
+    ],
+    "regulations": [
+      "UU 25/2007"
+    ]
+  },
+  {
+    "id": "qa_077",
+    "question": "Apa definisi pajak menurut UU 28/2007 tentang Ketentuan Umum Perpajakan?",
+    "expected_answer_contains": [
+      "kontribusi wajib",
+      "negara",
+      "memaksa",
+      "Undang-Undang"
+    ],
+    "regulations": [
+      "UU 28/2007"
+    ]
+  },
+  {
+    "id": "qa_078",
+    "question": "Apa kewajiban Wajib Pajak menurut UU 28/2007?",
+    "expected_answer_contains": [
+      "Wajib Pajak",
+      "mendaftarkan diri",
+      "NPWP",
+      "kantor Direktorat Jenderal Pajak"
+    ],
+    "regulations": [
+      "UU 28/2007"
+    ]
+  },
+  {
+    "id": "qa_079",
+    "question": "Apa itu Amdal menurut UU 32/2009 tentang Perlindungan Lingkungan Hidup?",
+    "expected_answer_contains": [
+      "Amdal",
+      "dampak penting",
+      "lingkungan hidup",
+      "kajian"
+    ],
+    "regulations": [
+      "UU 32/2009"
+    ]
+  },
+  {
+    "id": "qa_080",
+    "question": "Usaha apa yang wajib memiliki Amdal menurut UU 32/2009?",
+    "expected_answer_contains": [
+      "berdampak penting",
+      "lingkungan hidup",
+      "wajib",
+      "Amdal"
+    ],
+    "regulations": [
+      "UU 32/2009"
+    ]
+  },
+  {
+    "id": "qa_081",
+    "question": "Apa definisi kesehatan menurut UU 36/2009?",
+    "expected_answer_contains": [
+      "sehat",
+      "fisik",
+      "mental",
+      "spiritual",
+      "sosial"
+    ],
+    "regulations": [
+      "UU 36/2009"
+    ]
+  },
+  {
+    "id": "qa_082",
+    "question": "Apa tujuan pembangunan kesehatan menurut UU 36/2009?",
+    "expected_answer_contains": [
+      "kesadaran",
+      "kemauan",
+      "kemampuan",
+      "hidup sehat",
+      "derajat kesehatan"
+    ],
+    "regulations": [
+      "UU 36/2009"
+    ]
+  },
+  {
+    "id": "qa_083",
+    "question": "Apa saja jenis hak atas tanah menurut UU 5/1960 (UUPA)?",
+    "expected_answer_contains": [
+      "hak milik",
+      "hak guna-usaha",
+      "hak guna-bangunan",
+      "hak pakai"
+    ],
+    "regulations": [
+      "UU 5/1960"
+    ]
+  },
+  {
+    "id": "qa_084",
+    "question": "Apa hak menguasai negara atas bumi dan air menurut UU 5/1960?",
+    "expected_answer_contains": [
+      "menguasai",
+      "negara",
+      "bumi",
+      "air",
+      "kekayaan alam"
+    ],
+    "regulations": [
+      "UU 5/1960"
+    ]
+  },
+  {
+    "id": "qa_085",
+    "question": "Apa saja tarif Pajak Penghasilan orang pribadi menurut UU 7/2021?",
+    "expected_answer_contains": [
+      "tarif",
+      "Pajak Penghasilan",
+      "Rp60.000.000",
+      "Penghasilan Kena Pajak"
+    ],
+    "regulations": [
+      "UU 7/2021"
+    ]
+  },
+  {
+    "id": "qa_086",
+    "question": "Apa saja yang diatur dalam UU 7/2021 tentang Harmonisasi Peraturan Perpajakan?",
+    "expected_answer_contains": [
+      "Pajak Penghasilan",
+      "Pajak Pertambahan Nilai",
+      "Harmonisasi",
+      "Cukai"
+    ],
+    "regulations": [
+      "UU 7/2021"
+    ]
+  },
+  {
+    "id": "qa_087",
+    "question": "Apa hak konsumen menurut UU 8/1999 tentang Perlindungan Konsumen?",
+    "expected_answer_contains": [
+      "kenyamanan",
+      "keamanan",
+      "keselamatan",
+      "informasi",
+      "benar"
+    ],
+    "regulations": [
+      "UU 8/1999"
+    ]
+  },
+  {
+    "id": "qa_088",
+    "question": "Apa kewajiban pelaku usaha menurut UU 8/1999?",
+    "expected_answer_contains": [
+      "itikad baik",
+      "informasi",
+      "benar",
+      "jujur",
+      "mutu"
+    ],
+    "regulations": [
+      "UU 8/1999"
+    ]
   }
 ]

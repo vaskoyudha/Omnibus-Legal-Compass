@@ -66,11 +66,10 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 no-print transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-[#0A0A0F]/85 backdrop-blur-xl shadow-lg shadow-[#AAFF00]/5' 
-            : 'bg-transparent'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 no-print will-change-[background-color,box-shadow] transition-[background-color,box-shadow,border-color] duration-300 ${isScrolled
+          ? 'bg-[#0A0A0F]/90 backdrop-blur-xl shadow-lg shadow-black/20 border-b border-white/[0.04]'
+          : 'bg-transparent backdrop-blur-none border-b border-transparent'
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16 sm:h-20">
@@ -108,11 +107,10 @@ export default function Navbar() {
                 return (
                   <Link key={link.href} href={link.href}>
                     <motion.div
-                      className={`relative px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                        isActive
-                          ? 'text-[#AAFF00]'
-                          : 'text-slate-400 hover:text-slate-200'
-                      }`}
+                      className={`relative px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
+                        ? 'text-[#AAFF00]'
+                        : 'text-slate-400 hover:text-slate-200'
+                        }`}
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -187,7 +185,7 @@ export default function Navbar() {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-            
+
             {/* Mobile Menu Panel */}
             <motion.div
               initial={{ x: '100%', opacity: 0 }}
@@ -224,11 +222,10 @@ export default function Navbar() {
                       >
                         <Link href={link.href}>
                           <div
-                            className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all ${
-                              isActive
-                                ? 'text-[#AAFF00] bg-[#AAFF00]/10 border border-[#AAFF00]/20'
-                                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-                            }`}
+                            className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all ${isActive
+                              ? 'text-[#AAFF00] bg-[#AAFF00]/10 border border-[#AAFF00]/20'
+                              : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                              }`}
                           >
                             <svg
                               className={`w-5 h-5 ${isActive ? 'text-[#AAFF00]' : 'text-slate-500'}`}

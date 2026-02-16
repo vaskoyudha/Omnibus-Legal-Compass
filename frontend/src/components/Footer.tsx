@@ -30,7 +30,7 @@ const footerLinks = {
 export default function Footer() {
     return (
         <motion.footer
-            className="border-t border-border mt-auto"
+            className="relative z-10 border-t border-border mt-auto bg-[#0A0A0F]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
