@@ -11,7 +11,7 @@
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)](https://fastapi.tiangolo.com)
-[![Tests](https://img.shields.io/badge/Tests-360%20passing-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-378%20passing-brightgreen)](tests/)
 
 Navigate Indonesian regulations with confidence. Ask legal questions, check compliance, get business guidance — all backed by hybrid search, cross-encoder reranking, and source citations.
 
@@ -261,7 +261,38 @@ curl -X POST http://localhost:8000/api/v1/guidance \
 
 ## Competitive Comparison
 
-How does Omnibus Legal Compass compare to other legal AI projects?
+### vs Indonesian Legal AI Platforms
+
+How does Omnibus Legal Compass compare to other Indonesian legal AI platforms?
+
+| Feature | Omnibus Legal Compass | KawalSidang.id | LegalHero.id | Hukumonline AIlex | TanyaHukum.my.id |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **Primary Focus** | AI legal research & compliance | Court monitoring & accompaniment | AI legal research | AI legal research (commercial) | Legal Q&A assistant |
+| **Target User** | Businesses, legal researchers | Individuals in court cases | Law firms, legal professionals | Law firms (enterprise) | General public |
+| **Frontend Stack** | Next.js 16 + Tailwind + Framer Motion | Vanilla React + Bootstrap (Babel-transpiled) | Custom web app | Proprietary platform | Simple web interface |
+| **AI Architecture** | Hybrid RAG (BM25 + Dense + CrossEncoder) | Simple LLM chatbot wrapper | LLM + document retrieval | Proprietary AI pipeline | Basic LLM chatbot |
+| **Hybrid Search** (BM25 + Dense) | ✅ Yes | ❌ | Unknown | Unknown | ❌ |
+| **CrossEncoder Reranking** | ✅ Yes | ❌ | ❌ | Unknown | ❌ |
+| **Knowledge Graph** | ✅ Yes (NetworkX) | ❌ | ❌ | ❌ | ❌ |
+| **Source Citations** | ✅ Every response | ❌ | ✅ Partial | ✅ Yes | ❌ |
+| **LLM-as-Judge Grounding** | ✅ Yes | ❌ | ❌ | ❌ | ❌ |
+| **Confidence Threshold Refusal** | ✅ Yes (< 0.30) | ❌ | ❌ | ❌ | ❌ |
+| **Red-Team Adversarial Testing** | ✅ 25 questions | ❌ | ❌ | ❌ | ❌ |
+| **Multi-Turn Chat** | ✅ Session memory | ✅ Basic chat | ❌ | ✅ Yes | ✅ Basic |
+| **Compliance Checker** | ✅ With PDF upload | ❌ | ❌ | ❌ | ❌ |
+| **Business Guidance** | ✅ Step-by-step | ❌ | ❌ | ❌ | ❌ |
+| **Dashboard & Analytics** | ✅ Heat map + charts | ❌ | ❌ | ✅ Enterprise dashboard | ❌ |
+| **Streaming Responses** | ✅ With safety parity | ❌ | ❌ | ✅ Yes | ❌ |
+| **API Versioning** | ✅ `/api/v1/*` | ❌ | ❌ | ✅ Yes | ❌ |
+| **Rate Limiting** | ✅ slowapi | ❌ | Unknown | ✅ Yes | ❌ |
+| **Test Coverage** | ✅ 378+ tests (91%) | ❌ None visible | Unknown | Unknown (proprietary) | ❌ None visible |
+| **CI/CD** | ✅ GitHub Actions | ❌ | Unknown | ✅ Yes (proprietary) | ❌ |
+| **Open Source** | ✅ MIT License | ❌ | ❌ | ❌ Commercial | ❌ |
+| **Documentation Site** | ✅ VitePress | ❌ | ❌ | ✅ Yes | ❌ |
+| **Live Deployment** | 🔜 Coming soon | ✅ kawalsidang.id | ✅ legalhero.id | ✅ hukumonline.com | ✅ tanyahukum.my.id |
+| **Document Corpus** | 44 regulations, 401 segments | Unknown | Millions (court decisions + regulations) | Millions (25+ years of legal data) | Unknown |
+
+### vs International Legal AI Projects (Academic/OSS)
 
 | Feature | Omnibus Legal Compass | LaWGPT (China) | Lawyer LLaMA (China) | Fuzi.Mingcha (China) | AI Legal Compliance (USA) |
 |---|:---:|:---:|:---:|:---:|:---:|
@@ -280,11 +311,19 @@ How does Omnibus Legal Compass compare to other legal AI projects?
 | **Streaming Responses** | Yes (with safety parity) | N/A | N/A | No | No |
 | **API Versioning** | `/api/v1/*` | No | No | No | No |
 | **Rate Limiting** | Yes (slowapi) | No | No | No | No |
-| **Test Coverage** | 360+ tests (91%) | Minimal | Minimal | None | None |
+| **Test Coverage** | 378+ tests (91%) | Minimal | Minimal | None | None |
 | **CI/CD** | GitHub Actions | No | No | No | No |
 | **Documentation Site** | VitePress | Minimal | README only | README only | README only |
 
-> **Note**: Comparison based on publicly available repositories as of Feb 2025. Omnibus is the only Indonesian-focused legal AI with a full-stack production architecture.
+### Key Differentiators
+
+**vs KawalSidang.id**: KawalSidang is a court monitoring and accompaniment service ("pengawalan dan pemantauan persidangan") with a basic chatbot. Omnibus is a full-stack AI legal research platform with hybrid RAG, knowledge graphs, and production-grade safety guardrails. Different missions — KawalSidang serves individuals navigating court proceedings, while Omnibus serves businesses and researchers analyzing regulatory compliance.
+
+**vs LegalHero.id & Hukumonline AIlex**: These are established commercial platforms with massive document corpora (millions of court decisions). Omnibus differentiates through its open-source nature, transparent AI safety mechanisms (LLM-as-Judge, adversarial testing, confidence thresholds), and developer-friendly architecture (versioned API, 378+ tests, CI/CD).
+
+**vs International OSS Projects**: Omnibus is the only Indonesian-focused legal AI with a full-stack production architecture combining hybrid search, reranking, knowledge graphs, and comprehensive trust & safety features.
+
+> **Note**: Comparison based on publicly available information as of Feb 2025. Commercial platforms (Hukumonline, LegalHero) may have additional features not visible publicly.
 
 For detailed analysis, see [Competitive Comparison](https://vaskoyudha.github.io/Omnibus-intelligence/comparison).
 
