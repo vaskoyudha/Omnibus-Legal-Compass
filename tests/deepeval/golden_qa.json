@@ -5,35 +5,37 @@
     "expected_answer_contains": [
       "2 orang",
       "akta notaris",
-      "minimal modal"
+      "modal"
     ],
     "regulations": [
       "UU 40/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_002",
     "question": "Berapa minimal modal dasar PT?",
     "expected_answer_contains": [
-      "Rp50.000.000",
-      "50 juta",
+      "modal",
+      "Rp",
       "25%"
     ],
     "regulations": [
       "UU 40/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_003",
     "question": "Apa itu Undang-Undang Cipta Kerja?",
     "expected_answer_contains": [
       "UU 11/2020",
-      "Cipta Kerja",
-      "tenaga kerja"
+      "Cipta Kerja"
     ],
     "regulations": [
       "UU 11/2020"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_004",
@@ -45,18 +47,20 @@
     ],
     "regulations": [
       "UU 11/2020"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_005",
     "question": "Apa definisi berusaha menurut PP 24/2018?",
     "expected_answer_contains": [
       "berusaha",
-      "kepentingan sendiri"
+      "kepentingan"
     ],
     "regulations": [
       "PP 24/2018"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_006",
@@ -68,43 +72,45 @@
     ],
     "regulations": [
       "PP 24/2018"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_007",
     "question": "Bagaimana perlindungan data pribadi menurut UU 27/2022?",
     "expected_answer_contains": [
       "data pribadi",
-      "perlindungan",
-      "UU 27/2022"
+      "perlindungan"
     ],
     "regulations": [
       "UU 27/2022"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_008",
-    "question": "Apa hak pekerja according to UU Cipta Kerja?",
+    "question": "Apa hak pekerja menurut UU Cipta Kerja?",
     "expected_answer_contains": [
-      "hak pekerja",
-      "cuti",
+      "hak",
+      "pekerja",
       "upah"
     ],
     "regulations": [
       "UU 11/2020"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_009",
-    "question": "Apa itu RUPS?",
+    "question": "Apa itu RUPS (Rapat Umum Pemegang Saham)?",
     "expected_answer_contains": [
       "RUPS",
-      "Pemegang Saham",
-      "keputusan"
+      "Pemegang Saham"
     ],
     "regulations": [
       "UU 40/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_010",
@@ -112,11 +118,12 @@
     "expected_answer_contains": [
       "PHK",
       "pesangon",
-      "peringatan"
+      "prosedur"
     ],
     "regulations": [
       "UU 11/2020"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_011",
@@ -124,24 +131,24 @@
     "expected_answer_contains": [
       "PT",
       "CV",
-      "Firma",
       "Koperasi"
     ],
     "regulations": [
       "UU 40/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_012",
     "question": "Bagaimana ketentuan uang pesangon?",
     "expected_answer_contains": [
       "pesangon",
-      "PHK",
-      "bulan kerja"
+      "PHK"
     ],
     "regulations": [
       "UU 11/2020"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_013",
@@ -152,31 +159,33 @@
     ],
     "regulations": [
       "Perpres 49/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_014",
     "question": "Bagaimana registrasi BPOM untuk makanan?",
     "expected_answer_contains": [
       "BPOM",
-      "makanan",
+      "registrasi",
       "izin"
     ],
     "regulations": [
       "Perpres 49/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_015",
     "question": "Apa itu status badan hukum dalam UU PT?",
     "expected_answer_contains": [
-      "PT",
-      "status",
-      "badan hukum"
+      "badan hukum",
+      "PT"
     ],
     "regulations": [
       "UU 40/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_016",
@@ -188,19 +197,20 @@
     ],
     "regulations": [
       "UU 31/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_017",
     "question": "Berapa ancaman hukuman untuk korupsi yang merugikan keuangan negara?",
     "expected_answer_contains": [
       "penjara",
-      "pidana",
       "denda"
     ],
     "regulations": [
       "UU 31/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_018",
@@ -212,20 +222,20 @@
     ],
     "regulations": [
       "UU 31/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_019",
     "question": "Apa itu monopoli menurut UU 5/1999?",
     "expected_answer_contains": [
       "monopoli",
-      "penguasaan",
-      "produksi",
-      "pemasaran"
+      "penguasaan"
     ],
     "regulations": [
       "UU 5/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_020",
@@ -233,12 +243,12 @@
     "expected_answer_contains": [
       "harga",
       "perjanjian",
-      "pelaku usaha",
       "pesaing"
     ],
     "regulations": [
       "UU 5/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_021",
@@ -250,130 +260,129 @@
     ],
     "regulations": [
       "UU 5/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_022",
     "question": "Apa saja jenis bank menurut UU Perbankan?",
     "expected_answer_contains": [
       "Bank Umum",
-      "Bank Perkreditan Rakyat",
       "BPR"
     ],
     "regulations": [
       "UU 10/1998"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_023",
     "question": "Apa yang dilarang dilakukan oleh Bank Umum?",
     "expected_answer_contains": [
-      "penyertaan modal",
-      "perasuransian",
-      "dilarang"
+      "dilarang",
+      "penyertaan modal"
     ],
     "regulations": [
       "UU 10/1998"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_024",
     "question": "Apa itu rahasia bank menurut UU Perbankan?",
     "expected_answer_contains": [
       "rahasia",
-      "bank",
       "nasabah"
     ],
     "regulations": [
       "UU 10/1998"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_025",
     "question": "Apa definisi Pasar Modal menurut UU 8/1995?",
     "expected_answer_contains": [
       "Pasar Modal",
-      "Efek",
-      "Penawaran Umum"
+      "Efek"
     ],
     "regulations": [
       "UU 8/1995"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_026",
     "question": "Apa syarat melakukan Penawaran Umum di pasar modal?",
     "expected_answer_contains": [
       "Emiten",
-      "Pernyataan Pendaftaran",
-      "Badan Pengawas"
+      "Pernyataan Pendaftaran"
     ],
     "regulations": [
       "UU 8/1995"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_027",
     "question": "Apa itu insider trading atau perdagangan orang dalam?",
     "expected_answer_contains": [
-      "informasi",
       "orang dalam",
-      "Efek"
+      "informasi"
     ],
     "regulations": [
       "UU 8/1995"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_028",
     "question": "Apa definisi Hak Cipta menurut UU 28/2014?",
     "expected_answer_contains": [
       "hak eksklusif",
-      "pencipta",
-      "otomatis",
-      "deklaratif"
+      "pencipta"
     ],
     "regulations": [
       "UU 28/2014"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_029",
     "question": "Apa itu hak moral pencipta?",
     "expected_answer_contains": [
       "hak moral",
-      "melekat",
-      "pencipta",
-      "mencantumkan"
+      "melekat"
     ],
     "regulations": [
       "UU 28/2014"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_030",
     "question": "Apa perbedaan hak ekonomi dan hak moral dalam hak cipta?",
     "expected_answer_contains": [
       "hak ekonomi",
-      "manfaat ekonomi",
-      "Ciptaan"
+      "hak moral"
     ],
     "regulations": [
       "UU 28/2014"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_031",
     "question": "Apa definisi Paten menurut UU 13/2016?",
     "expected_answer_contains": [
       "hak eksklusif",
-      "inventor",
       "invensi",
-      "negara"
+      "inventor"
     ],
     "regulations": [
       "UU 13/2016"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_032",
@@ -385,71 +394,69 @@
     ],
     "regulations": [
       "UU 13/2016"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_033",
     "question": "Apa itu paten sederhana?",
     "expected_answer_contains": [
       "paten sederhana",
-      "pengembangan",
-      "produk",
-      "proses"
+      "pengembangan"
     ],
     "regulations": [
       "UU 13/2016"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_034",
     "question": "Apa definisi Merek menurut UU 20/2016?",
     "expected_answer_contains": [
       "Merek",
-      "tanda",
-      "grafis",
-      "gambar"
+      "tanda"
     ],
     "regulations": [
       "UU 20/2016"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_035",
     "question": "Bagaimana cara mendaftarkan merek di Indonesia?",
     "expected_answer_contains": [
       "pendaftaran",
-      "Merek",
-      "Menteri",
-      "Pemohon"
+      "Pemohon",
+      "Menteri"
     ],
     "regulations": [
       "UU 20/2016"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_036",
     "question": "Kapan hak atas merek diperoleh?",
     "expected_answer_contains": [
       "terdaftar",
-      "hak",
-      "Merek"
+      "hak"
     ],
     "regulations": [
       "UU 20/2016"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_037",
     "question": "Apa itu kepailitan menurut UU 37/2004?",
     "expected_answer_contains": [
-      "kepailitan",
       "sita umum",
-      "kekayaan",
       "Debitor"
     ],
     "regulations": [
       "UU 37/2004"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_038",
@@ -457,24 +464,24 @@
     "expected_answer_contains": [
       "dua",
       "Kreditor",
-      "utang",
-      "jatuh waktu"
+      "utang"
     ],
     "regulations": [
       "UU 37/2004"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_039",
     "question": "Ke mana permohonan pailit harus diajukan?",
     "expected_answer_contains": [
       "Pengadilan Niaga",
-      "Ketua",
-      "kedudukan hukum"
+      "permohonan pailit"
     ],
     "regulations": [
       "UU 37/2004"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_040",
@@ -482,75 +489,74 @@
     "expected_answer_contains": [
       "PKPU",
       "penundaan",
-      "pembayaran",
       "utang"
     ],
     "regulations": [
       "UU 37/2004"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_041",
     "question": "Apa definisi Jaminan Fidusia menurut UU 42/1999?",
     "expected_answer_contains": [
       "fidusia",
-      "hak jaminan",
-      "benda bergerak",
-      "penguasaan"
+      "benda bergerak"
     ],
     "regulations": [
       "UU 42/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_042",
     "question": "Bagaimana cara mendaftarkan Jaminan Fidusia?",
     "expected_answer_contains": [
       "pendaftaran",
-      "Kantor Pendaftaran Fidusia",
       "Sertifikat"
     ],
     "regulations": [
       "UU 42/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_043",
     "question": "Apa itu Hak Tanggungan menurut UU 4/1996?",
     "expected_answer_contains": [
       "hak jaminan",
-      "tanah",
-      "pelunasan utang",
-      "kreditor"
+      "tanah"
     ],
     "regulations": [
       "UU 4/1996"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_044",
     "question": "Hak atas tanah apa saja yang dapat dibebani Hak Tanggungan?",
     "expected_answer_contains": [
       "Hak Milik",
-      "Hak Guna Usaha",
-      "Hak Guna Bangunan"
+      "HGU",
+      "HGB"
     ],
     "regulations": [
       "UU 4/1996"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_045",
     "question": "Bagaimana penyelesaian sengketa melalui arbitrase menurut UU 30/1999?",
     "expected_answer_contains": [
       "arbitrase",
-      "sengketa",
       "perjanjian",
       "tertulis"
     ],
     "regulations": [
       "UU 30/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_046",
@@ -558,37 +564,36 @@
     "expected_answer_contains": [
       "perselisihan hak",
       "kepentingan",
-      "pemutusan hubungan kerja"
+      "PHK"
     ],
     "regulations": [
       "UU 2/2004"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_047",
     "question": "Apa jenis-jenis visa menurut UU Keimigrasian?",
     "expected_answer_contains": [
-      "visa diplomatik",
-      "visa dinas",
       "visa kunjungan",
       "visa tinggal terbatas"
     ],
     "regulations": [
       "UU 6/2011"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_048",
     "question": "Apa definisi Yayasan menurut UU 16/2001?",
     "expected_answer_contains": [
       "badan hukum",
-      "kekayaan yang dipisahkan",
-      "sosial",
-      "kemanusiaan"
+      "kekayaan yang dipisahkan"
     ],
     "regulations": [
       "UU 16/2001"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_049",
@@ -596,525 +601,5328 @@
     "expected_answer_contains": [
       "sukarela",
       "demokratis",
-      "sisa hasil usaha",
       "kemandirian"
     ],
     "regulations": [
       "UU 25/1992"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_050",
     "question": "Apa fungsi dan tugas OJK menurut UU 21/2011?",
     "expected_answer_contains": [
-      "OJK",
       "pengaturan",
-      "pengawasan",
-      "jasa keuangan"
+      "pengawasan"
     ],
     "regulations": [
       "UU 21/2011"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_051",
     "question": "Apa definisi asuransi menurut UU 40/2014?",
     "expected_answer_contains": [
       "asuransi",
-      "perjanjian",
-      "premi",
-      "perusahaan asuransi"
+      "premi"
     ],
     "regulations": [
       "UU 40/2014"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_052",
     "question": "Apa ketentuan perdagangan elektronik menurut UU 7/2014?",
     "expected_answer_contains": [
-      "elektronik",
-      "data",
       "informasi",
-      "lengkap dan benar"
+      "lengkap",
+      "benar"
     ],
     "regulations": [
       "UU 7/2014"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_053",
     "question": "Apa tujuan penyelenggaraan perindustrian menurut UU 3/2014?",
     "expected_answer_contains": [
-      "Industri",
-      "pilar",
       "perekonomian",
       "berdaya saing"
     ],
     "regulations": [
       "UU 3/2014"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_054",
     "question": "Apa definisi Desain Industri menurut UU 31/2000?",
     "expected_answer_contains": [
       "kreasi",
-      "bentuk",
-      "estetis",
-      "produk"
+      "estetis"
     ],
     "regulations": [
       "UU 31/2000"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_055",
     "question": "Apa itu Rahasia Dagang menurut UU 30/2000?",
     "expected_answer_contains": [
       "informasi",
-      "rahasia",
       "nilai ekonomi",
-      "kerahasiaan"
+      "rahasia"
     ],
     "regulations": [
       "UU 30/2000"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_056",
     "question": "Apa itu kepabeanan dan bea masuk menurut UU 17/2006?",
     "expected_answer_contains": [
-      "kepabeanan",
-      "lalu lintas barang",
-      "bea masuk",
-      "daerah pabean"
+      "daerah pabean",
+      "bea masuk"
     ],
     "regulations": [
       "UU 17/2006"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_057",
     "question": "Barang apa saja yang dikenai cukai menurut UU 39/2007?",
     "expected_answer_contains": [
       "etil alkohol",
-      "minuman",
-      "tembakau",
-      "cukai"
+      "tembakau"
     ],
     "regulations": [
       "UU 39/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_058",
     "question": "Apa saja persyaratan tenaga kerja konstruksi menurut UU 2/2017?",
     "expected_answer_contains": [
       "Sertifikat Kompetensi",
-      "tenaga kerja konstruksi",
-      "Jasa Konstruksi"
+      "tenaga kerja konstruksi"
     ],
     "regulations": [
       "UU 2/2017"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_059",
     "question": "Apa itu Perjanjian Kerja Waktu Tertentu (PKWT) menurut PP 35/2021?",
     "expected_answer_contains": [
       "PKWT",
-      "perjanjian kerja",
-      "pekerja/buruh",
-      "pengusaha",
       "waktu tertentu"
     ],
     "regulations": [
       "PP 35/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_060",
     "question": "Atas dasar apa PKWT dibuat menurut PP 35/2021?",
     "expected_answer_contains": [
       "jangka waktu",
-      "selesainya",
       "pekerjaan tertentu"
     ],
     "regulations": [
       "PP 35/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_061",
     "question": "Apa itu Perizinan Berusaha Berbasis Risiko menurut PP 5/2021?",
     "expected_answer_contains": [
-      "Perizinan Berusaha",
       "tingkat risiko",
-      "kegiatan usaha"
+      "Perizinan Berusaha"
     ],
     "regulations": [
       "PP 5/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_062",
     "question": "Apa saja tingkat risiko kegiatan usaha menurut PP 5/2021?",
     "expected_answer_contains": [
-      "risiko rendah",
-      "risiko menengah",
-      "risiko tinggi"
+      "rendah",
+      "menengah",
+      "tinggi"
     ],
     "regulations": [
       "PP 5/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_063",
     "question": "Apa itu Sistem Elektronik menurut PP 71/2019?",
     "expected_answer_contains": [
       "Sistem Elektronik",
-      "perangkat",
-      "prosedur elektronik",
-      "Informasi Elektronik"
+      "prosedur"
     ],
     "regulations": [
       "PP 71/2019"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_064",
     "question": "Apa kewajiban Penyelenggara Sistem Elektronik terkait Data Pribadi menurut PP 71/2019?",
     "expected_answer_contains": [
-      "kerahasiaan",
-      "Data Pribadi",
       "persetujuan",
-      "pemilik"
+      "Data Pribadi"
     ],
     "regulations": [
       "PP 71/2019"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_065",
     "question": "Apa saja bidang usaha yang tertutup untuk penanaman modal menurut Perpres 10/2021?",
     "expected_answer_contains": [
-      "narkotika",
+      "tertutup",
       "perjudian",
-      "senjata kimia",
-      "tertutup"
+      "narkotika"
     ],
     "regulations": [
       "Perpres 10/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_066",
     "question": "Apa yang dimaksud bidang usaha prioritas menurut Perpres 10/2021?",
     "expected_answer_contains": [
       "prioritas",
-      "dukungan",
-      "Pemerintah Pusat",
-      "padat karya"
+      "dukungan"
     ],
     "regulations": [
       "Perpres 10/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_067",
     "question": "Apa prinsip pelaksanaan Pengadaan Barang/Jasa Pemerintah menurut Perpres 12/2021?",
     "expected_answer_contains": [
       "efisien",
-      "efektif",
       "transparan",
-      "terbuka",
       "akuntabel"
     ],
     "regulations": [
       "Perpres 12/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_068",
     "question": "Apa tujuan Pengadaan Barang/Jasa Pemerintah menurut Perpres 12/2021?",
     "expected_answer_contains": [
-      "tepat",
       "kualitas",
-      "jumlah",
       "waktu",
       "biaya"
     ],
     "regulations": [
       "Perpres 12/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_069",
     "question": "Apa definisi ketenagakerjaan menurut UU 13/2003?",
     "expected_answer_contains": [
-      "tenaga kerja",
       "sebelum",
       "selama",
-      "sesudah",
-      "masa kerja"
+      "sesudah"
     ],
     "regulations": [
       "UU 13/2003"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_070",
     "question": "Berapa jam waktu kerja per minggu menurut UU 13/2003?",
     "expected_answer_contains": [
       "40",
-      "jam",
-      "7 jam",
-      "8 jam",
-      "minggu"
+      "jam"
     ],
     "regulations": [
       "UU 13/2003"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_071",
     "question": "Apa definisi Informasi Elektronik menurut UU 19/2016 (UU ITE)?",
     "expected_answer_contains": [
-      "data elektronik",
-      "tulisan",
-      "suara",
-      "gambar"
+      "Informasi Elektronik",
+      "data"
     ],
     "regulations": [
       "UU 19/2016"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_072",
     "question": "Apa yang dilarang menurut Pasal 28 UU ITE (UU 19/2016)?",
     "expected_answer_contains": [
       "berita bohong",
-      "menyesatkan",
-      "kerugian konsumen",
       "kebencian"
     ],
     "regulations": [
       "UU 19/2016"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_073",
     "question": "Apa definisi Usaha Mikro menurut UU 20/2008?",
     "expected_answer_contains": [
-      "Usaha Mikro",
       "produktif",
-      "orang perorangan",
-      "badan usaha perorangan"
+      "orang perorangan"
     ],
     "regulations": [
       "UU 20/2008"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_074",
     "question": "Berapa batas kekayaan bersih untuk Usaha Mikro menurut UU 20/2008?",
     "expected_answer_contains": [
-      "Rp50.000.000",
       "kekayaan bersih",
-      "Rp300.000.000",
-      "penjualan tahunan"
+      "penjualan"
     ],
     "regulations": [
       "UU 20/2008"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_075",
     "question": "Apa asas penyelenggaraan penanaman modal menurut UU 25/2007?",
     "expected_answer_contains": [
       "kepastian hukum",
-      "keterbukaan",
-      "akuntabilitas",
-      "berkelanjutan"
+      "keterbukaan"
     ],
     "regulations": [
       "UU 25/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_076",
     "question": "Apa hak penanam modal menurut UU 25/2007?",
     "expected_answer_contains": [
-      "kepastian hak",
       "perlindungan",
-      "informasi",
       "pelayanan",
       "fasilitas"
     ],
     "regulations": [
       "UU 25/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_077",
     "question": "Apa definisi pajak menurut UU 28/2007 tentang Ketentuan Umum Perpajakan?",
     "expected_answer_contains": [
       "kontribusi wajib",
-      "negara",
-      "memaksa",
-      "Undang-Undang"
+      "memaksa"
     ],
     "regulations": [
       "UU 28/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_078",
     "question": "Apa kewajiban Wajib Pajak menurut UU 28/2007?",
     "expected_answer_contains": [
-      "Wajib Pajak",
-      "mendaftarkan diri",
-      "NPWP",
-      "kantor Direktorat Jenderal Pajak"
+      "mendaftarkan",
+      "NPWP"
     ],
     "regulations": [
       "UU 28/2007"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_079",
     "question": "Apa itu Amdal menurut UU 32/2009 tentang Perlindungan Lingkungan Hidup?",
     "expected_answer_contains": [
       "Amdal",
-      "dampak penting",
-      "lingkungan hidup",
-      "kajian"
+      "dampak penting"
     ],
     "regulations": [
       "UU 32/2009"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_080",
     "question": "Usaha apa yang wajib memiliki Amdal menurut UU 32/2009?",
     "expected_answer_contains": [
-      "berdampak penting",
-      "lingkungan hidup",
       "wajib",
       "Amdal"
     ],
     "regulations": [
       "UU 32/2009"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_081",
     "question": "Apa definisi kesehatan menurut UU 36/2009?",
     "expected_answer_contains": [
-      "sehat",
       "fisik",
       "mental",
-      "spiritual",
       "sosial"
     ],
     "regulations": [
       "UU 36/2009"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_082",
     "question": "Apa tujuan pembangunan kesehatan menurut UU 36/2009?",
     "expected_answer_contains": [
       "kesadaran",
-      "kemauan",
-      "kemampuan",
-      "hidup sehat",
       "derajat kesehatan"
     ],
     "regulations": [
       "UU 36/2009"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_083",
     "question": "Apa saja jenis hak atas tanah menurut UU 5/1960 (UUPA)?",
     "expected_answer_contains": [
       "hak milik",
-      "hak guna-usaha",
-      "hak guna-bangunan",
       "hak pakai"
     ],
     "regulations": [
       "UU 5/1960"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_084",
     "question": "Apa hak menguasai negara atas bumi dan air menurut UU 5/1960?",
     "expected_answer_contains": [
-      "menguasai",
       "negara",
       "bumi",
-      "air",
-      "kekayaan alam"
+      "air"
     ],
     "regulations": [
       "UU 5/1960"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_085",
     "question": "Apa saja tarif Pajak Penghasilan orang pribadi menurut UU 7/2021?",
     "expected_answer_contains": [
       "tarif",
-      "Pajak Penghasilan",
-      "Rp60.000.000",
       "Penghasilan Kena Pajak"
     ],
     "regulations": [
       "UU 7/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_086",
     "question": "Apa saja yang diatur dalam UU 7/2021 tentang Harmonisasi Peraturan Perpajakan?",
     "expected_answer_contains": [
-      "Pajak Penghasilan",
-      "Pajak Pertambahan Nilai",
-      "Harmonisasi",
+      "PPh",
+      "PPN",
       "Cukai"
     ],
     "regulations": [
       "UU 7/2021"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_087",
     "question": "Apa hak konsumen menurut UU 8/1999 tentang Perlindungan Konsumen?",
     "expected_answer_contains": [
-      "kenyamanan",
       "keamanan",
-      "keselamatan",
-      "informasi",
-      "benar"
+      "informasi"
     ],
     "regulations": [
       "UU 8/1999"
-    ]
+    ],
+    "category": "factual"
   },
   {
     "id": "qa_088",
     "question": "Apa kewajiban pelaku usaha menurut UU 8/1999?",
     "expected_answer_contains": [
       "itikad baik",
-      "informasi",
-      "benar",
-      "jujur",
-      "mutu"
+      "informasi"
     ],
     "regulations": [
       "UU 8/1999"
-    ]
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_089",
+    "question": "Apa yang dimaksud dengan Data Pribadi menurut UU 27/2022?",
+    "expected_answer_contains": [
+      "Data Pribadi",
+      "orang",
+      "teridentifikasi"
+    ],
+    "regulations": [
+      "UU 27/2022"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_090",
+    "question": "Apa yang dimaksud dengan Pemrosesan Data Pribadi menurut UU 27/2022?",
+    "expected_answer_contains": [
+      "pemrosesan",
+      "pengumpulan",
+      "pengolahan"
+    ],
+    "regulations": [
+      "UU 27/2022"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_091",
+    "question": "Apa yang dimaksud dengan Penyelenggara Sistem Elektronik (PSE) menurut PP 71/2019?",
+    "expected_answer_contains": [
+      "Penyelenggara",
+      "Sistem Elektronik"
+    ],
+    "regulations": [
+      "PP 71/2019"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_092",
+    "question": "Apa yang dimaksud dengan Perizinan Berusaha dalam PP 5/2021?",
+    "expected_answer_contains": [
+      "Perizinan Berusaha",
+      "kegiatan usaha"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_093",
+    "question": "Apa yang dimaksud dengan risiko rendah dalam Perizinan Berusaha Berbasis Risiko (PP 5/2021)?",
+    "expected_answer_contains": [
+      "risiko rendah",
+      "NIB"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_094",
+    "question": "Apa yang dimaksud dengan risiko menengah dalam PP 5/2021?",
+    "expected_answer_contains": [
+      "risiko menengah",
+      "Sertifikat Standar"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_095",
+    "question": "Apa yang dimaksud dengan risiko tinggi dalam PP 5/2021?",
+    "expected_answer_contains": [
+      "risiko tinggi",
+      "izin"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_096",
+    "question": "Apa yang dimaksud dengan Penanaman Modal menurut UU 25/2007?",
+    "expected_answer_contains": [
+      "penanaman modal",
+      "modal"
+    ],
+    "regulations": [
+      "UU 25/2007"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_097",
+    "question": "Apa yang dimaksud dengan Wajib Pajak menurut UU 28/2007?",
+    "expected_answer_contains": [
+      "Wajib Pajak",
+      "orang pribadi",
+      "badan"
+    ],
+    "regulations": [
+      "UU 28/2007"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_098",
+    "question": "Apa yang dimaksud dengan NPWP dalam konteks UU KUP (UU 28/2007)?",
+    "expected_answer_contains": [
+      "NPWP",
+      "nomor"
+    ],
+    "regulations": [
+      "UU 28/2007"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_099",
+    "question": "Apa yang dimaksud dengan Konsumen menurut UU 8/1999?",
+    "expected_answer_contains": [
+      "konsumen",
+      "pengguna"
+    ],
+    "regulations": [
+      "UU 8/1999"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_100",
+    "question": "Apa yang dimaksud dengan Pelaku Usaha menurut UU 8/1999?",
+    "expected_answer_contains": [
+      "pelaku usaha",
+      "perusahaan"
+    ],
+    "regulations": [
+      "UU 8/1999"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_101",
+    "question": "Apa yang dimaksud dengan Monopoli menurut UU 5/1999?",
+    "expected_answer_contains": [
+      "monopoli",
+      "penguasaan"
+    ],
+    "regulations": [
+      "UU 5/1999"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_102",
+    "question": "Apa yang dimaksud dengan Persaingan Usaha Tidak Sehat menurut UU 5/1999?",
+    "expected_answer_contains": [
+      "persaingan",
+      "tidak sehat"
+    ],
+    "regulations": [
+      "UU 5/1999"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_103",
+    "question": "Apa yang dimaksud dengan Rahasia Bank menurut UU 10/1998?",
+    "expected_answer_contains": [
+      "rahasia",
+      "nasabah"
+    ],
+    "regulations": [
+      "UU 10/1998"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_104",
+    "question": "Apa yang dimaksud dengan Efek menurut UU 8/1995?",
+    "expected_answer_contains": [
+      "Efek",
+      "surat berharga"
+    ],
+    "regulations": [
+      "UU 8/1995"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_105",
+    "question": "Apa yang dimaksud dengan Emiten menurut UU 8/1995?",
+    "expected_answer_contains": [
+      "Emiten",
+      "Penawaran Umum"
+    ],
+    "regulations": [
+      "UU 8/1995"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_106",
+    "question": "Apa yang dimaksud dengan Debitor dalam UU Kepailitan (UU 37/2004)?",
+    "expected_answer_contains": [
+      "Debitor",
+      "utang"
+    ],
+    "regulations": [
+      "UU 37/2004"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_107",
+    "question": "Apa yang dimaksud dengan Kreditor dalam UU 37/2004?",
+    "expected_answer_contains": [
+      "Kreditor",
+      "piutang"
+    ],
+    "regulations": [
+      "UU 37/2004"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_108",
+    "question": "Apa yang dimaksud dengan Jaminan Fidusia menurut UU 42/1999?",
+    "expected_answer_contains": [
+      "fidusia",
+      "benda bergerak"
+    ],
+    "regulations": [
+      "UU 42/1999"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_109",
+    "question": "Apa yang dimaksud dengan Hak Tanggungan menurut UU 4/1996?",
+    "expected_answer_contains": [
+      "Hak Tanggungan",
+      "hak jaminan"
+    ],
+    "regulations": [
+      "UU 4/1996"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_110",
+    "question": "Apa yang dimaksud dengan Arbitrase menurut UU 30/1999?",
+    "expected_answer_contains": [
+      "arbitrase",
+      "penyelesaian sengketa"
+    ],
+    "regulations": [
+      "UU 30/1999"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_111",
+    "question": "Apa yang dimaksud dengan Perselisihan Hubungan Industrial menurut UU 2/2004?",
+    "expected_answer_contains": [
+      "perselisihan",
+      "hubungan industrial"
+    ],
+    "regulations": [
+      "UU 2/2004"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_112",
+    "question": "Apa yang dimaksud dengan Visa Tinggal Terbatas menurut UU 6/2011?",
+    "expected_answer_contains": [
+      "visa",
+      "tinggal terbatas"
+    ],
+    "regulations": [
+      "UU 6/2011"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_113",
+    "question": "Apa yang dimaksud dengan Yayasan menurut UU 16/2001?",
+    "expected_answer_contains": [
+      "kekayaan yang dipisahkan",
+      "badan hukum"
+    ],
+    "regulations": [
+      "UU 16/2001"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_114",
+    "question": "Apa yang dimaksud dengan Koperasi menurut UU 25/1992?",
+    "expected_answer_contains": [
+      "koperasi",
+      "anggota"
+    ],
+    "regulations": [
+      "UU 25/1992"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_115",
+    "question": "Apa yang dimaksud dengan Otoritas Jasa Keuangan (OJK) menurut UU 21/2011?",
+    "expected_answer_contains": [
+      "OJK",
+      "pengawasan"
+    ],
+    "regulations": [
+      "UU 21/2011"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_116",
+    "question": "Apa yang dimaksud dengan Asuransi menurut UU 40/2014?",
+    "expected_answer_contains": [
+      "perjanjian",
+      "premi"
+    ],
+    "regulations": [
+      "UU 40/2014"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_117",
+    "question": "Apa yang dimaksud dengan Perdagangan Melalui Sistem Elektronik (PMSE) menurut UU 7/2014?",
+    "expected_answer_contains": [
+      "perdagangan",
+      "sistem elektronik"
+    ],
+    "regulations": [
+      "UU 7/2014"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_118",
+    "question": "Apa yang dimaksud dengan Industri menurut UU 3/2014?",
+    "expected_answer_contains": [
+      "Industri",
+      "kegiatan"
+    ],
+    "regulations": [
+      "UU 3/2014"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_119",
+    "question": "Apa yang dimaksud dengan Desain Industri menurut UU 31/2000?",
+    "expected_answer_contains": [
+      "desain industri",
+      "estetis"
+    ],
+    "regulations": [
+      "UU 31/2000"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_120",
+    "question": "Apa yang dimaksud dengan Rahasia Dagang menurut UU 30/2000?",
+    "expected_answer_contains": [
+      "informasi",
+      "rahasia"
+    ],
+    "regulations": [
+      "UU 30/2000"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_121",
+    "question": "Apa yang dimaksud dengan Daerah Pabean menurut UU 17/2006?",
+    "expected_answer_contains": [
+      "daerah pabean",
+      "wilayah"
+    ],
+    "regulations": [
+      "UU 17/2006"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_122",
+    "question": "Apa yang dimaksud dengan Barang Kena Cukai menurut UU 39/2007?",
+    "expected_answer_contains": [
+      "barang kena cukai",
+      "cukai"
+    ],
+    "regulations": [
+      "UU 39/2007"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_123",
+    "question": "Apa yang dimaksud dengan Tenaga Kerja Konstruksi menurut UU 2/2017?",
+    "expected_answer_contains": [
+      "tenaga kerja konstruksi",
+      "jasa konstruksi"
+    ],
+    "regulations": [
+      "UU 2/2017"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_124",
+    "question": "Apa yang dimaksud dengan PKWT menurut PP 35/2021?",
+    "expected_answer_contains": [
+      "PKWT",
+      "waktu tertentu"
+    ],
+    "regulations": [
+      "PP 35/2021"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_125",
+    "question": "Apa yang dimaksud dengan Sistem Elektronik menurut UU ITE (UU 19/2016)?",
+    "expected_answer_contains": [
+      "Sistem Elektronik",
+      "perangkat"
+    ],
+    "regulations": [
+      "UU 19/2016"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_126",
+    "question": "Apa yang dimaksud dengan Usaha Kecil dan Usaha Menengah menurut UU 20/2008 (secara umum)?",
+    "expected_answer_contains": [
+      "Usaha Kecil",
+      "Usaha Menengah"
+    ],
+    "regulations": [
+      "UU 20/2008"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_127",
+    "question": "Apa yang dimaksud dengan Amdal menurut UU 32/2009?",
+    "expected_answer_contains": [
+      "Amdal",
+      "analisis"
+    ],
+    "regulations": [
+      "UU 32/2009"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_128",
+    "question": "Apa yang dimaksud dengan Lingkungan Hidup menurut UU 32/2009?",
+    "expected_answer_contains": [
+      "lingkungan hidup",
+      "kesatuan ruang"
+    ],
+    "regulations": [
+      "UU 32/2009"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_129",
+    "question": "Apa yang dimaksud dengan Upah dalam konteks ketenagakerjaan (UU 13/2003)?",
+    "expected_answer_contains": [
+      "upah",
+      "pekerja"
+    ],
+    "regulations": [
+      "UU 13/2003"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_130",
+    "question": "Apa yang dimaksud dengan Hak Pakai menurut UUPA (UU 5/1960)?",
+    "expected_answer_contains": [
+      "Hak Pakai",
+      "tanah"
+    ],
+    "regulations": [
+      "UU 5/1960"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_131",
+    "question": "Dalam OSS, apa hubungan NIB (PP 24/2018) dengan Perizinan Berusaha Berbasis Risiko (PP 5/2021)?",
+    "expected_answer_contains": [
+      "NIB",
+      "Perizinan Berusaha",
+      "berbasis risiko"
+    ],
+    "regulations": [
+      "PP 24/2018",
+      "PP 5/2021"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_132",
+    "question": "Jika kegiatan usaha berisiko menengah, dokumen apa yang biasanya diperlukan selain NIB menurut PP 5/2021?",
+    "expected_answer_contains": [
+      "NIB",
+      "Sertifikat Standar"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_133",
+    "question": "Dalam PMSE, kewajiban informasi konsumen (UU 8/1999) berkaitan dengan kewajiban informasi di perdagangan elektronik (UU 7/2014) bagaimana?",
+    "expected_answer_contains": [
+      "informasi",
+      "benar",
+      "lengkap"
+    ],
+    "regulations": [
+      "UU 8/1999",
+      "UU 7/2014"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_134",
+    "question": "Untuk perlindungan data pribadi, bagaimana keterkaitan UU 27/2022 dengan kewajiban PSE di PP 71/2019?",
+    "expected_answer_contains": [
+      "Data Pribadi",
+      "PSE",
+      "persetujuan"
+    ],
+    "regulations": [
+      "UU 27/2022",
+      "PP 71/2019"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_135",
+    "question": "Dalam pengawasan sektor jasa keuangan, bagaimana peran OJK (UU 21/2011) terkait perbankan (UU 10/1998)?",
+    "expected_answer_contains": [
+      "OJK",
+      "pengawasan",
+      "bank"
+    ],
+    "regulations": [
+      "UU 21/2011",
+      "UU 10/1998"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_136",
+    "question": "Dalam kepailitan, bagaimana kaitan syarat pailit (UU 37/2004) dengan konsep Debitor dan Kreditor?",
+    "expected_answer_contains": [
+      "Debitor",
+      "Kreditor",
+      "utang"
+    ],
+    "regulations": [
+      "UU 37/2004"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_137",
+    "question": "Dalam sengketa bisnis, kapan arbitrase (UU 30/1999) dapat dipilih dibanding mekanisme perselisihan hubungan industrial (UU 2/2004)?",
+    "expected_answer_contains": [
+      "arbitrase",
+      "perselisihan"
+    ],
+    "regulations": [
+      "UU 30/1999",
+      "UU 2/2004"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_138",
+    "question": "Dalam penanaman modal (UU 25/2007), bagaimana Perpres 10/2021 mempengaruhi bidang usaha yang dapat dimasuki investor?",
+    "expected_answer_contains": [
+      "penanaman modal",
+      "bidang usaha",
+      "tertutup"
+    ],
+    "regulations": [
+      "UU 25/2007",
+      "Perpres 10/2021"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_139",
+    "question": "Dalam penawaran umum, bagaimana peran OJK (UU 21/2011) beririsan dengan rezim Pasar Modal (UU 8/1995)?",
+    "expected_answer_contains": [
+      "OJK",
+      "Pasar Modal",
+      "pengawasan"
+    ],
+    "regulations": [
+      "UU 21/2011",
+      "UU 8/1995"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_140",
+    "question": "Bagaimana keterkaitan kewajiban pelaku usaha (UU 8/1999) dengan larangan praktik persaingan tidak sehat (UU 5/1999) dalam konteks penetapan harga?",
+    "expected_answer_contains": [
+      "pelaku usaha",
+      "harga",
+      "persaingan"
+    ],
+    "regulations": [
+      "UU 8/1999",
+      "UU 5/1999"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_141",
+    "question": "Dalam pengadaan pemerintah (Perpres 12/2021), bagaimana prinsip transparansi dan akuntabilitas dapat terkait dengan pencegahan korupsi (UU 31/1999)?",
+    "expected_answer_contains": [
+      "transparan",
+      "akuntabel",
+      "korupsi"
+    ],
+    "regulations": [
+      "Perpres 12/2021",
+      "UU 31/1999"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_142",
+    "question": "Untuk pendirian PT (UU 40/2007), bagaimana kewajiban pajak (UU 28/2007) biasanya terkait dengan identitas badan usaha?",
+    "expected_answer_contains": [
+      "PT",
+      "NPWP",
+      "Wajib Pajak"
+    ],
+    "regulations": [
+      "UU 40/2007",
+      "UU 28/2007"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_143",
+    "question": "Dalam konteks upah dan kerja, bagaimana UU 13/2003 berhubungan dengan aturan turunan ketenagakerjaan pada era UU Cipta Kerja (UU 11/2020/PP 35/2021)?",
+    "expected_answer_contains": [
+      "UU 13/2003",
+      "Cipta Kerja",
+      "PP 35/2021"
+    ],
+    "regulations": [
+      "UU 13/2003",
+      "UU 11/2020",
+      "PP 35/2021"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_144",
+    "question": "Dalam konteks produk kreatif, bagaimana perlindungan Hak Cipta (UU 28/2014) dapat terkait dengan Rahasia Dagang (UU 30/2000) untuk informasi bisnis?",
+    "expected_answer_contains": [
+      "Hak Cipta",
+      "Rahasia Dagang"
+    ],
+    "regulations": [
+      "UU 28/2014",
+      "UU 30/2000"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_145",
+    "question": "Dalam perlindungan konsumen, bagaimana larangan berita bohong yang merugikan konsumen (UU ITE) terkait kewajiban informasi yang benar (UU 8/1999)?",
+    "expected_answer_contains": [
+      "berita bohong",
+      "konsumen",
+      "informasi"
+    ],
+    "regulations": [
+      "UU 19/2016",
+      "UU 8/1999"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_146",
+    "question": "Dalam investasi, bagaimana asas kepastian hukum (UU 25/2007) berhubungan dengan perizinan berusaha berbasis risiko (PP 5/2021)?",
+    "expected_answer_contains": [
+      "kepastian hukum",
+      "Perizinan Berusaha"
+    ],
+    "regulations": [
+      "UU 25/2007",
+      "PP 5/2021"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_147",
+    "question": "Dalam kegiatan impor, bagaimana rezim kepabeanan (UU 17/2006) dapat beririsan dengan cukai (UU 39/2007) untuk barang tertentu?",
+    "expected_answer_contains": [
+      "kepabeanan",
+      "bea masuk",
+      "cukai"
+    ],
+    "regulations": [
+      "UU 17/2006",
+      "UU 39/2007"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_148",
+    "question": "Dalam bidang usaha tertentu, bagaimana Perpres 10/2021 (bidang tertutup/prioritas) dapat mempengaruhi pendirian PT (UU 40/2007) oleh investor?",
+    "expected_answer_contains": [
+      "PT",
+      "bidang usaha",
+      "tertutup"
+    ],
+    "regulations": [
+      "Perpres 10/2021",
+      "UU 40/2007"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_149",
+    "question": "Dalam sengketa jaminan, bagaimana Hak Tanggungan (UU 4/1996) berbeda objeknya dengan Fidusia (UU 42/1999) dan kapan masing-masing digunakan?",
+    "expected_answer_contains": [
+      "tanah",
+      "benda bergerak",
+      "jaminan"
+    ],
+    "regulations": [
+      "UU 4/1996",
+      "UU 42/1999"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_150",
+    "question": "Dalam pasar modal, bagaimana larangan insider trading (UU 8/1995) berkaitan dengan kewenangan pengawasan OJK (UU 21/2011)?",
+    "expected_answer_contains": [
+      "insider",
+      "pengawasan",
+      "OJK"
+    ],
+    "regulations": [
+      "UU 8/1995",
+      "UU 21/2011"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "id": "qa_151",
+    "question": "Apa perbedaan definisi/ruang lingkup Informasi Elektronik (UU 19/2016) dengan Data Pribadi (UU 27/2022)?",
+    "expected_answer_contains": [
+      "Informasi Elektronik",
+      "Data Pribadi",
+      "berbeda"
+    ],
+    "regulations": [
+      "UU 19/2016",
+      "UU 27/2022"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_152",
+    "question": "Apa perbedaan fokus UU Perlindungan Konsumen (UU 8/1999) dengan UU Persaingan Usaha (UU 5/1999)?",
+    "expected_answer_contains": [
+      "konsumen",
+      "persaingan",
+      "pelaku usaha"
+    ],
+    "regulations": [
+      "UU 8/1999",
+      "UU 5/1999"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_153",
+    "question": "Bandingkan tujuan pengawasan OJK (UU 21/2011) dengan pengawasan KPPU (UU 5/1999).",
+    "expected_answer_contains": [
+      "OJK",
+      "KPPU",
+      "pengawasan"
+    ],
+    "regulations": [
+      "UU 21/2011",
+      "UU 5/1999"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_154",
+    "question": "Apa perbedaan objek jaminan antara Hak Tanggungan (UU 4/1996) dan Fidusia (UU 42/1999)?",
+    "expected_answer_contains": [
+      "tanah",
+      "benda bergerak"
+    ],
+    "regulations": [
+      "UU 4/1996",
+      "UU 42/1999"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_155",
+    "question": "Apa perbedaan peran UU 40/2007 (PT) dengan UU 16/2001 (Yayasan) dalam konteks badan hukum?",
+    "expected_answer_contains": [
+      "PT",
+      "Yayasan",
+      "badan hukum"
+    ],
+    "regulations": [
+      "UU 40/2007",
+      "UU 16/2001"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_156",
+    "question": "Bandingkan mekanisme penyelesaian sengketa melalui arbitrase (UU 30/1999) dengan proses di Pengadilan Niaga (UU 37/2004) untuk perkara pailit.",
+    "expected_answer_contains": [
+      "arbitrase",
+      "Pengadilan Niaga"
+    ],
+    "regulations": [
+      "UU 30/1999",
+      "UU 37/2004"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_157",
+    "question": "Apa perbedaan ruang lingkup perdagangan elektronik (UU 7/2014) dengan penyelenggaraan sistem elektronik (PP 71/2019)?",
+    "expected_answer_contains": [
+      "perdagangan",
+      "Sistem Elektronik"
+    ],
+    "regulations": [
+      "UU 7/2014",
+      "PP 71/2019"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_158",
+    "question": "Bandingkan dasar pembentukan Perizinan Berusaha Berbasis Risiko (PP 5/2021) dengan rezim OSS awal (PP 24/2018).",
+    "expected_answer_contains": [
+      "PP 5/2021",
+      "PP 24/2018",
+      "OSS"
+    ],
+    "regulations": [
+      "PP 5/2021",
+      "PP 24/2018"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_159",
+    "question": "Apa perbedaan fokus UU 28/2014 (Hak Cipta) dan UU 13/2016 (Paten) terkait perlindungan kekayaan intelektual?",
+    "expected_answer_contains": [
+      "Hak Cipta",
+      "Paten",
+      "perlindungan"
+    ],
+    "regulations": [
+      "UU 28/2014",
+      "UU 13/2016"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_160",
+    "question": "Bandingkan definisi/karakter Hak Cipta (UU 28/2014) dengan Merek (UU 20/2016).",
+    "expected_answer_contains": [
+      "Hak Cipta",
+      "Merek",
+      "tanda"
+    ],
+    "regulations": [
+      "UU 28/2014",
+      "UU 20/2016"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_161",
+    "question": "Apa perbedaan pengaturan jasa konstruksi (UU 2/2017) dengan pengadaan barang/jasa pemerintah (Perpres 12/2021)?",
+    "expected_answer_contains": [
+      "konstruksi",
+      "pengadaan"
+    ],
+    "regulations": [
+      "UU 2/2017",
+      "Perpres 12/2021"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_162",
+    "question": "Bandingkan rezim kepabeanan (UU 17/2006) dengan rezim cukai (UU 39/2007) dalam pungutan negara.",
+    "expected_answer_contains": [
+      "bea masuk",
+      "cukai",
+      "pungutan"
+    ],
+    "regulations": [
+      "UU 17/2006",
+      "UU 39/2007"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_163",
+    "question": "Apa perbedaan fokus UU 36/2009 (Kesehatan) dengan UU 32/2009 (Lingkungan) terkait perlindungan publik?",
+    "expected_answer_contains": [
+      "kesehatan",
+      "lingkungan"
+    ],
+    "regulations": [
+      "UU 36/2009",
+      "UU 32/2009"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_164",
+    "question": "Bandingkan asas penanaman modal (UU 25/2007) dengan asas pengadaan pemerintah (Perpres 12/2021).",
+    "expected_answer_contains": [
+      "kepastian",
+      "transparan",
+      "akuntabel"
+    ],
+    "regulations": [
+      "UU 25/2007",
+      "Perpres 12/2021"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_165",
+    "question": "Apa perbedaan kedudukan PP (mis. PP 5/2021) dan Perpres (mis. Perpres 10/2021) sebagai peraturan pelaksana?",
+    "expected_answer_contains": [
+      "PP",
+      "Perpres",
+      "pelaksana"
+    ],
+    "regulations": [
+      "PP 5/2021",
+      "Perpres 10/2021"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_166",
+    "question": "Bandingkan kewajiban informasi konsumen (UU 8/1999) dengan kewajiban informasi PMSE (UU 7/2014) untuk pelaku usaha online.",
+    "expected_answer_contains": [
+      "informasi",
+      "benar",
+      "lengkap"
+    ],
+    "regulations": [
+      "UU 8/1999",
+      "UU 7/2014"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_167",
+    "question": "Apa perbedaan tujuan UU 7/2021 (HPP) dengan UU 28/2007 (KUP) dalam sistem perpajakan?",
+    "expected_answer_contains": [
+      "Harmonisasi",
+      "ketentuan umum"
+    ],
+    "regulations": [
+      "UU 7/2021",
+      "UU 28/2007"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_168",
+    "question": "Bandingkan konsep badan hukum PT (UU 40/2007) dengan koperasi (UU 25/1992) dari sisi prinsip keanggotaan.",
+    "expected_answer_contains": [
+      "PT",
+      "koperasi",
+      "anggota"
+    ],
+    "regulations": [
+      "UU 40/2007",
+      "UU 25/1992"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_169",
+    "question": "Bandingkan konsep usaha mikro (UU 20/2008) dengan ketentuan pendirian PT (UU 40/2007) dalam konteks skala usaha.",
+    "expected_answer_contains": [
+      "Usaha Mikro",
+      "PT",
+      "skala"
+    ],
+    "regulations": [
+      "UU 20/2008",
+      "UU 40/2007"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_170",
+    "question": "Apa perbedaan ruang lingkup hak atas tanah (UU 5/1960) dengan pembebanan jaminan atas tanah (UU 4/1996)?",
+    "expected_answer_contains": [
+      "hak atas tanah",
+      "Hak Tanggungan"
+    ],
+    "regulations": [
+      "UU 5/1960",
+      "UU 4/1996"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_171",
+    "question": "Secara umum, apa yang berubah dalam pengaturan ketenagakerjaan setelah UU Cipta Kerja (UU 11/2020) dibanding UU 13/2003?",
+    "expected_answer_contains": [
+      "diubah",
+      "Cipta Kerja",
+      "UU 13/2003"
+    ],
+    "regulations": [
+      "UU 11/2020",
+      "UU 13/2003"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_172",
+    "question": "Bagaimana PP 35/2021 diposisikan sebagai aturan turunan/implementasi perubahan ketenagakerjaan pasca UU Cipta Kerja?",
+    "expected_answer_contains": [
+      "PP 35/2021",
+      "pelaksanaan",
+      "Cipta Kerja"
+    ],
+    "regulations": [
+      "PP 35/2021",
+      "UU 11/2020"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_173",
+    "question": "Dalam OSS, bagaimana pergeseran dari PP 24/2018 ke PP 5/2021 dalam model perizinan berusaha?",
+    "expected_answer_contains": [
+      "PP 24/2018",
+      "PP 5/2021",
+      "berbasis risiko"
+    ],
+    "regulations": [
+      "PP 24/2018",
+      "PP 5/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_174",
+    "question": "Apakah daftar bidang usaha tertutup/prioritas berubah setelah Perpres 10/2021 dibanding rezim perpres sebelumnya (secara umum)?",
+    "expected_answer_contains": [
+      "Perpres 10/2021",
+      "daftar",
+      "bidang usaha"
+    ],
+    "regulations": [
+      "Perpres 10/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_175",
+    "question": "Dalam konteks perlindungan data, bagaimana posisi PP 71/2019 ketika UU 27/2022 diberlakukan (secara umum)?",
+    "expected_answer_contains": [
+      "UU 27/2022",
+      "PP 71/2019",
+      "Data Pribadi"
+    ],
+    "regulations": [
+      "PP 71/2019",
+      "UU 27/2022"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_176",
+    "question": "Bagaimana perubahan kebijakan perpajakan yang dibawa UU 7/2021 dibanding kerangka KUP (UU 28/2007) secara garis besar?",
+    "expected_answer_contains": [
+      "Harmonisasi",
+      "perubahan"
+    ],
+    "regulations": [
+      "UU 7/2021",
+      "UU 28/2007"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_177",
+    "question": "Apa implikasi umum perubahan aturan PHK pasca UU Cipta Kerja dibanding UU 13/2003?",
+    "expected_answer_contains": [
+      "PHK",
+      "diubah",
+      "pesangon"
+    ],
+    "regulations": [
+      "UU 11/2020",
+      "UU 13/2003"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_178",
+    "question": "Bagaimana penyesuaian pengaturan PKWT setelah hadirnya PP 35/2021 (sebagai aturan terbaru) dibandingkan praktik sebelumnya secara umum?",
+    "expected_answer_contains": [
+      "PKWT",
+      "PP 35/2021",
+      "perubahan"
+    ],
+    "regulations": [
+      "PP 35/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_179",
+    "question": "Dalam regulasi investasi, bagaimana pengaturan bidang usaha (Perpres 10/2021) berkembang dari kebijakan daftar investasi sebelumnya (secara umum)?",
+    "expected_answer_contains": [
+      "Perpres 10/2021",
+      "investasi",
+      "perubahan"
+    ],
+    "regulations": [
+      "Perpres 10/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_180",
+    "question": "Bagaimana evolusi perlindungan transaksi elektronik dari UU ITE (UU 19/2016) menuju fokus perlindungan data (UU 27/2022) secara umum?",
+    "expected_answer_contains": [
+      "UU ITE",
+      "UU 27/2022",
+      "data"
+    ],
+    "regulations": [
+      "UU 19/2016",
+      "UU 27/2022"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_181",
+    "question": "Dalam pengadaan, bagaimana perubahan kebijakan pengadaan yang termuat dalam Perpres 12/2021 sebagai perubahan terhadap peraturan pengadaan sebelumnya (secara umum)?",
+    "expected_answer_contains": [
+      "Perpres 12/2021",
+      "perubahan"
+    ],
+    "regulations": [
+      "Perpres 12/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_182",
+    "question": "Bagaimana posisi PP 71/2019 sebagai aturan yang memperbarui penyelenggaraan sistem elektronik dibanding pengaturan sebelumnya (secara umum)?",
+    "expected_answer_contains": [
+      "PP 71/2019",
+      "penyelenggara"
+    ],
+    "regulations": [
+      "PP 71/2019"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_183",
+    "question": "Bagaimana perubahan kerangka investasi pasca UU Cipta Kerja terkait perizinan berusaha (dihubungkan ke PP 5/2021) secara garis besar?",
+    "expected_answer_contains": [
+      "Cipta Kerja",
+      "PP 5/2021",
+      "perizinan"
+    ],
+    "regulations": [
+      "UU 11/2020",
+      "PP 5/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_184",
+    "question": "Bagaimana perubahan umum pengaturan usaha mikro/kecil (UU 20/2008) ketika kebijakan kemudahan berusaha (PP 5/2021) diperkenalkan?",
+    "expected_answer_contains": [
+      "Usaha Mikro",
+      "kemudahan",
+      "Perizinan"
+    ],
+    "regulations": [
+      "UU 20/2008",
+      "PP 5/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_185",
+    "question": "Bagaimana perkembangan pengaturan perdagangan elektronik (UU 7/2014) sejalan dengan penguatan aturan sistem elektronik (PP 71/2019) secara umum?",
+    "expected_answer_contains": [
+      "perdagangan",
+      "elektronik",
+      "PP 71/2019"
+    ],
+    "regulations": [
+      "UU 7/2014",
+      "PP 71/2019"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_186",
+    "question": "Dalam persaingan usaha, bagaimana peran KPPU (UU 5/1999) tetap relevan ketika model usaha digital/PMSE berkembang (kaitkan ke UU 7/2014) secara umum?",
+    "expected_answer_contains": [
+      "KPPU",
+      "persaingan",
+      "digital"
+    ],
+    "regulations": [
+      "UU 5/1999",
+      "UU 7/2014"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_187",
+    "question": "Bagaimana perubahan umum administrasi perpajakan ketika UU HPP (UU 7/2021) mulai diterapkan?",
+    "expected_answer_contains": [
+      "UU 7/2021",
+      "penerapan"
+    ],
+    "regulations": [
+      "UU 7/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_188",
+    "question": "Apa kewajiban pelaku usaha untuk memberikan informasi yang benar kepada konsumen menurut UU 8/1999?",
+    "expected_answer_contains": [
+      "informasi",
+      "benar",
+      "jujur"
+    ],
+    "regulations": [
+      "UU 8/1999"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_189",
+    "question": "Apa peran KPPU dalam menilai dugaan kartel/penetapan harga menurut UU 5/1999?",
+    "expected_answer_contains": [
+      "KPPU",
+      "penetapan harga"
+    ],
+    "regulations": [
+      "UU 5/1999"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_190",
+    "question": "Apa contoh bentuk perizinan untuk kegiatan berisiko tinggi menurut PP 5/2021?",
+    "expected_answer_contains": [
+      "izin",
+      "risiko tinggi"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_191",
+    "question": "Apa saja unsur umum larangan perbuatan curang/menyesatkan konsumen dalam transaksi elektronik (kaitkan UU ITE Pasal 28)?",
+    "expected_answer_contains": [
+      "menyesatkan",
+      "konsumen"
+    ],
+    "regulations": [
+      "UU 19/2016"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_192",
+    "question": "Apa tujuan utama pengadaan barang/jasa pemerintah menurut Perpres 12/2021?",
+    "expected_answer_contains": [
+      "tepat",
+      "kualitas"
+    ],
+    "regulations": [
+      "Perpres 12/2021"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_193",
+    "question": "Apa hak-hak dasar konsumen menurut UU 8/1999 (ringkas)?",
+    "expected_answer_contains": [
+      "keamanan",
+      "keselamatan",
+      "informasi"
+    ],
+    "regulations": [
+      "UU 8/1999"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_194",
+    "question": "Apa jenis perizinan/identitas dasar yang diberikan OSS menurut PP 24/2018?",
+    "expected_answer_contains": [
+      "OSS",
+      "NIB"
+    ],
+    "regulations": [
+      "PP 24/2018"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_195",
+    "question": "Apa tujuan UU 3/2014 tentang Perindustrian?",
+    "expected_answer_contains": [
+      "perekonomian",
+      "Industri"
+    ],
+    "regulations": [
+      "UU 3/2014"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_196",
+    "question": "Apa yang termasuk barang kena cukai dalam UU 39/2007 (contoh)?",
+    "expected_answer_contains": [
+      "tembakau",
+      "minuman"
+    ],
+    "regulations": [
+      "UU 39/2007"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_197",
+    "question": "Apa itu bidang usaha prioritas dalam Perpres 10/2021 (contoh sifatnya)?",
+    "expected_answer_contains": [
+      "prioritas",
+      "insentif"
+    ],
+    "regulations": [
+      "Perpres 10/2021"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_198",
+    "question": "Apa kewajiban umum Penyelenggara Sistem Elektronik untuk menjaga kerahasiaan data menurut PP 71/2019?",
+    "expected_answer_contains": [
+      "kerahasiaan",
+      "Data Pribadi"
+    ],
+    "regulations": [
+      "PP 71/2019"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_199",
+    "question": "Apa syarat umum pailit dalam UU 37/2004?",
+    "expected_answer_contains": [
+      "dua",
+      "Kreditor",
+      "utang"
+    ],
+    "regulations": [
+      "UU 37/2004"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_200",
+    "question": "Apa unsur umum perbuatan korupsi yang berkaitan dengan kerugian keuangan negara (UU 31/1999) secara ringkas?",
+    "expected_answer_contains": [
+      "keuangan negara",
+      "melawan hukum"
+    ],
+    "regulations": [
+      "UU 31/1999"
+    ],
+    "category": "factual"
+  },
+  {
+    "id": "qa_201",
+    "question": "Apa yang dimaksud dengan bidang usaha tertutup dalam Perpres 10/2021?",
+    "expected_answer_contains": [
+      "tertutup",
+      "dilarang"
+    ],
+    "regulations": [
+      "Perpres 10/2021"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_202",
+    "question": "Apa yang dimaksud dengan Pengadaan Barang/Jasa Pemerintah menurut Perpres 12/2021 (secara umum)?",
+    "expected_answer_contains": [
+      "pengadaan",
+      "barang/jasa"
+    ],
+    "regulations": [
+      "Perpres 12/2021"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_203",
+    "question": "Apa yang dimaksud dengan Waktu Kerja menurut UU 13/2003 (secara umum)?",
+    "expected_answer_contains": [
+      "waktu kerja",
+      "jam"
+    ],
+    "regulations": [
+      "UU 13/2003"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_204",
+    "question": "Apa yang dimaksud dengan Penawaran Umum menurut UU 8/1995?",
+    "expected_answer_contains": [
+      "Penawaran Umum",
+      "Efek"
+    ],
+    "regulations": [
+      "UU 8/1995"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_205",
+    "question": "Apa yang dimaksud dengan Hak Moral dalam UU 28/2014?",
+    "expected_answer_contains": [
+      "hak moral",
+      "melekat"
+    ],
+    "regulations": [
+      "UU 28/2014"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_206",
+    "question": "Apa yang dimaksud dengan Invensi dalam UU 13/2016?",
+    "expected_answer_contains": [
+      "invensi",
+      "pemecahan masalah"
+    ],
+    "regulations": [
+      "UU 13/2016"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_207",
+    "question": "Apa yang dimaksud dengan Sertifikat Standar dalam perizinan berbasis risiko (PP 5/2021) secara umum?",
+    "expected_answer_contains": [
+      "Sertifikat Standar",
+      "standar"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ],
+    "category": "definitional"
+  },
+  {
+    "id": "qa_208",
+    "question": "Apa perbedaan umum antara izin dan Sertifikat Standar dalam PP 5/2021?",
+    "expected_answer_contains": [
+      "izin",
+      "Sertifikat Standar",
+      "berbeda"
+    ],
+    "regulations": [
+      "PP 5/2021"
+    ],
+    "category": "comparative"
+  },
+  {
+    "id": "qa_209",
+    "question": "Dalam perizinan berbasis risiko, bagaimana NIB berfungsi sebagai identitas pelaku usaha (PP 24/2018) dan bagaimana perannya setelah PP 5/2021?",
+    "expected_answer_contains": [
+      "NIB",
+      "identitas",
+      "berbasis risiko"
+    ],
+    "regulations": [
+      "PP 24/2018",
+      "PP 5/2021"
+    ],
+    "category": "temporal"
+  },
+  {
+    "id": "qa_210",
+    "question": "Jika pelaku usaha ingin melakukan PMSE, regulasi mana yang relevan untuk kewajiban informasi dan perlindungan konsumen (multi-regulasi)?",
+    "expected_answer_contains": [
+      "PMSE",
+      "informasi",
+      "konsumen"
+    ],
+    "regulations": [
+      "UU 7/2014",
+      "UU 8/1999"
+    ],
+    "category": "multi_hop"
+  },
+  {
+    "question": "Apa yang dimaksud dengan IUPHHK restorasi ekosistem dan kegiatan utama apa saja yang diizinkan di dalamnya menurut PP 6/2007?",
+    "expected_answer_contains": [
+      "IUPHHK restorasi ekosistem",
+      "hutan alam",
+      "hutan produksi",
+      "pemulihan ekosistem",
+      "penanaman pengayaan"
+    ],
+    "regulations": [
+      "PP 6/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_211"
+  },
+  {
+    "question": "Bagaimana perbedaan antara izin usaha pemanfaatan hasil hutan kayu (IUPHHK) dalam hutan alam dan hutan tanaman berdasarkan jenis kegiatan yang diizinkan?",
+    "expected_answer_contains": [
+      "hutan alam",
+      "hutan tanaman",
+      "pemanenan penebangan",
+      "penyiapan lahan pembibitan",
+      "IUPHHK"
+    ],
+    "regulations": [
+      "PP 6/2007"
+    ],
+    "category": "comparative",
+    "id": "qa_212"
+  },
+  {
+    "question": "Jika perusahaan ingin memanfaatkan kawasan hutan lindung untuk jasa lingkungan, izin apa yang harus diperoleh dan siapa penerbitnya?",
+    "expected_answer_contains": [
+      "IUPJL",
+      "hutan lindung",
+      "jasa lingkungan",
+      "pejabat berwenang"
+    ],
+    "regulations": [
+      "PP 6/2007"
+    ],
+    "category": "multi_hop",
+    "id": "qa_213"
+  },
+  {
+    "question": "Apakah kegiatan pengambilan hasil hutan kayu dan bukan kayu dengan batasan volume tertentu memerlukan izin pemanfaatan hutan atau izin pemungutan hasil hutan?",
+    "expected_answer_contains": [
+      "izin pemungutan hasil hutan",
+      "batasan volume",
+      "kayu dan bukan kayu"
+    ],
+    "regulations": [
+      "PP 6/2007"
+    ],
+    "category": "factual",
+    "id": "qa_214"
+  },
+  {
+    "question": "Siapa yang bertanggung jawab atas pengelolaan hutan dalam wilayah KPH dan apa kewenangannya menurut definisi Kepala KPH?",
+    "expected_answer_contains": [
+      "Kepala KPH",
+      "pimpinan",
+      "pemegang kewenangan",
+      "penanggung jawab pengelolaan hutan"
+    ],
+    "regulations": [
+      "PP 6/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_215"
+  },
+  {
+    "question": "Berapa batas laut wilayah Daerah Provinsi yang diukur dari garis pantai?",
+    "expected_answer_contains": [
+      "dua batas mil laut",
+      "garis pantai",
+      "arah laut lepas"
+    ],
+    "regulations": [
+      "UU 22/1999"
+    ],
+    "category": "factual",
+    "id": "qa_216"
+  },
+  {
+    "question": "Apa saja kriteria pembentukan daerah baru menurut undang-undang ini?",
+    "expected_answer_contains": [
+      "kemampuan ekonomi",
+      "potensi Daerah",
+      "jumlah penduduk",
+      "luas Daerah"
+    ],
+    "regulations": [
+      "UU 22/1999"
+    ],
+    "category": "definitional",
+    "id": "qa_217"
+  },
+  {
+    "question": "Mengapa Daerah Kabupaten dan Kota tidak memiliki hubungan hierarki satu sama lain dalam pelaksanaan otonomi?",
+    "expected_answer_contains": [
+      "berdiri sendiri",
+      "tidak mempunyai hubungan hierarki",
+      "Desentralisasi"
+    ],
+    "regulations": [
+      "UU 22/1999"
+    ],
+    "category": "multi_hop",
+    "id": "qa_218"
+  },
+  {
+    "question": "Apa perbedaan prosedur penetapan antara pembentukan Daerah baru dan pemindahan ibukota Daerah yang sudah ada?",
+    "expected_answer_contains": [
+      "dengan Undang-undang",
+      "dengan Peraturan Pemerintah",
+      "perubahan nama",
+      "pemindahan ibukota"
+    ],
+    "regulations": [
+      "UU 22/1999"
+    ],
+    "category": "comparative",
+    "id": "qa_219"
+  },
+  {
+    "question": "Kapan suatu Daerah dapat dihapuskan atau digabungkan menurut undang-undang ini?",
+    "expected_answer_contains": [
+      "tidak mampu menyelenggarakan Otonomi Daerah",
+      "dihapus",
+      "digabung",
+      "Daerah lain"
+    ],
+    "regulations": [
+      "UU 22/1999"
+    ],
+    "category": "temporal",
+    "id": "qa_220"
+  },
+  {
+    "question": "Menurut definisi dalam PP 16/2007, siapa yang dimaksud dengan pelaku olahraga?",
+    "expected_answer_contains": [
+      "setiap orang",
+      "kelompok orang",
+      "pengolahraga",
+      "pembina olahraga",
+      "tenaga keolahragaan"
+    ],
+    "regulations": [
+      "PP 16/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_221"
+  },
+  {
+    "question": "Apa perbedaan antara olahragawan amatir dan olahragawan profesional berdasarkan PP 16/2007?",
+    "expected_answer_contains": [
+      "kecintaan",
+      "kegemaran berolahraga",
+      "memperoleh pendapatan",
+      "kemahiran berolahraga"
+    ],
+    "regulations": [
+      "PP 16/2007"
+    ],
+    "category": "comparative",
+    "id": "qa_222"
+  },
+  {
+    "question": "Bagaimana PP 16/2007 mendefinisikan pembina olahraga warga negara asing?",
+    "expected_answer_contains": [
+      "pembina olahraga",
+      "berkewarganegaraan asing",
+      "wilayah Negara Kesatuan Republik Indonesia"
+    ],
+    "regulations": [
+      "PP 16/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_223"
+  },
+  {
+    "question": "Apa yang dimaksud dengan alih status olahragawan menurut ketentuan PP 16/2007?",
+    "expected_answer_contains": [
+      "perpindahan status",
+      "olahragawan amatir",
+      "olahragawan profesional",
+      "sebaliknya"
+    ],
+    "regulations": [
+      "PP 16/2007"
+    ],
+    "category": "factual",
+    "id": "qa_224"
+  },
+  {
+    "question": "Apakah kawasan perkotaan yang berfungsi melayani kegiatan internasional atau nasional disebut Pusat Kegiatan Nasional (PKN) atau Pusat Kegiatan Lokal (PKL)?",
+    "expected_answer_contains": [
+      "Pusat Kegiatan Nasional",
+      "PKN",
+      "kawasan perkotaan",
+      "internasional",
+      "nasional"
+    ],
+    "regulations": [
+      "PP 26/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_226"
+  },
+  {
+    "question": "Berapa jumlah penduduk minimum agar suatu kawasan perkotaan dapat digolongkan sebagai kawasan metropolitan menurut definisi dalam PP 26/2008?",
+    "expected_answer_contains": [
+      "1.000.000",
+      "satu juta jiwa",
+      "kawasan metropolitan"
+    ],
+    "regulations": [
+      "PP 26/2008"
+    ],
+    "category": "factual",
+    "id": "qa_227"
+  },
+  {
+    "question": "Apakah ruang di dalam bumi termasuk dalam definisi 'wilayah nasional' sebagaimana diatur dalam PP 26/2008?",
+    "expected_answer_contains": [
+      "ruang di dalam bumi",
+      "wilayah nasional",
+      "ruang darat",
+      "ruang laut",
+      "ruang udara"
+    ],
+    "regulations": [
+      "PP 26/2008"
+    ],
+    "category": "factual",
+    "id": "qa_228"
+  },
+  {
+    "question": "Jika suatu kawasan perkotaan memiliki jumlah penduduk 800.000 jiwa dan menjadi pusat kegiatan untuk beberapa kabupaten, apakah ia dapat diklasifikasikan sebagai Pusat Kegiatan Wilayah (PKW) atau harus menjadi kawasan metropolitan terlebih dahulu?",
+    "expected_answer_contains": [
+      "Pusat Kegiatan Wilayah",
+      "PKW",
+      "beberapa kabupaten",
+      "kawasan perkotaan"
+    ],
+    "regulations": [
+      "PP 26/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_229"
+  },
+  {
+    "question": "Bagaimana perbedaan fungsi utama antara kawasan lindung dan kawasan budi daya dalam konteks penataan ruang nasional?",
+    "expected_answer_contains": [
+      "kawasan lindung",
+      "melindungi kelestarian lingkungan hidup",
+      "kawasan budi daya",
+      "dibudidayakan",
+      "sumber daya"
+    ],
+    "regulations": [
+      "PP 26/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_230"
+  },
+  {
+    "question": "Apa definisi bangunan gedung tertentu menurut PP 36/2005?",
+    "expected_answer_contains": [
+      "bangunan gedung tertentu",
+      "kepentingan umum",
+      "kompleksitas tertentu",
+      "dampak penting"
+    ],
+    "regulations": [
+      "PP 36/2005"
+    ],
+    "category": "definitional",
+    "id": "qa_231"
+  },
+  {
+    "question": "Bagaimana perbedaan antara Koefisien Dasar Bangunan (KDB) dan Koefisien Lantai Bangunan (KLB) berdasarkan PP 36/2005?",
+    "expected_answer_contains": [
+      "KDB",
+      "luas lantai dasar",
+      "KLB",
+      "luas seluruh lantai"
+    ],
+    "regulations": [
+      "PP 36/2005"
+    ],
+    "category": "comparative",
+    "id": "qa_232"
+  },
+  {
+    "question": "Apa saja jenis kegiatan yang dapat dilakukan di dalam bangunan gedung menurut definisi dalam PP 36/2005?",
+    "expected_answer_contains": [
+      "kegiatan manusia",
+      "hunian",
+      "keagamaan",
+      "kegiatan usaha",
+      "sosial dan budaya"
+    ],
+    "regulations": [
+      "PP 36/2005"
+    ],
+    "category": "multi_hop",
+    "id": "qa_234"
+  },
+  {
+    "question": "Siapa yang berwenang memberikan izin mendirikan bangunan gedung dan kapan izin tersebut diperlukan berdasarkan PP 36/2005?",
+    "expected_answer_contains": [
+      "Pemerintah Kabupaten/Kota",
+      "membangun baru",
+      "mengubah",
+      "memperluas",
+      "merawat"
+    ],
+    "regulations": [
+      "PP 36/2005"
+    ],
+    "category": "temporal",
+    "id": "qa_235"
+  },
+  {
+    "question": "Apakah Perum JAMKRINDO memiliki batas jangka waktu berdirinya?",
+    "expected_answer_contains": [
+      "jangka waktu",
+      "tidak ditentukan"
+    ],
+    "regulations": [
+      "PP 41/2008"
+    ],
+    "category": "factual",
+    "id": "qa_236"
+  },
+  {
+    "question": "Apa perbedaan tugas antara Direksi dan Dewan Pengawas di lingkungan Perum JAMKRINDO?",
+    "expected_answer_contains": [
+      "Direksi",
+      "Dewan Pengawas",
+      "pengurusan",
+      "pengawasan"
+    ],
+    "regulations": [
+      "PP 41/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_237"
+  },
+  {
+    "question": "Apa yang dimaksud dengan 'Menteri' dalam konteks PP 41/2008?",
+    "expected_answer_contains": [
+      "Menteri",
+      "ditunjuk",
+      "mewakili Pemerintah",
+      "pemilik modal"
+    ],
+    "regulations": [
+      "PP 41/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_238"
+  },
+  {
+    "question": "Berapa banyak jenis usaha yang menjadi target penerima penjaminan kredit oleh Perum JAMKRINDO berdasarkan PP 41/2008?",
+    "expected_answer_contains": [
+      "Usaha Mikro",
+      "Usaha Kecil",
+      "Usaha Menengah",
+      "Koperasi"
+    ],
+    "regulations": [
+      "PP 41/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_239"
+  },
+  {
+    "question": "Apa yang dimaksud dengan istilah 'Tempat kedudukan' dalam Perda 2/2016?",
+    "expected_answer_contains": [
+      "tempat /kota",
+      "kantor /satuan kerja berada"
+    ],
+    "regulations": [
+      "Perda 2/2016"
+    ],
+    "category": "definitional",
+    "id": "qa_240"
+  },
+  {
+    "question": "Bagaimana status hukum Lembaga Kantor Berita Nasional Antara yang semula berdiri berdasarkan Keputusan Presiden No 307/1962 setelah PP 40/2007 berlaku?",
+    "expected_answer_contains": [
+      "dibubarkan",
+      "beralih kepada perusahaan umum",
+      "Keputusan Presiden Nomor 307 Tahun 1962"
+    ],
+    "regulations": [
+      "PP 40/2007"
+    ],
+    "category": "temporal",
+    "id": "qa_241"
+  },
+  {
+    "question": "Apa saja kegiatan usaha utama Perum LKBN Antara untuk mencapai tujuan kemanfaatan umum?",
+    "expected_answer_contains": [
+      "peliputan dan/atau penyebarluasan informasi",
+      "jasa berita, foto jurnalistik",
+      "media elektronik, penerbitan dan percetakan"
+    ],
+    "regulations": [
+      "PP 40/2007"
+    ],
+    "category": "factual",
+    "id": "qa_242"
+  },
+  {
+    "question": "Apa perbedaan kewenangan antara Menteri yang mewakili pemilik modal dan Menteri Teknis dalam struktur Perum LKBN Antara?",
+    "expected_answer_contains": [
+      "mewakili Pemerintah sebagai pemilik modal",
+      "mengatur kebijakan sektor",
+      "Perusahaan melakukan kegiatan usaha"
+    ],
+    "regulations": [
+      "PP 40/2007"
+    ],
+    "category": "comparative",
+    "id": "qa_243"
+  },
+  {
+    "question": "Apakah modal Perum LKBN Antara dapat dibagi atas saham seperti Persero, dan bagaimana bentuk kepemilikan modalnya?",
+    "expected_answer_contains": [
+      "seluruh modalnya dimiliki negara",
+      "kekayaan negara yang dipisahkan",
+      "tidak terbagi atas saham"
+    ],
+    "regulations": [
+      "PP 40/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_244"
+  },
+  {
+    "question": "Mekanisme apa yang digunakan Direksi untuk membuka perwakilan di luar negeri dan siapa yang harus memberikan persetujuan?",
+    "expected_answer_contains": [
+      "ditetapkan oleh Direksi",
+      "persetujuan Dewan Pengawas",
+      "perwakilan di tempat lain"
+    ],
+    "regulations": [
+      "PP 40/2007"
+    ],
+    "category": "multi_hop",
+    "id": "qa_245"
+  },
+  {
+    "question": "Bagaimana perbedaan antara \"hak guna pakai air\" dan \"hak guna usaha air\" dari pemanfaatan air tanah menurut definisi dalam PP 43/2008?",
+    "expected_answer_contains": [
+      "hak guna pakai air",
+      "menggunakan",
+      "hak guna usaha air",
+      "mengusahakan",
+      "pemanfaatan air tanah"
+    ],
+    "regulations": [
+      "PP 43/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_246"
+  },
+  {
+    "question": "Dalam proses pemberian izin pengusahaan air tanah, rekomendasi teknis yang dimaksud termasuk persyaratan teknis yang sifatnya bagaimana?",
+    "expected_answer_contains": [
+      "rekomendasi teknis",
+      "persyaratan teknis",
+      "mengikat"
+    ],
+    "regulations": [
+      "PP 43/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_247"
+  },
+  {
+    "question": "Siapa yang dimaksud sebagai \"Menteri\" yang berwenang di bidang air tanah dalam konteks pengelolaan sesuai PP 43/2008?",
+    "expected_answer_contains": [
+      "Menteri",
+      "bidang air tanah",
+      "tugas dan tanggung jawab"
+    ],
+    "regulations": [
+      "PP 43/2008"
+    ],
+    "category": "factual",
+    "id": "qa_248"
+  },
+  {
+    "question": "Menurut PP 21/2008, apakah kebakaran hutan yang menyebabkan warga mengungsi dan kerusakan lingkungan termasuk dalam definisi 'bencana'?",
+    "expected_answer_contains": [
+      "bencana",
+      "mengancam",
+      "mengganggu",
+      "mengungsi",
+      "kerusakan lingkungan"
+    ],
+    "regulations": [
+      "PP 21/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_249"
+  },
+  {
+    "question": "Dalam konteks PP 21/2008, kegiatan apakah yang dimaksud dengan 'mitigasi' yang dilakukan sebelum bencana terjadi?",
+    "expected_answer_contains": [
+      "mitigasi",
+      "mengurangi risiko bencana",
+      "pembangunan fisik",
+      "penyadaran"
+    ],
+    "regulations": [
+      "PP 21/2008"
+    ],
+    "category": "factual",
+    "id": "qa_250"
+  },
+  {
+    "question": "Bagaimana perbedaan antara 'rehabilitasi' dan 'rekonstruksi' wilayah pascabencana menurut ketentuan PP 21/2008?",
+    "expected_answer_contains": [
+      "rehabilitasi",
+      "rekonstruksi",
+      "pemulihan aspek pelayanan publik",
+      "pembangunan kembali prasarana dan sarana"
+    ],
+    "regulations": [
+      "PP 21/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_251"
+  },
+  {
+    "question": "Siapa saja yang termasuk dalam kategori 'kelompok rentan' yang harus mendapatkan prioritas dalam penanggulangan bencana berdasarkan PP 21/2008?",
+    "expected_answer_contains": [
+      "kelompok rentan",
+      "bayi",
+      "anak usia di bawah lima tahun",
+      "ibu hamil atau menyusui",
+      "penyandang cacat"
+    ],
+    "regulations": [
+      "PP 21/2008"
+    ],
+    "category": "factual",
+    "id": "qa_252"
+  },
+  {
+    "question": "Jika suatu perusahaan tambang menyebabkan longsor yang memaksa warga mengungsi, apakah kejadian ini memenuhi unsur definisi 'bencana' yang diatur dalam PP 21/2008?",
+    "expected_answer_contains": [
+      "bencana",
+      "faktor manusia",
+      "mengungsi",
+      "kerugian harta benda",
+      "dampak psikologis"
+    ],
+    "regulations": [
+      "PP 21/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_253"
+  },
+  {
+    "question": "Apa yang dimaksud dengan 'Peristiwa Kependudukan' menurut PP 37/2007?",
+    "expected_answer_contains": [
+      "kejadian",
+      "dilaporkan",
+      "akibat",
+      "penerbitan",
+      "perubahan"
+    ],
+    "regulations": [
+      "PP 37/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_254"
+  },
+  {
+    "question": "Menurut definisi dalam PP 37/2007, siapa saja yang termasuk dalam kategori 'Penduduk'?",
+    "expected_answer_contains": [
+      "Warga Negara Indonesia",
+      "Orang Asing",
+      "bertempat tinggal"
+    ],
+    "regulations": [
+      "PP 37/2007"
+    ],
+    "category": "factual",
+    "id": "qa_255"
+  },
+  {
+    "question": "Apa saja kegiatan yang termasuk dalam ruang lingkup 'Administrasi Kependudukan' berdasarkan PP 37/2007?",
+    "expected_answer_contains": [
+      "Pendaftaran Penduduk",
+      "Pencatatan Sipil",
+      "pengelolaan informasi",
+      "pendayagunaan"
+    ],
+    "regulations": [
+      "PP 37/2007"
+    ],
+    "category": "multi_hop",
+    "id": "qa_256"
+  },
+  {
+    "question": "Siapa yang berwenang sebagai 'Penyelenggara' dalam urusan Administrasi Kependudukan sesuai PP 37/2007?",
+    "expected_answer_contains": [
+      "Pemerintah",
+      "pemerintah provinsi",
+      "pemerintah kabupaten/kota"
+    ],
+    "regulations": [
+      "PP 37/2007"
+    ],
+    "category": "factual",
+    "id": "qa_257"
+  },
+  {
+    "question": "Berdasarkan Perda 30/2014, berapa jumlah kamar minimal agar rumah kos dikategorikan sebagai hotel?",
+    "expected_answer_contains": [
+      "rumah kos",
+      "jumlah kamar",
+      "10 (sepuluh)",
+      "Hotel"
+    ],
+    "regulations": [
+      "Perda 30/2014"
+    ],
+    "category": "factual",
+    "id": "qa_258"
+  },
+  {
+    "question": "Apakah yang dimaksud dengan 'Hiburan Insidentil' menurut definisi dalam Perda 30/2014?",
+    "expected_answer_contains": [
+      "Hiburan yang diselenggarakan secara insidentil",
+      "tidak tetap",
+      "Tanda Masuk",
+      "menjelang pergantian tahun baru"
+    ],
+    "regulations": [
+      "Perda 30/2014"
+    ],
+    "category": "definitional",
+    "id": "qa_259"
+  },
+  {
+    "question": "Apakah catering termasuk dalam pengertian restoran sebagaimana diatur dalam Perda 30/2014, dan mengapa?",
+    "expected_answer_contains": [
+      "catering",
+      "jasa boga",
+      "rumah makan",
+      "kantin",
+      "bar"
+    ],
+    "regulations": [
+      "Perda 30/2014"
+    ],
+    "category": "multi_hop",
+    "id": "qa_260"
+  },
+  {
+    "question": "Bagaimana Perda 30/2014 membedakan antara 'penonton atau pengunjung' dan 'karyawan atau artis' dalam konteks pajak hiburan?",
+    "expected_answer_contains": [
+      "menghadiri suatu Hiburan",
+      "kecuali penyelenggara",
+      "karyawan",
+      "artis",
+      "petugas"
+    ],
+    "regulations": [
+      "Perda 30/2014"
+    ],
+    "category": "comparative",
+    "id": "qa_261"
+  },
+  {
+    "question": "Menurut PP 33/2007, apakah Paparan Kerja termasuk Paparan Medik dan Paparan Masyarakat?",
+    "expected_answer_contains": [
+      "Paparan Kerja",
+      "pekerja radiasi",
+      "tidak termasuk",
+      "Paparan Medik",
+      "Paparan Masyarakat"
+    ],
+    "regulations": [
+      "PP 33/2007"
+    ],
+    "category": "comparative",
+    "id": "qa_262"
+  },
+  {
+    "question": "Definisi Keselamatan Radiasi Pengion dalam PP 33/2007 mencakup perlindungan terhadap siapa saja?",
+    "expected_answer_contains": [
+      "pekerja",
+      "anggota masyarakat",
+      "lingkungan hidup",
+      "bahaya radiasi"
+    ],
+    "regulations": [
+      "PP 33/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_263"
+  },
+  {
+    "question": "Apa yang dimaksud dengan Paparan Potensial menurut PP 33/2007?",
+    "expected_answer_contains": [
+      "paparan",
+      "tidak diharapkan",
+      "kemungkinan terjadi",
+      "kecelakaan Sumber"
+    ],
+    "regulations": [
+      "PP 33/2007"
+    ],
+    "category": "factual",
+    "id": "qa_264"
+  },
+  {
+    "question": "Bagaimana Budaya Keselamatan didefinisikan dalam PP 33/2007?",
+    "expected_answer_contains": [
+      "Budaya Keselamatan",
+      "sikap organisasi",
+      "individu",
+      "prioritas utama",
+      "Keselamatan Radiasi"
+    ],
+    "regulations": [
+      "PP 33/2007"
+    ],
+    "category": "factual",
+    "id": "qa_265"
+  },
+  {
+    "question": "Alasan utama penggantian UU 10/1997 dengan PP 33/2007 adalah tidak sesuainya ketentuan lama dengan faktor apa?",
+    "expected_answer_contains": [
+      "perkembangan ilmu pengetahuan",
+      "teknologi",
+      "jaminan keselamatan pekerja",
+      "masyarakat",
+      "lingkungan hidup"
+    ],
+    "regulations": [
+      "PP 33/2007"
+    ],
+    "category": "temporal",
+    "id": "qa_266"
+  },
+  {
+    "question": "Apa yang dimaksud dengan \"Kegiatan Usaha Panas Bumi\" menurut definisi resmi dalam Peraturan Pemerintah ini?",
+    "expected_answer_contains": [
+      "Kegiatan Usaha Panas Bumi",
+      "menemukan sumber daya Panas Bumi",
+      "pemanfaatannya baik secara langsung maupun tidak langsung"
+    ],
+    "regulations": [
+      "PP 59/2003"
+    ],
+    "category": "definitional",
+    "id": "qa_267"
+  },
+  {
+    "question": "Apa perbedaan antara Pemanfaatan Langsung dan Pemanfaatan Tidak Langsung dalam konteks usaha panas bumi sebagaimana diatur dalam PP 59/2003?",
+    "expected_answer_contains": [
+      "Pemanfaatan Langsung",
+      "nonlistrik",
+      "Pemanfaatan Tidak Langsung",
+      "pembangkit tenaga listrik"
+    ],
+    "regulations": [
+      "PP 59/2003"
+    ],
+    "category": "comparative",
+    "id": "qa_268"
+  },
+  {
+    "question": "Jika suatu badan usaha ingin memperoleh Izin Usaha Pertambangan Panas Bumi (IUP), lewat mekanisme apakah wilayah kerja pertambangan panas bumi dapat diperoleh menurut PP 59/2003?",
+    "expected_answer_contains": [
+      "Pelelangan Wilayah Kerja",
+      "penawaran Wilayah Kerja",
+      "Badan Usaha",
+      "IUP"
+    ],
+    "regulations": [
+      "PP 59/2003"
+    ],
+    "category": "factual",
+    "id": "qa_269"
+  },
+  {
+    "question": "Dalam proses eksplorasi panas bumi, kegiatan apa sajakah yang secara eksplisit disebutkan dalam definisi Eksplorasi menurut PP 59/2003?",
+    "expected_answer_contains": [
+      "penyelidikan geologi",
+      "geofisika",
+      "geokimia",
+      "pengeboran uji",
+      "pengeboran sumur eksplorasi"
+    ],
+    "regulations": [
+      "PP 59/2003"
+    ],
+    "category": "factual",
+    "id": "qa_270"
+  },
+  {
+    "question": "Apa yang dimaksud dengan Wilayah Hukum Pertambangan Panas Bumi Indonesia menurut definisi dalam PP 59/2003?",
+    "expected_answer_contains": [
+      "Wilayah Hukum Pertambangan Panas Bumi Indonesia",
+      "seluruh wilayah daratan",
+      "perairan",
+      "landas kontinen Indonesia"
+    ],
+    "regulations": [
+      "PP 59/2003"
+    ],
+    "category": "definitional",
+    "id": "qa_271"
+  },
+  {
+    "question": "Menurut PP 29/2008, kegiatan apa saja yang termasuk dalam definisi \"Pemanfaatan\" tenaga nuklir?",
+    "expected_answer_contains": [
+      "penelitian",
+      "pengangkutan",
+      "dekomisioning",
+      "pengelolaan limbah radioaktif"
+    ],
+    "regulations": [
+      "PP 29/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_272"
+  },
+  {
+    "question": "Berdasarkan ketentuan PP 29/2008, apakah produksi barang konsumen yang mengandung zat radioaktif tergolong dalam kelompok A Sumber Radiasi Pengion?",
+    "expected_answer_contains": [
+      "kelompok A",
+      "produksi barang konsumen",
+      "zat radioaktif"
+    ],
+    "regulations": [
+      "PP 29/2008"
+    ],
+    "category": "factual",
+    "id": "qa_273"
+  },
+  {
+    "question": "Bagaimana perbedaan antara \"Sumber Radiasi Pengion\" dan \"Bahan Nuklir\" sebagaimana diatur dalam definisi PP 29/2008?",
+    "expected_answer_contains": [
+      "zat radioaktif terbungkus",
+      "reaksi pembelahan berantai",
+      "pembangkit radiasi pengion"
+    ],
+    "regulations": [
+      "PP 29/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_274"
+  },
+  {
+    "question": "Siapa yang berwenang menerbitkan izin Pemanfaatan Tenaga Nuklir dan melakukan inspeksi atas kegiatan tersebut menurut PP 29/2008?",
+    "expected_answer_contains": [
+      "BAPETEN",
+      "perizinan",
+      "inspeksi",
+      "Pemanfaatan Tenaga Nuklir"
+    ],
+    "regulations": [
+      "PP 29/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_275"
+  },
+  {
+    "question": "Apakah impor zat radioaktif untuk keperluan medik memerlukan izin sesuai kelompok A dalam PP 29/2008?",
+    "expected_answer_contains": [
+      "impor",
+      "zat radioaktif",
+      "keperluan medik",
+      "kelompok A"
+    ],
+    "regulations": [
+      "PP 29/2008"
+    ],
+    "category": "factual",
+    "id": "qa_276"
+  },
+  {
+    "question": "Bagaimana definisi 'pemerintah' menurut PP 48/2008?",
+    "expected_answer_contains": [
+      "Pemerintah Pusat",
+      "Pemerintah",
+      "definisi"
+    ],
+    "regulations": [
+      "PP 48/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_277"
+  },
+  {
+    "question": "Apakah biaya personalia penyelenggaraan pendidikan mencakup tunjangan fungsional bagi pejabat fungsional sesuai PP 48/2008?",
+    "expected_answer_contains": [
+      "biaya personalia",
+      "tunjangan fungsional",
+      "pejabat fungsional",
+      "penyelenggaraan pendidikan"
+    ],
+    "regulations": [
+      "PP 48/2008"
+    ],
+    "category": "factual",
+    "id": "qa_278"
+  },
+  {
+    "question": "Siapa saja yang tergolong masyarakat dalam konteks pendanaan pendidikan berdasarkan PP 48/2008?",
+    "expected_answer_contains": [
+      "penyelenggara atau satuan pendidikan",
+      "peserta didik",
+      "orang tua atau wali",
+      "pihak lain"
+    ],
+    "regulations": [
+      "PP 48/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_279"
+  },
+  {
+    "question": "Bagaimana perbedaan antara 'dana pendidikan' dan 'pendanaan pendidikan' menurut definisi PP 48/2008?",
+    "expected_answer_contains": [
+      "dana pendidikan",
+      "sumber daya keuangan",
+      "pendanaan pendidikan",
+      "penyediaan sumberdaya keuangan"
+    ],
+    "regulations": [
+      "PP 48/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_280"
+  },
+  {
+    "question": "Melalui belanja apa investasi yang menghasilkan aset fisik pendidikan dibiayai oleh Pemerintah atau pemerintah daerah menurut PP 48/2008?",
+    "expected_answer_contains": [
+      "belanja modal",
+      "belanja barang",
+      "investasi",
+      "aset fisik"
+    ],
+    "regulations": [
+      "PP 48/2008"
+    ],
+    "category": "factual",
+    "id": "qa_281"
+  },
+  {
+    "question": "Menurut definisi dalam PP 7/2008, apakah lembaga BPK harus dikategorikan sebagai 'kementerian' atau 'lembaga'?",
+    "expected_answer_contains": [
+      "kementerian",
+      "lembaga",
+      "non-kementerian",
+      "instansi lain pengguna anggaran"
+    ],
+    "regulations": [
+      "PP 7/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_282"
+  },
+  {
+    "question": "Bagaimana hubungan antara \"pemerintah daerah\", \"DPRD\", dan \"desa\" dalam sistem otonomi menurut PP 7/2008?",
+    "expected_answer_contains": [
+      "penyelenggara pemerintahan daerah",
+      "perangkat daerah",
+      "desa",
+      "sistem Negara Kesatuan Republik Indonesia"
+    ],
+    "regulations": [
+      "PP 7/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_283"
+  },
+  {
+    "question": "Apakah definisi 'Pemerintah' dalam PP 7/2008 sama dengan definisi 'Pemerintah Pusat' yang menjadi salah satu dasar hukum pembentukan peraturan ini?",
+    "expected_answer_contains": [
+      "Presiden Republik Indonesia",
+      "pemerintahan negara",
+      "Pemerintah pusat"
+    ],
+    "regulations": [
+      "PP 7/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_284"
+  },
+  {
+    "question": "Sejak tahun berapa definisi 'pemerintahan daerah' dalam PP 7/2008 mulai berlaku setelah diperkuat oleh UU 8/2005?",
+    "expected_answer_contains": [
+      "Tahun 2005",
+      "Lembaran Negara",
+      "Nomor 4548",
+      "Undang-Undang Nomor 8 Tahun 2005"
+    ],
+    "regulations": [
+      "PP 7/2008"
+    ],
+    "category": "temporal",
+    "id": "qa_285"
+  },
+  {
+    "question": "Apakah gubernur dKI Jakarta termasuk dalam definisi 'pemerintah daerah' sebagaimana dimaksud dalam pasal definisi PP 7/2008?",
+    "expected_answer_contains": [
+      "gubernur",
+      "bupati",
+      "walikota",
+      "perangkat daerah"
+    ],
+    "regulations": [
+      "PP 7/2008"
+    ],
+    "category": "factual",
+    "id": "qa_286"
+  },
+  {
+    "question": "Apa yang dimaksud dengan \"Jasa Usaha\" menurut Perda 5/2011 dan bagaimana perbedaannya dengan jasa pada umumnya?",
+    "expected_answer_contains": [
+      "jasa yang disediakan",
+      "Pemerintah Kabupaten",
+      "prinsip-prinsip komersial",
+      "sektor swasta"
+    ],
+    "regulations": [
+      "Perda 5/2011"
+    ],
+    "category": "definitional",
+    "id": "qa_287"
+  },
+  {
+    "question": "Jika perusahaan PT Sejahtera ingin menyewa laboratorium milik Pemkab Jember, apakah ini termasuk dalam definisi Pemakaian Kekayaan Daerah?",
+    "expected_answer_contains": [
+      "Pemakaian Kekayaan Daerah",
+      "penyewaan laboratorium",
+      "yang dimiliki oleh Pemerintah Kabupaten"
+    ],
+    "regulations": [
+      "Perda 5/2011"
+    ],
+    "category": "multi_hop",
+    "id": "qa_288"
+  },
+  {
+    "question": "Apa perbedaan antara \"Sempadan sungai\" dan \"Bantaran sungai\" sebagaimana diatur dalam peraturan ini?",
+    "expected_answer_contains": [
+      "Sempadan sungai",
+      "kanan dan kiri termasuk sungai buatan",
+      "Bantaran sungai",
+      "lahan pada kedua sisi"
+    ],
+    "regulations": [
+      "Perda 5/2011"
+    ],
+    "category": "comparative",
+    "id": "qa_289"
+  },
+  {
+    "question": "Menurut definisi, apakah koperasi yang menjalankan usaha perdagangan di pasar tradisional termasuk dalam kategori \"Badan\" yang dapat dikenakan retribusi jasa usaha?",
+    "expected_answer_contains": [
+      "Badan",
+      "koperasi",
+      "melakukan usaha",
+      "retribusi adalah pungutan Daerah"
+    ],
+    "regulations": [
+      "Perda 5/2011"
+    ],
+    "category": "factual",
+    "id": "qa_290"
+  },
+  {
+    "question": "Apakah Deputi Gubernur Senior termasuk dalam susunan Dewan Gubernur Bank Indonesia?",
+    "expected_answer_contains": [
+      "Deputi Gubernur Senior",
+      "anggota Dewan Gubernur",
+      "wakil pemimpin"
+    ],
+    "regulations": [
+      "UU 23/1999"
+    ],
+    "category": "factual",
+    "id": "qa_291"
+  },
+  {
+    "question": "Bagaimana UU 23/1999 mendefinisikan \"Sistem pembayaran\"?",
+    "expected_answer_contains": [
+      "seperangkat aturan",
+      "lembaga",
+      "pemindahan dana",
+      "kegiatan ekonomi"
+    ],
+    "regulations": [
+      "UU 23/1999"
+    ],
+    "category": "definitional",
+    "id": "qa_292"
+  },
+  {
+    "question": "Apakah transaksi dengan valuta asing diperbolehkan di Indonesia menurut ketentuan alat pembayaran yang sah?",
+    "expected_answer_contains": [
+      "menggunakan uang rupiah",
+      "Peraturan Bank Indonesia",
+      "pekecualian",
+      "valuta asing",
+      "tertulis"
+    ],
+    "regulations": [
+      "UU 23/1999"
+    ],
+    "category": "multi_hop",
+    "id": "qa_293"
+  },
+  {
+    "question": "Dalam hal apa Bank Indonesia tidak independen sehingga dapat menerima campur tangan pihak lain?",
+    "expected_answer_contains": [
+      "secara tegas diatur",
+      "Undang-undang ini",
+      "independen",
+      "bebas dari campur tangan"
+    ],
+    "regulations": [
+      "UU 23/1999"
+    ],
+    "category": "comparative",
+    "id": "qa_294"
+  },
+  {
+    "question": "Apakah perbedaan antara Cadangan Umum dan Cadangan Tujuan menurut UU 23/1999?",
+    "expected_answer_contains": [
+      "Cadangan Umum",
+      "Cadangan Tujuan",
+      "surplus Bank Indonesia",
+      "risiko",
+      "penggantian atau pembaruan"
+    ],
+    "regulations": [
+      "UU 23/1999"
+    ],
+    "category": "comparative",
+    "id": "qa_295"
+  },
+  {
+    "question": "Apa yang dimaksud dengan \"Pengelola Barang\" dalam Perda 01/2006?",
+    "expected_answer_contains": [
+      "Pejabat yang berwenang",
+      "menetapkan kebijakan",
+      "pengelolaan barang milik Daerah"
+    ],
+    "regulations": [
+      "Perda 01/2006"
+    ],
+    "category": "definitional",
+    "id": "qa_296"
+  },
+  {
+    "question": "Siapa yang berwenang menjadi Kuasa Pengguna Barang Milik Daerah menurut ketentuan ini?",
+    "expected_answer_contains": [
+      "kepala satuan kerja",
+      "pejabat yang ditunjuk",
+      "menggunakan barang milik daerah"
+    ],
+    "regulations": [
+      "Perda 01/2006"
+    ],
+    "category": "factual",
+    "id": "qa_297"
+  },
+  {
+    "question": "Bagaimana perbedaan antara Pengelola Barang dan Pengurus Barang Milik Daerah dalam Perda ini?",
+    "expected_answer_contains": [
+      "Pejabat yang berwenang",
+      "Pegawai yang diserahi tugas",
+      "di luar kewenangan Pemegang Barang"
+    ],
+    "regulations": [
+      "Perda 01/2006"
+    ],
+    "category": "comparative",
+    "id": "qa_298"
+  },
+  {
+    "question": "Apa saja tahapan dalam pengelolaan Barang Milik Daerah yang diatur dalam Perda 01/2006?",
+    "expected_answer_contains": [
+      "perencanaan kebutuhan",
+      "pengadaan",
+      "penghapusan",
+      "pembinaan dan pengawasan"
+    ],
+    "regulations": [
+      "Perda 01/2006"
+    ],
+    "category": "factual",
+    "id": "qa_299"
+  },
+  {
+    "question": "Apa saja bentuk surat berharga turunan dari Resi Gudang yang diatur dalam PP 36/2007?",
+    "expected_answer_contains": [
+      "Derivatif Resi Gudang",
+      "kontrak berjangka",
+      "opsi atas Resi Gudang",
+      "indeks atas Resi Gudang",
+      "surat berharga diskonto"
+    ],
+    "regulations": [
+      "PP 36/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_300"
+  },
+  {
+    "question": "Siapa yang berwenang memberikan persetujuan agar Pengelola Gudang dapat menerbitkan Resi Gudang?",
+    "expected_answer_contains": [
+      "Badan Pengawas",
+      "persetujuan",
+      "Pengelola Gudang"
+    ],
+    "regulations": [
+      "PP 36/2007"
+    ],
+    "category": "factual",
+    "id": "qa_301"
+  },
+  {
+    "question": "Apa perbedaan Resi Gudang Dalam Bentuk Warkat dan Tanpa Warkat menurut definisi di PP 36/2007?",
+    "expected_answer_contains": [
+      "sertifikat",
+      "elektronis",
+      "atas nama",
+      "atas perintah",
+      "kepemilikan"
+    ],
+    "regulations": [
+      "PP 36/2007"
+    ],
+    "category": "comparative",
+    "id": "qa_302"
+  },
+  {
+    "question": "Setelah barang diserahkan ke Pengelola Gudang, langkah apa yang harus dilakukan sebelum Resi Gudang diterbitkan?",
+    "expected_answer_contains": [
+      "mendaftarkan",
+      "Pusat Registrasi",
+      "kode pengaman"
+    ],
+    "regulations": [
+      "PP 36/2007"
+    ],
+    "category": "multi_hop",
+    "id": "qa_303"
+  },
+  {
+    "question": "Apa yang dimaksud dengan Lelang Umum dalam konteks Sistem Resi Gudang PPP 36/2007?",
+    "expected_answer_contains": [
+      "penjualan barang dimuka umum",
+      "pengumuman lelang",
+      "penawaran terbuka"
+    ],
+    "regulations": [
+      "PP 36/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_304"
+  },
+  {
+    "question": "Apa yang dimaksud dengan \"DBHCHT\" dalam Perda 2/1945?",
+    "expected_answer_contains": [
+      "Dana Bagi Hasil Cukai Hasil Tembakau",
+      "alokasikan",
+      "Undang-Undang",
+      "Anggaran Pendapatan dan Belanja Negara"
+    ],
+    "regulations": [
+      "Perda 2/1945"
+    ],
+    "category": "definitional",
+    "id": "qa_305"
+  },
+  {
+    "question": "Dalam perencanaan penggunaan DBHCHT, lembaga mana saja yang harus dilibatkan dalam koordinasi lintas sektor?",
+    "expected_answer_contains": [
+      "Instansi Pemerintah",
+      "Pemerintah Provinsi",
+      "Instansi Vertikal di Kabupaten Madiun",
+      "SKPD terkait"
+    ],
+    "regulations": [
+      "Perda 2/1945"
+    ],
+    "category": "factual",
+    "id": "qa_306"
+  },
+  {
+    "question": "Menurut Pasal 5 ayat (2) huruf a dan b, program apa yang dapat dibiayai oleh DBHCHT untuk mendukung industri tembakau?",
+    "expected_answer_contains": [
+      "Peningkatan kualitas bahan baku",
+      "Pembinaan industri",
+      "standarisasi kualitas",
+      "registrasi mesin"
+    ],
+    "regulations": [
+      "Perda 2/1945"
+    ],
+    "category": "multi_hop",
+    "id": "qa_307"
+  },
+  {
+    "question": "Bila terjadi penyalahgunaan alokasi DBHCHT, peraturan apakah yang mengatur sanksinya?",
+    "expected_answer_contains": [
+      "Peraturan Menteri Keuangan Nomor 20/PMK.07/2009",
+      "sanksi",
+      "penyalahgunaan"
+    ],
+    "regulations": [
+      "Perda 2/1945"
+    ],
+    "category": "comparative",
+    "id": "qa_308"
+  },
+  {
+    "question": "Siapakah yang menetapkan besaran alokasi DBHCHT setiap tahunnya?",
+    "expected_answer_contains": [
+      "Menteri Keuangan",
+      "setiap tahun",
+      "ditetapkan"
+    ],
+    "regulations": [
+      "Perda 2/1945"
+    ],
+    "category": "temporal",
+    "id": "qa_309"
+  },
+  {
+    "question": "Apakah syarat usia minimal untuk menjadi hakim Pengadilan Tinggi berbeda dengan syarat menjadi hakim Pengadilan Negeri?",
+    "expected_answer_contains": [
+      "40 (empat puluh) tahun",
+      "25 (dua puluh lima) tahun",
+      "Pengadilan Tinggi",
+      "Pengadilan Negeri"
+    ],
+    "regulations": [
+      "UU 2/1986"
+    ],
+    "category": "comparative",
+    "id": "qa_310"
+  },
+  {
+    "question": "Siapa yang bertanggung jawab atas pembinaan organisasi, administrasi, dan keuangan Pengadilan Negeri sehingga tidak mengurangi kebebasan hakim?",
+    "expected_answer_contains": [
+      "Menteri Kehakiman",
+      "organisasi",
+      "administrasi",
+      "keuangan",
+      "kebebasan Hakim"
+    ],
+    "regulations": [
+      "UU 2/1986"
+    ],
+    "category": "factual",
+    "id": "qa_311"
+  },
+  {
+    "question": "Bagaimana kedudukan Mahkamah Agung dalam hierarki kekuasaan kehakiman di lingkungan Peradilan Umum?",
+    "expected_answer_contains": [
+      "berpuncak",
+      "Mahkamah Agung",
+      "Pengadilan Negara Tertinggi"
+    ],
+    "regulations": [
+      "UU 2/1986"
+    ],
+    "category": "definitional",
+    "id": "qa_312"
+  },
+  {
+    "question": "Seseorang yang baru lulus sarjana hukum berusia 24 tahun dan sudah menjadi pegawai negeri, apakah memenuhi syarat untuk diangkat menjadi Hakim Pengadilan Negeri?",
+    "expected_answer_contains": [
+      "berumur serendah-rendahnya 25 (dua puluh lima) tahun",
+      "sarjana hukum",
+      "pegawai negeri",
+      "warga negara Indonesia"
+    ],
+    "regulations": [
+      "UU 2/1986"
+    ],
+    "category": "multi_hop",
+    "id": "qa_313"
+  },
+  {
+    "question": "Apa perbedaan wilayah hukum antara Pengadilan Negeri dan Pengadilan Tinggi berdasarkan tempat kedudukannya?",
+    "expected_answer_contains": [
+      "Kotamadya atau ibu kota Kabupaten",
+      "ibu kota Propinsi",
+      "wilayah Kotamadya atau Kabupaten",
+      "wilayah Propinsi"
+    ],
+    "regulations": [
+      "UU 2/1986"
+    ],
+    "category": "comparative",
+    "id": "qa_314"
+  },
+  {
+    "question": "Menurut PP 2/2007, dokumen apa saja yang wajib dilampirkan pemohon pewarganegaraan untuk membuktikan status perkawinannya?",
+    "expected_answer_contains": [
+      "fotokopi kutipan akte perkawinan/buku nikah",
+      "kutipan akte perceraian/surat talak",
+      "kutipan akte kematian isteri/suami"
+    ],
+    "regulations": [
+      "PP 2/2007"
+    ],
+    "category": "factual",
+    "id": "qa_315"
+  },
+  {
+    "question": "Jika permohonan pewarganegaraan tidak memenuhi persyaratan substantif, berapa hari Pejabat wajib mengembalikannya kepada pemohon dan bagaimana proses tersebut dihitung?",
+    "expected_answer_contains": [
+      "paling lama 7 (tujuh) hari",
+      "terhitung sejak tanggal pemeriksaan substantif selesai"
+    ],
+    "regulations": [
+      "PP 2/2007"
+    ],
+    "category": "temporal",
+    "id": "qa_316"
+  },
+  {
+    "question": "Apa perbedaan antara peran Menteri dan Pejabat dalam proses permohonan pewarganegaraan menurut PP 2/2007?",
+    "expected_answer_contains": [
+      "Menteri",
+      "Pejabat",
+      "ditunjuk oleh Menteri",
+      "menangani masalah Kewarganegaraan Republik Indonesia"
+    ],
+    "regulations": [
+      "PP 2/2007"
+    ],
+    "category": "comparative",
+    "id": "qa_317"
+  },
+  {
+    "question": "Selain bukti pembayaran uang pewarganegaraan, apakah pemohon juga harus melampirkan surat keterangan dari camat dan bagaimana isi surat tersebut?",
+    "expected_answer_contains": [
+      "surat keterangan dari camat",
+      "memiliki pekerjaan dan/atau berpenghasilan tetap"
+    ],
+    "regulations": [
+      "PP 2/2007"
+    ],
+    "category": "multi_hop",
+    "id": "qa_318"
+  },
+  {
+    "question": "Menurut Peraturan Daerah Kabupaten Luwu, apakah Keputusan Bupati termasuk dalam kategori produk hukum daerah?",
+    "expected_answer_contains": [
+      "produk hukum daerah",
+      "DPRD dan Bupati",
+      "produk hukum yang dibentuk oleh Bupati"
+    ],
+    "regulations": [
+      "UU 12/2011"
+    ],
+    "category": "factual",
+    "id": "qa_319"
+  },
+  {
+    "question": "Apa perbedaan antara Peraturan Daerah (Perda) dan Peraturan Bupati dalam proses pembentukannya?",
+    "expected_answer_contains": [
+      "Peraturan Daerah",
+      "DPRD dengan persetujuan bersama Bupati",
+      "Peraturan Bupati",
+      "dibuat oleh Bupati"
+    ],
+    "regulations": [
+      "UU 12/2011"
+    ],
+    "category": "comparative",
+    "id": "qa_320"
+  },
+  {
+    "question": "Apakah Naskah Akademik wajib disusun sebelum pembentukan Rancangan Perda, dan apa tujuannya?",
+    "expected_answer_contains": [
+      "Naskah Akademik",
+      "Rancangan Perda",
+      "solusi terhadap permasalahan",
+      "kebutuhan hukum masyarakat"
+    ],
+    "regulations": [
+      "UU 12/2011"
+    ],
+    "category": "definitional",
+    "id": "qa_321"
+  },
+  {
+    "question": "Dalam penyusunan produk hukum daerah, asas apa yang harus tercermin dalam materi muatan untuk memastikan kualitasnya?",
+    "expected_answer_contains": [
+      "asas pembentukan",
+      "pengayoman",
+      "kemanusiaan",
+      "kebangsaan"
+    ],
+    "regulations": [
+      "UU 12/2011"
+    ],
+    "category": "multi_hop",
+    "id": "qa_322"
+  },
+  {
+    "question": "Apa yang dimaksud dengan \"Desa\" dalam Perda 1/2017 tentang Badan Permusyawaratan Desa?",
+    "expected_answer_contains": [
+      "kesatuan masyarakat hukum",
+      "batas wilayah",
+      "mengatur dan mengurus urusan Pemerintahan"
+    ],
+    "regulations": [
+      "Perda 1/2017"
+    ],
+    "category": "definitional",
+    "id": "qa_323"
+  },
+  {
+    "question": "Siapa yang dimaksud dengan \"Pemerintah Daerah\" dalam konteks Perda 1/2017?",
+    "expected_answer_contains": [
+      "Bupati",
+      "Perangkat Daerah",
+      "Penyelenggara Pemerintah Daerah"
+    ],
+    "regulations": [
+      "Perda 1/2017"
+    ],
+    "category": "definitional",
+    "id": "qa_324"
+  },
+  {
+    "question": "Bagaimana definisi \"Pemerintahan Daerah\" sebagaimana diatur dalam Perda 1/2017?",
+    "expected_answer_contains": [
+      "penyelenggaraan urusan Pemerintahan",
+      "asas otonomi",
+      "tugas pembantuan",
+      "otonomi seluas-luasnya"
+    ],
+    "regulations": [
+      "Perda 1/2017"
+    ],
+    "category": "definitional",
+    "id": "qa_325"
+  },
+  {
+    "question": "Apa peran hak asal usul atau hak tradisional dalam definisi Desa menurut Perda 1/2017?",
+    "expected_answer_contains": [
+      "hak asal usul",
+      "hak tradisional",
+      "prakarsa masyarakat",
+      "mengatur dan mengurus urusan Pemerintahan"
+    ],
+    "regulations": [
+      "Perda 1/2017"
+    ],
+    "category": "multi_hop",
+    "id": "qa_326"
+  },
+  {
+    "question": "Apa kewajiban petani jika pilihan tanaman yang dipilihnya tidak dapat terwujud karena ketentuan pemerintah berdasarkan UU 12/1992?",
+    "expected_answer_contains": [
+      "pemerintah",
+      "berkewajiban",
+      "jaminan penghasilan tertentu"
+    ],
+    "regulations": [
+      "UU 12/1992"
+    ],
+    "category": "factual",
+    "id": "qa_327"
+  },
+  {
+    "question": "Bagaimana UU 12/1992 mendefinisikan 'plasma nutfah'?",
+    "expected_answer_contains": [
+      "substansi",
+      "kelompok makhluk hidup",
+      "sumber sifat keturunan"
+    ],
+    "regulations": [
+      "UU 12/1992"
+    ],
+    "category": "definitional",
+    "id": "qa_328"
+  },
+  {
+    "question": "Menurut Pasal 5 ayat (1) UU 12/1992, apakah petani memiliki kebebasan menentukan jenis tanaman dan bagaimana kewajibannya dalam konteks rencana pengembangan?",
+    "expected_answer_contains": [
+      "bebas",
+      "berkewajiban berperanserta",
+      "rencana pengembangan budidaya tanaman"
+    ],
+    "regulations": [
+      "UU 12/1992"
+    ],
+    "category": "multi_hop",
+    "id": "qa_329"
+  },
+  {
+    "question": "Berapa jumlah anggota Komisi Informasi Provinsi Sulawesi Barat dan bagaimana komposisinya?",
+    "expected_answer_contains": [
+      "5 (lima) orang",
+      "ketua",
+      "wakil ketua",
+      "3 (tiga) orang anggota"
+    ],
+    "regulations": [
+      "Perda 18/2016"
+    ],
+    "category": "factual",
+    "id": "qa_330"
+  },
+  {
+    "question": "Berapa persentase honorarium yang diterima ketua, wakil dan anggota Komisi Informasi Provinsi Sulawesi Barat dibandingkan honorarium Komisi Informasi Pusat?",
+    "expected_answer_contains": [
+      "50%",
+      "honorarium Komisi Informasi Pusat",
+      "kemampuan keuangan daerah"
+    ],
+    "regulations": [
+      "Perda 18/2016"
+    ],
+    "category": "comparative",
+    "id": "qa_331"
+  },
+  {
+    "question": "Siapa yang berwenang menetapkan besaran honorarium dan biaya perjalanan dinas anggota Komisi Informasi Provinsi Sulawesi Barat?",
+    "expected_answer_contains": [
+      "Gubernur",
+      "Keputusan Gubernur Sulawesi Barat"
+    ],
+    "regulations": [
+      "Perda 18/2016"
+    ],
+    "category": "definitional",
+    "id": "qa_332"
+  },
+  {
+    "question": "Mulai kapan Peraturan Gubernur ini mulai berlaku dan bagaimana cara pengundangannya?",
+    "expected_answer_contains": [
+      "3 Juni 2016",
+      "tanggal ditetapkan",
+      "penempatannya dalam Berita Daerah Provinsi Sulawesi Barat"
+    ],
+    "regulations": [
+      "Perda 18/2016"
+    ],
+    "category": "temporal",
+    "id": "qa_333"
+  },
+  {
+    "question": "Apa yang dimaksud dengan reklamasi hutan menurut PP 76/2008?",
+    "expected_answer_contains": [
+      "Reklamasi hutan",
+      "memperbaiki atau memulihkan",
+      "fungsi secara optimal"
+    ],
+    "regulations": [
+      "PP 76/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_334"
+  },
+  {
+    "question": "Bagaimana perbedaan antara kegiatan reboisasi dan penghijauan dalam konteks rehabilitasi hutan?",
+    "expected_answer_contains": [
+      "Reboisasi",
+      "kawasan hutan rusak",
+      "Penghijauan",
+      "lahan kritis di luar kawasan hutan"
+    ],
+    "regulations": [
+      "PP 76/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_335"
+  },
+  {
+    "question": "Siapa saja yang termasuk dalam definisi 'Pemerintah daerah' dalam peraturan rehabilitasi dan reklamasi hutan ini?",
+    "expected_answer_contains": [
+      "gubernur",
+      "bupati/walikota",
+      "perangkat daerah"
+    ],
+    "regulations": [
+      "PP 76/2008"
+    ],
+    "category": "factual",
+    "id": "qa_336"
+  },
+  {
+    "question": "Kapan suatu lahan dapat dikategorikan sebagai hutan dan lahan kritis dalam konteks pengelolaan DAS?",
+    "expected_answer_contains": [
+      "tidak berfungsi lagi",
+      "media pengatur tata air",
+      "terganggunya keseimbangan ekosistem"
+    ],
+    "regulations": [
+      "PP 76/2008"
+    ],
+    "category": "temporal",
+    "id": "qa_337"
+  },
+  {
+    "question": "Apa perbedaan antara LPPD dan LKPJ berdasarkan penjelasan dalam Pedoman Evaluasi?",
+    "expected_answer_contains": [
+      "LPPD",
+      "LKPJ",
+      "Pemerintah",
+      "DPRD",
+      "1 tahun anggaran"
+    ],
+    "regulations": [
+      "PP 6/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_338"
+  },
+  {
+    "question": "Apa yang menjadi fokus Evaluasi Kemampuan Penyelenggaraan Otonomi Daerah (EKPOD) menurut definisinya?",
+    "expected_answer_contains": [
+      "kesejahteraan masyarakat",
+      "pelayanan umum",
+      "daya saing daerah"
+    ],
+    "regulations": [
+      "PP 6/2008"
+    ],
+    "category": "factual",
+    "id": "qa_339"
+  },
+  {
+    "question": "Dalam konteks evaluasi, kapan EDOB dilakukan terhadap suatu daerah?",
+    "expected_answer_contains": [
+      "daerah yang baru dibentuk",
+      "kelengkapan aspek-aspek",
+      "penyelenggaraan pemerintahan daerah"
+    ],
+    "regulations": [
+      "PP 6/2008"
+    ],
+    "category": "temporal",
+    "id": "qa_340"
+  },
+  {
+    "question": "Bagaimana ILPPD disampaikan kepada masyarakat menurut aturan ini?",
+    "expected_answer_contains": [
+      "media yang tersedia di Daerah",
+      "penyelenggaraan pemerintahan daerah",
+      "masyarakat"
+    ],
+    "regulations": [
+      "PP 6/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_341"
+  },
+  {
+    "question": "Siapa yang secara fungsional menjadi aparat pengawasan intern pemerintah yang bertanggung jawab langsung kepada menteri?",
+    "expected_answer_contains": [
+      "Inspektorat Jenderal",
+      "pengawasan intern",
+      "menteri"
+    ],
+    "regulations": [
+      "PP 60/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_342"
+  },
+  {
+    "question": "Apa saja lima unsur yang harus menyatu dalam penerapan Sistem Pengendalian Intern Pemerintah (SPIP)?",
+    "expected_answer_contains": [
+      "lingkungan pengendalian",
+      "penilaian risiko",
+      "kegiatan pengendalian",
+      "informasi dan komunikasi",
+      "pemantauan pengendalian intern"
+    ],
+    "regulations": [
+      "PP 60/2008"
+    ],
+    "category": "factual",
+    "id": "qa_343"
+  },
+  {
+    "question": "Mengapa bupati/walikota wajib melakukan pengendalian atas penyelenggaraan kegiatan pemerintahan?",
+    "expected_answer_contains": [
+      "pengelolaan keuangan negara yang efektif",
+      "transparan",
+      "akuntabel"
+    ],
+    "regulations": [
+      "PP 60/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_344"
+  },
+  {
+    "question": "Bagaimana perbedaan tanggung jawab antara Inspektorat Provinsi dan Inspektorat Kabupaten/Kota menurut Peraturan ini?",
+    "expected_answer_contains": [
+      "Inspektorat Provinsi",
+      "gubernur",
+      "Inspektorat Kabupaten/Kota",
+      "bupati/walikota"
+    ],
+    "regulations": [
+      "PP 60/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_345"
+  },
+  {
+    "question": "Apa yang harus dilakukan pimpinan instansi pemerintah agar lingkungan kerja mendukung penerapan SPIP?",
+    "expected_answer_contains": [
+      "menciptakan",
+      "memelihara",
+      "lingkungan pengendalian",
+      "perilaku positif"
+    ],
+    "regulations": [
+      "PP 60/2008"
+    ],
+    "category": "factual",
+    "id": "qa_346"
+  },
+  {
+    "question": "Apakah definisi Lembaga Penyiaran Komunitas menurut PP 51/2005?",
+    "expected_answer_contains": [
+      "Lembaga Penyiaran Komunitas",
+      "badan hukum Indonesia",
+      "komunitas tertentu",
+      "tidak komersial",
+      "daya pancar rendah"
+    ],
+    "regulations": [
+      "PP 51/2005"
+    ],
+    "category": "definitional",
+    "id": "qa_347"
+  },
+  {
+    "question": "Berapa radius maksimum dan ERP maksimum yang diizinkan untuk siaran Lembaga Penyiaran Komunitas?",
+    "expected_answer_contains": [
+      "maksimum 2,5 km",
+      "ERP maksimum 50 watt",
+      "radius siaran"
+    ],
+    "regulations": [
+      "PP 51/2005"
+    ],
+    "category": "factual",
+    "id": "qa_348"
+  },
+  {
+    "question": "Persyaratan apakah yang harus dipenuhi agar pendirian Lembaga Penyiaran Komunitas disetujui oleh masyarakat setempat?",
+    "expected_answer_contains": [
+      "persetujuan tertulis",
+      "51% penduduk dewasa",
+      "250 orang dewasa",
+      "kepala desa/lurah"
+    ],
+    "regulations": [
+      "PP 51/2005"
+    ],
+    "category": "multi_hop",
+    "id": "qa_349"
+  },
+  {
+    "question": "Menurut PP 8/2008, berapa tahun periode waktu yang dicakup oleh dokumen RPJPD?",
+    "expected_answer_contains": [
+      "20 (dua puluh) tahun",
+      "Rencana Pembangunan Jangka Panjang Daerah",
+      "RPJPD"
+    ],
+    "regulations": [
+      "PP 8/2008"
+    ],
+    "category": "factual",
+    "id": "qa_350"
+  },
+  {
+    "question": "Apa perbedaan antara RPJMD dan Renstra-SKPD dalam hal periode perencanaan berdasarkan definisi pada PP 8/2008?",
+    "expected_answer_contains": [
+      "5 (lima) tahun",
+      "RPJMD",
+      "Renstra-SKPD"
+    ],
+    "regulations": [
+      "PP 8/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_351"
+  },
+  {
+    "question": "Bagaimana PP 8/2008 mendefinisikan 'pembangunan daerah' dalam konteks peningkatan kesejahteraan masyarakat?",
+    "expected_answer_contains": [
+      "pemanfaatan sumber daya",
+      "peningkatan kesejahteraan masyarakat",
+      "pendapatan",
+      "kesempatan kerja",
+      "indeks pembangunan manusia"
+    ],
+    "regulations": [
+      "PP 8/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_352"
+  },
+  {
+    "question": "Jika visi adalah rumusan keadaan yang diinginkan pada akhir periode perencanaan, maka dokumen rencana tahunan yang digunakan untuk mengimplementasikan visi tersebut adalah?",
+    "expected_answer_contains": [
+      "Renja-SKPD",
+      "Rencana kerja-Satuan Kerja Perangkat Daerah",
+      "1 (satu) tahun"
+    ],
+    "regulations": [
+      "PP 8/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_353"
+  },
+  {
+    "question": "Menurut Perda 6/2014, apakah definisi 'Desa' mencakup desa adat dan istilah lain yang setara?",
+    "expected_answer_contains": [
+      "desa dan desa adat",
+      "disebut dengan nama lain",
+      "kesatuan masyarakat hukum"
+    ],
+    "regulations": [
+      "Perda 6/2014"
+    ],
+    "category": "definitional",
+    "id": "qa_354"
+  },
+  {
+    "question": "Siapa yang berperan sebagai penanggung jawab dan koordinator penyusunan rancangan Peraturan Desa yang diprakarsai Pemerintah Desa?",
+    "expected_answer_contains": [
+      "Kepala Desa",
+      "Sekretaris Desa",
+      "penanggung jawab",
+      "dikoordinasikan"
+    ],
+    "regulations": [
+      "Perda 6/2014"
+    ],
+    "category": "multi_hop",
+    "id": "qa_355"
+  },
+  {
+    "question": "Apa saja tiga jenis peraturan yang termasuk dalam 'peraturan di desa' menurut Pasal 7, 10, dan 11?",
+    "expected_answer_contains": [
+      "Peraturan Desa",
+      "Peraturan Bersama Kepala Desa",
+      "Peraturan Kepala Desa",
+      "Keputusan Kepala Desa"
+    ],
+    "regulations": [
+      "Perda 6/2014"
+    ],
+    "category": "factual",
+    "id": "qa_356"
+  },
+  {
+    "question": "Bagaimana perbedaan antara evaluasi dan klarifikasi terhadap peraturan desa berdasarkan Pasal 13 dan 15?",
+    "expected_answer_contains": [
+      "Evaluasi",
+      "klarifikasi",
+      "rancangan Peraturan Desa",
+      "peraturan di desa",
+      "bertentangan dengan kepentingan umum"
+    ],
+    "regulations": [
+      "Perda 6/2014"
+    ],
+    "category": "comparative",
+    "id": "qa_357"
+  },
+  {
+    "question": "Menurut PP 41/2007, unsur pembantu kepala daerah dalam pemerintahan provinsi disebut apa saja?",
+    "expected_answer_contains": [
+      "sekretariat daerah",
+      "sekretariat DPRD",
+      "dinas daerah",
+      "lembaga teknis daerah"
+    ],
+    "regulations": [
+      "PP 41/2007"
+    ],
+    "category": "factual",
+    "id": "qa_358"
+  },
+  {
+    "question": "Peraturan apakah yang dicabut karena dianggap belum cukup memberikan pedoman menyeluruh sebelum PP 41/2007 diberlakukan?",
+    "expected_answer_contains": [
+      "Peraturan Pemerintah Nomor 8 Tahun 2003",
+      "Pedoman Organisasi Perangkat Daerah"
+    ],
+    "regulations": [
+      "PP 41/2007"
+    ],
+    "category": "temporal",
+    "id": "qa_359"
+  },
+  {
+    "question": "Bagaimana perbedaan susunan perangkat daerah provinsi dan kabupaten/kota berdasarkan PP 41/2007?",
+    "expected_answer_contains": [
+      "perangkat daerah provinsi",
+      "perangkat daerah kabupaten/kota",
+      "kecamatan",
+      "kelurahan"
+    ],
+    "regulations": [
+      "PP 41/2007"
+    ],
+    "category": "comparative",
+    "id": "qa_360"
+  },
+  {
+    "question": "Apakah perjalanan dinas dari kantor Walikota Banjarbaru menuju Kelurahan Margomulyo untuk rapat koordinasi tergolong perjalanan dinas dalam daerah atau luar daerah menurut Perda 2/2012?",
+    "expected_answer_contains": [
+      "Perjalanan Dinas Dalam Daerah",
+      "Kecamatan dan Kelurahan",
+      "wilayah Kota Banjarbaru"
+    ],
+    "regulations": [
+      "Perda 2/2012"
+    ],
+    "category": "factual",
+    "id": "qa_361"
+  },
+  {
+    "question": "Bagaimana definisi Pegawai Tidak Tetap (PTT) menurut Perda 2/2012 dan apakah mereka bisa melakukan perjalanan dinas?",
+    "expected_answer_contains": [
+      "Pegawai Tidak Tetap (PTT)",
+      "teknis operasional",
+      "perjalanan dinas"
+    ],
+    "regulations": [
+      "Perda 2/2012"
+    ],
+    "category": "definitional",
+    "id": "qa_362"
+  },
+  {
+    "question": "Jika seorang Anggota DPRD Kota Banjarbaru yang baru diangkat belum sempat mengucapkan sumpah/janji, apakah ia berhak mendapat SPPD untuk perjalanan luar kota?",
+    "expected_answer_contains": [
+      "Anggota DPRD",
+      "sumpah/Janji",
+      "Surat Perintah Perjalanan Dinas",
+      "SPPD"
+    ],
+    "regulations": [
+      "Perda 2/2012"
+    ],
+    "category": "multi_hop",
+    "id": "qa_363"
+  },
+  {
+    "question": "Apa perbedaan antara pengertian 'At cost' dan 'Lumpsum' dalam sistem pembayaran biaya perjalanan dinas menurut Perda 2/2012?",
+    "expected_answer_contains": [
+      "At cost",
+      "biaya nil",
+      "Lumpsum",
+      "uang yang dibayar sekaligus"
+    ],
+    "regulations": [
+      "Perda 2/2012"
+    ],
+    "category": "comparative",
+    "id": "qa_364"
+  },
+  {
+    "question": "Berdasarkan definisi yang ada, kapan suatu penugasan dapat dikategorikan sebagai detasering yang memerlukan perjalanan dinas di luar tempat kedudukan?",
+    "expected_answer_contains": [
+      "detasering",
+      "penugasan sementara waktu",
+      "perjalanan dinas"
+    ],
+    "regulations": [
+      "Perda 2/2012"
+    ],
+    "category": "temporal",
+    "id": "qa_365"
+  },
+  {
+    "question": "Dalam Perda 5/2013, undang-undang nomor berapa saja yang secara eksplisit disebut sebagai dasar hukum terkait perlindungan lahan pertanian pangan berkelanjutan?",
+    "expected_answer_contains": [
+      "Undang-Undang Nomor 41 Tahun 2009",
+      "Perlindungan Lahan Pertanian Pangan Berkelanjutan",
+      "Lembaran Negara Republik Indonesia Tahun 2009 Nomor 149"
+    ],
+    "regulations": [
+      "Perda 5/2013"
+    ],
+    "category": "factual",
+    "id": "qa_366"
+  },
+  {
+    "question": "Apa yang dimaksud dengan \"penelitian\" dalam konteks Perikanan menurut definisi PP 30/2008?",
+    "expected_answer_contains": [
+      "penelitian",
+      "kaidah dan metode ilmiah",
+      "hipotesis",
+      "kesimpulan ilmiah"
+    ],
+    "regulations": [
+      "PP 30/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_367"
+  },
+  {
+    "question": "Menurut PP 30/2008, apakah lembaga penelitian dan pengembangan perikanan dapat hanya menyelenggarakan kegiatan pengembangan saja tanpa penelitian?",
+    "expected_answer_contains": [
+      "lembaga penelitian dan pengembangan perikanan",
+      "penelitian dan/atau pengembangan perikanan"
+    ],
+    "regulations": [
+      "PP 30/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_368"
+  },
+  {
+    "question": "Bagaimana Peraturan Pemerintah 30/2008 membedakan antara \"pengelolaan perikanan\" dan \"konservasi sumber daya ikan\"?",
+    "expected_answer_contains": [
+      "pengelolaan perikanan",
+      "konservasi sumber daya ikan",
+      "pengelolaan",
+      "pelestarian"
+    ],
+    "regulations": [
+      "PP 30/2008"
+    ],
+    "category": "comparative",
+    "id": "qa_369"
+  },
+  {
+    "question": "Siapa yang secara eksplisit disebut sebagai pihak berwenang untuk melakukan penegakan hukum dalam pengelolaan perikanan berdasarkan definisi yang tercantum dalam PP 30/2008?",
+    "expected_answer_contains": [
+      "pemerintah atau otoritas lain",
+      "penegakan hukum",
+      "pengelolaan perikanan"
+    ],
+    "regulations": [
+      "PP 30/2008"
+    ],
+    "category": "factual",
+    "id": "qa_370"
+  },
+  {
+    "question": "Menurut PP 32/2009, apakah Kawasan Berikat hanya boleh menimbun barang impor atau juga boleh menimbun barang dari dalam negeri?",
+    "expected_answer_contains": [
+      "Kawasan Berikat",
+      "barang impor",
+      "barang yang berasal dari tempat lain dalam daerah pabean"
+    ],
+    "regulations": [
+      "PP 32/2009"
+    ],
+    "category": "factual",
+    "id": "qa_371"
+  },
+  {
+    "question": "Apa definisi resmi Tempat Penimbunan Berikat sebagaimana diatur dalam PP 32/2009?",
+    "expected_answer_contains": [
+      "bangunan",
+      "tempat",
+      "kawasan",
+      "penangguhan Bea Masuk"
+    ],
+    "regulations": [
+      "PP 32/2009"
+    ],
+    "category": "definitional",
+    "id": "qa_372"
+  },
+  {
+    "question": "Berdasarkan peraturan ini, kegiatan apa saja yang boleh dilakukan di Gudang Berikat selain menimbun barang impor?",
+    "expected_answer_contains": [
+      "Gudang Berikat",
+      "pengemasan",
+      "penyortiran",
+      "penggabungan"
+    ],
+    "regulations": [
+      "PP 32/2009"
+    ],
+    "category": "multi_hop",
+    "id": "qa_373"
+  },
+  {
+    "question": "Bagaimana perbedaan antara Toko Bebas Bea dan Tempat Lelang Berikat dalam hal tujuan penimbunan dan penjualan barang?",
+    "expected_answer_contains": [
+      "Toko Bebas Bea",
+      "Tempat Lelang Berikat",
+      "dijual kepada orang tertentu",
+      "dijual secara lelang"
+    ],
+    "regulations": [
+      "PP 32/2009"
+    ],
+    "category": "comparative",
+    "id": "qa_374"
+  },
+  {
+    "question": "Apa tujuan utama Kawasan Daur Ulang Berikat sesuai definisinya dalam PP 32/2009?",
+    "expected_answer_contains": [
+      "Kawasan Daur Ulang Berikat",
+      "daur ulang",
+      "nilai tambah",
+      "nilai ekonomi"
+    ],
+    "regulations": [
+      "PP 32/2009"
+    ],
+    "category": "definitional",
+    "id": "qa_375"
+  },
+  {
+    "question": "Menurut Perda 3/2006, siapa yang berwenang untuk mendelegasikan wewenang kepada Pejabat yang ditunjuk dalam penyelenggaraan pendidikan di Kota Makassar?",
+    "expected_answer_contains": [
+      "Walikota",
+      "pendelegasian",
+      "pejabat",
+      "Kota Makassar"
+    ],
+    "regulations": [
+      "Perda 3/2006"
+    ],
+    "category": "factual",
+    "id": "qa_376"
+  },
+  {
+    "question": "Apa perbedaan antara Kurikulum Nasional dan Kurikulum Lokal sebagaimana didefinisikan dalam Perda 3/2006?",
+    "expected_answer_contains": [
+      "Kurikulum Nasional",
+      "Kurikulum Lokal",
+      "Menteri Pendidikan Nasional",
+      "Pemerintah Daerah"
+    ],
+    "regulations": [
+      "Perda 3/2006"
+    ],
+    "category": "comparative",
+    "id": "qa_377"
+  },
+  {
+    "question": "Dalam konteks Perda 3/2006, bagaimana definisi formal dari penyelenggara pendidikan yang mencakup kegiatan di sekolah dan pendidikan luar sekolah?",
+    "expected_answer_contains": [
+      "Penyelenggara Pendidikan",
+      "sistem pengelolaan",
+      "sekolah",
+      "pendidikan luar sekolah"
+    ],
+    "regulations": [
+      "Perda 3/2006"
+    ],
+    "category": "definitional",
+    "id": "qa_378"
+  },
+  {
+    "question": "Jika seorang pelaku usaha pendidikan ingin tahu lembaga mana yang menjadi Badan Legislatif Daerah di Kota Makassar, menurut Perda 3/2006 jawabannya adalah?",
+    "expected_answer_contains": [
+      "DPRD",
+      "Badan Legislatif Daerah",
+      "Kota Makassar"
+    ],
+    "regulations": [
+      "Perda 3/2006"
+    ],
+    "category": "multi_hop",
+    "id": "qa_379"
+  },
+  {
+    "question": "Apakah Taman Kanak-kanak (TK) sebagai satuan pendidikan prasekolah termasuk dalam definisi Sekolah atau Madrasah dalam Perda 3/2006?",
+    "expected_answer_contains": [
+      "Sekolah",
+      "Madrasah",
+      "TK",
+      "satuan pendidikan"
+    ],
+    "regulations": [
+      "Perda 3/2006"
+    ],
+    "category": "factual",
+    "id": "qa_380"
+  },
+  {
+    "question": "Apa nama resmi unit pelaksana teknis yang dibentuk berdasarkan Perda 15/2015?",
+    "expected_answer_contains": [
+      "Unit Pelaksana Teknis Laboratorium Pengujian Konstruksi",
+      "UPTD Laboratorium Pengujian Konstruksi"
+    ],
+    "regulations": [
+      "Perda 15/2015"
+    ],
+    "category": "factual",
+    "id": "qa_381"
+  },
+  {
+    "question": "Bagaimana definisi Laboratorium Pengujian Konstruksi menurut peraturan ini?",
+    "expected_answer_contains": [
+      "tempat untuk melakukan pengujian mutu tanah",
+      "beton",
+      "aspal",
+      "bahan bangunan"
+    ],
+    "regulations": [
+      "Perda 15/2015"
+    ],
+    "category": "definitional",
+    "id": "qa_382"
+  },
+  {
+    "question": "Siapa yang bertanggung jawab atas Unit Pelaksana Teknis Laboratorium Pengujian Konstruksi secara administratif?",
+    "expected_answer_contains": [
+      "Kepala Dinas Prasarana",
+      "Jalan Tata Ruang",
+      "Permukiman Kabupaten Pesisir Selatan"
+    ],
+    "regulations": [
+      "Perda 15/2015"
+    ],
+    "category": "multi_hop",
+    "id": "qa_383"
+  },
+  {
+    "question": "Apa perbedaan susunan organisasi antara Kepala UPTD dan struktur di bawahnya?",
+    "expected_answer_contains": [
+      "Kepala Sub Bagian Tata Usaha",
+      "Kelompok Jabatan Fungsional",
+      "Kepala UPTD"
+    ],
+    "regulations": [
+      "Perda 15/2015"
+    ],
+    "category": "comparative",
+    "id": "qa_384"
+  },
+  {
+    "question": "Fungsi apa yang harus dilaksanakan Kepala UPTD terkait penyiapan Standar Operasional Prosedur (SOP) pengujian bahan dan konstruksi?",
+    "expected_answer_contains": [
+      "menyusun Standar Operasional Prosedur",
+      "pengujian bahan",
+      "konstruksi"
+    ],
+    "regulations": [
+      "Perda 15/2015"
+    ],
+    "category": "factual",
+    "id": "qa_385"
+  },
+  {
+    "question": "Siapa yang memimpin Sekretariat Kecamatan dan kepada siapa ia bertanggung jawab secara langsung?",
+    "expected_answer_contains": [
+      "Sekretaris Kecamatan",
+      "di bawah dan bertanggung jawab kepada Camat"
+    ],
+    "regulations": [
+      "Perda 36/2008"
+    ],
+    "category": "factual",
+    "id": "qa_386"
+  },
+  {
+    "question": "Apa definisi \"Kecamatan\" menurut Perda ini?",
+    "expected_answer_contains": [
+      "wilayah kerja Camat",
+      "perangkat daerah Kabupaten",
+      "Peraturan Daerah"
+    ],
+    "regulations": [
+      "Perda 36/2008"
+    ],
+    "category": "definitional",
+    "id": "qa_387"
+  },
+  {
+    "question": "Jika Camat menginginkan laporan pelaksanaan kegiatan seluruh unit kerja di kecamatan, lembagakah yang secara struktural wajib membuat dan menyerahkan laporan tersebut?",
+    "expected_answer_contains": [
+      "Sekretariat Kecamatan",
+      "evaluasi dan pelaporan",
+      "Camat"
+    ],
+    "regulations": [
+      "Perda 36/2008"
+    ],
+    "category": "multi_hop",
+    "id": "qa_388"
+  },
+  {
+    "question": "Peraturan Pemerintah tahun berapa yang menjadi dasar hukum perubahan ini untuk soal pengelolaan barang milik daerah, dan apakah pernah dialihkan?",
+    "expected_answer_contains": [
+      "Peraturan Pemerintah Nomor 6 Tahun 2006",
+      "diubah dengan Peraturan Pemerintah Nomor 38 Tahun 2008",
+      "Pengelolaan Barang milik Negara/Daerah"
+    ],
+    "regulations": [
+      "Perda 7/2013"
+    ],
+    "category": "temporal",
+    "id": "qa_389"
+  },
+  {
+    "question": "Di antara dasar hukum Perda 7/2013, peraturan manakah yang lebih baru: UU Nomor 12/2011 atau UU Nomor 32/2004?",
+    "expected_answer_contains": [
+      "Undang-Undang Nomor 12 Tahun 2011",
+      "Undang-Undang Nomor 32 Tahun 2004",
+      "Pembentukan Peraturan Perundang-undangan"
+    ],
+    "regulations": [
+      "Perda 7/2013"
+    ],
+    "category": "comparative",
+    "id": "qa_390"
+  },
+  {
+    "question": "Berapa besar modal awal Bank Indonesia yang harus dipisahkan sebagai kekayaan negara sebagaimana diatur dalam UU ini?",
+    "expected_answer_contains": [
+      "Rp. 1.000.000.000,-",
+      "seribu juta rupiah",
+      "kekayaan Negara yang dipisahkan"
+    ],
+    "regulations": [
+      "UU 13/1968"
+    ],
+    "category": "factual",
+    "id": "qa_391"
+  },
+  {
+    "question": "Apa yang dimaksud dengan istilah \"Bank\" dalam konteks UU Nomor 13 Tahun 1968 tentang Bank Sentral?",
+    "expected_answer_contains": [
+      "Bank Indonesia",
+      "Bank Sentral"
+    ],
+    "regulations": [
+      "UU 13/1968"
+    ],
+    "category": "definitional",
+    "id": "qa_392"
+  },
+  {
+    "question": "Siapa yang memimpin Dewan Moneter yang membantu Pemerintah dalam menetapkan kebijakan moneter?",
+    "expected_answer_contains": [
+      "Menteri Keuangan",
+      "Dewan Moneter",
+      "diketuai"
+    ],
+    "regulations": [
+      "UU 13/1968"
+    ],
+    "category": "factual",
+    "id": "qa_393"
+  },
+  {
+    "question": "Berdasarkan ketentuan hubungan keluarga, bagaimana konsekuensi hukum jika anggota Direksi Bank Indonesia setelah pengangkatannya memiliki hubungan keluarga sampai derajat ketiga dengan anggota Dewan Moneter?",
+    "expected_answer_contains": [
+      "tidak boleh terus memangku jabatan",
+      "tanpa izin Presiden",
+      "hubungan keluarga sampai dengan derajat ketiga"
+    ],
+    "regulations": [
+      "UU 13/1968"
+    ],
+    "category": "multi_hop",
+    "id": "qa_394"
+  },
+  {
+    "question": "Apa perbedaan fungsi antara cadangan umum dan cadangan tujuan yang dibentuk oleh Bank Indonesia menurut pasal-pasal terkait dalam undang-undang ini?",
+    "expected_answer_contains": [
+      "menutup kerugian",
+      "modal Bank",
+      "tujuan",
+      "tata-buku Bank"
+    ],
+    "regulations": [
+      "UU 13/1968"
+    ],
+    "category": "comparative",
+    "id": "qa_395"
+  },
+  {
+    "question": "Apa yang dimaksud dengan Informasi Ketenagakerjaan menurut PP 15/2007?",
+    "expected_answer_contains": [
+      "Informasi Ketenagakerjaan",
+      "data",
+      "angka",
+      "naskah",
+      "dokumen"
+    ],
+    "regulations": [
+      "PP 15/2007"
+    ],
+    "category": "definitional",
+    "id": "qa_396"
+  },
+  {
+    "question": "Apakah lembaga pelatihan termasuk ke dalam jenis informasi pelatihan dan produktivitas tenaga kerja sebagaimana diatur dalam PP 15/2007?",
+    "expected_answer_contains": [
+      "lembaga pelatihan",
+      "informasi pelatihan",
+      "produktivitas tenaga kerja"
+    ],
+    "regulations": [
+      "PP 15/2007"
+    ],
+    "category": "factual",
+    "id": "qa_397"
+  },
+  {
+    "question": "Sebutkan perbedaan definisi antara Perencanaan Tenaga Kerja Makro (PTK Makro) dan Perencanaan Tenaga Kerja Mikro (PTK Mikro) menurut PP 15/2007!",
+    "expected_answer_contains": [
+      "PTK Makro",
+      "PTK Mikro",
+      "nasional",
+      "instansi/lembaga",
+      "pendayagunaan tenaga kerja"
+    ],
+    "regulations": [
+      "PP 15/2007"
+    ],
+    "category": "comparative",
+    "id": "qa_398"
+  },
+  {
+    "question": "Jika suatu perusahaan swasta ingin menyusun Rencana Tenaga Kerja Mikro (RTK Mikro), kegiatan apa yang harus dilakukan terlebih dahulu menurut PP 15/2007?",
+    "expected_answer_contains": [
+      "PTK Mikro",
+      "instansi/lembaga",
+      "swasta",
+      "proses penyusunan rencana"
+    ],
+    "regulations": [
+      "PP 15/2007"
+    ],
+    "category": "multi_hop",
+    "id": "qa_399"
+  },
+  {
+    "question": "Apa definisi \"Pemerintah\" menurut Perda 22/2015?",
+    "expected_answer_contains": [
+      "Pemerintah Republik Indonesia",
+      "memegang kekuasaan Pemerintahan Negara Republik Indonesia",
+      "Undang-Undang Dasar Republik Indonesia Tahun 1945"
+    ],
+    "regulations": [
+      "Perda 22/2015"
+    ],
+    "category": "definitional",
+    "id": "qa_400"
+  },
+  {
+    "question": "Siapa saja penyelenggara yang bertanggung jawab dalam pelaksanaan Wajib Prabakti dan Wajib Bakti?",
+    "expected_answer_contains": [
+      "Menteri",
+      "Komisi Pengerahan",
+      "pelaksana pendidikan dan pelatihan",
+      "pejabat lainnya"
+    ],
+    "regulations": [
+      "UU 56/1999"
+    ],
+    "category": "multi_hop",
+    "id": "qa_402"
+  },
+  {
+    "question": "Apa perbedaan antara Wajib Prabakti dan Wajib Bakti bagi anggota Rakyat Terlatih?",
+    "expected_answer_contains": [
+      "pendidikan dan pelatihan",
+      "pengabdian dalam satuan",
+      "menyelesaikan Wajib Prabakti"
+    ],
+    "regulations": [
+      "UU 56/1999"
+    ],
+    "category": "comparative",
+    "id": "qa_403"
+  },
+  {
+    "question": "Perda 3/2016 menetapkan bahwa definisi \"Desa\" mencakup unsur \"hak asal-usul\" dan \"hak tradisional\" yang bagaimana?",
+    "expected_answer_contains": [
+      "kesatuan masyarakat hukum",
+      "hak asal-usul",
+      "hak tradisional yang diakui dan dihormati"
+    ],
+    "regulations": [
+      "Perda 3/2016"
+    ],
+    "category": "definitional",
+    "id": "qa_404"
+  },
+  {
+    "question": "Apakah kewenangan desa menurut Perda 3/2016 hanya terbatas pada penyelenggaraan pemerintahan atau mencakup hal lain?",
+    "expected_answer_contains": [
+      "pelaksanaan Pembangunan Desa",
+      "kewenangan Desa"
+    ],
+    "regulations": [
+      "Perda 3/2016"
+    ],
+    "category": "multi_hop",
+    "id": "qa_405"
+  },
+  {
+    "question": "Apakah Bank Indonesia diperbolehkan memiliki kantor di luar negeri menurut UU 1/1953?",
+    "expected_answer_contains": [
+      "di luar Indonesia",
+      "bank-cabang",
+      "kantor agen-besar",
+      "koresponden",
+      "wakil"
+    ],
+    "regulations": [
+      "UU 1/1953"
+    ],
+    "category": "factual",
+    "id": "qa_406"
+  },
+  {
+    "question": "Apa yang dimaksud dengan istilah \"Direksi\" dalam undang-undang ini?",
+    "expected_answer_contains": [
+      "Direksi",
+      "Gubernur Bank",
+      "anggota-anggota Direksi lainnya"
+    ],
+    "regulations": [
+      "UU 1/1953"
+    ],
+    "category": "definitional",
+    "id": "qa_407"
+  },
+  {
+    "question": "Bagaimana periode tahun buku Bank Indonesia ditentukan sejak undang-undang ini berlaku?",
+    "expected_answer_contains": [
+      "1 April",
+      "31 Maret",
+      "tahun-buku pertama",
+      "hari berlakunya undang-undang"
+    ],
+    "regulations": [
+      "UU 1/1953"
+    ],
+    "category": "temporal",
+    "id": "qa_408"
+  },
+  {
+    "question": "Bagaimana ketentuan hukum yang berlaku terhadap Bank Indonesia dalam hal benda tetap yang takluk pada hukum adat?",
+    "expected_answer_contains": [
+      "hukum perdata Eropa",
+      "hukum dagang Eropa",
+      "hak atas benda tetap",
+      "hukum adat"
+    ],
+    "regulations": [
+      "UU 1/1953"
+    ],
+    "category": "multi_hop",
+    "id": "qa_409"
+  },
+  {
+    "question": "Apa perbedaan antara kewenangan Bank Indonesia dalam mengeluarkan uang kertas bank dan pihak lain?",
+    "expected_answer_contains": [
+      "Bank berhak mengeluarkan",
+      "Dengan tidak memperbolehkan",
+      "yang lain-lain",
+      "alat pembayaran sah"
+    ],
+    "regulations": [
+      "UU 1/1953"
+    ],
+    "category": "comparative",
+    "id": "qa_410"
+  },
+  {
+    "question": "Apa perbedaan antara prasarana lingkungan dan sarana lingkungan menurut UU ini?",
+    "expected_answer_contains": [
+      "prasarana lingkungan",
+      "sarana lingkungan",
+      "kebutuhan dasar fisik",
+      "penunjang ekonomi sosial budaya"
+    ],
+    "regulations": [
+      "UU 4/1992"
+    ],
+    "category": "comparative",
+    "id": "qa_411"
+  },
+  {
+    "question": "Seperti apa tanah yang dianggap sebagai kaveling tanah matang?",
+    "expected_answer_contains": [
+      "kaveling tanah matang",
+      "sesuai persyaratan pembakuan",
+      "rencana tata ruang",
+      "membangun bangunan"
+    ],
+    "regulations": [
+      "UU 4/1992"
+    ],
+    "category": "definitional",
+    "id": "qa_412"
+  },
+  {
+    "question": "Apakah kegiatan peremajaan permukiman mencakup pembangunan baru?",
+    "expected_answer_contains": [
+      "peremajaan permukiman",
+      "pembangunan baru",
+      "penataan permukiman"
+    ],
+    "regulations": [
+      "UU 4/1992"
+    ],
+    "category": "factual",
+    "id": "qa_413"
+  },
+  {
+    "question": "Siapa yang menetapkan rencana tata ruang lingkungan untuk kawasan siap bangun di Jakarta?",
+    "expected_answer_contains": [
+      "Daerah Khusus Ibukota Jakarta",
+      "Pemerintah Daerah Khusus Ibukota Jakarta",
+      "rencana tata ruang"
+    ],
+    "regulations": [
+      "UU 4/1992"
+    ],
+    "category": "multi_hop",
+    "id": "qa_414"
+  },
+  {
+    "question": "Apakah ruang lingkup pengaturan UU ini hanya mencakup daerah perkotaan?",
+    "expected_answer_contains": [
+      "perkotaan",
+      "perdesaan",
+      "penataan dan pengelolaan",
+      "terpadu dan terkoordinasi"
+    ],
+    "regulations": [
+      "UU 4/1992"
+    ],
+    "category": "factual",
+    "id": "qa_415"
+  },
+  {
+    "question": "Apakah Subbagian Umum dan Kepegawaian bertanggung jawab langsung kepada Kepala BPMPPTSP?",
+    "expected_answer_contains": [
+      "Subbagian Umum dan Kepegawaian",
+      "Kepala Subbagian",
+      "Sekretaris BPMPPTSP"
+    ],
+    "regulations": [
+      "Perda 32/2014"
+    ],
+    "category": "factual",
+    "id": "qa_416"
+  },
+  {
+    "question": "Dalam struktur organisasi BPMPPTSP, bidang mana yang memiliki subbidang Data dan Informasi?",
+    "expected_answer_contains": [
+      "Bidang Sistem Informasi dan Pengendalian",
+      "Subbidang Data dan Informasi"
+    ],
+    "regulations": [
+      "Perda 32/2014"
+    ],
+    "category": "multi_hop",
+    "id": "qa_417"
+  },
+  {
+    "question": "Bagaimana jalur pertanggungjawaban Sekretaris Daerah terhadap BPMPPTSP menurut Perda ini?",
+    "expected_answer_contains": [
+      "Bupati",
+      "Sekretaris Daerah",
+      "bertanggung jawab kepada Bupati",
+      "melalui Sekretaris Daerah"
+    ],
+    "regulations": [
+      "Perda 32/2014"
+    ],
+    "category": "comparative",
+    "id": "qa_418"
+  },
+  {
+    "question": "Apa tugas pokok Sekretariat BPMPPTSP terkait perencanaan dan pelaporan?",
+    "expected_answer_contains": [
+      "menyelenggarakan penyusunan perencanaan",
+      "evaluasi",
+      "pelaporan"
+    ],
+    "regulations": [
+      "Perda 32/2014"
+    ],
+    "category": "factual",
+    "id": "qa_419"
+  },
+  {
+    "question": "Siapa yang secara langsung memimpin Satpol PP Kabupaten Pandeglang?",
+    "expected_answer_contains": [
+      "Kepala Satuan",
+      "Satpol PP"
+    ],
+    "regulations": [
+      "Perda 31/2014"
+    ],
+    "category": "factual",
+    "id": "qa_420"
+  },
+  {
+    "question": "Bidang apakah yang menangani penyelidikan pelanggaran Perda di luar urusan ketertiban umum?",
+    "expected_answer_contains": [
+      "Bidang Penegakan Perundang-undangan",
+      "Seksi Penyelidikan dan Penyidikan"
+    ],
+    "regulations": [
+      "Perda 31/2014"
+    ],
+    "category": "multi_hop",
+    "id": "qa_421"
+  },
+  {
+    "question": "Fungsi koordinasi Satpol PP dengan aparat lain untuk menegakkan Perda dilaksanakan pada tahap pelaksanaan fungsi yang keberapa?",
+    "expected_answer_contains": [
+      "pelaksanaan koordinasi",
+      "menegakkan Peraturan Daerah",
+      "aparat Kepolisian Negara"
+    ],
+    "regulations": [
+      "Perda 31/2014"
+    ],
+    "category": "temporal",
+    "id": "qa_422"
+  },
+  {
+    "question": "Apa yang dimaksud dengan \"tindakan disiplin\" menurut UU 26/1997 dan siapa yang berwenang mengambil tindakan tersebut?",
+    "expected_answer_contains": [
+      "tindakan disiplin",
+      "tindakan seketika",
+      "atasan",
+      "bawahan",
+      "pelanggaran hukum disiplin"
+    ],
+    "regulations": [
+      "UU 26/1997"
+    ],
+    "category": "definitional",
+    "id": "qa_423"
+  },
+  {
+    "question": "Bagaimana UU 26/1997 membedakan antara \"pelanggaran hukum disiplin murni\" dan \"pelanggaran hukum disiplin tidak murni\"?",
+    "expected_answer_contains": [
+      "pelanggaran hukum disiplin murni",
+      "pelanggaran hukum disiplin tidak murni",
+      "meliputi"
+    ],
+    "regulations": [
+      "UU 26/1997"
+    ],
+    "category": "comparative",
+    "id": "qa_424"
+  },
+  {
+    "question": "Apakah seorang prajurit yang sedang menjalani penahanan tetap tunduk pada ketentuan UU 26/1997?",
+    "expected_answer_contains": [
+      "tidak berlaku",
+      "sedang menjalani penahanan",
+      "pidana penjara",
+      "kurungan",
+      "tutpan"
+    ],
+    "regulations": [
+      "UU 26/1997"
+    ],
+    "category": "factual",
+    "id": "qa_425"
+  },
+  {
+    "question": "Menurut Pasal 2 ayat (2) UU 26/1997, elemen apa sajakah yang harus dipenuhi seorang prajurit untuk mewujudkan disiplin dalam menunaikan tugas dan kewajibannya?",
+    "expected_answer_contains": [
+      "mematuhi semua peraturan",
+      "melaksanakan semua perintah",
+      "kesungguhan",
+      "keikhlasan hati",
+      "tanggung jawab"
+    ],
+    "regulations": [
+      "UU 26/1997"
+    ],
+    "category": "multi_hop",
+    "id": "qa_426"
+  },
+  {
+    "question": "Siapa yang berwenang menjatuhkan hukuman disiplin terhadap seorang prajurit TNI dan bagaimana hubungannya dengan istilah \"Ankum\" dalam UU 26/1997?",
+    "expected_answer_contains": [
+      "Atasan yang Berhak Menghukum",
+      "Ankum",
+      "kewenangan menjatuhkan hukuman disiplin",
+      "bawah wewenang komando"
+    ],
+    "regulations": [
+      "UU 26/1997"
+    ],
+    "category": "definitional",
+    "id": "qa_427"
+  },
+  {
+    "question": "Siapa yang memiliki kewenangan utama untuk menjalankan Politik Luar Negeri RI menurut UU ini?",
+    "expected_answer_contains": [
+      "Presiden",
+      "Hubungan Luar Negeri",
+      "Politik Luar Negeri"
+    ],
+    "regulations": [
+      "UU 37/1999"
+    ],
+    "category": "factual",
+    "id": "qa_428"
+  },
+  {
+    "question": "Apa definisi \"Perjanjian Internasional\" dalam konteks hukum Indonesia berdasarkan undang-undang ini?",
+    "expected_answer_contains": [
+      "perjanjian",
+      "hukum internasional",
+      "Pemerintah Republik Indonesia",
+      "hak dan kewajiban"
+    ],
+    "regulations": [
+      "UU 37/1999"
+    ],
+    "category": "definitional",
+    "id": "qa_429"
+  },
+  {
+    "question": "Bagaimana pelaksanaan Politik Luar Negeri berkaitan dengan UUD 1945 dan GBHN?",
+    "expected_answer_contains": [
+      "Pancasila",
+      "Undang-Undang Dasar 1945",
+      "Garis-garis Besar Haluan Negara",
+      "Politik Luar Negeri"
+    ],
+    "regulations": [
+      "UU 37/1999"
+    ],
+    "category": "multi_hop",
+    "id": "qa_430"
+  },
+  {
+    "question": "Dalam hal menandatangani perjanjian perdamaian dengan negara lain, apakah Presiden bisa bertindak sepenuhnya sendiri atau butuh persetujuan DPR?",
+    "expected_answer_contains": [
+      "perjanjian",
+      "Dewan Perwakilan Rakyat",
+      "perorangan",
+      "perdamaian"
+    ],
+    "regulations": [
+      "UU 37/1999"
+    ],
+    "category": "comparative",
+    "id": "qa_431"
+  },
+  {
+    "question": "Sejak UU 37/1999 diberlakukan, adakah kewenangan Presiden untuk menunjuk pejabat non-menterial dalam urusan hubungan luar negeri bidang tertentu?",
+    "expected_answer_contains": [
+      "Presiden",
+      "pejabat selain Menteri",
+      "Hubungan Luar Negeri",
+      "bidang tertentu"
+    ],
+    "regulations": [
+      "UU 37/1999"
+    ],
+    "category": "temporal",
+    "id": "qa_432"
+  },
+  {
+    "question": "Siapa yang berwenang menetapkan Pengurus Posyantek dan melakukan pemilihan tersebut?",
+    "expected_answer_contains": [
+      "Bupati menetapkan",
+      "hasil pemilihan",
+      "tingkat Kecamatan"
+    ],
+    "regulations": [
+      "Perda 8/2016"
+    ],
+    "category": "factual",
+    "id": "qa_433"
+  },
+  {
+    "question": "Bagaimana bunyi teks sumpah/janji yang diucapkan Pengurus Posyantek setelah dilantik?",
+    "expected_answer_contains": [
+      "Demi Allah kami bersumpah",
+      "memenuhi kewajiban kami",
+      "penuh tanggung jawab",
+      "melaksanakan segala Peraturan Perundang-Undangan"
+    ],
+    "regulations": [
+      "Perda 8/2016"
+    ],
+    "category": "definitional",
+    "id": "qa_434"
+  },
+  {
+    "question": "Tanggal berapa Peraturan Bupati Kayong Utara mengenai perubahan ini mulai berlaku dan diundangkan?",
+    "expected_answer_contains": [
+      "28 Maret 2016",
+      "Sukadana",
+      "Peraturan Bupati ini mulai berlaku pada tanggal diundangkan"
+    ],
+    "regulations": [
+      "Perda 8/2016"
+    ],
+    "category": "temporal",
+    "id": "qa_435"
+  },
+  {
+    "question": "Apa proses dan upacara yang harus dilalui Pengurus Posyantek setelah dipilih hingga secara resmi menjabat di Kecamatan?",
+    "expected_answer_contains": [
+      "mengucapkan sumpah/janji",
+      "dipandu oleh Bupati",
+      "menurut agama dan kepercayaan masing-masing"
+    ],
+    "regulations": [
+      "Perda 8/2016"
+    ],
+    "category": "multi_hop",
+    "id": "qa_436"
+  },
+  {
+    "question": "Menurut Perda 12/2014, apakah yang dimaksud dengan 'Penyandang cacat' secara definitif?",
+    "expected_answer_contains": [
+      "setiap orang",
+      "kelainan fisik dan/atau mental",
+      "rintangan dan hambatan"
+    ],
+    "regulations": [
+      "Perda 12/2014"
+    ],
+    "category": "definitional",
+    "id": "qa_437"
+  },
+  {
+    "question": "Sebutkan 4 komponen kegiatan yang termasuk dalam 'Perlindungan Penyandang Cacat' berdasarkan Pasal 1 angka 7 Perda 12/2014.",
+    "expected_answer_contains": [
+      "Aksesibilitas",
+      "Rehabilitasi",
+      "Bantuan sosial",
+      "pemeliharaan peningkatan taraf kesejahteraan sosial"
+    ],
+    "regulations": [
+      "Perda 12/2014"
+    ],
+    "category": "factual",
+    "id": "qa_439"
+  },
+  {
+    "question": "Berapa jumlah maksimal tempat duduk penumpang agar sebuah mobil tetap dikategorikan sebagai \"mobil penumpang\" dan bukan \"mobil-bis\" berdasarkan Pasal 1 huruf c UU 3/1965?",
+    "expected_answer_contains": [
+      "8 tempat duduk tidak termasuk tempat duduk pengemudinya",
+      "mobil penumpang"
+    ],
+    "regulations": [
+      "UU 3/1965"
+    ],
+    "category": "factual",
+    "id": "qa_441"
+  },
+  {
+    "question": "Jika suatu daerah otonom ingin menurunkan kecepatan maksimum pada jalan protokol di wilayahnya, lembaga mana yang berwenang mengeluarkan keputusan dan di mana keputusan itu wajib dipublikasikan?",
+    "expected_answer_contains": [
+      "Dewan Perwakilan Rakyat Daerah",
+      "Lembaran Daerah",
+      "Dewan Perwakilan Rakyat Daerah Tingkat I"
+    ],
+    "regulations": [
+      "UU 3/1965"
+    ],
+    "category": "multi_hop",
+    "id": "qa_442"
+  },
+  {
+    "question": "Dalam UU 27/1997, secara bertahap untuk memulihkan fungsi dan tugas setiap unsur seperti sebelum berlakunya mobilisasi, langkah apa yang harus dilakukan?",
+    "expected_answer_contains": [
+      "demobilisasi",
+      "penghentian pengerahan",
+      "penghentian penggunaan sumber daya nasional"
+    ],
+    "regulations": [
+      "UU 27/1997"
+    ],
+    "category": "temporal",
+    "id": "qa_443"
+  },
+  {
+    "question": "Berdasarkan definisi UU 27/1997, apakah \"Rakyat Terlatih\" dan \"Perlindungan Masyarakat\" sama-sama tercakup dalam istilah \"mobilisan\"?",
+    "expected_answer_contains": [
+      "warga negara anggota Rakyat Terlatih",
+      "warga negara anggota Perlindungan Masyarakat",
+      "mobilisan"
+    ],
+    "regulations": [
+      "UU 27/1997"
+    ],
+    "category": "comparative",
+    "id": "qa_444"
+  },
+  {
+    "question": "UU 27/1997 menyebutkan bahwa penyelenggaraan mobilisasi dan demobilisasi harus berlandaskan dua dokumen dasar; sebutkan kedua dokumen tersebut!",
+    "expected_answer_contains": [
+      "Pancasila",
+      "Undang-Undang Dasar 1945"
+    ],
+    "regulations": [
+      "UU 27/1997"
+    ],
+    "category": "factual",
+    "id": "qa_445"
+  },
+  {
+    "question": "Apakah kecelakaan yang terjadi saat karyawan pulang kerja dengan rute biasa termasuk dalam definisi kecelakaan kerja menurut UU ini?",
+    "expected_answer_contains": [
+      "kecelakaan kerja",
+      "perjalanan",
+      "jalan yang biasa",
+      "pulang ke rumah"
+    ],
+    "regulations": [
+      "UU 3/1992"
+    ],
+    "category": "definitional",
+    "id": "qa_446"
+  },
+  {
+    "question": "Apakah usaha sosial yang memiliki pengurus dan mempekerjakan orang lain harus menjalankan program jaminan sosial tenaga kerja?",
+    "expected_answer_contains": [
+      "usaha sosial",
+      "diperlakukan sama dengan perusahaan",
+      "pengurus",
+      "mempekerjakan orang lain"
+    ],
+    "regulations": [
+      "UU 3/1992"
+    ],
+    "category": "comparative",
+    "id": "qa_447"
+  },
+  {
+    "question": "Siapa yang berwenang menetapkan persyaratan dan tata cara penyelenggaraan program jaminan sosial tenaga kerja untuk tenaga kerja di dalam hubungan kerja?",
+    "expected_answer_contains": [
+      "Peraturan Pemerintah",
+      "persyaratan dan tata cara",
+      "penyelenggaraan program"
+    ],
+    "regulations": [
+      "UU 3/1992"
+    ],
+    "category": "factual",
+    "id": "qa_448"
+  },
+  {
+    "question": "Bagaimana UU ini mengatur hak atas jaminan sosial tenaga kerja bagi pekerja yang tidak memiliki hubungan kerja dengan pengusaha?",
+    "expected_answer_contains": [
+      "di luar hubungan kerja",
+      "Peraturan Pemerintah",
+      "diatur lebih lanjut"
+    ],
+    "regulations": [
+      "UU 3/1992"
+    ],
+    "category": "multi_hop",
+    "id": "qa_449"
+  },
+  {
+    "question": "Apakah badan hukum asing yang mewakili perusahaan di luar Indonesia tetapi berada di Indonesia termasuk dalam definisi pengusaha menurut UU ini?",
+    "expected_answer_contains": [
+      "pengusaha",
+      "badan hukum",
+      "berada di Indonesia",
+      "mewakili perusahaan"
+    ],
+    "regulations": [
+      "UU 3/1992"
+    ],
+    "category": "factual",
+    "id": "qa_450"
+  },
+  {
+    "question": "Apakah investor asing diperbolehkan menguasai penuh perusahaan telekomunikasi di Indonesia menurut UU Penanaman Modal Asing?",
+    "expected_answer_contains": [
+      "bidang usaha",
+      "tertutup",
+      "penguasaan penuh",
+      "telekomunikasi"
+    ],
+    "regulations": [
+      "UU 1/1967"
+    ],
+    "category": "factual",
+    "id": "qa_451"
+  },
+  {
+    "question": "Bagaimana UU 1/1967 mendefinisikan \"penanaman modal asing\"?",
+    "expected_answer_contains": [
+      "penanaman modal asing",
+      "secara langsung",
+      "menanggung risiko"
+    ],
+    "regulations": [
+      "UU 1/1967"
+    ],
+    "category": "definitional",
+    "id": "qa_452"
+  },
+  {
+    "question": "Sebuah perusahaan modal asing ingin menambang emas di Kalimantan; menurut UU 1/1967, bentuk kerja sama apa yang harus dijalankan?",
+    "expected_answer_contains": [
+      "kerja sama",
+      "Pemerintah",
+      "kontrak karya"
+    ],
+    "regulations": [
+      "UU 1/1967"
+    ],
+    "category": "multi_hop",
+    "id": "qa_453"
+  },
+  {
+    "question": "Dalam hal direksi perusahaan modal asing, apakah pemilik modal wajib menunjuk warga negara Indonesia sebagai direktur utama?",
+    "expected_answer_contains": [
+      "pemilik modal",
+      "wewenang sepenuhnya",
+      "direksi"
+    ],
+    "regulations": [
+      "UU 1/1967"
+    ],
+    "category": "comparative",
+    "id": "qa_454"
+  },
+  {
+    "question": "Kapan Pemerintah menetapkan urutan prioritas bidang usaha yang terbuka bagi modal asing?",
+    "expected_answer_contains": [
+      "waktu",
+      "Pemerintah",
+      "rencana pembangunan",
+      "jangka menengah",
+      "jangka panjang"
+    ],
+    "regulations": [
+      "UU 1/1967"
+    ],
+    "category": "temporal",
+    "id": "qa_455"
   }
 ]

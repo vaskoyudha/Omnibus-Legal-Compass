@@ -1,0 +1,6103 @@
+{
+  "model_name": "jina-embeddings-v3",
+  "corpus_size": 401,
+  "num_queries": 210,
+  "mrr": 0.7986425760737405,
+  "hit_rate": 0.719047619047619,
+  "recall_at": {
+    "1": 0.719047619047619,
+    "3": 0.8714285714285714,
+    "5": 0.8952380952380953,
+    "10": 0.9476190476190476
+  },
+  "ndcg_at": {
+    "5": 0.7978579807894851,
+    "10": 0.7969573557717476
+  },
+  "elapsed_seconds": 112.17542576789856,
+  "per_query": [
+    {
+      "query_id": "qa_001",
+      "question": "Apa syarat pendirian Perseroan Terbatas (PT)?",
+      "expected_regulations": [
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "UU 40/2007",
+        "PP 5/2021",
+        "UU 13/2003",
+        "UU 25/2007",
+        "PP 24/2018"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.8175295903539445
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 7.495700003346428
+    },
+    {
+      "query_id": "qa_002",
+      "question": "Berapa minimal modal dasar PT?",
+      "expected_regulations": [
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "UU 40/2007",
+        "UU 40/2007",
+        "UU 25/2007",
+        "UU 25/1992",
+        "UU 25/1992"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9325210919548239
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6155000010039657
+    },
+    {
+      "query_id": "qa_003",
+      "question": "Apa itu Undang-Undang Cipta Kerja?",
+      "expected_regulations": [
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 31/2000",
+        "UU 13/2003",
+        "UU 11/2020",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 0.25,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.43067655807339306,
+        "10": 0.43067655807339306
+      },
+      "first_relevant_rank": 4,
+      "category": "factual",
+      "latency_ms": 1.185099987196736
+    },
+    {
+      "query_id": "qa_004",
+      "question": "Bagaimana ketentuan cuti melahirkan menurut UU Cipta Kerja?",
+      "expected_regulations": [
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 31/2000",
+        "UU 13/2003",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 0.14285714285714285,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.3333333333333333
+      },
+      "first_relevant_rank": 7,
+      "category": "factual",
+      "latency_ms": 0.4484000091906637
+    },
+    {
+      "query_id": "qa_005",
+      "question": "Apa definisi berusaha menurut PP 24/2018?",
+      "expected_regulations": [
+        "PP 24/2018"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "PP 24/2018",
+        "UU 30/1999",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5,
+        "10": 0.5
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.23360000341199338
+    },
+    {
+      "query_id": "qa_006",
+      "question": "Apa itu Nomor Induk Berusaha (NIB)?",
+      "expected_regulations": [
+        "PP 24/2018"
+      ],
+      "top_k_citations": [
+        "Perpres 49/2021",
+        "Perpres 49/2021",
+        "PP 24/2018",
+        "Perpres 49/2021",
+        "Perpres 49/2021"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5,
+        "10": 0.4911492931622974
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.5347999976947904
+    },
+    {
+      "query_id": "qa_007",
+      "question": "Bagaimana perlindungan data pribadi menurut UU 27/2022?",
+      "expected_regulations": [
+        "UU 27/2022"
+      ],
+      "top_k_citations": [
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 25/2007",
+        "UU 27/2022"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9747429528567879
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.2710000117076561
+    },
+    {
+      "query_id": "qa_008",
+      "question": "Apa hak pekerja menurut UU Cipta Kerja?",
+      "expected_regulations": [
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 11/2020",
+        "UU 11/2020",
+        "UU 13/2003",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6934264036172708,
+        "10": 0.6978817289434457
+      },
+      "first_relevant_rank": 2,
+      "category": "factual",
+      "latency_ms": 0.20029999723192304
+    },
+    {
+      "query_id": "qa_009",
+      "question": "Apa itu RUPS?",
+      "expected_regulations": [
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 5/1960",
+        "UU 25/1992",
+        "UU 13/2003",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 0.02127659574468085,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 47,
+      "category": "factual",
+      "latency_ms": 0.20080000103916973
+    },
+    {
+      "query_id": "qa_010",
+      "question": "Bagaimana prosedur PHK menurut UU Cipta Kerja?",
+      "expected_regulations": [
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 11/2020",
+        "UU 2/2017",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5,
+        "10": 0.5
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.2035999932559207
+    },
+    {
+      "query_id": "qa_011",
+      "question": "Apa saja jenis-jenis badan usaha di Indonesia?",
+      "expected_regulations": [
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "UU 10/1998",
+        "UU 25/1992",
+        "UU 2/2017",
+        "UU 36/2009",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 0.06666666666666667,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 15,
+      "category": "factual",
+      "latency_ms": 0.24710000434424728
+    },
+    {
+      "query_id": "qa_012",
+      "question": "Bagaimana ketentuan uang pesangon?",
+      "expected_regulations": [
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 13/2003",
+        "UU 7/2021",
+        "UU 5/1960",
+        "UU 16/2001"
+      ],
+      "reciprocal_rank": 0.14285714285714285,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.3333333333333333
+      },
+      "first_relevant_rank": 7,
+      "category": "factual",
+      "latency_ms": 0.3701999958138913
+    },
+    {
+      "query_id": "qa_013",
+      "question": "Apa itu Perpres 49/2021?",
+      "expected_regulations": [
+        "Perpres 49/2021"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "PP 5/2021",
+        "UU 5/1960",
+        "PP 24/2018",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 0.0,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": null,
+      "category": "factual",
+      "latency_ms": 0.31230000604409724
+    },
+    {
+      "query_id": "qa_014",
+      "question": "Bagaimana registrasi BPOM untuk makanan?",
+      "expected_regulations": [
+        "Perpres 49/2021"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "UU 25/2007",
+        "UU 20/2016",
+        "PP 24/2018",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 0.024390243902439025,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 41,
+      "category": "factual",
+      "latency_ms": 0.2082999999402091
+    },
+    {
+      "query_id": "qa_015",
+      "question": "Apa itu status badan hukum dalam UU PT?",
+      "expected_regulations": [
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 5/1960",
+        "PP 24/2018",
+        "UU 11/2020",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 0.1111111111111111,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.3010299956639812
+      },
+      "first_relevant_rank": 9,
+      "category": "factual",
+      "latency_ms": 0.2525000018067658
+    },
+    {
+      "query_id": "qa_016",
+      "question": "Apa definisi tindak pidana korupsi menurut UU 31/1999?",
+      "expected_regulations": [
+        "UU 31/1999"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 5/1960",
+        "UU 25/1992",
+        "UU 25/1992",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 0.14285714285714285,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.3333333333333333
+      },
+      "first_relevant_rank": 7,
+      "category": "factual",
+      "latency_ms": 0.41930000588763505
+    },
+    {
+      "query_id": "qa_017",
+      "question": "Berapa ancaman hukuman untuk korupsi yang merugikan keuangan negara?",
+      "expected_regulations": [
+        "UU 31/1999"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 25/2007",
+        "UU 31/1999",
+        "UU 31/1999",
+        "UU 31/1999"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6182885020492784,
+        "10": 0.6318532842514007
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.2308999974047765
+    },
+    {
+      "query_id": "qa_018",
+      "question": "Apa yang dimaksud dengan penyalahgunaan kewenangan dalam korupsi?",
+      "expected_regulations": [
+        "UU 31/1999"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 19/2016",
+        "UU 25/2007",
+        "UU 5/1999",
+        "UU 30/1999"
+      ],
+      "reciprocal_rank": 0.02,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 50,
+      "category": "factual",
+      "latency_ms": 0.19230000907555223
+    },
+    {
+      "query_id": "qa_019",
+      "question": "Apa itu monopoli menurut UU 5/1999?",
+      "expected_regulations": [
+        "UU 5/1999"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 5/1960",
+        "UU 31/2000",
+        "UU 25/1992",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 0.2,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.38685280723454163,
+        "10": 0.38685280723454163
+      },
+      "first_relevant_rank": 5,
+      "category": "factual",
+      "latency_ms": 0.19350000366102904
+    },
+    {
+      "query_id": "qa_020",
+      "question": "Apa yang dilarang dalam perjanjian penetapan harga (price fixing)?",
+      "expected_regulations": [
+        "UU 5/1999"
+      ],
+      "top_k_citations": [
+        "UU 5/1999",
+        "UU 5/1999",
+        "UU 5/1999",
+        "UU 13/2003",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9669850519151657
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.27210000553168356
+    },
+    {
+      "query_id": "qa_021",
+      "question": "Apa peran KPPU dalam persaingan usaha?",
+      "expected_regulations": [
+        "UU 5/1999"
+      ],
+      "top_k_citations": [
+        "UU 5/1999",
+        "UU 25/1992",
+        "UU 5/1999",
+        "PP 24/2018",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8854598815714874,
+        "10": 0.8854598815714874
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.20979999681003392
+    },
+    {
+      "query_id": "qa_022",
+      "question": "Apa saja jenis bank menurut UU Perbankan?",
+      "expected_regulations": [
+        "UU 10/1998"
+      ],
+      "top_k_citations": [
+        "UU 10/1998",
+        "UU 10/1998",
+        "UU 36/2009",
+        "UU 25/1992",
+        "UU 40/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9217868789962071
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.19320000137668103
+    },
+    {
+      "query_id": "qa_023",
+      "question": "Apa yang dilarang dilakukan oleh Bank Umum?",
+      "expected_regulations": [
+        "UU 10/1998"
+      ],
+      "top_k_citations": [
+        "UU 10/1998",
+        "UU 10/1998",
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.8726787744521319
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.185800003237091
+    },
+    {
+      "query_id": "qa_024",
+      "question": "Apa itu rahasia bank menurut UU Perbankan?",
+      "expected_regulations": [
+        "UU 10/1998"
+      ],
+      "top_k_citations": [
+        "UU 10/1998",
+        "UU 30/2000",
+        "UU 10/1998",
+        "UU 30/2000",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9197207891481876,
+        "10": 0.838847952689218
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.37029999657534063
+    },
+    {
+      "query_id": "qa_025",
+      "question": "Apa definisi Pasar Modal menurut UU 8/1995?",
+      "expected_regulations": [
+        "UU 8/1995"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 8/1995",
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "UU 40/2007"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6309297535714575,
+        "10": 0.5802792108518124
+      },
+      "first_relevant_rank": 2,
+      "category": "factual",
+      "latency_ms": 0.30280000646598637
+    },
+    {
+      "query_id": "qa_026",
+      "question": "Apa syarat melakukan Penawaran Umum di pasar modal?",
+      "expected_regulations": [
+        "UU 8/1995"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 25/2007",
+        "UU 8/1995",
+        "UU 8/1995",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5706417189553201,
+        "10": 0.6039848603939605
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.25610000011511147
+    },
+    {
+      "query_id": "qa_027",
+      "question": "Apa itu insider trading atau perdagangan orang dalam?",
+      "expected_regulations": [
+        "UU 8/1995"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 7/2014",
+        "UU 30/1999",
+        "UU 25/2007",
+        "UU 30/2000"
+      ],
+      "reciprocal_rank": 0.125,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.31546487678572877
+      },
+      "first_relevant_rank": 8,
+      "category": "factual",
+      "latency_ms": 0.46859998838044703
+    },
+    {
+      "query_id": "qa_028",
+      "question": "Apa definisi Hak Cipta menurut UU 28/2014?",
+      "expected_regulations": [
+        "UU 28/2014"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 31/2000",
+        "UU 28/2014",
+        "UU 36/2009",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5,
+        "10": 0.48381288316677695
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.23660001170355827
+    },
+    {
+      "query_id": "qa_029",
+      "question": "Apa itu hak moral pencipta?",
+      "expected_regulations": [
+        "UU 28/2014"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 31/2000",
+        "UU 36/2009",
+        "UU 25/2007",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 0.125,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.31546487678572877
+      },
+      "first_relevant_rank": 8,
+      "category": "factual",
+      "latency_ms": 0.2906000008806586
+    },
+    {
+      "query_id": "qa_030",
+      "question": "Apa perbedaan hak ekonomi dan hak moral dalam hak cipta?",
+      "expected_regulations": [
+        "UU 28/2014"
+      ],
+      "top_k_citations": [
+        "UU 28/2014",
+        "UU 5/1960",
+        "UU 31/2000",
+        "UU 36/2009",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.35539999953471124
+    },
+    {
+      "query_id": "qa_031",
+      "question": "Apa definisi Paten menurut UU 13/2016?",
+      "expected_regulations": [
+        "UU 13/2016"
+      ],
+      "top_k_citations": [
+        "UU 13/2016",
+        "UU 13/2016",
+        "UU 31/2000",
+        "UU 5/1960",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9010126104210695
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.8196999988285825
+    },
+    {
+      "query_id": "qa_032",
+      "question": "Apa syarat suatu invensi bisa dipatenkan?",
+      "expected_regulations": [
+        "UU 13/2016"
+      ],
+      "top_k_citations": [
+        "UU 3/2014",
+        "UU 13/2016",
+        "UU 25/2007",
+        "PP 5/2021",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6309297535714575,
+        "10": 0.5640920940185894
+      },
+      "first_relevant_rank": 2,
+      "category": "factual",
+      "latency_ms": 0.7144999981392175
+    },
+    {
+      "query_id": "qa_033",
+      "question": "Apa itu paten sederhana?",
+      "expected_regulations": [
+        "UU 13/2016"
+      ],
+      "top_k_citations": [
+        "UU 13/2016",
+        "UU 31/2000",
+        "UU 13/2016",
+        "UU 13/2016",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9060254355346823,
+        "10": 0.9060254355346823
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.36610000825021416
+    },
+    {
+      "query_id": "qa_034",
+      "question": "Apa definisi Merek menurut UU 20/2016?",
+      "expected_regulations": [
+        "UU 20/2016"
+      ],
+      "top_k_citations": [
+        "UU 31/2000",
+        "UU 20/2016",
+        "UU 20/2016",
+        "UU 5/1960",
+        "PP 24/2018"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6934264036172708,
+        "10": 0.7338108458099989
+      },
+      "first_relevant_rank": 2,
+      "category": "factual",
+      "latency_ms": 0.6372000061674044
+    },
+    {
+      "query_id": "qa_035",
+      "question": "Bagaimana cara mendaftarkan merek di Indonesia?",
+      "expected_regulations": [
+        "UU 20/2016"
+      ],
+      "top_k_citations": [
+        "UU 20/2016",
+        "UU 20/2016",
+        "UU 31/2000",
+        "PP 71/2019",
+        "UU 20/2016"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9469024295259745,
+        "10": 0.9043980816456215
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.41220001003239304
+    },
+    {
+      "query_id": "qa_036",
+      "question": "Kapan hak atas merek diperoleh?",
+      "expected_regulations": [
+        "UU 20/2016"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 20/2016",
+        "UU 31/2000",
+        "UU 20/2016",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6509209298071326,
+        "10": 0.6509209298071326
+      },
+      "first_relevant_rank": 2,
+      "category": "factual",
+      "latency_ms": 0.3662999952211976
+    },
+    {
+      "query_id": "qa_037",
+      "question": "Apa itu kepailitan menurut UU 37/2004?",
+      "expected_regulations": [
+        "UU 37/2004"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 31/2000",
+        "UU 25/2007",
+        "UU 36/2009",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 0.02040816326530612,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 49,
+      "category": "factual",
+      "latency_ms": 0.3555000002961606
+    },
+    {
+      "query_id": "qa_038",
+      "question": "Apa syarat untuk mengajukan pernyataan pailit?",
+      "expected_regulations": [
+        "UU 37/2004"
+      ],
+      "top_k_citations": [
+        "UU 37/2004",
+        "UU 25/2007",
+        "UU 13/2003",
+        "UU 25/2007",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.35349999961908907
+    },
+    {
+      "query_id": "qa_039",
+      "question": "Ke mana permohonan pailit harus diajukan?",
+      "expected_regulations": [
+        "UU 37/2004"
+      ],
+      "top_k_citations": [
+        "UU 37/2004",
+        "UU 37/2004",
+        "UU 25/2007",
+        "UU 20/2016",
+        "PP 24/2018"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.35570000181905925
+    },
+    {
+      "query_id": "qa_040",
+      "question": "Apa itu PKPU (Penundaan Kewajiban Pembayaran Utang)?",
+      "expected_regulations": [
+        "UU 37/2004"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 30/1999"
+      ],
+      "reciprocal_rank": 0.14285714285714285,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.3333333333333333
+      },
+      "first_relevant_rank": 7,
+      "category": "factual",
+      "latency_ms": 0.3583999932743609
+    },
+    {
+      "query_id": "qa_041",
+      "question": "Apa definisi Jaminan Fidusia menurut UU 42/1999?",
+      "expected_regulations": [
+        "UU 42/1999"
+      ],
+      "top_k_citations": [
+        "UU 42/1999",
+        "UU 25/2007",
+        "UU 42/1999",
+        "UU 40/2014",
+        "UU 42/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8854598815714874,
+        "10": 0.8587959739536173
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6724000122630969
+    },
+    {
+      "query_id": "qa_042",
+      "question": "Bagaimana cara mendaftarkan Jaminan Fidusia?",
+      "expected_regulations": [
+        "UU 42/1999"
+      ],
+      "top_k_citations": [
+        "UU 42/1999",
+        "UU 42/1999",
+        "UU 42/1999",
+        "PP 71/2019",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9709286432396583
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 1.6121999942697585
+    },
+    {
+      "query_id": "qa_043",
+      "question": "Apa itu Hak Tanggungan menurut UU 4/1996?",
+      "expected_regulations": [
+        "UU 4/1996"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 36/2009",
+        "UU 31/2000",
+        "UU 4/1996",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 0.25,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.43067655807339306,
+        "10": 0.45749452618986164
+      },
+      "first_relevant_rank": 4,
+      "category": "factual",
+      "latency_ms": 0.9703999967314303
+    },
+    {
+      "query_id": "qa_044",
+      "question": "Hak atas tanah apa saja yang dapat dibebani Hak Tanggungan?",
+      "expected_regulations": [
+        "UU 4/1996"
+      ],
+      "top_k_citations": [
+        "UU 4/1996",
+        "UU 5/1960",
+        "UU 5/1960",
+        "UU 4/1996",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8772153153380493,
+        "10": 0.815079870530422
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.3941999893868342
+    },
+    {
+      "query_id": "qa_045",
+      "question": "Bagaimana penyelesaian sengketa melalui arbitrase menurut UU 30/1999?",
+      "expected_regulations": [
+        "UU 30/1999"
+      ],
+      "top_k_citations": [
+        "UU 30/1999",
+        "UU 30/1999",
+        "UU 5/1960",
+        "UU 30/1999",
+        "UU 30/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9674679834891693
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.5245999927865341
+    },
+    {
+      "query_id": "qa_046",
+      "question": "Apa jenis perselisihan hubungan industrial menurut UU 2/2004?",
+      "expected_regulations": [
+        "UU 2/2004"
+      ],
+      "top_k_citations": [
+        "UU 2/2004",
+        "UU 3/2014",
+        "UU 31/2000",
+        "UU 2/2004",
+        "UU 2/2004"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8529278650606567,
+        "10": 0.8529278650606567
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6225999968592077
+    },
+    {
+      "query_id": "qa_047",
+      "question": "Apa jenis-jenis visa menurut UU Keimigrasian?",
+      "expected_regulations": [
+        "UU 6/2011"
+      ],
+      "top_k_citations": [
+        "UU 6/2011",
+        "UU 6/2011",
+        "UU 7/2014",
+        "PP 24/2018",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.5067999882157892
+    },
+    {
+      "query_id": "qa_048",
+      "question": "Apa definisi Yayasan menurut UU 16/2001?",
+      "expected_regulations": [
+        "UU 16/2001"
+      ],
+      "top_k_citations": [
+        "UU 16/2001",
+        "UU 16/2001",
+        "UU 16/2001",
+        "UU 16/2001",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.958080399528401
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6904999900143594
+    },
+    {
+      "query_id": "qa_049",
+      "question": "Apa prinsip-prinsip Koperasi menurut UU 25/1992?",
+      "expected_regulations": [
+        "UU 25/1992"
+      ],
+      "top_k_citations": [
+        "UU 25/1992",
+        "UU 25/1992",
+        "UU 25/1992",
+        "UU 25/1992",
+        "UU 11/2020"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9896062251871525
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6072000105632469
+    },
+    {
+      "query_id": "qa_050",
+      "question": "Apa fungsi dan tugas OJK menurut UU 21/2011?",
+      "expected_regulations": [
+        "UU 21/2011"
+      ],
+      "top_k_citations": [
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9950883841893561
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.23260001034941524
+    },
+    {
+      "query_id": "qa_051",
+      "question": "Apa definisi asuransi menurut UU 40/2014?",
+      "expected_regulations": [
+        "UU 40/2014"
+      ],
+      "top_k_citations": [
+        "UU 40/2014",
+        "UU 40/2014",
+        "UU 40/2014",
+        "UU 36/2009",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9550236580992476
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.20059999951627105
+    },
+    {
+      "query_id": "qa_052",
+      "question": "Apa ketentuan perdagangan elektronik menurut UU 7/2014?",
+      "expected_regulations": [
+        "UU 7/2014"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "UU 7/2014",
+        "UU 7/2014",
+        "UU 19/2016"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5706417189553201,
+        "10": 0.5706417189553201
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.21880000713281333
+    },
+    {
+      "query_id": "qa_053",
+      "question": "Apa tujuan penyelenggaraan perindustrian menurut UU 3/2014?",
+      "expected_regulations": [
+        "UU 3/2014"
+      ],
+      "top_k_citations": [
+        "UU 3/2014",
+        "UU 3/2014",
+        "UU 3/2014",
+        "UU 25/2007",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9505310077117098
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.622000006842427
+    },
+    {
+      "query_id": "qa_054",
+      "question": "Apa definisi Desain Industri menurut UU 31/2000?",
+      "expected_regulations": [
+        "UU 31/2000"
+      ],
+      "top_k_citations": [
+        "UU 31/2000",
+        "UU 31/2000",
+        "UU 31/2000",
+        "UU 3/2014",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9378773695257355
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.4481999931158498
+    },
+    {
+      "query_id": "qa_055",
+      "question": "Apa itu Rahasia Dagang menurut UU 30/2000?",
+      "expected_regulations": [
+        "UU 30/2000"
+      ],
+      "top_k_citations": [
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6610999989788979
+    },
+    {
+      "query_id": "qa_056",
+      "question": "Apa itu kepabeanan dan bea masuk menurut UU 17/2006?",
+      "expected_regulations": [
+        "UU 17/2006"
+      ],
+      "top_k_citations": [
+        "UU 17/2006",
+        "UU 17/2006",
+        "UU 7/2021",
+        "UU 17/2006",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9279611693743142
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.378400000045076
+    },
+    {
+      "query_id": "qa_057",
+      "question": "Barang apa saja yang dikenai cukai menurut UU 39/2007?",
+      "expected_regulations": [
+        "UU 39/2007"
+      ],
+      "top_k_citations": [
+        "UU 39/2007",
+        "UU 7/2021",
+        "UU 17/2006",
+        "UU 7/2021",
+        "UU 39/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8503449055347546,
+        "10": 0.8036070421010475
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6169999978737906
+    },
+    {
+      "query_id": "qa_058",
+      "question": "Apa saja persyaratan tenaga kerja konstruksi menurut UU 2/2017?",
+      "expected_regulations": [
+        "UU 2/2017"
+      ],
+      "top_k_citations": [
+        "UU 2/2017",
+        "UU 13/2003",
+        "UU 2/2017",
+        "UU 2/2017",
+        "UU 2/2017"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9047172294870751,
+        "10": 0.8842221264874298
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.4507999983616173
+    },
+    {
+      "query_id": "qa_059",
+      "question": "Apa itu Perjanjian Kerja Waktu Tertentu (PKWT) menurut PP 35/2021?",
+      "expected_regulations": [
+        "PP 35/2021"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "PP 35/2021",
+        "PP 35/2021",
+        "PP 35/2021"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6182885020492784,
+        "10": 0.6697622278142621
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.4213999927742407
+    },
+    {
+      "query_id": "qa_060",
+      "question": "Atas dasar apa PKWT dibuat menurut PP 35/2021?",
+      "expected_regulations": [
+        "PP 35/2021"
+      ],
+      "top_k_citations": [
+        "PP 35/2021",
+        "PP 35/2021",
+        "PP 35/2021",
+        "PP 35/2021",
+        "UU 7/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9668342083190152
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.24739999207668006
+    },
+    {
+      "query_id": "qa_061",
+      "question": "Apa itu Perizinan Berusaha Berbasis Risiko menurut PP 5/2021?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 24/2018",
+        "PP 5/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9607686373130875
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.19580000662244856
+    },
+    {
+      "query_id": "qa_062",
+      "question": "Apa saja tingkat risiko kegiatan usaha menurut PP 5/2021?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.1846999948611483
+    },
+    {
+      "query_id": "qa_063",
+      "question": "Apa itu Sistem Elektronik menurut PP 71/2019?",
+      "expected_regulations": [
+        "PP 71/2019"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.18440000712871552
+    },
+    {
+      "query_id": "qa_064",
+      "question": "Apa kewajiban Penyelenggara Sistem Elektronik terkait Data Pribadi menurut PP 71/2019?",
+      "expected_regulations": [
+        "PP 71/2019"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9888009031441519
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.1832999987527728
+    },
+    {
+      "query_id": "qa_065",
+      "question": "Apa saja bidang usaha yang tertutup untuk penanaman modal menurut Perpres 10/2021?",
+      "expected_regulations": [
+        "Perpres 10/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9060254355346823,
+        "10": 0.8927537907700456
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.3345000004628673
+    },
+    {
+      "query_id": "qa_066",
+      "question": "Apa yang dimaksud bidang usaha prioritas menurut Perpres 10/2021?",
+      "expected_regulations": [
+        "Perpres 10/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "UU 7/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9818483242455303
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.2243999915663153
+    },
+    {
+      "query_id": "qa_067",
+      "question": "Apa prinsip pelaksanaan Pengadaan Barang/Jasa Pemerintah menurut Perpres 12/2021?",
+      "expected_regulations": [
+        "Perpres 12/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 12/2021",
+        "Perpres 12/2021",
+        "Perpres 12/2021",
+        "UU 7/2014",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.3070999955525622
+    },
+    {
+      "query_id": "qa_068",
+      "question": "Apa tujuan Pengadaan Barang/Jasa Pemerintah menurut Perpres 12/2021?",
+      "expected_regulations": [
+        "Perpres 12/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 12/2021",
+        "UU 7/2014",
+        "Perpres 12/2021",
+        "UU 25/2007",
+        "Perpres 12/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8854598815714874,
+        "10": 0.8854598815714874
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.2683000057004392
+    },
+    {
+      "query_id": "qa_069",
+      "question": "Apa definisi ketenagakerjaan menurut UU 13/2003?",
+      "expected_regulations": [
+        "UU 13/2003"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 11/2020"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9652102434192421
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.3281999961473048
+    },
+    {
+      "query_id": "qa_070",
+      "question": "Berapa jam waktu kerja per minggu menurut UU 13/2003?",
+      "expected_regulations": [
+        "UU 13/2003"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 13/2003",
+        "PP 35/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9764093402750902
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.24459999985992908
+    },
+    {
+      "query_id": "qa_071",
+      "question": "Apa definisi Informasi Elektronik menurut UU 19/2016 (UU ITE)?",
+      "expected_regulations": [
+        "UU 19/2016"
+      ],
+      "top_k_citations": [
+        "UU 19/2016",
+        "UU 19/2016",
+        "PP 71/2019",
+        "UU 31/2000",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9217868789962071
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.19380000594537705
+    },
+    {
+      "query_id": "qa_072",
+      "question": "Apa yang dilarang menurut Pasal 28 UU ITE (UU 19/2016)?",
+      "expected_regulations": [
+        "UU 19/2016"
+      ],
+      "top_k_citations": [
+        "UU 3/2014",
+        "UU 31/2000",
+        "UU 13/2003",
+        "UU 5/1999",
+        "UU 7/2014"
+      ],
+      "reciprocal_rank": 0.045454545454545456,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 22,
+      "category": "factual",
+      "latency_ms": 0.25660000392235816
+    },
+    {
+      "query_id": "qa_073",
+      "question": "Apa definisi Usaha Mikro menurut UU 20/2008?",
+      "expected_regulations": [
+        "UU 20/2008"
+      ],
+      "top_k_citations": [
+        "UU 20/2008",
+        "PP 24/2018",
+        "UU 25/2007",
+        "UU 20/2008",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8772153153380493,
+        "10": 0.8070380459557518
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.2356000040890649
+    },
+    {
+      "query_id": "qa_074",
+      "question": "Berapa batas kekayaan bersih untuk Usaha Mikro menurut UU 20/2008?",
+      "expected_regulations": [
+        "UU 20/2008"
+      ],
+      "top_k_citations": [
+        "UU 20/2008",
+        "UU 20/2008",
+        "PP 5/2021",
+        "PP 24/2018",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.8988898126139723
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.1841000048443675
+    },
+    {
+      "query_id": "qa_075",
+      "question": "Apa asas penyelenggaraan penanaman modal menurut UU 25/2007?",
+      "expected_regulations": [
+        "UU 25/2007"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 25/2007",
+        "UU 25/2007",
+        "Perpres 10/2021",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9651366671790967
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.18599999020807445
+    },
+    {
+      "query_id": "qa_076",
+      "question": "Apa hak penanam modal menurut UU 25/2007?",
+      "expected_regulations": [
+        "UU 25/2007"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 5/1960",
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "UU 11/2020"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8772153153380493,
+        "10": 0.8117854639642847
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.18339999951422215
+    },
+    {
+      "query_id": "qa_077",
+      "question": "Apa definisi pajak menurut UU 28/2007 tentang Ketentuan Umum Perpajakan?",
+      "expected_regulations": [
+        "UU 28/2007"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 28/2007",
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 7/2021"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6309297535714575,
+        "10": 0.6309297535714575
+      },
+      "first_relevant_rank": 2,
+      "category": "factual",
+      "latency_ms": 0.3077000001212582
+    },
+    {
+      "query_id": "qa_078",
+      "question": "Apa kewajiban Wajib Pajak menurut UU 28/2007?",
+      "expected_regulations": [
+        "UU 28/2007"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 28/2007",
+        "UU 7/2021",
+        "UU 13/2003",
+        "UU 11/2020"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6309297535714575,
+        "10": 0.6309297535714575
+      },
+      "first_relevant_rank": 2,
+      "category": "factual",
+      "latency_ms": 0.21160001051612198
+    },
+    {
+      "query_id": "qa_079",
+      "question": "Apa itu Amdal menurut UU 32/2009 tentang Perlindungan Lingkungan Hidup?",
+      "expected_regulations": [
+        "UU 32/2009"
+      ],
+      "top_k_citations": [
+        "UU 32/2009",
+        "UU 32/2009",
+        "UU 25/2007",
+        "UU 32/2009",
+        "UU 7/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9199753853803091
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.2519999979995191
+    },
+    {
+      "query_id": "qa_080",
+      "question": "Usaha apa yang wajib memiliki Amdal menurut UU 32/2009?",
+      "expected_regulations": [
+        "UU 32/2009"
+      ],
+      "top_k_citations": [
+        "UU 32/2009",
+        "UU 32/2009",
+        "UU 3/2014",
+        "UU 32/2009",
+        "PP 5/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9674679834891693
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.19069999689236283
+    },
+    {
+      "query_id": "qa_081",
+      "question": "Apa definisi kesehatan menurut UU 36/2009?",
+      "expected_regulations": [
+        "UU 36/2009"
+      ],
+      "top_k_citations": [
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 32/2009"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9530418785472458
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.2927000023191795
+    },
+    {
+      "query_id": "qa_082",
+      "question": "Apa tujuan pembangunan kesehatan menurut UU 36/2009?",
+      "expected_regulations": [
+        "UU 36/2009"
+      ],
+      "top_k_citations": [
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9617010886504509
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.3949000092688948
+    },
+    {
+      "query_id": "qa_083",
+      "question": "Apa saja jenis hak atas tanah menurut UU 5/1960 (UUPA)?",
+      "expected_regulations": [
+        "UU 5/1960"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 5/1960",
+        "UU 4/1996",
+        "UU 5/1960",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9558295932317544,
+        "10": 0.9558295932317544
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 1.3843000051565468
+    },
+    {
+      "query_id": "qa_084",
+      "question": "Apa hak menguasai negara atas bumi dan air menurut UU 5/1960?",
+      "expected_regulations": [
+        "UU 5/1960"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 5/1960",
+        "UU 5/1960",
+        "UU 36/2009",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9427731067700877
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6936999998288229
+    },
+    {
+      "query_id": "qa_085",
+      "question": "Apa saja tarif Pajak Penghasilan orang pribadi menurut UU 7/2021?",
+      "expected_regulations": [
+        "UU 7/2021"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 27/2022"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9668342083190152
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.5684999923687428
+    },
+    {
+      "query_id": "qa_086",
+      "question": "Apa saja yang diatur dalam UU 7/2021 tentang Harmonisasi Peraturan Perpajakan?",
+      "expected_regulations": [
+        "UU 7/2021"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 7/2021",
+        "PP 5/2021",
+        "UU 31/2000",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.46860000293236226
+    },
+    {
+      "query_id": "qa_087",
+      "question": "Apa hak konsumen menurut UU 8/1999 tentang Perlindungan Konsumen?",
+      "expected_regulations": [
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "UU 8/1999",
+        "UU 36/2009",
+        "UU 5/1960",
+        "UU 8/1999",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8772153153380493,
+        "10": 0.8772153153380493
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.6562000053236261
+    },
+    {
+      "query_id": "qa_088",
+      "question": "Apa kewajiban pelaku usaha menurut UU 8/1999?",
+      "expected_regulations": [
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "UU 8/1999",
+        "PP 5/2021",
+        "UU 11/2020",
+        "UU 13/2003",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.8315546295836225
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.5450999888125807
+    },
+    {
+      "query_id": "qa_089",
+      "question": "Apa yang dimaksud dengan Data Pribadi menurut UU 27/2022?",
+      "expected_regulations": [
+        "UU 27/2022"
+      ],
+      "top_k_citations": [
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9888026041880242
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.32900000223889947
+    },
+    {
+      "query_id": "qa_090",
+      "question": "Apa yang dimaksud dengan Pemrosesan Data Pribadi menurut UU 27/2022?",
+      "expected_regulations": [
+        "UU 27/2022"
+      ],
+      "top_k_citations": [
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9963488021549354
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.2930000046035275
+    },
+    {
+      "query_id": "qa_091",
+      "question": "Apa yang dimaksud dengan Penyelenggara Sistem Elektronik (PSE) menurut PP 71/2019?",
+      "expected_regulations": [
+        "PP 71/2019"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9911205770005563
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.27520000003278255
+    },
+    {
+      "query_id": "qa_092",
+      "question": "Apa yang dimaksud dengan Perizinan Berusaha dalam PP 5/2021?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 24/2018",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.7328286204777911,
+        "10": 0.7486761295186739
+      },
+      "first_relevant_rank": 2,
+      "category": "definitional",
+      "latency_ms": 0.275699989288114
+    },
+    {
+      "query_id": "qa_093",
+      "question": "Apa yang dimaksud dengan risiko rendah dalam Perizinan Berusaha Berbasis Risiko (PP 5/2021)?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 24/2018"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9670943502702474
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.2874999918276444
+    },
+    {
+      "query_id": "qa_094",
+      "question": "Apa yang dimaksud dengan risiko menengah dalam PP 5/2021?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "UU 25/2007",
+        "PP 5/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9607686373130875
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.27430000773165375
+    },
+    {
+      "query_id": "qa_095",
+      "question": "Apa yang dimaksud dengan risiko tinggi dalam PP 5/2021?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.983303248698947
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.27820000832434744
+    },
+    {
+      "query_id": "qa_096",
+      "question": "Apa yang dimaksud dengan Penanaman Modal menurut UU 25/2007?",
+      "expected_regulations": [
+        "UU 25/2007"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "UU 25/2007",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9047172294870751,
+        "10": 0.9047172294870751
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.3530999965732917
+    },
+    {
+      "query_id": "qa_097",
+      "question": "Apa yang dimaksud dengan Wajib Pajak menurut UU 28/2007?",
+      "expected_regulations": [
+        "UU 28/2007"
+      ],
+      "top_k_citations": [
+        "UU 28/2007",
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 25/2007",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.3006000042660162
+    },
+    {
+      "query_id": "qa_098",
+      "question": "Apa yang dimaksud dengan NPWP dalam konteks UU KUP (UU 28/2007)?",
+      "expected_regulations": [
+        "UU 28/2007"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 25/2007",
+        "UU 31/1999",
+        "UU 13/2003",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 0.1,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.2890648263178879
+      },
+      "first_relevant_rank": 10,
+      "category": "definitional",
+      "latency_ms": 0.2717000024858862
+    },
+    {
+      "query_id": "qa_099",
+      "question": "Apa yang dimaksud dengan Konsumen menurut UU 8/1999?",
+      "expected_regulations": [
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "UU 8/1999",
+        "UU 8/1999",
+        "UU 36/2009",
+        "UU 8/1999",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9674679834891693
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.26980000257026404
+    },
+    {
+      "query_id": "qa_100",
+      "question": "Apa yang dimaksud dengan Pelaku Usaha menurut UU 8/1999?",
+      "expected_regulations": [
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "PP 24/2018",
+        "PP 5/2021",
+        "UU 3/2014",
+        "PP 24/2018",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 0.043478260869565216,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 23,
+      "category": "definitional",
+      "latency_ms": 0.28640001255553216
+    },
+    {
+      "query_id": "qa_101",
+      "question": "Apa yang dimaksud dengan Monopoli menurut UU 5/1999?",
+      "expected_regulations": [
+        "UU 5/1999"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 5/1960",
+        "UU 5/1999",
+        "UU 31/2000",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5,
+        "10": 0.5
+      },
+      "first_relevant_rank": 3,
+      "category": "definitional",
+      "latency_ms": 0.9170999983325601
+    },
+    {
+      "query_id": "qa_102",
+      "question": "Apa yang dimaksud dengan Persaingan Usaha Tidak Sehat menurut UU 5/1999?",
+      "expected_regulations": [
+        "UU 5/1999"
+      ],
+      "top_k_citations": [
+        "UU 5/1999",
+        "UU 5/1999",
+        "UU 5/1999",
+        "UU 5/1999",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9918291064614978
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.5478999955812469
+    },
+    {
+      "query_id": "qa_103",
+      "question": "Apa yang dimaksud dengan Rahasia Bank menurut UU 10/1998?",
+      "expected_regulations": [
+        "UU 10/1998"
+      ],
+      "top_k_citations": [
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 10/1998",
+        "UU 10/1998",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5706417189553201,
+        "10": 0.6039071644781281
+      },
+      "first_relevant_rank": 3,
+      "category": "definitional",
+      "latency_ms": 0.8328000112669542
+    },
+    {
+      "query_id": "qa_104",
+      "question": "Apa yang dimaksud dengan Efek menurut UU 8/1995?",
+      "expected_regulations": [
+        "UU 8/1995"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 7/2021",
+        "UU 5/1960",
+        "UU 7/2014",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 0.16666666666666666,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.3562071871080222
+      },
+      "first_relevant_rank": 6,
+      "category": "definitional",
+      "latency_ms": 0.4495000030146912
+    },
+    {
+      "query_id": "qa_105",
+      "question": "Apa yang dimaksud dengan Emiten menurut UU 8/1995?",
+      "expected_regulations": [
+        "UU 8/1995"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 5/1960",
+        "UU 7/2014",
+        "UU 7/2021",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 0.07142857142857142,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 14,
+      "category": "definitional",
+      "latency_ms": 0.308899994706735
+    },
+    {
+      "query_id": "qa_106",
+      "question": "Apa yang dimaksud dengan Debitor dalam UU Kepailitan (UU 37/2004)?",
+      "expected_regulations": [
+        "UU 37/2004"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 37/2004",
+        "UU 25/2007",
+        "UU 7/2021",
+        "UU 7/2021"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6309297535714575,
+        "10": 0.6309297535714575
+      },
+      "first_relevant_rank": 2,
+      "category": "definitional",
+      "latency_ms": 0.3563000063877553
+    },
+    {
+      "query_id": "qa_107",
+      "question": "Apa yang dimaksud dengan Kreditor dalam UU 37/2004?",
+      "expected_regulations": [
+        "UU 37/2004"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 5/1960",
+        "UU 37/2004",
+        "UU 7/2021",
+        "PP 24/2018"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5,
+        "10": 0.5
+      },
+      "first_relevant_rank": 3,
+      "category": "definitional",
+      "latency_ms": 0.3938000008929521
+    },
+    {
+      "query_id": "qa_108",
+      "question": "Apa yang dimaksud dengan Jaminan Fidusia menurut UU 42/1999?",
+      "expected_regulations": [
+        "UU 42/1999"
+      ],
+      "top_k_citations": [
+        "UU 42/1999",
+        "UU 25/2007",
+        "UU 42/1999",
+        "UU 42/1999",
+        "UU 42/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9047172294870751,
+        "10": 0.8990671370233444
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.2972999936901033
+    },
+    {
+      "query_id": "qa_109",
+      "question": "Apa yang dimaksud dengan Hak Tanggungan menurut UU 4/1996?",
+      "expected_regulations": [
+        "UU 4/1996"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 36/2009",
+        "UU 31/2000",
+        "UU 4/1996",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 0.25,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.43067655807339306,
+        "10": 0.46845052016107697
+      },
+      "first_relevant_rank": 4,
+      "category": "definitional",
+      "latency_ms": 0.3591999993659556
+    },
+    {
+      "query_id": "qa_110",
+      "question": "Apa yang dimaksud dengan Arbitrase menurut UU 30/1999?",
+      "expected_regulations": [
+        "UU 30/1999"
+      ],
+      "top_k_citations": [
+        "UU 30/1999",
+        "UU 5/1960",
+        "UU 30/1999",
+        "UU 25/2007",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9197207891481876,
+        "10": 0.9197207891481876
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.2869000018108636
+    },
+    {
+      "query_id": "qa_111",
+      "question": "Apa yang dimaksud dengan Perselisihan Hubungan Industrial menurut UU 2/2004?",
+      "expected_regulations": [
+        "UU 2/2004"
+      ],
+      "top_k_citations": [
+        "UU 2/2004",
+        "UU 31/2000",
+        "UU 3/2014",
+        "UU 2/2004",
+        "UU 2/2004"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8529278650606567,
+        "10": 0.8485833840018
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.3789999900618568
+    },
+    {
+      "query_id": "qa_112",
+      "question": "Apa yang dimaksud dengan Visa Tinggal Terbatas menurut UU 6/2011?",
+      "expected_regulations": [
+        "UU 6/2011"
+      ],
+      "top_k_citations": [
+        "UU 6/2011",
+        "UU 6/2011",
+        "UU 6/2011",
+        "UU 6/2011",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9896062251871525
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.2925000007962808
+    },
+    {
+      "query_id": "qa_113",
+      "question": "Apa yang dimaksud dengan Yayasan menurut UU 16/2001?",
+      "expected_regulations": [
+        "UU 16/2001"
+      ],
+      "top_k_citations": [
+        "UU 16/2001",
+        "UU 16/2001",
+        "UU 16/2001",
+        "UU 16/2001",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9671081267272548
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.40859999717213213
+    },
+    {
+      "query_id": "qa_114",
+      "question": "Apa yang dimaksud dengan Koperasi menurut UU 25/1992?",
+      "expected_regulations": [
+        "UU 25/1992"
+      ],
+      "top_k_citations": [
+        "UU 25/1992",
+        "UU 25/1992",
+        "UU 25/1992",
+        "UU 25/1992",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9708923176105698
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.39119999564718455
+    },
+    {
+      "query_id": "qa_115",
+      "question": "Apa yang dimaksud dengan Otoritas Jasa Keuangan (OJK) menurut UU 21/2011?",
+      "expected_regulations": [
+        "UU 21/2011"
+      ],
+      "top_k_citations": [
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9876712785649564
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.29680000443477184
+    },
+    {
+      "query_id": "qa_116",
+      "question": "Apa yang dimaksud dengan Asuransi menurut UU 40/2014?",
+      "expected_regulations": [
+        "UU 40/2014"
+      ],
+      "top_k_citations": [
+        "UU 40/2014",
+        "UU 40/2014",
+        "UU 25/2007",
+        "UU 40/2014",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9270192549176082
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.28190000739414245
+    },
+    {
+      "query_id": "qa_117",
+      "question": "Apa yang dimaksud dengan Perdagangan Melalui Sistem Elektronik (PMSE) menurut UU 7/2014?",
+      "expected_regulations": [
+        "UU 7/2014"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "Perpres 12/2021"
+      ],
+      "reciprocal_rank": 0.16666666666666666,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.40298313359773236
+      },
+      "first_relevant_rank": 6,
+      "category": "definitional",
+      "latency_ms": 0.27879999834112823
+    },
+    {
+      "query_id": "qa_118",
+      "question": "Apa yang dimaksud dengan Industri menurut UU 3/2014?",
+      "expected_regulations": [
+        "UU 3/2014"
+      ],
+      "top_k_citations": [
+        "UU 3/2014",
+        "UU 31/2000",
+        "UU 3/2014",
+        "UU 3/2014",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9060254355346823,
+        "10": 0.8927537907700456
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.3508000081637874
+    },
+    {
+      "query_id": "qa_119",
+      "question": "Apa yang dimaksud dengan Desain Industri menurut UU 31/2000?",
+      "expected_regulations": [
+        "UU 31/2000"
+      ],
+      "top_k_citations": [
+        "UU 31/2000",
+        "UU 31/2000",
+        "UU 31/2000",
+        "UU 3/2014",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9427731067700877
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.30250000418163836
+    },
+    {
+      "query_id": "qa_120",
+      "question": "Apa yang dimaksud dengan Rahasia Dagang menurut UU 30/2000?",
+      "expected_regulations": [
+        "UU 30/2000"
+      ],
+      "top_k_citations": [
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9888009031441519
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.32110000029206276
+    },
+    {
+      "query_id": "qa_121",
+      "question": "Apa yang dimaksud dengan Daerah Pabean menurut UU 17/2006?",
+      "expected_regulations": [
+        "UU 17/2006"
+      ],
+      "top_k_citations": [
+        "UU 17/2006",
+        "UU 25/2007",
+        "UU 17/2006",
+        "UU 17/2006",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9060254355346823,
+        "10": 0.9060254355346823
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 1.2159999896539375
+    },
+    {
+      "query_id": "qa_122",
+      "question": "Apa yang dimaksud dengan Barang Kena Cukai menurut UU 39/2007?",
+      "expected_regulations": [
+        "UU 39/2007"
+      ],
+      "top_k_citations": [
+        "UU 39/2007",
+        "UU 7/2021",
+        "UU 17/2006",
+        "UU 39/2007",
+        "UU 7/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8772153153380493,
+        "10": 0.8171325454050458
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.5105000018374994
+    },
+    {
+      "query_id": "qa_123",
+      "question": "Apa yang dimaksud dengan Tenaga Kerja Konstruksi menurut UU 2/2017?",
+      "expected_regulations": [
+        "UU 2/2017"
+      ],
+      "top_k_citations": [
+        "UU 2/2017",
+        "UU 2/2017",
+        "UU 13/2003",
+        "UU 2/2017",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9330795243082165
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 1.0389000090071931
+    },
+    {
+      "query_id": "qa_124",
+      "question": "Apa yang dimaksud dengan PKWT menurut PP 35/2021?",
+      "expected_regulations": [
+        "PP 35/2021"
+      ],
+      "top_k_citations": [
+        "PP 35/2021",
+        "PP 35/2021",
+        "PP 35/2021",
+        "UU 7/2021",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9447176050778178
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.5478999955812469
+    },
+    {
+      "query_id": "qa_125",
+      "question": "Apa yang dimaksud dengan Sistem Elektronik menurut UU ITE (UU 19/2016)?",
+      "expected_regulations": [
+        "UU 19/2016"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "UU 19/2016"
+      ],
+      "reciprocal_rank": 0.2,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.38685280723454163,
+        "10": 0.45560514958746035
+      },
+      "first_relevant_rank": 5,
+      "category": "definitional",
+      "latency_ms": 0.42079998820554465
+    },
+    {
+      "query_id": "qa_126",
+      "question": "Apa yang dimaksud dengan Usaha Kecil dan Usaha Menengah menurut UU 20/2008 (secara umum)?",
+      "expected_regulations": [
+        "UU 20/2008"
+      ],
+      "top_k_citations": [
+        "UU 20/2008",
+        "PP 24/2018",
+        "Perpres 10/2021",
+        "UU 3/2014",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.7844000065233558
+    },
+    {
+      "query_id": "qa_127",
+      "question": "Apa yang dimaksud dengan Amdal menurut UU 32/2009?",
+      "expected_regulations": [
+        "UU 32/2009"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 32/2009",
+        "UU 32/2009",
+        "Perpres 10/2021",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6934264036172708,
+        "10": 0.6934264036172708
+      },
+      "first_relevant_rank": 2,
+      "category": "definitional",
+      "latency_ms": 0.40720000106375664
+    },
+    {
+      "query_id": "qa_128",
+      "question": "Apa yang dimaksud dengan Lingkungan Hidup menurut UU 32/2009?",
+      "expected_regulations": [
+        "UU 32/2009"
+      ],
+      "top_k_citations": [
+        "UU 32/2009",
+        "UU 32/2009",
+        "UU 7/2021",
+        "UU 32/2009",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9674679834891693
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.298099999781698
+    },
+    {
+      "query_id": "qa_129",
+      "question": "Apa yang dimaksud dengan Upah dalam konteks ketenagakerjaan (UU 13/2003)?",
+      "expected_regulations": [
+        "UU 13/2003"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 11/2020",
+        "UU 13/2003",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9558295932317544,
+        "10": 0.9328695131158116
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.35260000731796026
+    },
+    {
+      "query_id": "qa_130",
+      "question": "Apa yang dimaksud dengan Hak Pakai menurut UUPA (UU 5/1960)?",
+      "expected_regulations": [
+        "UU 5/1960"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 31/2000",
+        "UU 5/1960",
+        "UU 5/1960",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9060254355346823,
+        "10": 0.9060254355346823
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.47530001029372215
+    },
+    {
+      "query_id": "qa_131",
+      "question": "Dalam OSS, apa hubungan NIB (PP 24/2018) dengan Perizinan Berusaha Berbasis Risiko (PP 5/2021)?",
+      "expected_regulations": [
+        "PP 24/2018",
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 49/2021",
+        "UU 11/2020",
+        "PP 5/2021",
+        "PP 5/2021",
+        "Perpres 49/2021"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5706417189553201,
+        "10": 0.6414921733776295
+      },
+      "first_relevant_rank": 3,
+      "category": "multi_hop",
+      "latency_ms": 0.8263999916380271
+    },
+    {
+      "query_id": "qa_132",
+      "question": "Jika kegiatan usaha berisiko menengah, dokumen apa yang biasanya diperlukan selain NIB menurut PP 5/2021?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "UU 11/2020",
+        "PP 5/2021",
+        "Perpres 49/2021",
+        "PP 5/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8854598815714874,
+        "10": 0.8449778036213867
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.5610999942291528
+    },
+    {
+      "query_id": "qa_133",
+      "question": "Dalam PMSE, kewajiban informasi konsumen (UU 8/1999) berkaitan dengan kewajiban informasi di perdagangan elektronik (UU 7/2014) bagaimana?",
+      "expected_regulations": [
+        "UU 8/1999",
+        "UU 7/2014"
+      ],
+      "top_k_citations": [
+        "UU 7/2014",
+        "PP 71/2019",
+        "UU 8/1999",
+        "UU 19/2016",
+        "PP 71/2019"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9197207891481876,
+        "10": 0.8285418996677884
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.5059999966761097
+    },
+    {
+      "query_id": "qa_134",
+      "question": "Untuk perlindungan data pribadi, bagaimana keterkaitan UU 27/2022 dengan kewajiban PSE di PP 71/2019?",
+      "expected_regulations": [
+        "PP 71/2019",
+        "UU 27/2022"
+      ],
+      "top_k_citations": [
+        "UU 27/2022",
+        "PP 71/2019",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9895948844467957
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.5149000062374398
+    },
+    {
+      "query_id": "qa_135",
+      "question": "Dalam pengawasan sektor jasa keuangan, bagaimana peran OJK (UU 21/2011) terkait perbankan (UU 10/1998)?",
+      "expected_regulations": [
+        "UU 21/2011",
+        "UU 10/1998"
+      ],
+      "top_k_citations": [
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9860433320650158
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.4625999863492325
+    },
+    {
+      "query_id": "qa_136",
+      "question": "Dalam kepailitan, bagaimana kaitan syarat pailit (UU 37/2004) dengan konsep Debitor dan Kreditor?",
+      "expected_regulations": [
+        "UU 37/2004"
+      ],
+      "top_k_citations": [
+        "UU 37/2004",
+        "UU 37/2004",
+        "UU 37/2004",
+        "UU 4/1996",
+        "UU 28/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9619991470595832
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.5124000017531216
+    },
+    {
+      "query_id": "qa_137",
+      "question": "Dalam sengketa bisnis, kapan arbitrase (UU 30/1999) dapat dipilih dibanding mekanisme perselisihan hubungan industrial (UU 2/2004)?",
+      "expected_regulations": [
+        "UU 2/2004",
+        "UU 30/1999"
+      ],
+      "top_k_citations": [
+        "UU 2/2004",
+        "UU 30/1999",
+        "UU 2/2004",
+        "UU 3/2014",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9262845298966467
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.8150999929057434
+    },
+    {
+      "query_id": "qa_138",
+      "question": "Dalam penanaman modal (UU 25/2007), bagaimana Perpres 10/2021 mempengaruhi bidang usaha yang dapat dimasuki investor?",
+      "expected_regulations": [
+        "Perpres 10/2021",
+        "UU 25/2007"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9918291064614978
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.8387999987462536
+    },
+    {
+      "query_id": "qa_139",
+      "question": "Dalam penawaran umum, bagaimana peran OJK (UU 21/2011) beririsan dengan rezim Pasar Modal (UU 8/1995)?",
+      "expected_regulations": [
+        "UU 8/1995",
+        "UU 21/2011"
+      ],
+      "top_k_citations": [
+        "UU 21/2011",
+        "UU 8/1995",
+        "UU 21/2011",
+        "UU 25/2007",
+        "UU 21/2011"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9683310355387569
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.37799999699927866
+    },
+    {
+      "query_id": "qa_140",
+      "question": "Bagaimana keterkaitan kewajiban pelaku usaha (UU 8/1999) dengan larangan praktik persaingan tidak sehat (UU 5/1999) dalam konteks penetapan harga?",
+      "expected_regulations": [
+        "UU 5/1999",
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "UU 5/1999",
+        "UU 5/1999",
+        "UU 5/1999",
+        "UU 5/1999",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.4958000063197687
+    },
+    {
+      "query_id": "qa_141",
+      "question": "Dalam pengadaan pemerintah (Perpres 12/2021), bagaimana prinsip transparansi dan akuntabilitas dapat terkait dengan pencegahan korupsi (UU 31/1999)?",
+      "expected_regulations": [
+        "Perpres 12/2021",
+        "UU 31/1999"
+      ],
+      "top_k_citations": [
+        "Perpres 12/2021",
+        "Perpres 12/2021",
+        "Perpres 12/2021",
+        "Perpres 12/2021",
+        "UU 7/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.3941999893868342
+    },
+    {
+      "query_id": "qa_142",
+      "question": "Untuk pendirian PT (UU 40/2007), bagaimana kewajiban pajak (UU 28/2007) biasanya terkait dengan identitas badan usaha?",
+      "expected_regulations": [
+        "UU 28/2007",
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "UU 40/2007",
+        "UU 28/2007",
+        "PP 5/2021",
+        "UU 28/2007",
+        "PP 24/2018"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9674679834891693,
+        "10": 0.9176551163528843
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.5180000007385388
+    },
+    {
+      "query_id": "qa_143",
+      "question": "Dalam konteks upah dan kerja, bagaimana UU 13/2003 berhubungan dengan aturan turunan ketenagakerjaan pada era UU Cipta Kerja (UU 11/2020/PP 35/2021)?",
+      "expected_regulations": [
+        "UU 13/2003",
+        "PP 35/2021",
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 11/2020",
+        "UU 7/2021",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9667147927059906
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.3440000000409782
+    },
+    {
+      "query_id": "qa_144",
+      "question": "Dalam konteks produk kreatif, bagaimana perlindungan Hak Cipta (UU 28/2014) dapat terkait dengan Rahasia Dagang (UU 30/2000) untuk informasi bisnis?",
+      "expected_regulations": [
+        "UU 28/2014",
+        "UU 30/2000"
+      ],
+      "top_k_citations": [
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000",
+        "UU 30/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.31949998810887337
+    },
+    {
+      "query_id": "qa_145",
+      "question": "Dalam perlindungan konsumen, bagaimana larangan berita bohong yang merugikan konsumen (UU ITE) terkait kewajiban informasi yang benar (UU 8/1999)?",
+      "expected_regulations": [
+        "UU 19/2016",
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "UU 19/2016",
+        "UU 8/1995",
+        "UU 8/1999",
+        "UU 8/1999",
+        "UU 8/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9047172294870751,
+        "10": 0.8976178835522929
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.4709999921033159
+    },
+    {
+      "query_id": "qa_146",
+      "question": "Dalam investasi, bagaimana asas kepastian hukum (UU 25/2007) berhubungan dengan perizinan berusaha berbasis risiko (PP 5/2021)?",
+      "expected_regulations": [
+        "UU 25/2007",
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 24/2018",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9484399158780439
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.2610000083222985
+    },
+    {
+      "query_id": "qa_147",
+      "question": "Dalam kegiatan impor, bagaimana rezim kepabeanan (UU 17/2006) dapat beririsan dengan cukai (UU 39/2007) untuk barang tertentu?",
+      "expected_regulations": [
+        "UU 17/2006",
+        "UU 39/2007"
+      ],
+      "top_k_citations": [
+        "UU 17/2006",
+        "UU 39/2007",
+        "UU 17/2006",
+        "UU 17/2006",
+        "UU 7/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9803771474638899
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.219000008655712
+    },
+    {
+      "query_id": "qa_148",
+      "question": "Dalam bidang usaha tertentu, bagaimana Perpres 10/2021 (bidang tertutup/prioritas) dapat mempengaruhi pendirian PT (UU 40/2007) oleh investor?",
+      "expected_regulations": [
+        "Perpres 10/2021",
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8854598815714874,
+        "10": 0.857319485235561
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.20850000146310776
+    },
+    {
+      "query_id": "qa_149",
+      "question": "Dalam sengketa jaminan, bagaimana Hak Tanggungan (UU 4/1996) berbeda objeknya dengan Fidusia (UU 42/1999) dan kapan masing-masing digunakan?",
+      "expected_regulations": [
+        "UU 4/1996",
+        "UU 42/1999"
+      ],
+      "top_k_citations": [
+        "UU 42/1999",
+        "UU 42/1999",
+        "UU 4/1996",
+        "UU 4/1996",
+        "UU 42/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9830168297915423
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.5374000029405579
+    },
+    {
+      "query_id": "qa_150",
+      "question": "Dalam pasar modal, bagaimana larangan insider trading (UU 8/1995) berkaitan dengan kewenangan pengawasan OJK (UU 21/2011)?",
+      "expected_regulations": [
+        "UU 8/1995",
+        "UU 21/2011"
+      ],
+      "top_k_citations": [
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 8/1995",
+        "UU 8/1995"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "multi_hop",
+      "latency_ms": 0.4050999996252358
+    },
+    {
+      "query_id": "qa_151",
+      "question": "Apa perbedaan definisi/ruang lingkup Informasi Elektronik (UU 19/2016) dengan Data Pribadi (UU 27/2022)?",
+      "expected_regulations": [
+        "UU 19/2016",
+        "UU 27/2022"
+      ],
+      "top_k_citations": [
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 19/2016"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9930783166417602
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 1.5330000023823231
+    },
+    {
+      "query_id": "qa_152",
+      "question": "Apa perbedaan fokus UU Perlindungan Konsumen (UU 8/1999) dengan UU Persaingan Usaha (UU 5/1999)?",
+      "expected_regulations": [
+        "UU 5/1999",
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "UU 8/1999",
+        "UU 5/1999",
+        "UU 7/2014",
+        "UU 8/1999",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9558295932317544,
+        "10": 0.949671989333555
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.7508999988203868
+    },
+    {
+      "query_id": "qa_153",
+      "question": "Bandingkan tujuan pengawasan OJK (UU 21/2011) dengan pengawasan KPPU (UU 5/1999).",
+      "expected_regulations": [
+        "UU 5/1999",
+        "UU 21/2011"
+      ],
+      "top_k_citations": [
+        "UU 21/2011",
+        "UU 40/2014",
+        "UU 21/2011",
+        "UU 21/2011",
+        "UU 21/2011"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9047172294870751,
+        "10": 0.9132861715058802
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 1.1931000044569373
+    },
+    {
+      "query_id": "qa_154",
+      "question": "Apa perbedaan objek jaminan antara Hak Tanggungan (UU 4/1996) dan Fidusia (UU 42/1999)?",
+      "expected_regulations": [
+        "UU 4/1996",
+        "UU 42/1999"
+      ],
+      "top_k_citations": [
+        "UU 42/1999",
+        "UU 42/1999",
+        "UU 42/1999",
+        "UU 5/1960",
+        "UU 4/1996"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9610742864774044
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.4490999999688938
+    },
+    {
+      "query_id": "qa_155",
+      "question": "Apa perbedaan peran UU 40/2007 (PT) dengan UU 16/2001 (Yayasan) dalam konteks badan hukum?",
+      "expected_regulations": [
+        "UU 16/2001",
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "UU 16/2001",
+        "UU 40/2014",
+        "UU 16/2001",
+        "UU 10/1998",
+        "UU 4/1996"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9197207891481876,
+        "10": 0.8451850618939637
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.6766000005882233
+    },
+    {
+      "query_id": "qa_156",
+      "question": "Bandingkan mekanisme penyelesaian sengketa melalui arbitrase (UU 30/1999) dengan proses di Pengadilan Niaga (UU 37/2004) untuk perkara pailit.",
+      "expected_regulations": [
+        "UU 37/2004",
+        "UU 30/1999"
+      ],
+      "top_k_citations": [
+        "UU 30/1999",
+        "UU 30/1999",
+        "UU 30/1999",
+        "UU 30/2000",
+        "UU 2/2017"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9286241047843017
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.561400011065416
+    },
+    {
+      "query_id": "qa_157",
+      "question": "Apa perbedaan ruang lingkup perdagangan elektronik (UU 7/2014) dengan penyelenggaraan sistem elektronik (PP 71/2019)?",
+      "expected_regulations": [
+        "PP 71/2019",
+        "UU 7/2014"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.5624000041279942
+    },
+    {
+      "query_id": "qa_158",
+      "question": "Bandingkan dasar pembentukan Perizinan Berusaha Berbasis Risiko (PP 5/2021) dengan rezim OSS awal (PP 24/2018).",
+      "expected_regulations": [
+        "PP 24/2018",
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 24/2018",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 24/2018"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9830168297915423
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 1.0066000104416162
+    },
+    {
+      "query_id": "qa_159",
+      "question": "Apa perbedaan fokus UU 28/2014 (Hak Cipta) dan UU 13/2016 (Paten) terkait perlindungan kekayaan intelektual?",
+      "expected_regulations": [
+        "UU 28/2014",
+        "UU 13/2016"
+      ],
+      "top_k_citations": [
+        "UU 13/2016",
+        "UU 13/2016",
+        "UU 28/2014",
+        "UU 28/2014",
+        "UU 13/2016"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.97484593625304
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.5544000014197081
+    },
+    {
+      "query_id": "qa_160",
+      "question": "Bandingkan definisi/karakter Hak Cipta (UU 28/2014) dengan Merek (UU 20/2016).",
+      "expected_regulations": [
+        "UU 28/2014",
+        "UU 20/2016"
+      ],
+      "top_k_citations": [
+        "UU 20/2016",
+        "UU 20/2016",
+        "UU 20/2016",
+        "UU 20/2016",
+        "UU 28/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9860433320650158
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.46359999396372586
+    },
+    {
+      "query_id": "qa_161",
+      "question": "Apa perbedaan pengaturan jasa konstruksi (UU 2/2017) dengan pengadaan barang/jasa pemerintah (Perpres 12/2021)?",
+      "expected_regulations": [
+        "Perpres 12/2021",
+        "UU 2/2017"
+      ],
+      "top_k_citations": [
+        "UU 2/2017",
+        "UU 2/2017",
+        "UU 2/2017",
+        "UU 2/2017",
+        "Perpres 12/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9963488021549354
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.5372000014176592
+    },
+    {
+      "query_id": "qa_162",
+      "question": "Bandingkan rezim kepabeanan (UU 17/2006) dengan rezim cukai (UU 39/2007) dalam pungutan negara.",
+      "expected_regulations": [
+        "UU 17/2006",
+        "UU 39/2007"
+      ],
+      "top_k_citations": [
+        "UU 39/2007",
+        "UU 28/2007",
+        "UU 17/2006",
+        "UU 7/2021",
+        "UU 39/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8854598815714874,
+        "10": 0.8490359129129414
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.2941999991890043
+    },
+    {
+      "query_id": "qa_163",
+      "question": "Apa perbedaan fokus UU 36/2009 (Kesehatan) dengan UU 32/2009 (Lingkungan) terkait perlindungan publik?",
+      "expected_regulations": [
+        "UU 36/2009",
+        "UU 32/2009"
+      ],
+      "top_k_citations": [
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 36/2009",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.367900007404387
+    },
+    {
+      "query_id": "qa_164",
+      "question": "Bandingkan asas penanaman modal (UU 25/2007) dengan asas pengadaan pemerintah (Perpres 12/2021).",
+      "expected_regulations": [
+        "UU 25/2007",
+        "Perpres 12/2021"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 25/2007",
+        "UU 25/2007",
+        "UU 25/2007",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9876712785649564
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.33569999504834414
+    },
+    {
+      "query_id": "qa_165",
+      "question": "Apa perbedaan kedudukan PP (mis. PP 5/2021) dan Perpres (mis. Perpres 10/2021) sebagai peraturan pelaksana?",
+      "expected_regulations": [
+        "Perpres 10/2021",
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 40/2007",
+        "PP 5/2021",
+        "UU 40/2007",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5437713091520254,
+        "10": 0.5437713091520254
+      },
+      "first_relevant_rank": 3,
+      "category": "comparative",
+      "latency_ms": 0.3536000003805384
+    },
+    {
+      "query_id": "qa_166",
+      "question": "Bandingkan kewajiban informasi konsumen (UU 8/1999) dengan kewajiban informasi PMSE (UU 7/2014) untuk pelaku usaha online.",
+      "expected_regulations": [
+        "UU 8/1999",
+        "UU 7/2014"
+      ],
+      "top_k_citations": [
+        "UU 7/2014",
+        "UU 8/1999",
+        "UU 8/1999",
+        "UU 5/1999",
+        "Perpres 12/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9456352704673577
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.3902000025846064
+    },
+    {
+      "query_id": "qa_167",
+      "question": "Apa perbedaan tujuan UU 7/2021 (HPP) dengan UU 28/2007 (KUP) dalam sistem perpajakan?",
+      "expected_regulations": [
+        "UU 7/2021",
+        "UU 28/2007"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 28/2007",
+        "UU 28/2007",
+        "UU 31/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9671081267272548
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.30590000096708536
+    },
+    {
+      "query_id": "qa_168",
+      "question": "Bandingkan konsep badan hukum PT (UU 40/2007) dengan koperasi (UU 25/1992) dari sisi prinsip keanggotaan.",
+      "expected_regulations": [
+        "UU 25/1992",
+        "UU 40/2007"
+      ],
+      "top_k_citations": [
+        "UU 25/1992",
+        "UU 25/1992",
+        "UU 40/2007",
+        "UU 31/1999",
+        "UU 25/1992"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9605291479810893
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.3873000096064061
+    },
+    {
+      "query_id": "qa_169",
+      "question": "Bandingkan konsep usaha mikro (UU 20/2008) dengan ketentuan pendirian PT (UU 40/2007) dalam konteks skala usaha.",
+      "expected_regulations": [
+        "UU 40/2007",
+        "UU 20/2008"
+      ],
+      "top_k_citations": [
+        "UU 20/2008",
+        "UU 40/2007",
+        "UU 20/2008",
+        "UU 20/2008",
+        "UU 40/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.34100000630132854
+    },
+    {
+      "query_id": "qa_170",
+      "question": "Apa perbedaan ruang lingkup hak atas tanah (UU 5/1960) dengan pembebanan jaminan atas tanah (UU 4/1996)?",
+      "expected_regulations": [
+        "UU 5/1960",
+        "UU 4/1996"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 5/1960",
+        "UU 5/1960",
+        "UU 4/1996",
+        "UU 5/1960"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9766325382721556
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.27999999292660505
+    },
+    {
+      "query_id": "qa_171",
+      "question": "Secara umum, apa yang berubah dalam pengaturan ketenagakerjaan setelah UU Cipta Kerja (UU 11/2020) dibanding UU 13/2003?",
+      "expected_regulations": [
+        "UU 13/2003",
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 31/2000",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 11/2020"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.7606395682357036,
+        "10": 0.7982650576674577
+      },
+      "first_relevant_rank": 2,
+      "category": "temporal",
+      "latency_ms": 0.3622999938670546
+    },
+    {
+      "query_id": "qa_172",
+      "question": "Bagaimana PP 35/2021 diposisikan sebagai aturan turunan/implementasi perubahan ketenagakerjaan pasca UU Cipta Kerja?",
+      "expected_regulations": [
+        "PP 35/2021",
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 11/2020",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 11/2020"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6240505200038379,
+        "10": 0.6340499455108034
+      },
+      "first_relevant_rank": 2,
+      "category": "temporal",
+      "latency_ms": 0.4606000002240762
+    },
+    {
+      "query_id": "qa_173",
+      "question": "Dalam OSS, bagaimana pergeseran dari PP 24/2018 ke PP 5/2021 dalam model perizinan berusaha?",
+      "expected_regulations": [
+        "PP 24/2018",
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 24/2018",
+        "PP 24/2018",
+        "PP 24/2018",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9670943502702474
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.33760000951588154
+    },
+    {
+      "query_id": "qa_174",
+      "question": "Apakah daftar bidang usaha tertutup/prioritas berubah setelah Perpres 10/2021 dibanding rezim perpres sebelumnya (secara umum)?",
+      "expected_regulations": [
+        "Perpres 10/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9047172294870751,
+        "10": 0.888111130388384
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.29599999834317714
+    },
+    {
+      "query_id": "qa_175",
+      "question": "Dalam konteks perlindungan data, bagaimana posisi PP 71/2019 ketika UU 27/2022 diberlakukan (secara umum)?",
+      "expected_regulations": [
+        "PP 71/2019",
+        "UU 27/2022"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022",
+        "UU 27/2022"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.7606395682357036,
+        "10": 0.7848693006025949
+      },
+      "first_relevant_rank": 2,
+      "category": "temporal",
+      "latency_ms": 0.3107999946223572
+    },
+    {
+      "query_id": "qa_176",
+      "question": "Bagaimana perubahan kebijakan perpajakan yang dibawa UU 7/2021 dibanding kerangka KUP (UU 28/2007) secara garis besar?",
+      "expected_regulations": [
+        "UU 7/2021",
+        "UU 28/2007"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 7/2014",
+        "UU 28/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.95022367789117
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.4594999918481335
+    },
+    {
+      "query_id": "qa_177",
+      "question": "Apa implikasi umum perubahan aturan PHK pasca UU Cipta Kerja dibanding UU 13/2003?",
+      "expected_regulations": [
+        "UU 13/2003",
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "UU 11/2020",
+        "UU 31/2000",
+        "UU 28/2014",
+        "UU 5/1960",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8503449055347546,
+        "10": 0.8148744686404845
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.3181999927619472
+    },
+    {
+      "query_id": "qa_178",
+      "question": "Bagaimana penyesuaian pengaturan PKWT setelah hadirnya PP 35/2021 (sebagai aturan terbaru) dibandingkan praktik sebelumnya secara umum?",
+      "expected_regulations": [
+        "PP 35/2021"
+      ],
+      "top_k_citations": [
+        "PP 35/2021",
+        "PP 35/2021",
+        "PP 35/2021",
+        "PP 35/2021",
+        "UU 7/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9896062251871525
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.2663000050233677
+    },
+    {
+      "query_id": "qa_179",
+      "question": "Dalam regulasi investasi, bagaimana pengaturan bidang usaha (Perpres 10/2021) berkembang dari kebijakan daftar investasi sebelumnya (secara umum)?",
+      "expected_regulations": [
+        "Perpres 10/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "UU 25/2007",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9469024295259745,
+        "10": 0.9469024295259745
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.2835999912349507
+    },
+    {
+      "query_id": "qa_180",
+      "question": "Bagaimana evolusi perlindungan transaksi elektronik dari UU ITE (UU 19/2016) menuju fokus perlindungan data (UU 27/2022) secara umum?",
+      "expected_regulations": [
+        "UU 19/2016",
+        "UU 27/2022"
+      ],
+      "top_k_citations": [
+        "UU 19/2016",
+        "UU 19/2016",
+        "PP 71/2019",
+        "UU 19/2016",
+        "UU 19/2016"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9558295932317544,
+        "10": 0.9558295932317544
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.3296999930171296
+    },
+    {
+      "query_id": "qa_181",
+      "question": "Dalam pengadaan, bagaimana perubahan kebijakan pengadaan yang termuat dalam Perpres 12/2021 sebagai perubahan terhadap peraturan pengadaan sebelumnya (secara umum)?",
+      "expected_regulations": [
+        "Perpres 12/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 12/2021",
+        "Perpres 12/2021",
+        "UU 7/2014",
+        "UU 25/2007",
+        "UU 7/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9058653015743079
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.31999999191612005
+    },
+    {
+      "query_id": "qa_182",
+      "question": "Bagaimana posisi PP 71/2019 sebagai aturan yang memperbarui penyelenggaraan sistem elektronik dibanding pengaturan sebelumnya (secara umum)?",
+      "expected_regulations": [
+        "PP 71/2019"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.29799999902024865
+    },
+    {
+      "query_id": "qa_183",
+      "question": "Bagaimana perubahan kerangka investasi pasca UU Cipta Kerja terkait perizinan berusaha (dihubungkan ke PP 5/2021) secara garis besar?",
+      "expected_regulations": [
+        "PP 5/2021",
+        "UU 11/2020"
+      ],
+      "top_k_citations": [
+        "PP 24/2018",
+        "UU 31/2000",
+        "Perpres 10/2021",
+        "UU 3/2014",
+        "UU 25/2007"
+      ],
+      "reciprocal_rank": 0.16666666666666666,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.49954410894683854
+      },
+      "first_relevant_rank": 6,
+      "category": "temporal",
+      "latency_ms": 0.28050001128576696
+    },
+    {
+      "query_id": "qa_184",
+      "question": "Bagaimana perubahan umum pengaturan usaha mikro/kecil (UU 20/2008) ketika kebijakan kemudahan berusaha (PP 5/2021) diperkenalkan?",
+      "expected_regulations": [
+        "UU 20/2008",
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 20/2008",
+        "PP 5/2021",
+        "PP 24/2018",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6934264036172708,
+        "10": 0.6978817289434457
+      },
+      "first_relevant_rank": 2,
+      "category": "temporal",
+      "latency_ms": 0.35149999894201756
+    },
+    {
+      "query_id": "qa_185",
+      "question": "Bagaimana perkembangan pengaturan perdagangan elektronik (UU 7/2014) sejalan dengan penguatan aturan sistem elektronik (PP 71/2019) secara umum?",
+      "expected_regulations": [
+        "PP 71/2019",
+        "UU 7/2014"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "UU 19/2016",
+        "UU 7/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9531641314941091
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.7502999942516908
+    },
+    {
+      "query_id": "qa_186",
+      "question": "Dalam persaingan usaha, bagaimana peran KPPU (UU 5/1999) tetap relevan ketika model usaha digital/PMSE berkembang (kaitkan ke UU 7/2014) secara umum?",
+      "expected_regulations": [
+        "UU 5/1999",
+        "UU 7/2014"
+      ],
+      "top_k_citations": [
+        "UU 5/1999",
+        "Perpres 12/2021",
+        "UU 5/1999",
+        "PP 71/2019",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8854598815714874,
+        "10": 0.867749820489524
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.3208999987691641
+    },
+    {
+      "query_id": "qa_187",
+      "question": "Bagaimana perubahan umum administrasi perpajakan ketika UU HPP (UU 7/2021) mulai diterapkan?",
+      "expected_regulations": [
+        "UU 7/2021"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 7/2021",
+        "UU 25/2007",
+        "UU 7/2021",
+        "UU 7/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9558295932317544,
+        "10": 0.9558295932317544
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.40020000596996397
+    },
+    {
+      "query_id": "qa_188",
+      "question": "Apa kewajiban pelaku usaha untuk memberikan informasi yang benar kepada konsumen menurut UU 8/1999?",
+      "expected_regulations": [
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "UU 8/1999",
+        "UU 7/2014",
+        "UU 11/2020",
+        "UU 8/1999",
+        "UU 8/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8529278650606567,
+        "10": 0.8442380676954223
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.5054000066593289
+    },
+    {
+      "query_id": "qa_189",
+      "question": "Apa peran KPPU dalam menilai dugaan kartel/penetapan harga menurut UU 5/1999?",
+      "expected_regulations": [
+        "UU 5/1999"
+      ],
+      "top_k_citations": [
+        "UU 5/1999",
+        "UU 17/2006",
+        "UU 7/2021",
+        "UU 5/1999",
+        "UU 5/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8529278650606567,
+        "10": 0.8485833840018
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.9877999982563779
+    },
+    {
+      "query_id": "qa_190",
+      "question": "Apa contoh bentuk perizinan untuk kegiatan berisiko tinggi menurut PP 5/2021?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "UU 11/2020",
+        "PP 5/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9610742864774044
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.2842999965650961
+    },
+    {
+      "query_id": "qa_191",
+      "question": "Apa saja unsur umum larangan perbuatan curang/menyesatkan konsumen dalam transaksi elektronik (kaitkan UU ITE Pasal 28)?",
+      "expected_regulations": [
+        "UU 19/2016"
+      ],
+      "top_k_citations": [
+        "UU 19/2016",
+        "UU 8/1995",
+        "UU 7/2014",
+        "UU 19/2016",
+        "UU 19/2016"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8529278650606567,
+        "10": 0.8270433092474515
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.21769999875687063
+    },
+    {
+      "query_id": "qa_192",
+      "question": "Apa tujuan utama pengadaan barang/jasa pemerintah menurut Perpres 12/2021?",
+      "expected_regulations": [
+        "Perpres 12/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 12/2021",
+        "UU 7/2014",
+        "Perpres 12/2021",
+        "UU 25/2007",
+        "UU 7/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9197207891481876,
+        "10": 0.8710785440003369
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.3299999953014776
+    },
+    {
+      "query_id": "qa_193",
+      "question": "Apa hak-hak dasar konsumen menurut UU 8/1999 (ringkas)?",
+      "expected_regulations": [
+        "UU 8/1999"
+      ],
+      "top_k_citations": [
+        "UU 8/1999",
+        "UU 36/2009",
+        "UU 5/1960",
+        "UU 31/2000",
+        "UU 8/1999"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8503449055347546,
+        "10": 0.8503449055347546
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.4589000018313527
+    },
+    {
+      "query_id": "qa_194",
+      "question": "Apa jenis perizinan/identitas dasar yang diberikan OSS menurut PP 24/2018?",
+      "expected_regulations": [
+        "PP 24/2018"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 24/2018",
+        "PP 24/2018",
+        "PP 24/2018",
+        "UU 6/2011"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.7328286204777911,
+        "10": 0.7328286204777911
+      },
+      "first_relevant_rank": 2,
+      "category": "factual",
+      "latency_ms": 0.42949999624397606
+    },
+    {
+      "query_id": "qa_195",
+      "question": "Apa tujuan UU 3/2014 tentang Perindustrian?",
+      "expected_regulations": [
+        "UU 3/2014"
+      ],
+      "top_k_citations": [
+        "UU 3/2014",
+        "UU 3/2014",
+        "UU 31/2000",
+        "UU 3/2014",
+        "UU 3/2014"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9558295932317544,
+        "10": 0.943473299121064
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.21410000044852495
+    },
+    {
+      "query_id": "qa_196",
+      "question": "Apa yang termasuk barang kena cukai dalam UU 39/2007 (contoh)?",
+      "expected_regulations": [
+        "UU 39/2007"
+      ],
+      "top_k_citations": [
+        "UU 39/2007",
+        "UU 7/2021",
+        "UU 17/2006",
+        "UU 7/2021",
+        "UU 39/2007"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8503449055347546,
+        "10": 0.7946775459209724
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.40380000427830964
+    },
+    {
+      "query_id": "qa_197",
+      "question": "Apa itu bidang usaha prioritas dalam Perpres 10/2021 (contoh sifatnya)?",
+      "expected_regulations": [
+        "Perpres 10/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "Perpres 10/2021",
+        "UU 7/2014",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9828920819566879,
+        "10": 0.9828920819566879
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.3814000083366409
+    },
+    {
+      "query_id": "qa_198",
+      "question": "Apa kewajiban umum Penyelenggara Sistem Elektronik untuk menjaga kerahasiaan data menurut PP 71/2019?",
+      "expected_regulations": [
+        "PP 71/2019"
+      ],
+      "top_k_citations": [
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019",
+        "PP 71/2019"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "factual",
+      "latency_ms": 0.23079999664332718
+    },
+    {
+      "query_id": "qa_199",
+      "question": "Apa syarat umum pailit dalam UU 37/2004?",
+      "expected_regulations": [
+        "UU 37/2004"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 13/2003",
+        "UU 36/2009",
+        "UU 25/2007",
+        "UU 36/2009"
+      ],
+      "reciprocal_rank": 0.0,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": null,
+      "category": "factual",
+      "latency_ms": 0.20419999782461673
+    },
+    {
+      "query_id": "qa_200",
+      "question": "Apa unsur umum perbuatan korupsi yang berkaitan dengan kerugian keuangan negara (UU 31/1999) secara ringkas?",
+      "expected_regulations": [
+        "UU 31/1999"
+      ],
+      "top_k_citations": [
+        "UU 7/2021",
+        "UU 16/2001",
+        "UU 31/1999",
+        "UU 31/1999",
+        "UU 7/2021"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.5706417189553201,
+        "10": 0.5706417189553201
+      },
+      "first_relevant_rank": 3,
+      "category": "factual",
+      "latency_ms": 0.1984999980777502
+    },
+    {
+      "query_id": "qa_201",
+      "question": "Apa yang dimaksud dengan bidang usaha tertutup dalam Perpres 10/2021?",
+      "expected_regulations": [
+        "Perpres 10/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 10/2021",
+        "UU 25/2007",
+        "PP 5/2021",
+        "UU 25/2007",
+        "PP 24/2018"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.8175295903539445
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.4273999948054552
+    },
+    {
+      "query_id": "qa_202",
+      "question": "Apa yang dimaksud dengan Pengadaan Barang/Jasa Pemerintah menurut Perpres 12/2021 (secara umum)?",
+      "expected_regulations": [
+        "Perpres 12/2021"
+      ],
+      "top_k_citations": [
+        "Perpres 12/2021",
+        "UU 25/2007",
+        "Perpres 12/2021",
+        "UU 7/2014",
+        "Perpres 12/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8854598815714874,
+        "10": 0.8667163765466583
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.35000000207219273
+    },
+    {
+      "query_id": "qa_203",
+      "question": "Apa yang dimaksud dengan Waktu Kerja menurut UU 13/2003 (secara umum)?",
+      "expected_regulations": [
+        "UU 13/2003"
+      ],
+      "top_k_citations": [
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 13/2003",
+        "UU 13/2003"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 1.0
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.3412999940337613
+    },
+    {
+      "query_id": "qa_204",
+      "question": "Apa yang dimaksud dengan Penawaran Umum menurut UU 8/1995?",
+      "expected_regulations": [
+        "UU 8/1995"
+      ],
+      "top_k_citations": [
+        "UU 25/2007",
+        "UU 8/1995",
+        "UU 7/2014",
+        "UU 13/2003",
+        "Perpres 10/2021"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6309297535714575,
+        "10": 0.5640920940185894
+      },
+      "first_relevant_rank": 2,
+      "category": "definitional",
+      "latency_ms": 0.2921000123023987
+    },
+    {
+      "query_id": "qa_205",
+      "question": "Apa yang dimaksud dengan Hak Moral dalam UU 28/2014?",
+      "expected_regulations": [
+        "UU 28/2014"
+      ],
+      "top_k_citations": [
+        "UU 5/1960",
+        "UU 36/2009",
+        "UU 25/2007",
+        "UU 5/1960",
+        "UU 32/2009"
+      ],
+      "reciprocal_rank": 0.05263157894736842,
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 0.0
+      },
+      "ndcg_at": {
+        "5": 0.0,
+        "10": 0.0
+      },
+      "first_relevant_rank": 19,
+      "category": "definitional",
+      "latency_ms": 0.24870000197552145
+    },
+    {
+      "query_id": "qa_206",
+      "question": "Apa yang dimaksud dengan Invensi dalam UU 13/2016?",
+      "expected_regulations": [
+        "UU 13/2016"
+      ],
+      "top_k_citations": [
+        "UU 31/2000",
+        "UU 13/2016",
+        "UU 13/2016",
+        "UU 25/2007",
+        "UU 13/2016"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.7122630665145961,
+        "10": 0.7122630665145961
+      },
+      "first_relevant_rank": 2,
+      "category": "definitional",
+      "latency_ms": 0.20229999790899456
+    },
+    {
+      "query_id": "qa_207",
+      "question": "Apa yang dimaksud dengan Sertifikat Standar dalam perizinan berbasis risiko (PP 5/2021) secara umum?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 5/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.9876712785649564
+      },
+      "first_relevant_rank": 1,
+      "category": "definitional",
+      "latency_ms": 0.19120000069960952
+    },
+    {
+      "query_id": "qa_208",
+      "question": "Apa perbedaan umum antara izin dan Sertifikat Standar dalam PP 5/2021?",
+      "expected_regulations": [
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "PP 5/2021",
+        "PP 24/2018",
+        "UU 3/2014",
+        "UU 31/2000"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 1.0,
+        "10": 0.8726787744521319
+      },
+      "first_relevant_rank": 1,
+      "category": "comparative",
+      "latency_ms": 0.18789999012369663
+    },
+    {
+      "query_id": "qa_209",
+      "question": "Dalam perizinan berbasis risiko, bagaimana NIB berfungsi sebagai identitas pelaku usaha (PP 24/2018) dan bagaimana perannya setelah PP 5/2021?",
+      "expected_regulations": [
+        "PP 24/2018",
+        "PP 5/2021"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "UU 11/2020",
+        "Perpres 49/2021",
+        "PP 24/2018",
+        "Perpres 49/2021"
+      ],
+      "reciprocal_rank": 1.0,
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8772153153380493,
+        "10": 0.8070380459557518
+      },
+      "first_relevant_rank": 1,
+      "category": "temporal",
+      "latency_ms": 0.18909999926108867
+    },
+    {
+      "query_id": "qa_210",
+      "question": "Jika pelaku usaha ingin melakukan PMSE, regulasi mana yang relevan untuk kewajiban informasi dan perlindungan konsumen (multi-regulasi)?",
+      "expected_regulations": [
+        "UU 8/1999",
+        "UU 7/2014"
+      ],
+      "top_k_citations": [
+        "PP 5/2021",
+        "UU 8/1999",
+        "PP 71/2019",
+        "UU 7/2014",
+        "Perpres 12/2021"
+      ],
+      "reciprocal_rank": 0.5,
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.6509209298071326,
+        "10": 0.6338412308988606
+      },
+      "first_relevant_rank": 2,
+      "category": "multi_hop",
+      "latency_ms": 0.19099999917671084
+    }
+  ],
+  "per_category": [
+    {
+      "category": "comparative",
+      "num_queries": 21,
+      "mrr": 0.9682539682539681,
+      "recall_at": {
+        "1": 0.9523809523809523,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9607277603097097,
+        "10": 0.9349636756872053
+      }
+    },
+    {
+      "category": "definitional",
+      "num_queries": 49,
+      "mrr": 0.7663443213179354,
+      "recall_at": {
+        "1": 0.673469387755102,
+        "3": 0.8367346938775511,
+        "5": 0.8775510204081632,
+        "10": 0.9387755102040817
+      },
+      "ndcg_at": {
+        "5": 0.7685709573032148,
+        "10": 0.7773528483540935
+      }
+    },
+    {
+      "category": "factual",
+      "num_queries": 101,
+      "mrr": 0.7408983752234982,
+      "recall_at": {
+        "1": 0.6534653465346535,
+        "3": 0.8217821782178217,
+        "5": 0.8514851485148515,
+        "10": 0.9207920792079208
+      },
+      "ndcg_at": {
+        "5": 0.7406040817782554,
+        "10": 0.7415400270269229
+      }
+    },
+    {
+      "category": "multi_hop",
+      "num_queries": 21,
+      "mrr": 0.9444444444444444,
+      "recall_at": {
+        "1": 0.9047619047619048,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.9396697457095202,
+        "10": 0.9201941101911506
+      }
+    },
+    {
+      "category": "temporal",
+      "num_queries": 18,
+      "mrr": 0.8425925925925926,
+      "recall_at": {
+        "1": 0.7222222222222222,
+        "3": 0.9444444444444444,
+        "5": 0.9444444444444444,
+        "10": 1.0
+      },
+      "ndcg_at": {
+        "5": 0.8433799539959301,
+        "10": 0.8564943838639864
+      }
+    }
+  ],
+  "latency": {
+    "p50_ms": 0.3520500031299889,
+    "p95_ms": 0.9464149974519378,
+    "p99_ms": 1.5196170026320028,
+    "mean_ms": 0.45048095260946347,
+    "min_ms": 0.1832999987527728,
+    "max_ms": 7.495700003346428
+  },
+  "regression": [
+    {
+      "metric_name": "mrr",
+      "current": 0.7986425760737405,
+      "baseline": 0.7261050797069898,
+      "delta": 0.07253749636675066,
+      "delta_pct": 0.09989944760615395,
+      "status": "ok"
+    },
+    {
+      "metric_name": "hit_rate",
+      "current": 0.719047619047619,
+      "baseline": 0.6363636363636364,
+      "delta": 0.08268398268398269,
+      "delta_pct": 0.12993197278911567,
+      "status": "ok"
+    },
+    {
+      "metric_name": "recall_at@1",
+      "current": 0.719047619047619,
+      "baseline": 0.6363636363636364,
+      "delta": 0.08268398268398269,
+      "delta_pct": 0.12993197278911567,
+      "status": "ok"
+    },
+    {
+      "metric_name": "recall_at@3",
+      "current": 0.8714285714285714,
+      "baseline": 0.7954545454545454,
+      "delta": 0.07597402597402603,
+      "delta_pct": 0.09551020408163273,
+      "status": "ok"
+    },
+    {
+      "metric_name": "recall_at@5",
+      "current": 0.8952380952380953,
+      "baseline": 0.8409090909090909,
+      "delta": 0.05432900432900434,
+      "delta_pct": 0.06460746460746461,
+      "status": "ok"
+    },
+    {
+      "metric_name": "recall_at@10",
+      "current": 0.9476190476190476,
+      "baseline": 0.9204545454545454,
+      "delta": 0.02716450216450217,
+      "delta_pct": 0.029512051734273962,
+      "status": "ok"
+    },
+    {
+      "metric_name": "ndcg_at@5",
+      "current": 0.7978579807894851,
+      "baseline": 0.0,
+      "delta": 0.7978579807894851,
+      "delta_pct": 0.0,
+      "status": "ok"
+    },
+    {
+      "metric_name": "ndcg_at@10",
+      "current": 0.7969573557717476,
+      "baseline": 0.0,
+      "delta": 0.7969573557717476,
+      "delta_pct": 0.0,
+      "status": "ok"
+    }
+  ]
+}
