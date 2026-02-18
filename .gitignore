@@ -71,3 +71,54 @@ eval_results.json
 # Windows device files
 nul
 backend/nul
+
+# Qdrant corpus exports (large, generated)
+backend/data/exports/*.json
+
+# E2E evaluation artifacts (generated, large)
+eval_e2e_results*.json
+eval_e2e_results*.tmp
+eval_results_*.json
+eval_output*.txt
+eval_qdrant_output.txt
+backend/eval_e2e_*.log
+backend/eval_e2e_results*.json*
+backend/test_results.txt
+
+# QA generation artifacts (batch outputs)
+generated_qa_pairs_batch*.json
+generation_report_batch*.json
+rejected_pairs_batch*.json
+human_verification_batch*.md
+verification_report*.md
+excluded_regs_report.json
+
+# Temporary scripts & working files
+check_ingestion_status.py
+monitor_and_complete.py
+monitor_ingestion.ps1
+robust_monitor.py
+wait_for_ingestion.py
+verify_phase3.py
+_analyze_corpus.py
+ingestion_log.txt
+ingestion_pid.txt
+monitor_pid.txt
+missing_regulations.txt
+uncovered_regulations.txt
+priority_regulations.json
+untracked.txt
+
+# Session/agent working files
+.md
+.opencode_session_flags
+session123.md
+learnings.md
+nvidia_embedding_research.md
+phase_dependency_analysis.md
+phase_timeline_comparison.txt
+
+# Golden QA backups (keep only canonical version)
+tests/deepeval/golden_qa_backup*.json
+tests/deepeval/golden_qa_small.json
+tests/deepeval/golden_qa_temp*.json

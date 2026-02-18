@@ -1,7 +1,8 @@
 """
 RAG Chain Module for Indonesian Legal Q&A
 
-Uses NVIDIA NIM Kimi K2 as the LLM with custom retriever for legal documents.
+Uses GitHub Copilot Chat API as the default LLM provider (GPT-4o).
+Also supports NVIDIA NIM as an alternative provider.
 Provides citations and "I don't know" guardrails.
 """
 
@@ -16,7 +17,6 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-import requests
 from dotenv import load_dotenv
 
 from retriever import HybridRetriever, SearchResult
@@ -28,12 +28,18 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Constants
-NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
-NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
-NVIDIA_MODEL = "moonshotai/kimi-k2-instruct"  # Correct model name per NVIDIA docs
-MAX_TOKENS = 4096
-TEMPERATURE = 0.15
+# LLM client (moved to llm_client.py — re-export for backward compatibility)
+from llm_client import (  # noqa: E402
+    LLMClient,
+    NVIDIANimClient,
+    CopilotChatClient,
+    create_llm_client,
+    NVIDIA_API_KEY,
+    NVIDIA_API_URL,
+    NVIDIA_MODEL,
+    MAX_TOKENS,
+    TEMPERATURE,
+)
 
 # Retriever configuration
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
@@ -182,184 +188,13 @@ class RAGResponse:
     validation: ValidationResult | None = None  # Answer validation result
 
 
-class NVIDIANimClient:
-    """Client for NVIDIA NIM API with Kimi K2 model (moonshotai/kimi-k2-instruct)."""
-    
-    def __init__(
-        self,
-        api_key: str | None = None,
-        api_url: str = NVIDIA_API_URL,
-        model: str = NVIDIA_MODEL,
-        max_tokens: int = MAX_TOKENS,
-        temperature: float = TEMPERATURE,
-    ):
-        self.api_key = api_key or NVIDIA_API_KEY
-        if not self.api_key:
-            raise ValueError("NVIDIA_API_KEY not found in environment variables")
-        
-        self.api_url = api_url
-        self.model = model
-        self.max_tokens = max_tokens
-        self.temperature = temperature
-        
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-        }
-    
-    def generate(
-        self,
-        user_message: str,
-        system_message: str | None = None,
-    ) -> str:
-        """Generate response from NVIDIA NIM API."""
-        messages = []
-        
-        if system_message:
-            messages.append({
-                "role": "system",
-                "content": system_message,
-            })
-        
-        messages.append({
-            "role": "user",
-            "content": user_message,
-        })
-        
-        payload = {
-            "model": self.model,
-            "messages": messages,
-            "max_tokens": self.max_tokens,
-            "temperature": self.temperature,
-            "stream": False,
-        }
-        
-        max_retries = 3
-        last_exception: Exception | None = None
-        for attempt in range(max_retries):
-            try:
-                response = requests.post(
-                    self.api_url,
-                    headers=self.headers,
-                    json=payload,
-                    timeout=120,
-                )
-                response.raise_for_status()
-                
-                result = response.json()
-                message = result["choices"][0]["message"]
-                
-                # Some models may return 'reasoning' or 'reasoning_content' instead of 'content'
-                content = (
-                    message.get("content") 
-                    or message.get("reasoning") 
-                    or message.get("reasoning_content") 
-                    or ""
-                )
-                
-                if not content:
-                    logger.warning(f"Empty response from model. Full message: {message}")
-                    
-                return content
-            
-            except requests.exceptions.RequestException as e:
-                last_exception = e
-                if attempt < max_retries - 1:
-                    wait_time = 2 ** attempt  # 1s, 2s, 4s
-                    logger.warning(
-                        f"NVIDIA NIM API attempt {attempt + 1}/{max_retries} failed: {e}. "
-                        f"Retrying in {wait_time}s..."
-                    )
-                    time.sleep(wait_time)
-                else:
-                    logger.error(f"NVIDIA NIM API error after {max_retries} attempts: {e}")
-        
-        raise RuntimeError(
-            "Gagal mendapatkan respons dari layanan AI. Silakan coba lagi nanti."
-        ) from last_exception
-    
-    def generate_stream(
-        self,
-        user_message: str,
-        system_message: str | None = None,
-    ):
-        """Generate streaming response from NVIDIA NIM API. Yields chunks of text."""
-        messages = []
-        
-        if system_message:
-            messages.append({
-                "role": "system",
-                "content": system_message,
-            })
-        
-        messages.append({
-            "role": "user",
-            "content": user_message,
-        })
-        
-        payload = {
-            "model": self.model,
-            "messages": messages,
-            "max_tokens": self.max_tokens,
-            "temperature": self.temperature,
-            "stream": True,
-        }
-        
-        max_retries = 3
-        last_exception: Exception | None = None
-        for attempt in range(max_retries):
-            try:
-                response = requests.post(
-                    self.api_url,
-                    headers=self.headers,
-                    json=payload,
-                    timeout=120,
-                    stream=True,
-                )
-                response.raise_for_status()
-                
-                for line in response.iter_lines():
-                    if line:
-                        line = line.decode('utf-8')
-                        if line.startswith('data: '):
-                            data = line[6:]  # Remove 'data: ' prefix
-                            if data == '[DONE]':
-                                break
-                            try:
-                                chunk = json.loads(data)
-                                if 'choices' in chunk and len(chunk['choices']) > 0:
-                                    delta = chunk['choices'][0].get('delta', {})
-                                    content = delta.get('content', '')
-                                    if content:
-                                        yield content
-                            except json.JSONDecodeError:
-                                continue
-                return  # Success — exit retry loop
-            
-            except requests.exceptions.RequestException as e:
-                last_exception = e
-                if attempt < max_retries - 1:
-                    wait_time = 2 ** attempt  # 1s, 2s, 4s
-                    logger.warning(
-                        f"NVIDIA NIM API streaming attempt {attempt + 1}/{max_retries} failed: {e}. "
-                        f"Retrying in {wait_time}s..."
-                    )
-                    time.sleep(wait_time)
-                else:
-                    logger.error(f"NVIDIA NIM API streaming error after {max_retries} attempts: {e}")
-        
-        raise RuntimeError(
-            "Gagal mendapatkan respons streaming dari layanan AI. Silakan coba lagi nanti."
-        ) from last_exception
-
-
 class LegalRAGChain:
     """RAG Chain for Indonesian Legal Q&A with citations."""
     
     def __init__(
         self,
         retriever: HybridRetriever | None = None,
-        llm_client: NVIDIANimClient | None = None,
+        llm_client: LLMClient | NVIDIANimClient | None = None,
         top_k: int = 5,
     ):
         # Initialize retriever
@@ -373,10 +208,10 @@ class LegalRAGChain:
         else:
             self.retriever = retriever
         
-        # Initialize LLM client
+        # Initialize LLM client (defaults to Copilot Chat API / GPT-4o)
         if llm_client is None:
-            logger.info("Initializing NVIDIA NIM client...")
-            self.llm_client = NVIDIANimClient()
+            logger.info("Initializing Copilot Chat client (default)...")
+            self.llm_client = create_llm_client("copilot")
         else:
             self.llm_client = llm_client
         
@@ -716,6 +551,7 @@ JSON:"""
         filter_jenis_dokumen: str | None = None,
         top_k: int | None = None,
         mode: str = "synthesized",
+        skip_grounding: bool = False,
     ) -> RAGResponse:
         """
         Query the RAG chain with a question.
@@ -725,6 +561,8 @@ JSON:"""
             filter_jenis_dokumen: Optional filter by document type (UU, PP, Perpres, etc.)
             top_k: Number of documents to retrieve
             mode: Response mode - "synthesized" for AI answer, "verbatim" for direct quotes
+            skip_grounding: If True, skip the LLM-as-judge grounding verification call
+                (saves ~30% time per query). Grounding fields will be None/empty.
         
         Returns:
             RAGResponse with answer, citations, and sources
@@ -829,9 +667,16 @@ JSON:"""
             logger.warning(f"Answer validation warnings: {validation.warnings}")
         
         # Step 5: LLM-as-judge grounding verification
-        grounding_score, ungrounded_claims = self._verify_grounding(answer, citations)
-        validation.grounding_score = grounding_score
-        validation.ungrounded_claims = ungrounded_claims
+        if skip_grounding:
+            grounding_score = None
+            ungrounded_claims: list[str] = []
+            validation.grounding_score = grounding_score
+            validation.ungrounded_claims = ungrounded_claims
+            validation.hallucination_risk = "skipped"
+        else:
+            grounding_score, ungrounded_claims = self._verify_grounding(answer, citations)
+            validation.grounding_score = grounding_score
+            validation.ungrounded_claims = ungrounded_claims
         
         # Step 6: Build response
         return RAGResponse(

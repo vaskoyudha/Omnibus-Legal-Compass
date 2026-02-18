@@ -111,7 +111,7 @@ class TestRAGResponse:
 class TestNVIDIANimClient:
     """Tests for NVIDIANimClient with mocked requests."""
 
-    @patch("rag_chain.requests.post")
+    @patch("llm_client.requests.post")
     def test_generate_returns_content(self, mock_post):
         mock_resp = MagicMock()
         mock_resp.json.return_value = {
@@ -125,7 +125,7 @@ class TestNVIDIANimClient:
         assert result == "Jawaban hukum"
         mock_post.assert_called_once()
 
-    @patch("rag_chain.requests.post")
+    @patch("llm_client.requests.post")
     def test_generate_with_system_message(self, mock_post):
         mock_resp = MagicMock()
         mock_resp.json.return_value = {
@@ -142,7 +142,7 @@ class TestNVIDIANimClient:
         messages = payload["messages"]
         assert messages[0]["role"] == "system"
 
-    @patch("rag_chain.requests.post")
+    @patch("llm_client.requests.post")
     def test_generate_handles_reasoning_content(self, mock_post):
         mock_resp = MagicMock()
         mock_resp.json.return_value = {
@@ -155,8 +155,8 @@ class TestNVIDIANimClient:
         result = client.generate("q")
         assert result == "reasoning answer"
 
-    @patch("rag_chain.time.sleep")
-    @patch("rag_chain.requests.post")
+    @patch("llm_client.time.sleep")
+    @patch("llm_client.requests.post")
     def test_generate_api_error(self, mock_post, mock_sleep):
         import requests as req
         mock_post.side_effect = req.exceptions.ConnectionError("timeout")
@@ -168,7 +168,7 @@ class TestNVIDIANimClient:
         assert mock_post.call_count == 3
         assert mock_sleep.call_count == 2
 
-    @patch("rag_chain.requests.post")
+    @patch("llm_client.requests.post")
     def test_generate_stream_yields_chunks(self, mock_post):
         # Simulate SSE stream
         lines = [
@@ -186,7 +186,7 @@ class TestNVIDIANimClient:
         assert chunks == ["chunk1", "chunk2"]
 
     def test_init_without_key_raises(self):
-        with patch("rag_chain.NVIDIA_API_KEY", None):
+        with patch("llm_client.NVIDIA_API_KEY", None):
             with pytest.raises(ValueError, match="NVIDIA_API_KEY"):
                 NVIDIANimClient(api_key=None)
 

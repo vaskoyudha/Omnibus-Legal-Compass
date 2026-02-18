@@ -2,7 +2,7 @@
 Shared pytest fixtures for Omnibus Legal Compass test suite.
 
 Provides mocked dependencies for backend testing without requiring
-live Qdrant or NVIDIA NIM API connections.
+live Qdrant or LLM API connections.
 """
 
 from __future__ import annotations
@@ -121,15 +121,16 @@ def mock_qdrant_client():
         yield mock_client
 
 
-# ── NVIDIA NIM LLM mock ─────────────────────────────────────────────────────
+# ── LLM mock ─────────────────────────────────────────────────────────────
 
 
 @pytest.fixture
 def mock_nvidia_llm():
     """
-    Patch NVIDIANimClient to return a canned legal response.
+    Patch create_llm_client to return a canned legal response.
 
-    Avoids real NVIDIA API calls during testing.
+    Avoids real LLM API calls during testing.
+    The fixture name is kept as mock_nvidia_llm for backward compatibility.
     """
     canned_response = (
         "Berdasarkan Undang-Undang Nomor 40 Tahun 2007 tentang Perseroan Terbatas, "
@@ -149,7 +150,7 @@ def mock_nvidia_llm():
         [canned_response[i : i + 50] for i in range(0, len(canned_response), 50)]
     )
 
-    with patch("rag_chain.NVIDIANimClient", return_value=mock_client) as patched:
+    with patch("rag_chain.create_llm_client", return_value=mock_client) as patched:
         yield mock_client
 
 
@@ -173,7 +174,7 @@ def test_client(mock_qdrant_client, mock_nvidia_llm):
 
     # Patch LegalRAGChain to use our mocked retriever and LLM
     with patch("rag_chain.HybridRetriever", return_value=mock_retriever), \
-         patch("rag_chain.NVIDIANimClient", return_value=mock_nvidia_llm):
+         patch("rag_chain.create_llm_client", return_value=mock_nvidia_llm):
         # Import app after patching so lifespan uses mocks
         from main import app
 
