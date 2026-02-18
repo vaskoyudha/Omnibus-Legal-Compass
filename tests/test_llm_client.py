@@ -250,15 +250,28 @@ class TestCopilotChatClient:
         # get called at least twice: init exchange + refresh on 401
         assert mock_get.call_count >= 2
 
+    @patch("llm_client.requests.post")
     @patch("llm_client.requests.get")
     @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)
-    def test_copilot_generate_stream_not_implemented(self, mock_get):
-        """generate_stream raises NotImplementedError."""
+    def test_copilot_generate_stream_yields_chunks(self, mock_get, mock_post):
+        """generate_stream yields SSE chunks from Copilot API."""
         mock_get.return_value = _mock_token_exchange_response()
+
+        # Simulate SSE stream
+        lines = [
+            b'data: {"choices":[{"delta":{"content":"chunk1"}}]}',
+            b'data: {"choices":[{"delta":{"content":"chunk2"}}]}',
+            b'data: [DONE]',
+        ]
+        mock_resp = MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.iter_lines.return_value = lines
+        mock_resp.raise_for_status = MagicMock()
+        mock_post.return_value = mock_resp
+
         client = CopilotChatClient()
-        with pytest.raises(NotImplementedError, match="does not support streaming"):
-            # Must consume the generator to trigger the exception
-            next(client.generate_stream("test"))
+        chunks = list(client.generate_stream("test"))
+        assert chunks == ["chunk1", "chunk2"]
 
     @patch("llm_client.requests.get")
     @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)

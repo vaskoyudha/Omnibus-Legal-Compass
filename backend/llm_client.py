@@ -3,17 +3,19 @@ Multi-Provider LLM Client Module.
 
 Provides a unified interface (LLMClient Protocol) for interacting with
 different AI model providers. Currently supports:
-  - NVIDIA NIM (Kimi K2) — production answer generation
-  - GitHub Copilot Chat API — LLM-as-judge scoring (GPT-4o-mini, etc.)
+  - GitHub Copilot Chat API (default) — GPT-4o-mini, GPT-4o, Claude Sonnet 4, etc.
+  - NVIDIA NIM (Kimi K2) — alternative provider
+
+Both providers support streaming (generate_stream) and non-streaming (generate).
 
 Usage:
     from llm_client import create_llm_client
 
-    # NVIDIA NIM (default)
-    client = create_llm_client("nvidia")
-
-    # Copilot Chat API (auto-authenticates via device flow on first use)
+    # Copilot Chat API (default)
     client = create_llm_client("copilot", model="gpt-4o-mini")
+
+    # NVIDIA NIM (alternative)
+    client = create_llm_client("nvidia")
 
     response = client.generate("What is PT?", system_message="You are a lawyer")
 """
@@ -724,11 +726,102 @@ class CopilotChatClient:
         user_message: str,
         system_message: str | None = None,
     ) -> Generator[str, None, None]:
-        """Not implemented — eval uses non-streaming only."""
-        raise NotImplementedError(
-            "CopilotChatClient does not support streaming. "
-            "Use generate() for evaluation."
-        )
+        """Generate streaming response from Copilot Chat API. Yields chunks of text.
+
+        Uses SSE (Server-Sent Events) format — same as OpenAI-compatible streaming.
+        Handles 401 token refresh and 429 rate limiting, same as generate().
+        """
+        self._ensure_valid_token()
+
+        messages = []
+        if system_message:
+            messages.append({"role": "system", "content": system_message})
+        messages.append({"role": "user", "content": user_message})
+
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "stream": True,
+        }
+
+        max_retries = 3
+        token_refreshed = False
+        last_exception: Exception | None = None
+
+        for attempt in range(max_retries):
+            headers = {
+                **self.COPILOT_HEADERS,
+                "Authorization": f"Bearer {self._bearer_token}",
+            }
+
+            try:
+                response = requests.post(
+                    COPILOT_CHAT_URL,
+                    headers=headers,
+                    json=payload,
+                    timeout=120,
+                    stream=True,
+                )
+
+                # Handle 401 — token expired, refresh once
+                if response.status_code == 401 and not token_refreshed:
+                    logger.warning("Copilot streaming API returned 401, refreshing token...")
+                    self._exchange_and_store_token()
+                    token_refreshed = True
+                    continue
+
+                # Handle 429 — rate limited
+                if response.status_code == 429:
+                    retry_after = int(response.headers.get("Retry-After", 2 ** attempt))
+                    logger.warning(
+                        f"Copilot streaming API rate limited (429). "
+                        f"Waiting {retry_after}s (attempt {attempt + 1}/{max_retries})..."
+                    )
+                    time.sleep(retry_after)
+                    last_exception = requests.exceptions.HTTPError(
+                        f"429 Too Many Requests", response=response
+                    )
+                    continue
+
+                response.raise_for_status()
+
+                for line in response.iter_lines():
+                    if line:
+                        line = line.decode("utf-8")
+                        if line.startswith("data: "):
+                            data = line[6:]  # Remove 'data: ' prefix
+                            if data == "[DONE]":
+                                break
+                            try:
+                                chunk = json.loads(data)
+                                if "choices" in chunk and len(chunk["choices"]) > 0:
+                                    delta = chunk["choices"][0].get("delta", {})
+                                    content = delta.get("content", "")
+                                    if content:
+                                        yield content
+                            except json.JSONDecodeError:
+                                continue
+                return  # Success — exit retry loop
+
+            except requests.exceptions.RequestException as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt
+                    logger.warning(
+                        f"Copilot streaming attempt {attempt + 1}/{max_retries} failed: {e}. "
+                        f"Retrying in {wait_time}s..."
+                    )
+                    time.sleep(wait_time)
+                else:
+                    logger.error(
+                        f"Copilot streaming error after {max_retries} attempts: {e}"
+                    )
+
+        raise RuntimeError(
+            f"Copilot Chat API streaming failed after {max_retries} attempts."
+        ) from last_exception
 
 
 # ---------------------------------------------------------------------------
