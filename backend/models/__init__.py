@@ -1,6 +1,6 @@
 """Pydantic response models for the Regulation Library API."""
 
-from backend.models.regulation import (
+from models.regulation import (  # pyright: ignore[reportImplicitRelativeImport]
     AmendmentInfo,
     AmendmentTimelineEntry,
     AmendmentTimelineResponse,
