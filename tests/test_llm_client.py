@@ -13,8 +13,9 @@ from unittest.mock import MagicMock, call, patch
 
 import pytest
 import requests as req
+from typing import Any
 
-from llm_client import (
+from backend.llm_client import (
     CopilotChatClient,
     COPILOT_INCLUDED_MODELS,
     GITHUB_COPILOT_CLIENT_ID,
@@ -73,7 +74,7 @@ class TestFactory:
         assert isinstance(client, NVIDIANimClient)
 
     @patch("llm_client.requests.get")
-    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test_token"}, clear=False)
+    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test_token"}, clear=False)  # pragma: allowlist secret
     def test_create_copilot_client(self, mock_get):
         mock_get.return_value = _mock_token_exchange_response()
         client = create_llm_client("copilot")
@@ -84,7 +85,7 @@ class TestFactory:
             create_llm_client("openai")
 
     @patch("llm_client.requests.get")
-    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test_token"}, clear=False)
+    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test_token"}, clear=False)  # pragma: allowlist secret
     def test_create_with_model(self, mock_get):
         mock_get.return_value = _mock_token_exchange_response()
         client = create_llm_client("copilot", model="gpt-4o")
@@ -152,7 +153,7 @@ class TestCopilotChatClient:
     # -- auto-discover tests --
 
     @patch("llm_client.requests.get")
-    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_env_token"}, clear=False)
+    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_env_token"}, clear=False)  # pragma: allowlist secret
     def test_copilot_auto_discover_env_var(self, mock_get):
         """GITHUB_TOKEN env var found -> used as OAuth token."""
         mock_get.return_value = _mock_token_exchange_response()
@@ -199,7 +200,7 @@ class TestCopilotChatClient:
     # -- token exchange tests --
 
     @patch("llm_client.requests.get")
-    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)
+    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)  # pragma: allowlist secret
     def test_copilot_exchange_token_success(self, mock_get):
         """Successful token exchange stores bearer token."""
         mock_get.return_value = _mock_token_exchange_response(
@@ -223,7 +224,7 @@ class TestCopilotChatClient:
 
     @patch("llm_client.requests.post")
     @patch("llm_client.requests.get")
-    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)
+    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)  # pragma: allowlist secret
     def test_copilot_generate_success(self, mock_get, mock_post):
         """Successful generate returns content string."""
         mock_get.return_value = _mock_token_exchange_response()
@@ -236,7 +237,7 @@ class TestCopilotChatClient:
     @patch("llm_client.time.sleep")
     @patch("llm_client.requests.post")
     @patch("llm_client.requests.get")
-    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)
+    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)  # pragma: allowlist secret
     def test_copilot_generate_401_refresh(self, mock_get, mock_post, mock_sleep):
         """First POST returns 401 -> refresh token -> retry succeeds."""
         # Token exchange succeeds (called during __init__ and refresh)
@@ -259,7 +260,7 @@ class TestCopilotChatClient:
 
     @patch("llm_client.requests.post")
     @patch("llm_client.requests.get")
-    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)
+    @patch.dict(os.environ, {"GITHUB_TOKEN": "gho_test"}, clear=False)  # pragma: allowlist secret
     def test_copilot_generate_stream_yields_chunks(self, mock_get, mock_post):
         """generate_stream yields SSE chunks from Copilot API."""
         mock_get.return_value = _mock_token_exchange_response()
@@ -314,8 +315,8 @@ class TestThreadSafety:
 
         client = CopilotChatClient()
 
-        results = [None] * 5
-        errors = [None] * 5
+        results: list[Any] = [None] * 5
+        errors: list[Any] = [None] * 5
 
         def _worker(idx):
             try:
@@ -949,7 +950,7 @@ class TestFallbackChain:
         result = chain.generate("question")
         assert result == "gemini answer"
         # Groq client should NOT have been called
-        groq_client = chain.providers[0][1]
+        groq_client: MagicMock = chain.providers[0][1]
         groq_client.generate.assert_not_called()
 
     def test_records_success(self):
