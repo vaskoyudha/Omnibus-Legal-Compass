@@ -9,7 +9,8 @@ Skip in CI: This script is NOT included in automated test pipelines.
 
 Supports multi-provider LLM architecture:
   - GitHub Copilot Chat API (default) for answer generation and judging
-  - NVIDIA NIM as an alternative provider
+  - NVIDIA NIM, Groq, Google Gemini, Mistral as alternative providers
+  - FallbackChain mode for resilient evaluation (auto-failover across providers)
   - Parallel workers via ThreadPoolExecutor for faster evaluation
 
 Metrics:
@@ -25,6 +26,9 @@ Usage:
     python -m backend.scripts.eval_rag_e2e --golden-only
     python -m backend.scripts.eval_rag_e2e --judge-model gpt-4o --workers 5
     python -m backend.scripts.eval_rag_e2e --workers 20 --skip-grounding --resume
+    python -m backend.scripts.eval_rag_e2e --json-report run2.json --baseline-report run1.json
+    python -m backend.scripts.eval_rag_e2e --answer-provider groq --judge-provider gemini
+    python -m backend.scripts.eval_rag_e2e --fallback-chain --workers 10
 """
 
 import json
@@ -752,6 +756,160 @@ def _sanitize_float(v: Any) -> Any:
     return v
 
 
+# ---------------------------------------------------------------------------
+# Regression comparison (Phase 6 — automated regression pipeline)
+# ---------------------------------------------------------------------------
+
+# Default regression thresholds: a metric drop larger than this is flagged.
+_REGRESSION_THRESHOLDS: dict[str, float] = {
+    "avg_correctness": 0.05,
+    "avg_faithfulness": 0.05,
+    "avg_citation_coverage": 0.05,
+    "refusal_accuracy": 0.03,
+}
+
+
+@dataclass
+class RegressionDelta:
+    """Comparison of one metric between baseline and current run."""
+
+    metric: str
+    baseline: float
+    current: float
+    delta: float  # current - baseline (positive = improvement)
+    threshold: float
+    regressed: bool  # True if delta < -threshold
+
+
+@dataclass
+class RegressionReport:
+    """Full regression comparison report."""
+
+    baseline_path: str
+    deltas: list[RegressionDelta]
+    any_regression: bool
+    per_category_deltas: dict[str, RegressionDelta]
+
+
+def compare_against_baseline(
+    current_dict: dict[str, Any],
+    baseline_path: str | Path,
+    thresholds: dict[str, float] | None = None,
+) -> RegressionReport:
+    """Compare current evaluation results against a saved baseline report.
+
+    Args:
+        current_dict: The ``report_to_dict()`` output from the current run.
+        baseline_path: Path to the JSON baseline report file.
+        thresholds: Per-metric maximum allowed drop. Defaults to
+            ``_REGRESSION_THRESHOLDS``.
+
+    Returns:
+        A ``RegressionReport`` with per-metric deltas and a boolean flag
+        indicating whether any metric regressed beyond its threshold.
+
+    Raises:
+        FileNotFoundError: If *baseline_path* does not exist.
+        json.JSONDecodeError: If the baseline file is not valid JSON.
+    """
+    thresholds = thresholds or _REGRESSION_THRESHOLDS
+    baseline_path = Path(baseline_path)
+    with open(baseline_path, "r", encoding="utf-8") as f:
+        baseline = json.load(f)
+
+    deltas: list[RegressionDelta] = []
+    any_regression = False
+
+    for metric, max_drop in thresholds.items():
+        b_val = float(baseline.get(metric, 0.0) or 0.0)
+        c_val = float(current_dict.get(metric, 0.0) or 0.0)
+        delta = c_val - b_val
+        regressed = delta < -max_drop
+        if regressed:
+            any_regression = True
+        deltas.append(RegressionDelta(
+            metric=metric,
+            baseline=b_val,
+            current=c_val,
+            delta=delta,
+            threshold=max_drop,
+            regressed=regressed,
+        ))
+
+    # Per-category refusal comparison
+    per_cat_deltas: dict[str, RegressionDelta] = {}
+    baseline_cats = baseline.get("per_category_refusal", {})
+    current_cats = current_dict.get("per_category_refusal", {})
+    refusal_threshold = thresholds.get("refusal_accuracy", 0.03)
+    for cat in set(list(baseline_cats.keys()) + list(current_cats.keys())):
+        b_val = float(baseline_cats.get(cat, 0.0) or 0.0)
+        c_val = float(current_cats.get(cat, 0.0) or 0.0)
+        delta = c_val - b_val
+        regressed = delta < -refusal_threshold
+        if regressed:
+            any_regression = True
+        per_cat_deltas[cat] = RegressionDelta(
+            metric=f"refusal:{cat}",
+            baseline=b_val,
+            current=c_val,
+            delta=delta,
+            threshold=refusal_threshold,
+            regressed=regressed,
+        )
+
+    return RegressionReport(
+        baseline_path=str(baseline_path),
+        deltas=deltas,
+        any_regression=any_regression,
+        per_category_deltas=per_cat_deltas,
+    )
+
+
+def format_regression_report(reg: RegressionReport) -> str:
+    """Format a regression comparison as human-readable text."""
+    lines = [
+        "",
+        "=" * 70,
+        "  REGRESSION COMPARISON",
+        "=" * 70,
+        "",
+        f"  Baseline: {reg.baseline_path}",
+        "",
+        f"  {'Metric':<30s} {'Baseline':>10s} {'Current':>10s} {'Delta':>10s} {'Status':>10s}",
+        "  " + "-" * 72,
+    ]
+    for d in reg.deltas:
+        status = "REGRESSED" if d.regressed else ("improved" if d.delta > 0 else "ok")
+        flag = " !!!" if d.regressed else ""
+        lines.append(
+            f"  {d.metric:<30s} {d.baseline:>9.4f} {d.current:>10.4f} "
+            f"{d.delta:>+10.4f} {status:>10s}{flag}"
+        )
+
+    if reg.per_category_deltas:
+        lines.extend([
+            "",
+            "  Per-category refusal deltas:",
+            f"  {'Category':<30s} {'Baseline':>10s} {'Current':>10s} {'Delta':>10s} {'Status':>10s}",
+            "  " + "-" * 72,
+        ])
+        for cat, d in sorted(reg.per_category_deltas.items()):
+            status = "REGRESSED" if d.regressed else ("improved" if d.delta > 0 else "ok")
+            flag = " !!!" if d.regressed else ""
+            lines.append(
+                f"  {cat:<30s} {d.baseline:>9.4f} {d.current:>10.4f} "
+                f"{d.delta:>+10.4f} {status:>10s}{flag}"
+            )
+
+    lines.extend([
+        "",
+        "  " + ("*** REGRESSIONS DETECTED ***" if reg.any_regression else "No regressions detected."),
+        "=" * 70,
+        "",
+    ])
+    return "\n".join(lines)
+
+
 def report_to_dict(report: E2EReport) -> dict[str, Any]:
     """Convert report to JSON-serializable dict."""
     sf = _sanitize_float
@@ -834,7 +992,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "End-to-end RAG evaluation with LLM-as-judge. "
-            "MANUAL: requires NVIDIA_API_KEY and live Qdrant."
+            "MANUAL: requires LLM API key(s) and live Qdrant."
         ),
     )
     parser.add_argument(
@@ -879,7 +1037,7 @@ def main() -> int:
     parser.add_argument(
         "--answer-provider",
         default="copilot",
-        choices=["nvidia", "copilot"],
+        choices=["copilot", "nvidia", "groq", "gemini", "mistral"],
         help="LLM provider for answer generation (default: copilot)",
     )
     parser.add_argument(
@@ -890,13 +1048,23 @@ def main() -> int:
     parser.add_argument(
         "--judge-provider",
         default="copilot",
-        choices=["nvidia", "copilot"],
+        choices=["copilot", "nvidia", "groq", "gemini", "mistral"],
         help="LLM provider for judge/scoring calls (default: copilot)",
     )
     parser.add_argument(
         "--judge-model",
         default=None,
         help="Model for judge calls (default: provider's default model)",
+    )
+    parser.add_argument(
+        "--fallback-chain",
+        action="store_true",
+        default=False,
+        help=(
+            "Use FallbackChain for answer generation instead of a single provider. "
+            "Tries providers in order: groq -> gemini -> mistral -> copilot -> nvidia. "
+            "Overrides --answer-provider when enabled."
+        ),
     )
     parser.add_argument(
         "--workers",
@@ -910,6 +1078,16 @@ def main() -> int:
         default=False,
         help="Skip grounding verification LLM call (saves ~30%% time)",
     )
+    parser.add_argument(
+        "--baseline-report",
+        default=None,
+        help=(
+            "Path to a previous JSON report for regression comparison. "
+            "When provided, the script compares current metrics against "
+            "the baseline and flags any metric that drops beyond thresholds. "
+            "Exit code 2 if regressions detected."
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -922,18 +1100,30 @@ def main() -> int:
         print(f"[WARN] Workers capped at 20 (requested {args.workers})")
 
     # Check for required API keys based on selected providers
-    if args.answer_provider == "nvidia" or args.judge_provider == "nvidia":
-        if not os.getenv("NVIDIA_API_KEY"):
-            print("[ERROR] NVIDIA_API_KEY environment variable not set.")
-            print("Required because answer-provider or judge-provider is 'nvidia'.")
-            print("Set your API key, or use --answer-provider copilot --judge-provider copilot.")
-            return 1
+    _ENV_KEY_MAP = {
+        "nvidia": "NVIDIA_API_KEY",
+        "groq": "GROQ_API_KEY",
+        "gemini": "GEMINI_API_KEY",
+        "mistral": "MISTRAL_API_KEY",
+        # copilot uses auto-discovered GitHub auth — no env check needed
+    }
+    if not args.fallback_chain:
+        for role, provider in [("answer", args.answer_provider), ("judge", args.judge_provider)]:
+            env_var = _ENV_KEY_MAP.get(provider)
+            if env_var and not os.getenv(env_var):
+                print(f"[ERROR] {env_var} environment variable not set.")
+                print(f"Required because {role}-provider is '{provider}'.")
+                print("Set your API key, or use --answer-provider copilot --judge-provider copilot.")
+                return 1
 
     # Import RAG components (requires Qdrant and deps)
     try:
         sys.path.insert(0, str(PROJECT_ROOT / "backend"))
         from rag_chain import LegalRAGChain  # noqa: E402
-        from llm_client import NVIDIANimClient, create_llm_client  # noqa: E402
+        from llm_client import (  # noqa: E402
+            FallbackChain,
+            create_llm_client,
+        )
     except ImportError as e:
         print(f"[ERROR] Could not import RAG components: {e}")
         print("Make sure Qdrant is running and dependencies are installed.")
@@ -942,14 +1132,37 @@ def main() -> int:
     # Initialize
     print("Initializing RAG chain...")
     try:
-        answer_client = create_llm_client(args.answer_provider, model=args.answer_model)
+        if args.fallback_chain:
+            # Build a FallbackChain from all available providers
+            _CHAIN_ORDER = ["groq", "gemini", "mistral", "copilot", "nvidia"]
+            providers: list[tuple[str, Any]] = []
+            for name in _CHAIN_ORDER:
+                env_var = _ENV_KEY_MAP.get(name)
+                if env_var and not os.getenv(env_var):
+                    print(f"  Skipping {name} (no {env_var})")
+                    continue
+                try:
+                    client = create_llm_client(name)
+                    providers.append((name, client))
+                except Exception as e:
+                    print(f"  Skipping {name}: {e}")
+            if not providers:
+                print("[ERROR] No providers available for fallback chain.")
+                return 1
+            answer_client = FallbackChain(providers)
+            print(f"  FallbackChain providers: {[n for n, _ in providers]}")
+        else:
+            answer_client = create_llm_client(args.answer_provider, model=args.answer_model)
         judge_client = create_llm_client(args.judge_provider, model=args.judge_model)
         rag_chain = LegalRAGChain(llm_client=answer_client)
     except Exception as e:
         print(f"[ERROR] Failed to initialize RAG chain: {e}")
         return 1
 
-    print(f"Answer provider: {args.answer_provider} (model: {args.answer_model or 'default'})")
+    if args.fallback_chain:
+        print(f"Answer provider: FallbackChain (model: auto)")
+    else:
+        print(f"Answer provider: {args.answer_provider} (model: {args.answer_model or 'default'})")
     print(f"Judge provider: {args.judge_provider} (model: {args.judge_model or 'default'})")
     print(f"Workers: {num_workers}")
     if args.skip_grounding:
@@ -1123,19 +1336,21 @@ def main() -> int:
     )
     print(format_report(report))
 
+    # Always build the report dict (needed for both JSON export and regression)
+    report_dict = report_to_dict(report)
+    report_dict["metadata"] = {
+        "answer_provider": "fallback_chain" if args.fallback_chain else args.answer_provider,
+        "answer_model": args.answer_model or "(provider default)",
+        "judge_provider": args.judge_provider,
+        "judge_model": args.judge_model or "(provider default)",
+        "workers": num_workers,
+        "skip_grounding": args.skip_grounding,
+        "fallback_chain": args.fallback_chain,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
     # Write JSON report if requested (atomic: write .tmp then os.replace)
     if args.json_report:
-        report_dict = report_to_dict(report)
-        # Add provider metadata
-        report_dict["metadata"] = {
-            "answer_provider": args.answer_provider,
-            "answer_model": args.answer_model or "(provider default)",
-            "judge_provider": args.judge_provider,
-            "judge_model": args.judge_model or "(provider default)",
-            "workers": num_workers,
-            "skip_grounding": args.skip_grounding,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
         tmp_report = Path(args.json_report).with_suffix(".json.tmp")
         with open(tmp_report, "w", encoding="utf-8") as f:
             json.dump(report_dict, f, indent=2, ensure_ascii=False)
@@ -1146,6 +1361,41 @@ def main() -> int:
     if checkpoint_path.exists():
         checkpoint_path.unlink()
         print(f"Checkpoint removed: {checkpoint_path}")
+
+    # ------------------------------------------------------------------
+    # Regression comparison (Phase 6 — automated regression pipeline)
+    # ------------------------------------------------------------------
+    if args.baseline_report:
+        baseline_path = Path(args.baseline_report)
+        if not baseline_path.exists():
+            print(f"[ERROR] Baseline report not found: {baseline_path}")
+            return 1
+        try:
+            regression = compare_against_baseline(report_dict, baseline_path)
+            print(format_regression_report(regression))
+
+            # Write regression comparison to JSON alongside the main report
+            if args.json_report:
+                reg_path = Path(args.json_report).with_suffix(".regression.json")
+                reg_dict = {
+                    "baseline_path": regression.baseline_path,
+                    "any_regression": regression.any_regression,
+                    "deltas": [asdict(d) for d in regression.deltas],
+                    "per_category_deltas": {
+                        k: asdict(v) for k, v in regression.per_category_deltas.items()
+                    },
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                }
+                with open(reg_path, "w", encoding="utf-8") as f:
+                    json.dump(reg_dict, f, indent=2, ensure_ascii=False)
+                print(f"Regression report written to {reg_path}")
+
+            if regression.any_regression:
+                print("\n[FAIL] Regressions detected — exit code 2.")
+                return 2
+        except (json.JSONDecodeError, KeyError) as e:
+            print(f"[ERROR] Failed to compare against baseline: {e}")
+            return 1
 
     return 0
 
