@@ -21,3 +21,7 @@ slowapi
 networkx>=3.0
 pydantic>=2.0
 deepeval
+datasets>=2.14.0
+tqdm>=4.65.0
+pyarrow>=14.0.0
+python-frontmatter>=1.0.0

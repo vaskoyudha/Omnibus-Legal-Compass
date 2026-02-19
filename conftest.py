@@ -149,7 +149,7 @@ def mock_nvidia_llm():
         [canned_response[i : i + 50] for i in range(0, len(canned_response), 50)]
     )
 
-    with patch("rag_chain.NVIDIANimClient", return_value=mock_client) as patched:
+    with patch("rag_chain.create_llm_client", return_value=mock_client) as patched:
         yield mock_client
 
 
@@ -173,7 +173,7 @@ def test_client(mock_qdrant_client, mock_nvidia_llm):
 
     # Patch LegalRAGChain to use our mocked retriever and LLM
     with patch("rag_chain.HybridRetriever", return_value=mock_retriever), \
-         patch("rag_chain.NVIDIANimClient", return_value=mock_nvidia_llm):
+         patch("rag_chain.create_llm_client", return_value=mock_nvidia_llm):
         # Import app after patching so lifespan uses mocks
         from main import app
 

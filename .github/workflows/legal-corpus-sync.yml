@@ -1,0 +1,95 @@
+name: Legal Document Sync
+
+on:
+  schedule:
+    - cron: '0 4,16 * * *'  # 4 AM and 4 PM UTC daily
+  workflow_dispatch:  # Manual trigger
+
+concurrency:
+  group: legal-corpus-sync
+  cancel-in-progress: false
+
+env:
+  EXTERNAL_REPO: mashanz/peraturan-perundang-undangan
+  STATE_FILE: .github/last-sync-state.json
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout our repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Clone external repository
+        run: |
+          git clone --depth 100 https://github.com/${{ env.EXTERNAL_REPO }} indonesian-legal-docs
+          cd indonesian-legal-docs
+          echo "current_sha=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Run incremental sync
+        id: sync
+        env:
+          JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
+          QDRANT_URL: ${{ secrets.QDRANT_URL }}
+        run: |
+          python -m backend.scripts.incremental_sync \
+            --repo-dir indonesian-legal-docs \
+            --state-file ${{ env.STATE_FILE }} \
+            --qdrant-url "$QDRANT_URL" \
+            --collection-name indonesian_legal_docs \
+            --output-json sync_result.json
+
+          STATUS=$(python -c "import json; r=json.load(open('sync_result.json')); print(r['status'])")
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+
+          if [ "$STATUS" != "no_changes" ]; then
+            ADDED=$(python -c "import json; r=json.load(open('sync_result.json')); print(r.get('added',0))")
+            MODIFIED=$(python -c "import json; r=json.load(open('sync_result.json')); print(r.get('modified',0))")
+            DELETED=$(python -c "import json; r=json.load(open('sync_result.json')); print(r.get('deleted',0))")
+            echo "added=$ADDED" >> $GITHUB_OUTPUT
+            echo "modified=$MODIFIED" >> $GITHUB_OUTPUT
+            echo "deleted=$DELETED" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit state update
+        if: steps.sync.outputs.status != 'no_changes'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ${{ env.STATE_FILE }}
+          git commit -m "chore: update legal corpus sync state [skip ci]" || true
+          git push
+
+      - name: Notify Discord
+        if: steps.sync.outputs.status != 'no_changes'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "Legal Documents Synced",
+                "description": "Processed changes from external repository",
+                "color": 5814783,
+                "fields": [
+                  {"name": "Added", "value": "${{ steps.sync.outputs.added }}", "inline": true},
+                  {"name": "Modified", "value": "${{ steps.sync.outputs.modified }}", "inline": true},
+                  {"name": "Deleted", "value": "${{ steps.sync.outputs.deleted }}", "inline": true},
+                  {"name": "Commit", "value": "`${{ env.current_sha }}`", "inline": false}
+                ],
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%SZ)'"'
+              }]
+            }'
