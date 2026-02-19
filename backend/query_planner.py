@@ -24,7 +24,7 @@ import logging
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from llm_client import LLMClient, NVIDIANimClient, CopilotChatClient
+    from llm_client import LLMClient
     from retriever import HybridRetriever, SearchResult
 
 # Import SearchResult at runtime for creating merged results
@@ -46,12 +46,12 @@ class QueryPlanner:
     merged with RRF for improved recall.
     
     Attributes:
-        llm_client: LLM client for generating sub-queries (Copilot, NVIDIA NIM, etc.)
+        llm_client: LLM client for generating sub-queries
     """
     
     def __init__(
         self,
-        llm_client: LLMClient | NVIDIANimClient | CopilotChatClient,
+        llm_client: LLMClient,
     ):
         """
         Initialize QueryPlanner.

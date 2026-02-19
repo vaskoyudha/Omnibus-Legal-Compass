@@ -24,7 +24,7 @@ import logging
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from llm_client import LLMClient, NVIDIANimClient, CopilotChatClient
+    from llm_client import LLMClient
 
 # Import SearchResult at runtime for creating merged results
 from retriever import SearchResult
@@ -47,7 +47,7 @@ class CRAG:
     Args:
         llm_client: Optional LLM client for query rephrasing.
                     If None, rephrasing is skipped (graceful degradation).
-                    Accepts LLMClient, NVIDIANimClient, or CopilotChatClient.
+                    Accepts LLMClient.
 
     Example:
         >>> crag = CRAG(llm_client)
@@ -61,7 +61,7 @@ class CRAG:
 
     def __init__(
         self,
-        llm_client: LLMClient | NVIDIANimClient | CopilotChatClient | None = None,
+        llm_client: LLMClient | None = None,
     ):
         """
         Initialize CRAG with an optional LLM client.

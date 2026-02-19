@@ -84,6 +84,13 @@ GITHUB_COPILOT_CLIENT_ID = "Iv1.b507a08c87ecfe98"
 GITHUB_DEVICE_CODE_URL = "https://github.com/login/device/code"
 GITHUB_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token"
 
+# ---------------------------------------------------------------------------
+# Anthropic
+# ---------------------------------------------------------------------------
+ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
+ANTHROPIC_API_VERSION = "2023-06-01"
+ANTHROPIC_DEFAULT_MODEL = "claude-sonnet-4-20250514"
+
 
 # ---------------------------------------------------------------------------
 # LLMClient Protocol
@@ -1228,9 +1235,111 @@ class FallbackChain:
 
 
 # ---------------------------------------------------------------------------
+# AnthropicClient — Anthropic Claude (Messages API)
+# ---------------------------------------------------------------------------
+class AnthropicClient:
+    """Anthropic Claude client using the Messages API.
+
+    Uses x-api-key header (NOT Bearer token), top-level system message,
+    and required max_tokens field. Streaming is not yet implemented.
+    """
+
+    def __init__(
+        self,
+        api_key: str | None = None,
+        model: str = ANTHROPIC_DEFAULT_MODEL,
+        max_tokens: int = 4096,
+        timeout: int = 120,
+    ):
+        self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY", "")
+        self.model = model
+        self.max_tokens = max_tokens
+        self.timeout = timeout
+
+    def generate(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ) -> str:
+        """Generate a response using the Anthropic Messages API."""
+        if not self.api_key:
+            raise ValueError(
+                "ANTHROPIC_API_KEY is not set. "
+                "Set the environment variable to use Anthropic."
+            )
+
+        headers = {
+            "x-api-key": self.api_key,
+            "anthropic-version": ANTHROPIC_API_VERSION,
+            "content-type": "application/json",
+        }
+
+        messages = [{"role": "user", "content": user_message}]
+        body: dict = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": self.max_tokens,
+        }
+        if system_message:
+            body["system"] = system_message
+
+        resp = requests.post(
+            ANTHROPIC_API_URL,
+            headers=headers,
+            json=body,
+            timeout=self.timeout,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        return data["content"][0]["text"]
+
+    def generate_stream(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ) -> Generator[str, None, None]:
+        """Streaming is not yet implemented for AnthropicClient."""
+        raise NotImplementedError(
+            "Streaming is not yet implemented for AnthropicClient. "
+            "Use generate() for non-streaming responses."
+        )
+
+
+# ---------------------------------------------------------------------------
+# OpenRouterClient — OpenRouter (200+ models, OpenAI-compatible)
+# ---------------------------------------------------------------------------
+class OpenRouterClient(OpenAICompatibleClient):
+    """OpenRouter client — OpenAI-compatible API with extra headers.
+
+    Routes requests to 200+ models via a single endpoint.
+    Reuses OpenAICompatibleClient with base_url override and extra headers.
+    """
+
+    _OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+    def __init__(
+        self,
+        api_key: str | None = None,
+        model: str = "deepseek/deepseek-r1",
+        **kwargs,
+    ):
+        resolved_key = api_key or os.getenv("OPENROUTER_API_KEY", "")
+        super().__init__(
+            base_url=self._OPENROUTER_BASE_URL,
+            api_key=resolved_key,
+            model=model,
+            extra_headers={
+                "HTTP-Referer": "https://github.com/vaskoyudha/Omnibus-Legal-Compass",
+                "X-Title": "Omnibus Legal Compass",
+            },
+            **kwargs,
+        )
+
+
+# ---------------------------------------------------------------------------
 # Factory
 # ---------------------------------------------------------------------------
-KNOWN_PROVIDERS = {"nvidia", "copilot", "groq", "gemini", "mistral"}
+KNOWN_PROVIDERS = {"nvidia", "copilot", "groq", "gemini", "mistral", "anthropic", "openrouter"}
 
 
 def create_llm_client(
@@ -1242,7 +1351,7 @@ def create_llm_client(
 
     Args:
         provider: One of "copilot" (default), "nvidia", "groq", "gemini",
-            or "mistral".
+            "mistral", "anthropic", or "openrouter".
         model: Model name override (uses provider default if None).
         **kwargs: Additional arguments passed to the client constructor.
 
@@ -1266,6 +1375,10 @@ def create_llm_client(
         return GeminiClient(**client_kwargs)
     elif provider == "mistral":
         return MistralClient(**client_kwargs)
+    elif provider == "anthropic":
+        return AnthropicClient(**client_kwargs)
+    elif provider == "openrouter":
+        return OpenRouterClient(**client_kwargs)
     else:
         raise ValueError(
             f"Unknown provider '{provider}'. Known providers: {sorted(KNOWN_PROVIDERS)}"

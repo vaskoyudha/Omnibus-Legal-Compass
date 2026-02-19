@@ -26,7 +26,7 @@ import logging
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from llm_client import LLMClient, NVIDIANimClient, CopilotChatClient
+    from llm_client import LLMClient
 
 # Import SearchResult at runtime for creating results
 from retriever import SearchResult
@@ -63,7 +63,7 @@ class AgenticRAG:
 
     def __init__(
         self,
-        llm_client: LLMClient | NVIDIANimClient | CopilotChatClient | None = None,
+        llm_client: LLMClient | None = None,
         retriever=None,
         hyde=None,
         crag=None,
@@ -78,7 +78,7 @@ class AgenticRAG:
         would otherwise be selected.
 
         Args:
-            llm_client: Optional LLM client (passed through to sub-techniques)
+        llm_client: Optional LLM client (passed through to sub-techniques)
             retriever: Optional default retriever (not used directly; retriever
                        is passed per-call to enhanced_search)
             hyde: Optional HyDE instance for definition-style queries

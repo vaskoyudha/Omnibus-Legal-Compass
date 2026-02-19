@@ -12,6 +12,7 @@ import ChatInput from '@/components/chat/ChatInput';
 import ChatMessage, { ChatMessageData } from '@/components/chat/ChatMessage';
 import CitationPanel from '@/components/chat/CitationPanel';
 import SkeletonLoader from '@/components/SkeletonLoader';
+import ProviderSelector from '@/components/ProviderSelector';
 import { motion } from 'framer-motion';
 
 export default function ChatPage() {
@@ -48,6 +49,8 @@ function ChatPageInner() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [responseMode, setResponseMode] = useState<'synthesized' | 'verbatim'>('synthesized');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [selectedProvider, setSelectedProvider] = useState<string>('');
+  const [selectedModel, setSelectedModel] = useState<string>('');
 
   // Citation panel state
   const [activeCitationIndex, setActiveCitationIndex] = useState<number | null>(null);
@@ -135,7 +138,9 @@ function ChatPageInner() {
           text,
           5,
           sessionId || undefined,
-          responseMode
+          responseMode,
+          selectedProvider || undefined,
+          selectedModel || undefined
         );
 
         // Update session ID
@@ -185,7 +190,7 @@ function ChatPageInner() {
         setIsLoading(false);
       }
     },
-    [inputValue, isLoading, sessionId, responseMode, addConversation, updateConversation]
+    [inputValue, isLoading, sessionId, responseMode, selectedProvider, selectedModel, addConversation, updateConversation]
   );
 
   const handleNewChat = useCallback(() => {
@@ -262,6 +267,19 @@ function ChatPageInner() {
             }
             onNewChat={handleNewChat}
           />
+
+          {/* Provider Selector toolbar */}
+          <div
+            className="flex items-center justify-end px-4 py-2 border-b border-white/[0.04]"
+            style={{ background: 'rgba(255,255,255,0.01)' }}
+          >
+            <ProviderSelector
+              onProviderChange={(provider, model) => {
+                setSelectedProvider(provider);
+                setSelectedModel(model);
+              }}
+            />
+          </div>
 
           {/* Messages Area */}
           {messages.length === 0 ? (

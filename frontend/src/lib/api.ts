@@ -62,16 +62,22 @@ export interface AskRequest {
   document_type?: string;
   session_id?: string;
   mode?: 'synthesized' | 'verbatim';
+  provider?: string;
+  model?: string;
 }
 
 export async function askQuestion(
   question: string,
   topK: number = 5,
   sessionId?: string,
-  mode: 'synthesized' | 'verbatim' = 'synthesized'
+  mode: 'synthesized' | 'verbatim' = 'synthesized',
+  provider?: string,
+  model?: string
 ): Promise<AskResponse> {
   const body: Record<string, unknown> = { question, top_k: topK, mode };
   if (sessionId) body.session_id = sessionId;
+  if (provider) body.provider = provider;
+  if (model) body.model = model;
 
   const response = await fetch(`${API_URL}/api/v1/ask`, {
     method: 'POST',
@@ -247,12 +253,17 @@ export interface StreamCallbacks {
 export async function askQuestionStream(
   question: string,
   callbacks: StreamCallbacks,
-  topK: number = 5
+  topK: number = 5,
+  provider?: string,
+  model?: string
 ): Promise<void> {
+  const streamBody: Record<string, unknown> = { question, top_k: topK };
+  if (provider) streamBody.provider = provider;
+  if (model) streamBody.model = model;
   const response = await fetch(`${API_URL}/api/v1/ask/stream`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, top_k: topK }),
+    body: JSON.stringify(streamBody),
   });
 
   if (!response.ok) {
@@ -670,6 +681,33 @@ export async function fetchArticleReferences(
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: 'Referensi tidak ditemukan' }));
     throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+  return response.json();
+}
+
+// Provider Types & API
+export interface ProviderModel {
+  id: string;
+  name: string;
+  context_window: number;
+  supports_streaming: boolean;
+}
+
+export interface Provider {
+  id: string;
+  name: string;
+  is_available: boolean;
+  models: ProviderModel[];
+}
+
+export interface ProvidersResponse {
+  providers: Provider[];
+}
+
+export async function fetchProviders(): Promise<ProvidersResponse> {
+  const response = await fetch(`${API_URL}/api/v1/providers`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch providers');
   }
   return response.json();
 }

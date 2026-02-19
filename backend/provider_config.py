@@ -6,7 +6,7 @@ first → most reliable last.  Providers whose API keys are missing are
 silently skipped with a logger.warning.
 
 Usage:
-    from backend.provider_config import create_fallback_chain
+    from provider_config import create_fallback_chain
 
     chain = create_fallback_chain()                      # default order
     chain = create_fallback_chain(["nvidia", "copilot"]) # custom order
@@ -18,7 +18,7 @@ from __future__ import annotations
 import logging
 from typing import List, Optional
 
-from backend.llm_client import (
+from llm_client import (  # pyright: ignore[reportImplicitRelativeImport]
     FallbackChain,
     LLMClient,
     create_llm_client,
@@ -31,6 +31,8 @@ DEFAULT_PROVIDER_ORDER: List[str] = [
     "groq",
     "gemini",
     "mistral",
+    "anthropic",
+    "openrouter",
     "copilot",
     "nvidia",
 ]
@@ -43,7 +45,7 @@ def create_fallback_chain(
 
     Args:
         provider_order: Ordered list of provider names to try.
-            Defaults to ``["groq", "gemini", "mistral", "copilot", "nvidia"]``.
+            Defaults to ``["groq", "gemini", "mistral", "anthropic", "openrouter", "copilot", "nvidia"]``.
 
     Returns:
         A ``FallbackChain`` instance containing only providers whose API

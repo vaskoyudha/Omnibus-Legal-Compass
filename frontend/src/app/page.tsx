@@ -8,6 +8,7 @@ import SearchBar from '@/components/SearchBar';
 import DecryptedText from '@/components/reactbits/DecryptedText';
 import CountUp from '@/components/reactbits/CountUp';
 import SpotlightCard from '@/components/reactbits/SpotlightCard';
+import ProviderSelector from '@/components/ProviderSelector';
 
 const LaserFlow = dynamic(() => import('@/components/reactbits/LaserFlow'), {
   ssr: false,
@@ -190,6 +191,8 @@ export default function Home() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const hasRedirected = useRef(false);
+  const [selectedProvider, setSelectedProvider] = useState<string>('');
+  const [selectedModel, setSelectedModel] = useState<string>('');
 
   const handleSearch = useCallback(async (query: string) => {
     // Prevent multiple redirects
@@ -528,14 +531,12 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full text-gray-500"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.04)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                  <ProviderSelector
+                    onProviderChange={(provider, model) => {
+                      setSelectedProvider(provider);
+                      setSelectedModel(model);
                     }}
-                  >
-                    Gemini 2.5 Flash
-                  </span>
+                  />
                 </div>
               </div>
 

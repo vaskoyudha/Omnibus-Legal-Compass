@@ -11,7 +11,7 @@
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)](https://fastapi.tiangolo.com)
-[![Tests](https://img.shields.io/badge/Tests-391%20passing-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-459%20passing-brightgreen)](tests/)
 
 Navigate Indonesian regulations with confidence. Ask legal questions, check compliance, get business guidance — all backed by hybrid search, cross-encoder reranking, and source citations.
 
@@ -168,7 +168,7 @@ Note: NVIDIA NIM (Kimi K2) is also available as an alternative LLM provider.
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
 | **LLM** | [GitHub Copilot Chat API](https://github.com/features/copilot) (GPT-4o-mini) | Legal reasoning & answer generation (default provider) |
-| **LLM (alt)** | [NVIDIA NIM](https://build.nvidia.com/) (Kimi K2) | Alternative LLM provider |
+| **LLM (alt)** | [Anthropic](https://anthropic.com/) (Claude Opus 4, Claude Sonnet 4), [NVIDIA NIM](https://build.nvidia.com/) (Kimi K2), [Groq](https://groq.com/) (Llama 3.3), [Google Gemini](https://ai.google.dev/) (2.5 Flash/Pro), [Mistral](https://mistral.ai/), [OpenRouter](https://openrouter.ai/) (200+ models) | 6 alternative providers, selectable per-request |
 | **Embeddings** | `paraphrase-multilingual-MiniLM-L12-v2` | Multilingual semantic search (384 dim) |
 | **Vector DB** | [Qdrant](https://qdrant.tech/) | Hybrid search (BM25 + dense vectors) |
 | **Reranker** | CrossEncoder | Result relevance refinement |
@@ -176,7 +176,7 @@ Note: NVIDIA NIM (Kimi K2) is also available as an alternative LLM provider.
 | **Frontend** | [Next.js 16](https://nextjs.org/) + React 19 | UI with Tailwind CSS + Framer Motion |
 | **Visualization** | [Recharts](https://recharts.org/) | Dashboard charts and heat maps |
 | **Graph** | [NetworkX](https://networkx.org/) | Knowledge graph storage & traversal |
-| **Testing** | pytest + Vitest | 391 tests passing |
+| **Testing** | pytest + Vitest | 459 tests passing |
 | **CI/CD** | GitHub Actions | Automated testing & docs deployment |
 | **Docs** | [VitePress](https://vitepress.dev/) | Documentation site on GitHub Pages |
 
@@ -288,7 +288,7 @@ How does Omnibus Legal Compass compare to other Indonesian legal AI platforms?
 | **Streaming Responses** | ✅ With safety parity | ❌ | ❌ | ✅ Yes | ❌ |
 | **API Versioning** | ✅ `/api/v1/*` | ❌ | ❌ | ✅ Yes | ❌ |
 | **Rate Limiting** | ✅ slowapi | ❌ | Unknown | ✅ Yes | ❌ |
-| **Test Coverage** | ✅ 391 tests (91%) | ❌ None visible | Unknown | Unknown (proprietary) | ❌ None visible |
+| **Test Coverage** | ✅ 459 tests (91%) | ❌ None visible | Unknown | Unknown (proprietary) | ❌ None visible |
 | **CI/CD** | ✅ GitHub Actions | ❌ | Unknown | ✅ Yes (proprietary) | ❌ |
 | **Open Source** | ✅ MIT License | ❌ | ❌ | ❌ Commercial | ❌ |
 | **Documentation Site** | ✅ VitePress | ❌ | ❌ | ✅ Yes | ❌ |
@@ -338,6 +338,8 @@ For detailed analysis, see [Competitive Comparison](https://vaskoyudha.github.io
 |----------|-------------|---------|
 | `GITHUB_TOKEN` | GitHub token for Copilot Chat API | Auto-discovered from Copilot auth |
 | `NVIDIA_API_KEY` | NVIDIA NIM API key | Optional (for NVIDIA provider) |
+| `ANTHROPIC_API_KEY` | Anthropic API key for Claude models | Optional |
+| `OPENROUTER_API_KEY` | OpenRouter API key for 200+ models | Optional |
 | `QDRANT_URL` | Qdrant database URL | `http://localhost:6333` |
 | `NEXT_PUBLIC_API_URL` | Backend URL for frontend | `http://localhost:8000` |
 

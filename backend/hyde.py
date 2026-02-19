@@ -21,7 +21,7 @@ import logging
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from llm_client import LLMClient, NVIDIANimClient, CopilotChatClient
+    from llm_client import LLMClient
 
 # Import SearchResult at runtime for creating merged results
 from retriever import SearchResult
@@ -43,7 +43,7 @@ class HyDE:
     
     Args:
         llm_client: LLM client for generating hypothetical answers.
-                    Accepts LLMClient, NVIDIANimClient, or CopilotChatClient.
+                    Accepts LLMClient.
     
     Example:
         >>> hyde = HyDE(llm_client)
@@ -52,7 +52,7 @@ class HyDE:
         ...     print(f"{result.citation}: {result.score:.3f}")
     """
     
-    def __init__(self, llm_client: LLMClient | NVIDIANimClient | CopilotChatClient):
+    def __init__(self, llm_client: LLMClient):
         """
         Initialize HyDE with an LLM client.
         
