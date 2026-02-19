@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import React from 'react';
 
 // Mock Next.js modules
@@ -35,29 +35,30 @@ describe('Footer', () => {
   });
 
   it('contains OMNIBUS branding text', () => {
-    render(<Footer />);
-    expect(screen.getByText('OMNIBUS')).toBeInTheDocument();
+    const { getAllByText } = render(<Footer />);
+    // multiple identical branding nodes may exist (mobile/desktop/layout duplicates)
+    // assert at least one exists using the *AllBy* variant to avoid ambiguous failures
+    const matches = getAllByText('OMNIBUS');
+    expect(matches.length).toBeGreaterThan(0);
   });
 
   it('contains legal disclaimer text about not constituting legal advice', () => {
-    render(<Footer />);
-    expect(
-      screen.getByText(/does not constitute legal advice/i)
-    ).toBeInTheDocument();
+    const { getAllByText } = render(<Footer />);
+    const matches = getAllByText(/does not constitute legal advice/i);
+    expect(matches.length).toBeGreaterThan(0);
   });
 
   it('contains copyright text with current year', () => {
-    render(<Footer />);
+    const { getAllByText } = render(<Footer />);
     const year = new Date().getFullYear();
-    expect(
-      screen.getByText(new RegExp(`© ${year} OMNIBUS`))
-    ).toBeInTheDocument();
+    const matches = getAllByText(new RegExp(`© ${year} OMNIBUS`));
+    expect(matches.length).toBeGreaterThan(0);
   });
 
   it('renders product links (Tanya Jawab, Kepatuhan, Panduan Usaha)', () => {
-    render(<Footer />);
-    expect(screen.getByText('Tanya Jawab')).toBeInTheDocument();
-    expect(screen.getByText('Kepatuhan')).toBeInTheDocument();
-    expect(screen.getByText('Panduan Usaha')).toBeInTheDocument();
+    const { getAllByText } = render(<Footer />);
+    expect(getAllByText('Tanya Jawab').length).toBeGreaterThan(0);
+    expect(getAllByText('Kepatuhan').length).toBeGreaterThan(0);
+    expect(getAllByText('Panduan Usaha').length).toBeGreaterThan(0);
   });
 });

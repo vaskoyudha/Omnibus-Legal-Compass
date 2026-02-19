@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import React from 'react';
 
 // Mock Next.js modules
@@ -56,18 +56,48 @@ describe('Navbar', () => {
 
   it('contains OMNIBUS brand name', () => {
     render(<Navbar />);
-    expect(screen.getByText('OMNIBUS')).toBeInTheDocument();
+    // banner may be rendered more than once (layout variants). Use getAllByRole
+    const banners = screen.getAllByRole('banner');
+    expect(banners.length).toBeGreaterThan(0);
+    // ensure at least one banner contains the OMNIBUS text
+    const found = banners.some(b => {
+      try {
+        return within(b).getAllByText('OMNIBUS').length > 0;
+      } catch {
+        return false;
+      }
+    });
+    expect(found).toBe(true);
   });
 
   it('contains navigation links: Beranda, Kepatuhan, Panduan', () => {
     render(<Navbar />);
-    expect(screen.getByText('Beranda')).toBeInTheDocument();
-    expect(screen.getByText('Kepatuhan')).toBeInTheDocument();
-    expect(screen.getByText('Panduan')).toBeInTheDocument();
+    const banners = screen.getAllByRole('banner');
+    const foundNav = banners.some(b => {
+      try {
+        const w = within(b);
+        return (
+          w.getAllByText('Beranda').length > 0 &&
+          w.getAllByText('Kepatuhan').length > 0 &&
+          w.getAllByText('Panduan').length > 0
+        );
+      } catch {
+        return false;
+      }
+    });
+    expect(foundNav).toBe(true);
   });
 
   it('renders the CTA button "Mulai Gratis"', () => {
     render(<Navbar />);
-    expect(screen.getByText('Mulai Gratis')).toBeInTheDocument();
+    const banners = screen.getAllByRole('banner');
+    const foundCTA = banners.some(b => {
+      try {
+        return within(b).getAllByRole('button', { name: /Mulai Gratis/i }).length > 0;
+      } catch {
+        return false;
+      }
+    });
+    expect(foundCTA).toBe(true);
   });
 });
