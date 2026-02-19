@@ -31,6 +31,13 @@ from rag_chain import LegalRAGChain, RAGResponse  # pyright: ignore[reportImplic
 from knowledge_graph.graph import LegalKnowledgeGraph  # pyright: ignore[reportImplicitRelativeImport]
 from chat.session import SessionManager  # pyright: ignore[reportImplicitRelativeImport]
 from dashboard.coverage import CoverageComputer  # pyright: ignore[reportImplicitRelativeImport]
+from models.regulation import (  # pyright: ignore[reportImplicitRelativeImport]
+    RegulationListResponse,
+    RegulationListItem,
+    RegulationDetailResponse,
+    AmendmentTimelineResponse,
+    AmendmentTimelineEntry,
+)
 
 # Sample indexed articles for demo purposes (simulates real Qdrant coverage)
 SAMPLE_INDEXED_ARTICLES: set[str] = {
@@ -1861,6 +1868,147 @@ async def get_accuracy_metrics():
     Useful for monitoring answer quality in production.
     """
     return accuracy_metrics.get_summary()
+
+
+# =============================================================================
+# Regulation Library Endpoints
+# =============================================================================
+
+
+@api_router.get("/regulations", response_model=RegulationListResponse, tags=["Regulation Library"])
+async def list_regulations(
+    node_type: str | None = Query(default=None, description="Filter by type: law, government_regulation, presidential_regulation, ministerial_regulation"),
+    status: str | None = Query(default=None, description="Filter by status: active, amended, repealed"),
+    year: int | None = Query(default=None, description="Filter by year"),
+    search: str | None = Query(default=None, description="Search in title and about"),
+    sort_by: str = Query(default="year", description="Sort field: year, title, number, article_count"),
+    sort_order: str = Query(default="desc", description="Sort direction: asc or desc"),
+    page: int = Query(default=1, ge=1, description="Page number"),
+    page_size: int = Query(default=20, ge=1, le=100, description="Items per page"),
+):
+    """
+    List regulations in the knowledge graph with metadata.
+
+    Returns paginated list of regulations with chapter/article counts,
+    amendment counts, and indexed chunk counts from Qdrant.
+    """
+    kg = _require_knowledge_graph()
+    items = kg.get_regulation_list(
+        node_type=node_type,
+        status=status,
+        year=year,
+        search_query=search,
+        sort_by=sort_by,
+        sort_order=sort_order,
+    )
+
+    # Enrich with Qdrant chunk counts (best-effort)
+    chunk_counts: dict[str, int] = {}
+    if rag_chain and rag_chain.retriever:
+        try:
+            chunk_counts = rag_chain.retriever.get_chunk_counts_by_regulation()
+        except Exception:
+            pass
+
+    # Validate and enrich items
+    validated_items = []
+    for item in items:
+        item["indexed_chunk_count"] = chunk_counts.get(item.get("id", ""), 0)
+        # Ensure required fields have defaults
+        item.setdefault("status", "active")
+        item.setdefault("chapter_count", 0)
+        item.setdefault("article_count", 0)
+        item.setdefault("amendment_count", 0)
+        item.setdefault("cross_reference_count", 0)
+        try:
+            validated_items.append(RegulationListItem(**item))
+        except Exception:
+            continue
+
+    total = len(validated_items)
+    total_pages = max(1, (total + page_size - 1) // page_size)
+    start = (page - 1) * page_size
+    end = start + page_size
+    page_items = validated_items[start:end]
+
+    return RegulationListResponse(
+        items=page_items,
+        total=total,
+        page=page,
+        page_size=page_size,
+        total_pages=total_pages,
+    )
+
+
+@api_router.get("/regulations/{regulation_id}", response_model=RegulationDetailResponse, tags=["Regulation Library"])
+async def get_regulation_detail(regulation_id: str):
+    """
+    Get full detail for a single regulation including BAB/Pasal hierarchy.
+
+    Returns chapter/article tree, amendment chain, implementing regulations,
+    parent law reference, and cross-reference count.
+    """
+    kg = _require_knowledge_graph()
+    detail = kg.get_regulation_detail(regulation_id)
+    if detail is None:
+        raise HTTPException(status_code=404, detail=f"Regulation '{regulation_id}' not found")
+
+    # Enrich with Qdrant chunk counts
+    if rag_chain and rag_chain.retriever:
+        try:
+            chunk_counts = rag_chain.retriever.get_chunk_counts_by_regulation()
+            detail["indexed_chunk_count"] = chunk_counts.get(regulation_id, 0)
+        except Exception:
+            pass
+
+    detail.setdefault("status", "active")
+    detail.setdefault("chapters", [])
+    detail.setdefault("amendments", [])
+    detail.setdefault("implementing_regulations", [])
+    detail.setdefault("parent_law", None)
+    detail.setdefault("cross_reference_count", 0)
+    detail.setdefault("indexed_chunk_count", 0)
+
+    return RegulationDetailResponse(**detail)
+
+
+@api_router.get("/regulations/{regulation_id}/timeline", response_model=AmendmentTimelineResponse, tags=["Regulation Library"])
+async def get_regulation_amendment_timeline(regulation_id: str):
+    """
+    Get amendment/revocation timeline for a regulation.
+
+    Returns chronological list of AMENDS, REVOKES, REPLACES relationships
+    in both directions.
+    """
+    kg = _require_knowledge_graph()
+    if kg.get_regulation(regulation_id) is None:
+        raise HTTPException(status_code=404, detail=f"Regulation '{regulation_id}' not found")
+
+    entries = kg.get_amendment_timeline(regulation_id)
+    reg_data = kg.get_regulation(regulation_id) or {}
+
+    validated_entries = [AmendmentTimelineEntry(**e) for e in entries]
+
+    return AmendmentTimelineResponse(
+        regulation_id=regulation_id,
+        regulation_title=reg_data.get("title", ""),
+        entries=validated_entries,
+    )
+
+
+@api_router.get("/regulations/{regulation_id}/articles/{article_id}/references", tags=["Regulation Library"])
+async def get_regulation_article_references(regulation_id: str, article_id: str):
+    """
+    Get cross-references for a specific article.
+
+    Returns both outgoing (references to other articles) and incoming
+    (articles that reference this article) REFERENCES edges.
+    """
+    kg = _require_knowledge_graph()
+    if kg.get_regulation(regulation_id) is None:
+        raise HTTPException(status_code=404, detail=f"Regulation '{regulation_id}' not found")
+
+    return kg.get_article_cross_references(article_id)
 
 
 # =============================================================================

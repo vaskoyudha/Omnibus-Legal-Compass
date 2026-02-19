@@ -9,10 +9,12 @@ Uses Reciprocal Rank Fusion (RRF) to merge results:
 """
 import os
 import re
+import time
 from typing import Any
 from dataclasses import dataclass
 import logging
 
+import requests
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchValue
@@ -32,7 +34,365 @@ EMBEDDING_DIM = 384
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")  # For Qdrant Cloud
 RRF_K = 60  # Standard RRF constant
-RERANKER_MODEL = "jeffwan/mmarco-mMiniLMv2-L12-H384-v1"  # Multilingual cross-encoder
+RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"  # Multilingual cross-encoder (upgraded from mMiniLMv2)
+
+# NVIDIA NIM embedding configuration
+USE_NVIDIA_EMBEDDINGS = os.getenv("USE_NVIDIA_EMBEDDINGS", "false").lower() == "true"
+NVIDIA_EMBEDDING_MODEL = "nvidia/nv-embedqa-e5-v5"
+NVIDIA_EMBEDDING_DIM = 1024
+NVIDIA_API_KEY = os.getenv("NVIDIA_EMBEDDING_API_KEY") or os.getenv("NVIDIA_API_KEY")
+NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/embeddings"
+
+# Jina AI embedding configuration
+USE_JINA_EMBEDDINGS = os.getenv("USE_JINA_EMBEDDINGS", "true").lower() == "true"
+JINA_EMBEDDING_MODEL = os.getenv("JINA_EMBEDDING_MODEL", "jina-embeddings-v3")
+JINA_EMBEDDING_DIM = int(os.getenv("JINA_EMBEDDING_DIM", "1024"))
+JINA_API_KEY = os.getenv("JINA_API_KEY")
+JINA_API_URL = "https://api.jina.ai/v1/embeddings"
+
+
+class NVIDIAEmbedder:
+    """
+    NVIDIA NIM API embeddings client for nv-embedqa-e5-v5 model.
+    
+    Supports batch embedding with automatic retry and exponential backoff
+    for rate limit handling.
+    """
+    
+    def __init__(
+        self,
+        api_key: str | None = None,
+        model: str = NVIDIA_EMBEDDING_MODEL,
+        max_retries: int = 3,
+        timeout: int = 30,
+        max_tokens: int = 512,
+    ):
+        """
+        Initialize NVIDIA embedder.
+        
+        Args:
+            api_key: NVIDIA API key (defaults to env var)
+            model: NVIDIA model name
+            max_retries: Maximum retry attempts for failed requests
+            timeout: Request timeout in seconds
+            max_tokens: Maximum token limit for input text (nv-embedqa-e5-v5 has 512 token limit)
+        """
+        self.api_key = api_key or NVIDIA_API_KEY
+        if not self.api_key:
+            raise ValueError(
+                "NVIDIA API key not found. Set NVIDIA_EMBEDDING_API_KEY or NVIDIA_API_KEY environment variable."
+            )
+        
+        self.model = model
+        self.max_retries = max_retries
+        self.timeout = timeout
+        self.dimension = NVIDIA_EMBEDDING_DIM
+        self.max_tokens = max_tokens
+        
+        logger.info(f"Initialized NVIDIA embedder with model: {model} (max_tokens: {max_tokens})")
+    
+    def _truncate_to_token_limit(self, text: str) -> str:
+        """
+        Truncate text to fit within the token limit.
+        
+        Uses a conservative character-based heuristic: ~2 chars per token.
+        This is very conservative to handle worst-case scenarios (dense tokens, special characters).
+        
+        Args:
+            text: Input text
+        
+        Returns:
+            Truncated text that fits within max_tokens
+        """
+        # Very conservative estimate: 2 characters per token (handles dense tokenization)
+        max_chars = self.max_tokens * 2
+        
+        if len(text) > max_chars:
+            logger.warning(f"Truncating text from {len(text)} to {max_chars} characters (estimated {self.max_tokens} tokens)")
+            return text[:max_chars]
+        
+        return text
+    
+    def _make_request(
+        self,
+        texts: list[str],
+        input_type: str = "query",
+        retry_count: int = 0,
+    ) -> dict[str, Any]:
+        """
+        Make API request with exponential backoff retry logic.
+        
+        Args:
+            texts: List of texts to embed
+            input_type: "query" or "passage"
+            retry_count: Current retry attempt
+        
+        Returns:
+            API response as dict
+        
+        Raises:
+            Exception: After max retries exceeded or non-retryable error
+        """
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+        
+        # Truncate all texts to fit within token limit
+        truncated_texts = [self._truncate_to_token_limit(text) for text in texts]
+        
+        data = {
+            "input": truncated_texts,
+            "model": self.model,
+            "encoding_format": "float",
+            "input_type": input_type,
+        }
+        
+        try:
+            response = requests.post(
+                NVIDIA_API_URL,
+                headers=headers,
+                json=data,
+                timeout=self.timeout,
+            )
+            
+            # Handle rate limiting with exponential backoff
+            if response.status_code == 429:
+                if retry_count < self.max_retries:
+                    wait_time = 2 ** retry_count  # 1s, 2s, 4s, ...
+                    logger.warning(f"Rate limit hit, retrying in {wait_time}s (attempt {retry_count + 1}/{self.max_retries})")
+                    time.sleep(wait_time)
+                    return self._make_request(texts, input_type, retry_count + 1)
+                else:
+                    raise Exception(f"Rate limit exceeded after {self.max_retries} retries")
+            
+            # Handle other errors
+            if response.status_code != 200:
+                raise Exception(f"NVIDIA API error {response.status_code}: {response.text}")
+            
+            return response.json()
+        
+        except requests.exceptions.Timeout:
+            if retry_count < self.max_retries:
+                wait_time = 2 ** retry_count
+                logger.warning(f"Request timeout, retrying in {wait_time}s (attempt {retry_count + 1}/{self.max_retries})")
+                time.sleep(wait_time)
+                return self._make_request(texts, input_type, retry_count + 1)
+            else:
+                raise Exception(f"Request timeout after {self.max_retries} retries")
+        
+        except Exception as e:
+            logger.error(f"NVIDIA API request failed: {e}")
+            raise
+    
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
+        """
+        Embed a batch of documents (passages).
+        
+        Args:
+            texts: List of document texts
+        
+        Returns:
+            List of embedding vectors (1024-dim each)
+        """
+        if not texts:
+            return []
+        
+        # NVIDIA API supports batch embedding, but we'll batch in chunks of 100 for safety
+        batch_size = 100
+        all_embeddings: list[list[float]] = []
+        
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i:i + batch_size]
+            result = self._make_request(batch, input_type="passage")
+            
+            # Extract embeddings in order
+            embeddings = [item["embedding"] for item in sorted(result["data"], key=lambda x: x["index"])]
+            all_embeddings.extend(embeddings)
+        
+        return all_embeddings
+    
+    def embed_query(self, text: str) -> list[float]:
+        """
+        Embed a single query.
+        
+        Args:
+            text: Query text
+        
+        Returns:
+            Embedding vector (1024-dim)
+        """
+        result = self._make_request([text], input_type="query")
+        return result["data"][0]["embedding"]
+
+
+class JinaEmbedder:
+    """
+    Jina AI embeddings client for jina-embeddings-v3 model.
+    
+    Supports batch embedding with automatic retry and exponential backoff
+    for rate limit handling.  Uses task-specific embedding types
+    (retrieval.passage for documents, retrieval.query for queries).
+    
+    API: POST https://api.jina.ai/v1/embeddings
+    Token limit: 8192 (server-side truncation via truncate=true)
+    """
+    
+    def __init__(
+        self,
+        api_key: str | None = None,
+        model: str | None = None,
+        max_retries: int = 10,
+        timeout: int = 60,
+        dimensions: int | None = None,
+    ):
+        """
+        Initialize Jina embedder.
+        
+        Args:
+            api_key: Jina API key (defaults to JINA_API_KEY env var)
+            model: Jina model name (defaults to JINA_EMBEDDING_MODEL)
+            max_retries: Maximum retry attempts for failed requests (10 for aggressive rate limit handling)
+            timeout: Request timeout in seconds
+            dimensions: Output embedding dimensions (defaults to JINA_EMBEDDING_DIM)
+        """
+        self.api_key = api_key or JINA_API_KEY
+        if not self.api_key:
+            raise ValueError(
+                "Jina API key not found. Set JINA_API_KEY environment variable."
+            )
+        
+        self.model = model or JINA_EMBEDDING_MODEL
+        self.max_retries = max_retries
+        self.timeout = timeout
+        self.dimension = dimensions or JINA_EMBEDDING_DIM
+        
+        logger.info(f"Initialized Jina embedder with model: {self.model} (dim: {self.dimension})")
+    
+    def _make_request(
+        self,
+        texts: list[str],
+        task: str = "retrieval.query",
+        retry_count: int = 0,
+    ) -> dict[str, Any]:
+        """
+        Make API request with exponential backoff retry logic.
+        
+        Args:
+            texts: List of texts to embed
+            task: Jina task type — "retrieval.query" or "retrieval.passage"
+            retry_count: Current retry attempt
+        
+        Returns:
+            API response as dict
+        
+        Raises:
+            Exception: After max retries exceeded or non-retryable error
+        """
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+        
+        data = {
+            "model": self.model,
+            "input": texts,
+            "embedding_type": "float",
+            "task": task,
+            "dimensions": self.dimension,
+            "normalized": True,
+            "truncate": True,
+        }
+        
+        try:
+            response = requests.post(
+                JINA_API_URL,
+                headers=headers,
+                json=data,
+                timeout=self.timeout,
+            )
+            
+            # Handle rate limiting with aggressive exponential backoff
+            if response.status_code == 429:
+                if retry_count < self.max_retries:
+                    # Retry-After header takes priority if present
+                    retry_after = response.headers.get("Retry-After")
+                    if retry_after:
+                        wait_time = int(retry_after) + 1
+                    else:
+                        wait_time = 2 ** (retry_count + 1)  # 2s, 4s, 8s, 16s, 32s, 64s, 128s, 256s, 512s, 1024s
+                    logger.warning(f"Rate limit hit, retrying in {wait_time}s (attempt {retry_count + 1}/{self.max_retries})")
+                    time.sleep(wait_time)
+                    return self._make_request(texts, task, retry_count + 1)
+                else:
+                    raise Exception(f"Rate limit exceeded after {self.max_retries} retries")
+            
+            # Handle server errors with retry (5xx)
+            if response.status_code >= 500:
+                if retry_count < self.max_retries:
+                    wait_time = 2 ** (retry_count + 1)
+                    logger.warning(f"Server error {response.status_code}, retrying in {wait_time}s (attempt {retry_count + 1}/{self.max_retries})")
+                    time.sleep(wait_time)
+                    return self._make_request(texts, task, retry_count + 1)
+            
+            # Handle other errors
+            if response.status_code != 200:
+                raise Exception(f"Jina API error {response.status_code}: {response.text}")
+            
+            return response.json()
+        
+        except requests.exceptions.Timeout:
+            if retry_count < self.max_retries:
+                wait_time = 2 ** (retry_count + 1)
+                logger.warning(f"Request timeout, retrying in {wait_time}s (attempt {retry_count + 1}/{self.max_retries})")
+                time.sleep(wait_time)
+                return self._make_request(texts, task, retry_count + 1)
+            else:
+                raise Exception(f"Request timeout after {self.max_retries} retries")
+        
+        except Exception as e:
+            logger.error(f"Jina API request failed: {e}")
+            raise
+    
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
+        """
+        Embed a batch of documents (passages).
+        
+        Args:
+            texts: List of document texts
+        
+        Returns:
+            List of embedding vectors
+        """
+        if not texts:
+            return []
+        
+        # Jina API supports batch embedding; batch in chunks of 100 for safety
+        batch_size = 100
+        all_embeddings: list[list[float]] = []
+        
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i:i + batch_size]
+            result = self._make_request(batch, task="retrieval.passage")
+            
+            # Extract embeddings in order
+            embeddings = [item["embedding"] for item in sorted(result["data"], key=lambda x: x["index"])]
+            all_embeddings.extend(embeddings)
+        
+        return all_embeddings
+    
+    def embed_query(self, text: str) -> list[float]:
+        """
+        Embed a single query.
+        
+        Args:
+            text: Query text
+        
+        Returns:
+            Embedding vector
+        """
+        result = self._make_request([text], task="retrieval.query")
+        return result["data"][0]["embedding"]
 
 
 @dataclass
@@ -59,30 +419,67 @@ class SearchResult:
 
 def tokenize_indonesian(text: str) -> list[str]:
     """
-    Simple tokenizer for Indonesian text.
+    Enhanced tokenizer for Indonesian legal text.
     
-    Handles basic preprocessing:
+    Handles:
     - Lowercase
     - Split on whitespace and punctuation
-    - Remove common Indonesian stopwords (minimal set)
+    - Expanded Indonesian stopwords (50+)
+    - Legal abbreviation expansion (PT, CV, UU, etc.)
+    - Bigram generation for common legal phrases
     
     For production, consider using Sastrawi or similar.
     """
     import re
     
-    # Lowercase and extract words
+    # Legal abbreviation expansion
+    legal_abbrevs = {
+        r'\bpt\b': 'perseroan terbatas',
+        r'\bcv\b': 'commanditaire vennootschap',
+        r'\buu\b': 'undang undang',
+        r'\bpp\b': 'peraturan pemerintah',
+        r'\bperpres\b': 'peraturan presiden',
+        r'\bperda\b': 'peraturan daerah',
+        r'\bphk\b': 'pemutusan hubungan kerja',
+        r'\bnib\b': 'nomor induk berusaha',
+        r'\bkuhp\b': 'kitab undang hukum pidana',
+        r'\bkuhap\b': 'kitab undang hukum acara pidana',
+        r'\bkuhper\b': 'kitab undang hukum perdata',
+    }
+    
+    # Lowercase and expand abbreviations
     text = text.lower()
+    for abbrev, expansion in legal_abbrevs.items():
+        text = re.sub(abbrev, expansion, text)
+    
+    # Extract words
     tokens = re.findall(r'\b[a-zA-Z0-9]+\b', text)
     
-    # Minimal Indonesian stopwords (keep legal terms!)
+    # Expanded Indonesian stopwords (50+ common function words)
     stopwords = {
+        # Original 24
         "dan", "atau", "yang", "di", "ke", "dari", "untuk",
         "dengan", "pada", "ini", "itu", "adalah", "sebagai",
         "dalam", "oleh", "tidak", "akan", "dapat", "telah",
         "tersebut", "bahwa", "jika", "maka", "atas", "setiap",
+        # Additional 26 common function words
+        "ada", "bagi", "bisa", "hal", "hingga", "jadi", "juga",
+        "karena", "kita", "lebih", "lain", "masih", "mereka",
+        "oleh", "saat", "sangat", "saya", "se", "suatu", "sudah",
+        "tanpa", "tapi", "telah", "tetapi", "untuk", "yaitu",
     }
     
-    return [t for t in tokens if t not in stopwords and len(t) > 1]
+    # Filter stopwords and short tokens
+    filtered_tokens = [t for t in tokens if t not in stopwords and len(t) > 1]
+    
+    # Generate bigrams for legal phrases
+    bigrams = []
+    for i in range(len(filtered_tokens) - 1):
+        bigram = f"{filtered_tokens[i]}_{filtered_tokens[i+1]}"
+        bigrams.append(bigram)
+    
+    # Combine unigrams + bigrams
+    return filtered_tokens + bigrams
 
 
 class HybridRetriever:
@@ -101,20 +498,32 @@ class HybridRetriever:
         collection_name: str = COLLECTION_NAME,
         embedding_model: str = EMBEDDING_MODEL,
         use_reranker: bool = True,
+        use_nvidia: bool = USE_NVIDIA_EMBEDDINGS,
+        use_jina: bool = USE_JINA_EMBEDDINGS,
+        knowledge_graph: Any | None = None,
     ):
         """
         Initialize the hybrid retriever.
+        
+        Embedding provider precedence: Jina > NVIDIA > HuggingFace.
+        When multiple providers are enabled, the highest-precedence one wins.
         
         Args:
             qdrant_url: Qdrant server URL
             qdrant_api_key: API key for Qdrant Cloud (optional for local)
             collection_name: Name of the Qdrant collection
-            embedding_model: HuggingFace model for embeddings
+            embedding_model: HuggingFace model for embeddings (ignored if use_jina/use_nvidia=True)
             use_reranker: Whether to use CrossEncoder for re-ranking
+            use_nvidia: Whether to use NVIDIA NIM API embeddings (1024-dim)
+            use_jina: Whether to use Jina AI embeddings (jina-embeddings-v3)
+            knowledge_graph: Optional LegalKnowledgeGraph instance for KG-aware boosting
         """
         self.collection_name = collection_name
         self.qdrant_url = qdrant_url
         self.use_reranker = use_reranker
+        self.use_nvidia = use_nvidia
+        self.use_jina = use_jina
+        self.knowledge_graph = knowledge_graph
         
         # Initialize Qdrant client (with API key for cloud)
         if qdrant_api_key:
@@ -122,8 +531,19 @@ class HybridRetriever:
         else:
             self.client = QdrantClient(url=qdrant_url, timeout=10)
         
-        # Initialize embeddings (same model as ingestion)
-        self.embedder = HuggingFaceEmbeddings(model_name=embedding_model)
+        # Initialize embeddings — precedence: Jina > NVIDIA > HuggingFace
+        if use_jina:
+            logger.info(f"Using Jina embeddings: {JINA_EMBEDDING_MODEL} (precedence: Jina > NVIDIA > HuggingFace)")
+            self.embedder = JinaEmbedder()
+            self.embedding_dim = JINA_EMBEDDING_DIM
+        elif use_nvidia:
+            logger.info(f"Using NVIDIA embeddings: {NVIDIA_EMBEDDING_MODEL}")
+            self.embedder = NVIDIAEmbedder()
+            self.embedding_dim = NVIDIA_EMBEDDING_DIM
+        else:
+            logger.info(f"Using HuggingFace embeddings: {embedding_model}")
+            self.embedder = HuggingFaceEmbeddings(model_name=embedding_model)
+            self.embedding_dim = EMBEDDING_DIM
         
         # Initialize CrossEncoder for re-ranking (optional but recommended)
         self.reranker = None
@@ -186,38 +606,88 @@ class HybridRetriever:
         if tokenized_corpus:
             self._bm25 = BM25Okapi(tokenized_corpus)
     
-    # Indonesian legal term synonym groups for query expansion
+    # Indonesian legal term synonym groups for query expansion.
+    #
+    # 55 groups covering:
+    #   - Regulation type abbreviations (UU, PP, Perpres, Permen, Perda, Perpu, SKB)
+    #   - Common legal term synonyms (pidana/kriminal, perdata/sipil, etc.)
+    #   - Procedural terms (gugatan/tuntutan, banding/naik banding, etc.)
+    #   - Business entity synonyms (PT/perseroan, CV/comanditer, etc.)
+    #   - Common abbreviations (KUHPerdata, KUHP, etc.)
+    #
+    # TODO Phase 5: Replace/augment with LLM-based query expansion using
+    # cached common queries for dynamic synonym discovery.
     _SYNONYM_GROUPS: list[list[str]] = [
+        # === Business entity & corporate terms (1-10) ===
         ["PT", "Perseroan Terbatas", "perusahaan"],
-        ["NIB", "Nomor Induk Berusaha", "izin berusaha"],
-        ["UMKM", "Usaha Mikro Kecil Menengah", "usaha kecil"],
-        ["PHK", "Pemutusan Hubungan Kerja", "pemberhentian kerja"],
-        ["pajak", "perpajakan", "fiskal"],
-        ["gaji", "upah", "penghasilan"],
+        ["CV", "Commanditaire Vennootschap", "persekutuan komanditer"],
+        ["firma", "Fa", "persekutuan firma"],
+        ["koperasi", "badan usaha koperasi"],
+        ["BUMN", "Badan Usaha Milik Negara", "perusahaan negara"],
+        ["BUMD", "Badan Usaha Milik Daerah", "perusahaan daerah"],
+        ["yayasan", "badan hukum yayasan", "organisasi nirlaba"],
+        ["direksi", "direktur", "pengurus perseroan"],
+        ["komisaris", "dewan komisaris", "pengawas"],
+        ["RUPS", "Rapat Umum Pemegang Saham"],
+        # === Employment & labor terms (11-20) ===
         ["karyawan", "pekerja", "buruh", "tenaga kerja"],
-        ["izin", "perizinan", "lisensi"],
-        ["modal", "investasi", "penanaman modal"],
-        ["tanah", "agraria", "pertanahan"],
-        ["lingkungan", "lingkungan hidup", "ekologi"],
-        ["data pribadi", "privasi", "PDP", "pelindungan data"],
-        ["kontrak", "perjanjian"],
+        ["PHK", "Pemutusan Hubungan Kerja", "pemberhentian kerja"],
+        ["PKWT", "Perjanjian Kerja Waktu Tertentu", "kontrak kerja"],
+        ["PKWTT", "Perjanjian Kerja Waktu Tidak Tertentu", "karyawan tetap"],
+        ["gaji", "upah", "penghasilan", "remunerasi"],
+        ["UMR", "UMK", "UMP", "upah minimum", "upah minimum regional"],
+        ["pesangon", "uang pesangon", "kompensasi PHK"],
+        ["lembur", "kerja lembur", "waktu kerja tambahan"],
+        ["cuti", "cuti tahunan", "istirahat kerja", "hak istirahat"],
+        ["serikat pekerja", "serikat buruh", "organisasi pekerja"],
+        # === Licensing & permits (21-27) ===
+        ["NIB", "Nomor Induk Berusaha", "izin berusaha"],
+        ["izin", "perizinan", "lisensi", "permit"],
         ["OSS", "Online Single Submission", "perizinan daring"],
-        ["Cipta Kerja", "Omnibus Law", "UU 11/2020"],
-        ["Amdal", "Analisis Mengenai Dampak Lingkungan"],
+        ["UMKM", "Usaha Mikro Kecil Menengah", "usaha kecil"],
+        ["TDP", "Tanda Daftar Perusahaan"],
+        ["SIUP", "Surat Izin Usaha Perdagangan", "izin usaha"],
+        ["IMB", "Izin Mendirikan Bangunan", "PBG", "Persetujuan Bangunan Gedung"],
+        # === Tax & fiscal terms (28-33) ===
+        ["pajak", "perpajakan", "fiskal"],
         ["NPWP", "Nomor Pokok Wajib Pajak"],
         ["PPN", "Pajak Pertambahan Nilai", "VAT"],
         ["PPh", "Pajak Penghasilan", "income tax"],
-        ["TDP", "Tanda Daftar Perusahaan"],
-        ["RUPS", "Rapat Umum Pemegang Saham"],
-        ["direksi", "direktur", "pengurus perseroan"],
-        ["komisaris", "dewan komisaris", "pengawas"],
-        ["CSR", "Tanggung Jawab Sosial", "tanggung jawab sosial dan lingkungan"],
-        ["PKWT", "Perjanjian Kerja Waktu Tertentu", "kontrak kerja"],
-        ["PKWTT", "Perjanjian Kerja Waktu Tidak Tertentu", "karyawan tetap"],
-        ["pesangon", "uang pesangon", "kompensasi PHK"],
-        ["UMR", "UMK", "upah minimum", "upah minimum regional"],
-        ["lembur", "kerja lembur", "waktu kerja tambahan"],
-        ["cuti", "cuti tahunan", "istirahat kerja"],
+        ["Bea Cukai", "kepabeanan", "cukai"],
+        ["retribusi", "pungutan daerah", "retribusi daerah"],
+        # === Investment & capital (34-36) ===
+        ["modal", "investasi", "penanaman modal"],
+        ["PMA", "Penanaman Modal Asing", "investasi asing"],
+        ["PMDN", "Penanaman Modal Dalam Negeri", "investasi domestik"],
+        # === Land & environment (37-40) ===
+        ["tanah", "agraria", "pertanahan"],
+        ["lingkungan", "lingkungan hidup", "ekologi"],
+        ["Amdal", "Analisis Mengenai Dampak Lingkungan", "kajian lingkungan"],
+        ["HGU", "Hak Guna Usaha", "hak atas tanah"],
+        # === Regulation type abbreviations (41-47) ===
+        ["UU", "Undang-Undang", "undang undang"],
+        ["PP", "Peraturan Pemerintah"],
+        ["Perpres", "Peraturan Presiden"],
+        ["Permen", "Peraturan Menteri"],
+        ["Perda", "Peraturan Daerah"],
+        ["Perpu", "Peraturan Pemerintah Pengganti Undang-Undang"],
+        ["SKB", "Surat Keputusan Bersama"],
+        # === Legal code abbreviations (48-50) ===
+        ["KUHPerdata", "Kitab Undang-Undang Hukum Perdata", "BW", "Burgerlijk Wetboek"],
+        ["KUHP", "Kitab Undang-Undang Hukum Pidana", "KUHPidana"],
+        ["KUHAP", "Kitab Undang-Undang Hukum Acara Pidana"],
+        # === Legal domain terms (51-55) ===
+        ["pidana", "kriminal", "hukum pidana"],
+        ["perdata", "sipil", "hukum perdata", "hukum privat"],
+        ["kontrak", "perjanjian", "perikatan"],
+        ["gugatan", "tuntutan", "dakwaan"],
+        ["banding", "naik banding", "upaya hukum banding"],
+        # === Specific regulations & programs (56-60) ===
+        ["Cipta Kerja", "Omnibus Law", "UU 11/2020"],
+        ["data pribadi", "privasi", "PDP", "pelindungan data"],
+        ["CSR", "Tanggung Jawab Sosial", "tanggung jawab sosial dan lingkungan", "TJSL"],
+        ["BPJS", "Badan Penyelenggara Jaminan Sosial", "jaminan sosial"],
+        ["PKB", "Perjanjian Kerja Bersama", "kesepakatan kerja bersama"],
     ]
     
     def expand_query(self, query: str) -> list[str]:
@@ -269,6 +739,127 @@ class HybridRetriever:
                     queries.append(variant2)
         
         return queries[:3]  # Max 3 variants
+    
+    # Compiled regex patterns for legal reference detection.
+    #
+    # Detects structured Indonesian legal references in queries, such as:
+    #   "Pasal 5 UU 11/2020"          → {pasal: "5", jenis_dokumen: "UU", nomor: "11", tahun: "2020"}
+    #   "Pasal 12 PP No. 35 Tahun 2021" → {pasal: "12", jenis_dokumen: "PP", nomor: "35", tahun: "2021"}
+    #   "UU Nomor 13 Tahun 2003"       → {jenis_dokumen: "UU", nomor: "13", tahun: "2003"}
+    #   "PP 5/2021"                     → {jenis_dokumen: "PP", nomor: "5", tahun: "2021"}
+    #
+    # The detected reference is used to build Qdrant filter_conditions for
+    # targeted exact-match retrieval. If the filter returns no results, the
+    # caller falls back to normal semantic search (see hybrid_search).
+    _LEGAL_REF_PATTERNS: list[re.Pattern[str]] = [
+        # Pattern 1: "Pasal X UU/PP/Perpres No. Y Tahun Z" or "Pasal X UU Y/Z"
+        re.compile(
+            r"[Pp]asal\s+(\d+)"                               # Pasal number
+            r"\s+(?:ayat\s+\((\d+)\)\s+)?"                    # Optional ayat
+            r"(UU|PP|Perpres|Permen|Perda|Perpu)"              # Regulation type
+            r"\s+(?:(?:No(?:mor)?\.?\s*)?(\d+)"                # Nomor
+            r"(?:\s+[Tt]ahun\s+|\s*/\s*)(\d{4}))",            # Tahun
+            re.IGNORECASE,
+        ),
+        # Pattern 2: "UU/PP/Perpres No. Y Tahun Z" (no Pasal prefix)
+        re.compile(
+            r"(UU|PP|Perpres|Permen|Perda|Perpu)"
+            r"\s+(?:No(?:mor)?\.?\s*)?(\d+)"
+            r"(?:\s+[Tt]ahun\s+|\s*/\s*)(\d{4})",
+            re.IGNORECASE,
+        ),
+        # Pattern 3: "Pasal X UU/PP Y/Z" (compact slash form)
+        re.compile(
+            r"[Pp]asal\s+(\d+)"
+            r"\s+(?:ayat\s+\((\d+)\)\s+)?"
+            r"(UU|PP|Perpres|Permen|Perda|Perpu)"
+            r"\s+(\d+)/(\d{4})",
+            re.IGNORECASE,
+        ),
+    ]
+    
+    # Map of full/variant regulation type names to their canonical jenis_dokumen value.
+    _JENIS_CANONICAL: dict[str, str] = {
+        "uu": "UU",
+        "undang-undang": "UU",
+        "pp": "PP",
+        "peraturan pemerintah": "PP",
+        "perpres": "Perpres",
+        "peraturan presiden": "Perpres",
+        "permen": "Permen",
+        "peraturan menteri": "Permen",
+        "perda": "Perda",
+        "peraturan daerah": "Perda",
+        "perpu": "Perpu",
+    }
+    
+    def detect_legal_references(self, query: str) -> dict[str, Any] | None:
+        """
+        Detect structured Indonesian legal references in a query string.
+        
+        Scans the query for patterns like "Pasal 5 UU 11/2020" and extracts
+        a structured filter_conditions dict suitable for passing directly to
+        ``dense_search(filter_conditions=...)``.
+        
+        Supported patterns:
+            - "Pasal 12 PP No. 35 Tahun 2021"
+            - "Pasal 5 UU 11/2020"
+            - "UU Nomor 13 Tahun 2003"
+            - "PP 5/2021"
+            - "Pasal 3 ayat (2) Perpres 82/2023"
+        
+        Returns:
+            Dict of Qdrant-filterable field→value pairs, e.g.:
+            ``{"jenis_dokumen": "UU", "nomor": "11", "tahun": 2020, "pasal": "5"}``
+            Returns ``None`` if no structured reference is detected.
+        """
+        # Try Pattern 1 / Pattern 3 first (with Pasal)
+        for pattern in [self._LEGAL_REF_PATTERNS[0], self._LEGAL_REF_PATTERNS[2]]:
+            m = pattern.search(query)
+            if m:
+                groups = m.groups()
+                pasal = groups[0]
+                ayat = groups[1]  # May be None
+                jenis_raw = groups[2]
+                nomor = groups[3]
+                tahun = groups[4]
+                
+                jenis = self._JENIS_CANONICAL.get(jenis_raw.lower(), jenis_raw)
+                
+                conditions: dict[str, Any] = {
+                    "jenis_dokumen": jenis,
+                    "nomor": str(nomor),
+                    "tahun": int(tahun),
+                    "pasal": str(pasal),
+                }
+                if ayat:
+                    conditions["ayat"] = str(ayat)
+                
+                logger.info(
+                    "Legal reference detected: %s → filter %s",
+                    m.group(), conditions,
+                )
+                return conditions
+        
+        # Try Pattern 2 (regulation without Pasal)
+        m = self._LEGAL_REF_PATTERNS[1].search(query)
+        if m:
+            jenis_raw, nomor, tahun = m.groups()
+            jenis = self._JENIS_CANONICAL.get(jenis_raw.lower(), jenis_raw)
+            
+            conditions = {
+                "jenis_dokumen": jenis,
+                "nomor": str(nomor),
+                "tahun": int(tahun),
+            }
+            
+            logger.info(
+                "Legal reference detected: %s → filter %s",
+                m.group(), conditions,
+            )
+            return conditions
+        
+        return None
     
     def dense_search(
         self,
@@ -446,7 +1037,10 @@ class HybridRetriever:
         
         try:
             # Get cross-encoder scores
+            start = time.perf_counter()
             scores = self.reranker.predict(pairs)
+            elapsed_ms = (time.perf_counter() - start) * 1000
+            logger.info(f"CrossEncoder reranked {len(pairs)} candidates in {elapsed_ms:.1f}ms")
             
             # Create scored results and sort by cross-encoder score
             scored_results = list(zip(results, scores))
@@ -474,6 +1068,98 @@ class HybridRetriever:
             logger.warning(f"Re-ranking failed, returning original results: {e}")
             return results[:top_k]
     
+    def _extract_regulation_ids(self, results: list[SearchResult]) -> set[str]:
+        """Extract unique regulation IDs from search result payloads.
+
+        Builds canonical ``{jenis}_{nomor}_{tahun}`` IDs from the metadata
+        fields typically stored in Qdrant payloads.
+        """
+        reg_ids: set[str] = set()
+        for r in results:
+            jenis = r.metadata.get("jenis_dokumen", "")
+            nomor = r.metadata.get("nomor", "")
+            tahun = r.metadata.get("tahun", "")
+            if jenis and nomor and tahun:
+                reg_ids.add(f"{jenis.lower()}_{nomor}_{tahun}")
+        return reg_ids
+
+    def _boost_with_kg(
+        self,
+        candidates: list[SearchResult],
+        boost_factor: float = 1.15,
+    ) -> list[SearchResult]:
+        """Boost scores of candidates whose regulation is KG-related to top results.
+
+        Workflow:
+        1. Extract regulation IDs from the top candidates.
+        2. Query the knowledge graph for 1-hop related regulations.
+        3. For every candidate whose regulation appears in the related set,
+           multiply its score by *boost_factor*.
+
+        This enables "regulation-aware" retrieval without changing the response
+        schema — only score ordering is affected.
+
+        Args:
+            candidates: Current search candidates with RRF scores.
+            boost_factor: Multiplicative boost (default 1.15 = +15%).
+
+        Returns:
+            Candidates with boosted scores, re-sorted by score descending.
+        """
+        if not self.knowledge_graph:
+            return candidates
+
+        # Step 1: Extract regulation IDs from top candidates
+        source_reg_ids = self._extract_regulation_ids(candidates[:5])
+        if not source_reg_ids:
+            return candidates
+
+        # Step 2: Query KG for related regulations (1-hop for speed)
+        related_reg_ids: set[str] = set()
+        for reg_id in source_reg_ids:
+            try:
+                related = self.knowledge_graph.get_related_regulations(
+                    reg_id, max_hops=1, timeout_ms=200
+                )
+                for node in related:
+                    node_id = node.get("id", "")
+                    if node_id:
+                        related_reg_ids.add(node_id)
+            except Exception as e:
+                logger.debug(f"KG traversal failed for {reg_id}: {e}")
+
+        if not related_reg_ids:
+            return candidates
+
+        logger.debug(
+            "KG boost: %d source regs → %d related regs",
+            len(source_reg_ids), len(related_reg_ids),
+        )
+
+        # Step 3: Boost candidates from related regulations
+        boosted: list[SearchResult] = []
+        for r in candidates:
+            jenis = r.metadata.get("jenis_dokumen", "")
+            nomor = r.metadata.get("nomor", "")
+            tahun = r.metadata.get("tahun", "")
+            cand_reg_id = f"{jenis.lower()}_{nomor}_{tahun}" if (jenis and nomor and tahun) else ""
+
+            if cand_reg_id and cand_reg_id in related_reg_ids:
+                boosted.append(SearchResult(
+                    id=r.id,
+                    text=r.text,
+                    citation=r.citation,
+                    citation_id=r.citation_id,
+                    score=r.score * boost_factor,
+                    metadata=r.metadata,
+                ))
+            else:
+                boosted.append(r)
+
+        # Re-sort by boosted score
+        boosted.sort(key=lambda x: x.score, reverse=True)
+        return boosted
+    
     def hybrid_search(
         self,
         query: str,
@@ -495,13 +1181,21 @@ class HybridRetriever:
         Supports query expansion: generates synonym variants of the query
         to improve recall for Indonesian legal abbreviations.
         
+        Legal reference detection (auto-filter):
+            When ``filter_conditions`` is not provided, the query is scanned for
+            structured legal references (e.g. "Pasal 5 UU 11/2020").  If found,
+            the extracted fields are used as Qdrant filter conditions for targeted
+            retrieval.  If the filtered search returns zero results, the filter is
+            discarded and a normal unfiltered search is performed as fallback.
+        
         Args:
             query: Search query in natural language
             top_k: Number of final results to return
             dense_weight: Weight for dense results (0-1, currently unused with RRF)
             dense_top_k: Number of dense results to retrieve (default: 2 * top_k)
             sparse_top_k: Number of sparse results to retrieve (default: 2 * top_k)
-            filter_conditions: Optional filter for dense search
+            filter_conditions: Optional filter for dense search.  When ``None``,
+                legal reference auto-detection is used instead.
             use_reranking: Whether to apply CrossEncoder re-ranking (default: True)
             expand_queries: Whether to expand query with synonyms (default: True)
             min_score: Minimum score threshold to filter results (default: None)
@@ -515,6 +1209,20 @@ class HybridRetriever:
             dense_top_k = top_k * rerank_multiplier
         if sparse_top_k is None:
             sparse_top_k = top_k * rerank_multiplier
+        
+        # --- Legal reference auto-detection ---
+        # When no explicit filter_conditions are provided, attempt to detect
+        # structured references (e.g. "Pasal 5 UU 11/2020") and build a
+        # targeted Qdrant filter.  The filter is used optimistically: if it
+        # yields zero dense results we fall back to unfiltered search.
+        auto_detected_filter: dict[str, Any] | None = None
+        if filter_conditions is None:
+            auto_detected_filter = self.detect_legal_references(query)
+            if auto_detected_filter:
+                filter_conditions = auto_detected_filter
+                logger.debug(
+                    "Auto-detected legal reference filter: %s", filter_conditions
+                )
         
         # Get query variants
         if expand_queries:
@@ -534,6 +1242,22 @@ class HybridRetriever:
             sparse_results = self.sparse_search(q, top_k=sparse_top_k)
             all_dense_results.extend(dense_results)
             all_sparse_results.extend(sparse_results)
+        
+        # --- Filter fallback ---
+        # If the auto-detected filter produced zero dense results, retry
+        # without the filter so the user still gets semantic search results.
+        if auto_detected_filter and not all_dense_results:
+            logger.info(
+                "Auto-detected filter returned 0 dense results; "
+                "falling back to unfiltered search."
+            )
+            filter_conditions = None
+            all_dense_results = []
+            for q in queries:
+                dense_results = self.dense_search(
+                    q, top_k=dense_top_k, filter_conditions=None
+                )
+                all_dense_results.extend(dense_results)
         
         # Deduplicate by ID, keeping highest score per source
         def dedup(results: list[SearchResult]) -> list[SearchResult]:
@@ -560,6 +1284,9 @@ class HybridRetriever:
                 score=rrf_score,
                 metadata=result.metadata,
             ))
+        
+        # Apply KG-aware boosting (before reranking so reranker sees adjusted order)
+        candidates = self._boost_with_kg(candidates)
         
         # Apply CrossEncoder re-ranking if enabled (always re-rank against original query)
         # Apply minimum score filtering if specified
@@ -607,6 +1334,27 @@ class HybridRetriever:
             "embedding_model": EMBEDDING_MODEL,
             "embedding_dim": EMBEDDING_DIM,
         }
+
+    def get_chunk_counts_by_regulation(self) -> dict[str, int]:
+        """Count Qdrant chunks grouped by citation_id prefix.
+
+        Uses the already-loaded corpus (self._corpus) to aggregate counts.
+        Returns: {"uu_11_2020": 145, "pp_35_2021": 67, ...}
+        Falls back to empty dict on any error.
+        """
+        try:
+            counts: dict[str, int] = {}
+            for doc in self._corpus:
+                cid = doc.get("citation_id", "")
+                if cid:
+                    # Normalize: lowercase, strip to base regulation ID
+                    # citation_id may be "uu_11_2020" or "uu_11_2020_pasal_5"
+                    parts = cid.lower().split("_pasal_")
+                    base_id = parts[0]
+                    counts[base_id] = counts.get(base_id, 0) + 1
+            return counts
+        except Exception:
+            return {}
 
 
 # Convenience function for quick access
