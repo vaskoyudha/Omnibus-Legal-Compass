@@ -31,6 +31,12 @@ class EdgeType(str, Enum):
     AMENDS = "AMENDS"  # Law → Law
     REFERENCES = "REFERENCES"  # Article → Article (cross-reference)
     SUPERSEDES = "SUPERSEDES"  # Law → Law (replacement)
+    REVOKES = "REVOKES"  # Law → Law (mencabut)
+    REPLACES = "REPLACES"  # Law → Law (mengganti)
+    AMENDED_BY = "AMENDED_BY"  # reverse of AMENDS
+    REVOKED_BY = "REVOKED_BY"  # reverse of REVOKES
+    REPLACED_BY = "REPLACED_BY"  # reverse of REPLACES
+    IMPLEMENTED_BY = "IMPLEMENTED_BY"  # reverse of IMPLEMENTS
 
 
 # ── Base Node ────────────────────────────────────────────────────────────────
