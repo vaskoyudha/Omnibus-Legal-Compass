@@ -51,7 +51,7 @@ def retriever():
         mock_qclient_cls.return_value = mock_client
 
         mock_embedder = MagicMock()
-        mock_embedder.embed_query.return_value = [0.1] * 384
+        mock_embedder.embed_query.return_value = [0.1] * 1024
         mock_embeddings_cls.return_value = mock_embedder
 
         ret = HybridRetriever(use_reranker=False)
@@ -91,7 +91,7 @@ def retriever_with_corpus():
         mock_qclient_cls.return_value = mock_client
 
         mock_embedder = MagicMock()
-        mock_embedder.embed_query.return_value = [0.1] * 384
+        mock_embedder.embed_query.return_value = [0.1] * 1024
         mock_embeddings_cls.return_value = mock_embedder
 
         ret = HybridRetriever(use_reranker=False)

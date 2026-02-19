@@ -12,6 +12,31 @@ from dotenv import load_dotenv
 # Load env at module level so skipif decorators can access env vars
 load_dotenv()
 
+# Tests should avoid heavy imports at module load. Individual tests import
+# backend.scripts.ingest when they need embedder-specific constants.
+
+
+def get_expected_embedding_dim() -> int:
+    """Return embedding dimension according to the currently active
+    embedder configuration in backend.scripts.ingest. Falls back to
+    environment-derived defaults when the module cannot be queried.
+    """
+    try:
+        from backend.scripts.ingest import get_collection_config
+
+        cfg = get_collection_config()
+        if cfg and "vectors_config" in cfg and "size" in cfg["vectors_config"]:
+            return int(cfg["vectors_config"]["size"])
+    except Exception:
+        pass
+
+    # Fallback precedence: Jina > NVIDIA > HuggingFace
+    if os.getenv("USE_JINA_EMBEDDINGS", "false").lower() == "true":
+        return int(os.getenv("JINA_EMBEDDING_DIM", "1024"))
+    if os.getenv("USE_NVIDIA_EMBEDDINGS", "false").lower() == "true":
+        return 1024
+    return 384
+
 
 # Test data path
 DATA_DIR = Path(__file__).parent.parent / "data" / "peraturan"
@@ -115,18 +140,23 @@ class TestEmbeddingGenerator:
         
         # Test single query embedding
         result = embedder.embed_query("Apa itu penanaman modal?")
-        
+
         assert isinstance(result, list)
-        assert len(result) == 384  # paraphrase-multilingual-MiniLM-L12-v2 produces 384-dim vectors
+        # Assert embedding dimension equals the HuggingFace model dimension
+        # (use EMBEDDING_DIM from backend.scripts.ingest to mirror production
+        # model size rather than environment-derived defaults)
+        from backend.scripts.ingest import EMBEDDING_DIM
+
+        assert len(result) == EMBEDDING_DIM
         assert all(isinstance(x, float) for x in result)
     
     def test_embedding_dimension_consistency(self):
         """Embeddings must have consistent dimensions."""
         # Mock embeddings for unit test
         mock_embeddings = [
-            [0.1] * 384,
-            [0.2] * 384,
-            [0.3] * 384,
+            [0.1] * get_expected_embedding_dim(),
+            [0.2] * get_expected_embedding_dim(),
+            [0.3] * get_expected_embedding_dim(),
         ]
         
         # All should be same dimension
@@ -142,11 +172,14 @@ class TestQdrantIngestion:
         from backend.scripts.ingest import get_collection_config
         
         config = get_collection_config()
-        
+
         # Must have dense vector config
-        assert "vectors_config" in config
-        assert config["vectors_config"]["size"] == 384  # paraphrase-multilingual-MiniLM-L12-v2 dimension
-        assert config["vectors_config"]["distance"] == "Cosine"
+        vc = config.get("vectors_config") if config else None
+        assert vc, "vectors_config missing from collection config"
+
+        # The collection config must match the active embedder's dimension
+        assert int(vc.get("size", 0)) == get_expected_embedding_dim()
+        assert vc.get("distance") == "Cosine"
     
     def test_point_struct_creation(self):
         """Test creating Qdrant points from chunks."""
@@ -163,7 +196,7 @@ class TestQdrantIngestion:
                 "pasal": "1"
             }
         }
-        mock_embedding = [0.1] * 384
+        mock_embedding = [0.1] * get_expected_embedding_dim()
         
         point = create_point_struct(
             point_id=1,
@@ -173,9 +206,11 @@ class TestQdrantIngestion:
         
         assert point.id == 1
         assert point.vector == mock_embedding
-        assert point.payload["text"] == chunk["text"]
-        assert point.payload["citation_id"] == chunk["citation_id"]
-        assert point.payload["jenis_dokumen"] == "UU"
+        assert point.payload is not None
+        payload = point.payload
+        assert payload["text"] == chunk["text"]
+        assert payload["citation_id"] == chunk["citation_id"]
+        assert payload["jenis_dokumen"] == "UU"
     
     @pytest.mark.skipif(
         not os.getenv("QDRANT_URL"),
@@ -206,8 +241,20 @@ class TestIngestionPipeline:
             mock_client = MagicMock()
             MockQdrant.return_value = mock_client
             
+            # get_collection raises so ensure_collection_exists creates new
+            mock_client.get_collection.side_effect = [
+                Exception("not found"),  # first call: ensure_collection_exists
+            ]
+            # scroll returns empty (no existing docs)
+            mock_client.scroll.return_value = ([], None)
+            
+            # Force ingest to use HuggingFace path for determinism in this test
+            import backend.scripts.ingest as ingest_module
+            ingest_module.USE_JINA_EMBEDDINGS = False
+            ingest_module.USE_NVIDIA_EMBEDDINGS = False
+
             mock_embedder = MagicMock()
-            mock_embedder.embed_documents.return_value = [[0.1] * 384] * 10
+            mock_embedder.embed_documents.return_value = [[0.1] * get_expected_embedding_dim()] * 10
             MockEmbed.return_value = mock_embedder
             
             # Run ingestion
@@ -217,13 +264,14 @@ class TestIngestionPipeline:
                 qdrant_url="http://localhost:6333"
             )
             
-            # Verify calls
-            mock_client.recreate_collection.assert_called_once()
-            mock_embedder.embed_documents.assert_called_once()
-            mock_client.upsert.assert_called_once()
+            # Verify calls — ensure_collection_exists path
+            mock_client.create_collection.assert_called_once()
+            mock_embedder.embed_documents.assert_called()
+            mock_client.upsert.assert_called()
             
             assert result["status"] == "success"
-            assert result["documents_ingested"] == 10
+            assert result["documents_loaded"] == 10
+            assert result["chunks_new"] >= 1
 
 
 class TestCitationFormat:

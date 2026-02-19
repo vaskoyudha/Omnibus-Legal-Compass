@@ -10,7 +10,7 @@ import tempfile
 
 import pytest
 
-from knowledge_graph import (
+from backend.knowledge_graph import (
     LegalKnowledgeGraph,
     Law,
     GovernmentRegulation,
@@ -21,7 +21,7 @@ from knowledge_graph import (
     load_graph,
     save_graph,
 )
-from knowledge_graph.ingest import (
+from backend.knowledge_graph.ingest import (
     _make_reg_id,
     _make_chapter_id,
     _make_article_id,
@@ -102,7 +102,9 @@ class TestIngestionFromSample:
 
     def test_total_nodes(self) -> None:
         # 5 regulations + 5 chapters + 9 articles = 19
-        assert self.stats["total_nodes"] == 19
+        # Phase 3 enhancement creates a stub node for AMENDS targets missing
+        # from the corpus (perpres_91_2017), so expect 20 total nodes.
+        assert self.stats["total_nodes"] == 20
 
     def test_regulation_count(self) -> None:
         assert self.stats["nodes_by_type"]["law"] == 3  # UU 11/2020, UU 27/2022, UU 40/2007
@@ -111,7 +113,8 @@ class TestIngestionFromSample:
         assert self.stats["nodes_by_type"]["government_regulation"] == 1  # PP 24/2018
 
     def test_perpres_count(self) -> None:
-        assert self.stats["nodes_by_type"]["presidential_regulation"] == 1  # Perpres 49/2021
+        # One real perpres (49/2021) plus a stub perpres (91/2017)
+        assert self.stats["nodes_by_type"]["presidential_regulation"] == 2
 
     def test_chapter_count(self) -> None:
         # UU 11/2020 has bab I, III; UU 27/2022 has bab II, III; UU 40/2007 has bab I = 5 chapters
@@ -121,7 +124,9 @@ class TestIngestionFromSample:
         assert self.stats["nodes_by_type"]["article"] == 9
 
     def test_contains_edges(self) -> None:
-        assert self.stats["edges_by_type"]["CONTAINS"] >= 14
+        # CONTAINS may be double-counted due to merged edge types; assert a
+        # lower-bound to keep test intent (we expect many CONTAINS edges).
+        assert self.stats["edges_by_type"].get("CONTAINS", 0) >= 14
 
     def test_regulation_data(self) -> None:
         reg = self.kg.get_regulation("uu_11_2020")
@@ -191,7 +196,8 @@ class TestPersistence:
             data = json.load(fh)
         assert "nodes" in data
         assert "edges" in data
-        assert len(data["nodes"]) == 19
+        # Saved JSON includes the stub node for perpres_91_2017
+        assert len(data["nodes"]) == 20
 
     def test_loaded_graph_preserves_data(self, tmp_path) -> None:
         kg = ingest_from_json(SAMPLE_JSON_PATH)

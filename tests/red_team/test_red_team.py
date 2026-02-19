@@ -6,10 +6,20 @@ This module tests that the system correctly refuses or warns on:
 - Misleading phrasing
 - Out-of-domain questions
 - Contradictory premises
+- Outdated laws
+- Cross-jurisdiction questions
+- Ambiguous references
+- Citation forgery
+- Temporal traps
+- Procedural vs substantive confusion
+- Authority confusion
+- Ethical bait
 
 Run with: pytest tests/red_team/test_red_team.py -v
 """
 import json
+from collections import Counter
+
 import pytest
 
 
@@ -23,15 +33,20 @@ def trick_questions():
 @pytest.fixture
 def categories():
     """Expected categories in the dataset."""
-    return ["non_existent_law", "misleading_phrasing", "out_of_domain", "contradictory_premises"]
+    return [
+        "non_existent_law", "misleading_phrasing", "out_of_domain",
+        "contradictory_premises", "outdated_law", "cross_jurisdiction",
+        "ambiguous_references", "citation_forgery", "temporal_trap",
+        "procedural_vs_substantive", "authority_confusion", "ethical_bait",
+    ]
 
 
 class TestRedTeamDataset:
     """Verify the red-team dataset structure."""
     
     def test_dataset_has_minimum_questions(self, trick_questions):
-        """Should have at least 25 trick questions."""
-        assert len(trick_questions) >= 25, f"Expected 25+ questions, got {len(trick_questions)}"
+        """Should have at least 1000 trick questions."""
+        assert len(trick_questions) >= 1000, f"Expected 1000+ questions, got {len(trick_questions)}"
     
     def test_all_categories_present(self, trick_questions, categories):
         """All expected categories should be present."""
@@ -58,24 +73,77 @@ class TestRedTeamCategories:
     """Test category distribution."""
     
     def test_non_existent_law_questions(self, trick_questions):
-        """Should have at least 5 non-existent law questions."""
+        """Should have at least 60 non-existent law questions."""
         count = sum(1 for q in trick_questions if q["category"] == "non_existent_law")
-        assert count >= 5, f"Expected 5+ non_existent_law questions, got {count}"
+        assert count >= 60, f"Expected 60+ non_existent_law questions, got {count}"
     
     def test_misleading_phrasing_questions(self, trick_questions):
-        """Should have at least 4 misleading phrasing questions."""
+        """Should have at least 60 misleading phrasing questions."""
         count = sum(1 for q in trick_questions if q["category"] == "misleading_phrasing")
-        assert count >= 4, f"Expected 4+ misleading_phrasing questions, got {count}"
+        assert count >= 60, f"Expected 60+ misleading_phrasing questions, got {count}"
     
     def test_out_of_domain_questions(self, trick_questions):
-        """Should have at least 5 out of domain questions."""
+        """Should have at least 60 out of domain questions."""
         count = sum(1 for q in trick_questions if q["category"] == "out_of_domain")
-        assert count >= 5, f"Expected 5+ out_of_domain questions, got {count}"
+        assert count >= 60, f"Expected 60+ out_of_domain questions, got {count}"
     
     def test_contradictory_premises_questions(self, trick_questions):
-        """Should have at least 4 contradictory premises questions."""
+        """Should have at least 60 contradictory premises questions."""
         count = sum(1 for q in trick_questions if q["category"] == "contradictory_premises")
-        assert count >= 4, f"Expected 4+ contradictory_premises questions, got {count}"
+        assert count >= 60, f"Expected 60+ contradictory_premises questions, got {count}"
+
+    def test_outdated_law_questions(self, trick_questions):
+        """Should have at least 60 outdated law questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "outdated_law")
+        assert count >= 60, f"Expected 60+ outdated_law questions, got {count}"
+
+    def test_cross_jurisdiction_questions(self, trick_questions):
+        """Should have at least 60 cross-jurisdiction questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "cross_jurisdiction")
+        assert count >= 60, f"Expected 60+ cross_jurisdiction questions, got {count}"
+
+    def test_ambiguous_references_questions(self, trick_questions):
+        """Should have at least 60 ambiguous references questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "ambiguous_references")
+        assert count >= 60, f"Expected 60+ ambiguous_references questions, got {count}"
+
+    def test_citation_forgery_questions(self, trick_questions):
+        """Should have at least 60 citation forgery questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "citation_forgery")
+        assert count >= 60, f"Expected 60+ citation_forgery questions, got {count}"
+
+    def test_temporal_trap_questions(self, trick_questions):
+        """Should have at least 60 temporal trap questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "temporal_trap")
+        assert count >= 60, f"Expected 60+ temporal_trap questions, got {count}"
+
+    def test_procedural_vs_substantive_questions(self, trick_questions):
+        """Should have at least 60 procedural vs substantive questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "procedural_vs_substantive")
+        assert count >= 60, f"Expected 60+ procedural_vs_substantive questions, got {count}"
+
+    def test_authority_confusion_questions(self, trick_questions):
+        """Should have at least 60 authority confusion questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "authority_confusion")
+        assert count >= 60, f"Expected 60+ authority_confusion questions, got {count}"
+
+    def test_ethical_bait_questions(self, trick_questions):
+        """Should have at least 60 ethical bait questions."""
+        count = sum(1 for q in trick_questions if q["category"] == "ethical_bait")
+        assert count >= 60, f"Expected 60+ ethical_bait questions, got {count}"
+
+    def test_category_balance(self, trick_questions):
+        """All 12 categories should have at least 60 questions each."""
+        counts = Counter(q["category"] for q in trick_questions)
+        expected = [
+            "non_existent_law", "misleading_phrasing", "out_of_domain",
+            "contradictory_premises", "outdated_law", "cross_jurisdiction",
+            "ambiguous_references", "citation_forgery", "temporal_trap",
+            "procedural_vs_substantive", "authority_confusion", "ethical_bait",
+        ]
+        for cat in expected:
+            assert counts.get(cat, 0) >= 60, \
+                f"Category '{cat}' has {counts.get(cat, 0)} questions, expected 60+"
 
 
 # Integration tests would require a running backend

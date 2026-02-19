@@ -22,6 +22,13 @@ from llm_client import (
     GITHUB_ACCESS_TOKEN_URL,
     NVIDIANimClient,
     create_llm_client,
+    OpenAICompatibleClient,
+    GroqClient,
+    GeminiClient,
+    MistralClient,
+    CircuitBreaker,
+    FallbackChain,
+    KNOWN_PROVIDERS,
 )
 
 
@@ -589,3 +596,389 @@ class TestAutoDiscoverInteractive:
             with patch.dict(os.environ, env_no_token, clear=True):
                 with pytest.raises(ValueError, match="python -m backend.llm_client login"):
                     CopilotChatClient(interactive=False)
+
+
+# ---------------------------------------------------------------------------
+# KNOWN_PROVIDERS registry tests
+# ---------------------------------------------------------------------------
+
+
+class TestKnownProviders:
+    """Verify all 5 providers are in the registry."""
+
+    def test_known_providers_complete(self):
+        assert KNOWN_PROVIDERS == {"nvidia", "copilot", "groq", "gemini", "mistral"}
+
+
+# ---------------------------------------------------------------------------
+# OpenAICompatibleClient tests
+# ---------------------------------------------------------------------------
+
+
+class TestOpenAICompatibleClient:
+    """Tests for OpenAICompatibleClient base class."""
+
+    @patch("llm_client.requests.post")
+    def test_generate_success(self, mock_post):
+        mock_post.return_value = _mock_chat_response("base response")
+        api_key = "test-key"  # pragma: allowlist secret
+        client = OpenAICompatibleClient(
+            base_url="https://api.example.com/v1/chat/completions",
+            api_key=api_key,
+            model="test-model",
+        )
+        result = client.generate("hello")
+        assert result == "base response"
+        mock_post.assert_called_once()
+
+    @patch("llm_client.requests.post")
+    def test_generate_with_system_message(self, mock_post):
+        mock_post.return_value = _mock_chat_response("sys response")
+        client = OpenAICompatibleClient(
+            base_url="https://api.example.com/v1/chat/completions",
+            api_key="test-key",  # pragma: allowlist secret
+            model="test-model",
+        )
+        result = client.generate("hello", system_message="You are helpful")
+        assert result == "sys response"
+        # Verify system message was included in payload
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs.get("json") or call_kwargs[1].get("json")
+        assert payload["messages"][0]["role"] == "system"
+        assert payload["messages"][0]["content"] == "You are helpful"
+
+    @patch("llm_client.time.sleep")
+    @patch("llm_client.requests.post")
+    def test_generate_retry_on_failure(self, mock_post, mock_sleep):
+        """First 2 fail, 3rd succeeds."""
+        fail = req.exceptions.ConnectionError("down")
+        mock_post.side_effect = [fail, fail, _mock_chat_response("recovered")]
+        client = OpenAICompatibleClient(
+            base_url="https://api.example.com/v1/chat/completions",
+            api_key="test-key",  # pragma: allowlist secret
+            model="test-model",
+        )
+        result = client.generate("retry")
+        assert result == "recovered"
+        assert mock_post.call_count == 3
+        assert mock_sleep.call_count == 2
+
+    @patch("llm_client.time.sleep")
+    @patch("llm_client.requests.post")
+    def test_generate_all_fail(self, mock_post, mock_sleep):
+        """All 3 attempts fail -> RuntimeError."""
+        mock_post.side_effect = req.exceptions.ConnectionError("dead")
+        client = OpenAICompatibleClient(
+            base_url="https://api.example.com/v1/chat/completions",
+            api_key="test-key",  # pragma: allowlist secret
+            model="test-model",
+        )
+        with pytest.raises(RuntimeError, match="failed after 3 attempts"):
+            client.generate("doomed")
+        assert mock_post.call_count == 3
+
+    @patch("llm_client.requests.post")
+    def test_generate_stream_success(self, mock_post):
+        """Streaming yields chunks from SSE lines."""
+        sse_lines = [
+            b'data: {"choices":[{"delta":{"content":"Hello"}}]}',
+            b'data: {"choices":[{"delta":{"content":" world"}}]}',
+            b"data: [DONE]",
+        ]
+        resp = MagicMock()
+        resp.status_code = 200
+        resp.raise_for_status = MagicMock()
+        resp.iter_lines.return_value = sse_lines
+        mock_post.return_value = resp
+
+        client = OpenAICompatibleClient(
+            base_url="https://api.example.com/v1/chat/completions",
+            api_key="test-key",  # pragma: allowlist secret
+            model="test-model",
+        )
+        chunks = list(client.generate_stream("hello"))
+        assert chunks == ["Hello", " world"]
+
+
+# ---------------------------------------------------------------------------
+# GroqClient tests
+# ---------------------------------------------------------------------------
+
+
+class TestGroqClient:
+    """Tests for GroqClient instantiation and API key validation."""
+
+    @patch.dict(os.environ, {"GROQ_API_KEY": "gsk_test_groq_key"})  # pragma: allowlist secret
+    @patch("llm_client.requests.post")
+    def test_groq_generate(self, mock_post):
+        mock_post.return_value = _mock_chat_response("groq response")
+        client = GroqClient()
+        result = client.generate("test prompt")
+        assert result == "groq response"
+        assert "groq.com" in client.base_url
+
+    def test_groq_missing_api_key(self):
+        with patch.dict(os.environ, {}, clear=True):
+            with pytest.raises(ValueError, match="GROQ_API_KEY"):
+                GroqClient()
+
+    @patch.dict(os.environ, {"GROQ_API_KEY": "gsk_test"})  # pragma: allowlist secret
+    def test_groq_default_model(self):
+        client = GroqClient()
+        assert client.model == "llama-3.3-70b-versatile"
+
+    @patch.dict(os.environ, {"GROQ_API_KEY": "gsk_test"})  # pragma: allowlist secret
+    def test_groq_custom_model(self):
+        client = GroqClient(model="llama-3.1-8b-instant")
+        assert client.model == "llama-3.1-8b-instant"
+
+
+# ---------------------------------------------------------------------------
+# GeminiClient tests
+# ---------------------------------------------------------------------------
+
+
+class TestGeminiClient:
+    """Tests for GeminiClient instantiation and API key validation."""
+
+    @patch.dict(os.environ, {"GEMINI_API_KEY": "test_gemini_key"})  # pragma: allowlist secret
+    @patch("llm_client.requests.post")
+    def test_gemini_generate(self, mock_post):
+        mock_post.return_value = _mock_chat_response("gemini response")
+        client = GeminiClient()
+        result = client.generate("test prompt")
+        assert result == "gemini response"
+        assert "generativelanguage.googleapis.com" in client.base_url
+
+    def test_gemini_missing_api_key(self):
+        with patch.dict(os.environ, {}, clear=True):
+            with pytest.raises(ValueError, match="GEMINI_API_KEY"):
+                GeminiClient()
+
+    @patch.dict(os.environ, {"GEMINI_API_KEY": "test_key"})  # pragma: allowlist secret
+    def test_gemini_default_model(self):
+        client = GeminiClient()
+        assert client.model == "gemini-2.5-flash"
+
+
+# ---------------------------------------------------------------------------
+# MistralClient tests
+# ---------------------------------------------------------------------------
+
+
+class TestMistralClient:
+    """Tests for MistralClient instantiation and API key validation."""
+
+    @patch.dict(os.environ, {"MISTRAL_API_KEY": "test_mistral_key"})  # pragma: allowlist secret
+    @patch("llm_client.requests.post")
+    def test_mistral_generate(self, mock_post):
+        mock_post.return_value = _mock_chat_response("mistral response")
+        client = MistralClient()
+        result = client.generate("test prompt")
+        assert result == "mistral response"
+        assert "mistral.ai" in client.base_url
+
+    def test_mistral_missing_api_key(self):
+        with patch.dict(os.environ, {}, clear=True):
+            with pytest.raises(ValueError, match="MISTRAL_API_KEY"):
+                MistralClient()
+
+    @patch.dict(os.environ, {"MISTRAL_API_KEY": "test_key"})  # pragma: allowlist secret
+    def test_mistral_default_model(self):
+        client = MistralClient()
+        assert client.model == "mistral-small-latest"
+
+
+# ---------------------------------------------------------------------------
+# Factory tests for new providers
+# ---------------------------------------------------------------------------
+
+
+class TestFactoryNewProviders:
+    """Tests for create_llm_client with new providers."""
+
+    @patch.dict(os.environ, {"GROQ_API_KEY": "gsk_test"})  # pragma: allowlist secret
+    def test_create_groq_client(self):
+        client = create_llm_client("groq")
+        assert isinstance(client, GroqClient)
+
+    @patch.dict(os.environ, {"GEMINI_API_KEY": "test_key"})  # pragma: allowlist secret
+    def test_create_gemini_client(self):
+        client = create_llm_client("gemini")
+        assert isinstance(client, GeminiClient)
+
+    @patch.dict(os.environ, {"MISTRAL_API_KEY": "test_key"})  # pragma: allowlist secret
+    def test_create_mistral_client(self):
+        client = create_llm_client("mistral")
+        assert isinstance(client, MistralClient)
+
+    @patch.dict(os.environ, {"GROQ_API_KEY": "gsk_test"})  # pragma: allowlist secret
+    def test_create_groq_with_custom_model(self):
+        client = create_llm_client("groq", model="llama-3.1-8b-instant")
+        assert isinstance(client, GroqClient)
+        assert client.model == "llama-3.1-8b-instant"
+
+
+# ---------------------------------------------------------------------------
+# CircuitBreaker tests
+# ---------------------------------------------------------------------------
+
+
+class TestCircuitBreaker:
+    """Tests for CircuitBreaker resilience pattern."""
+
+    def test_initial_state_closed(self):
+        cb = CircuitBreaker("test")
+        assert not cb.is_open()
+        assert cb.consecutive_failures == 0
+
+    def test_stays_closed_below_threshold(self):
+        cb = CircuitBreaker("test", failure_threshold=3)
+        cb.record_failure()
+        cb.record_failure()
+        assert not cb.is_open()  # 2 < 3
+
+    def test_opens_after_threshold(self):
+        cb = CircuitBreaker("test", failure_threshold=3)
+        cb.record_failure()
+        cb.record_failure()
+        cb.record_failure()
+        assert cb.is_open()  # 3 >= 3
+
+    def test_resets_on_success(self):
+        cb = CircuitBreaker("test", failure_threshold=3)
+        cb.record_failure()
+        cb.record_failure()
+        cb.record_success()
+        assert cb.consecutive_failures == 0
+        assert not cb.is_open()
+
+    @patch("llm_client.time.time")
+    def test_half_open_after_timeout(self, mock_time):
+        """After recovery_timeout, circuit becomes half-open (allows one request)."""
+        cb = CircuitBreaker("test", failure_threshold=3, recovery_timeout=60)
+
+        # Trip the circuit
+        mock_time.return_value = 1000.0
+        cb.record_failure()
+        cb.record_failure()
+        cb.record_failure()
+        assert cb.is_open()
+
+        # Not enough time passed
+        mock_time.return_value = 1050.0
+        assert cb.is_open()
+
+        # Enough time passed -> half-open
+        mock_time.return_value = 1060.0
+        assert not cb.is_open()
+
+    def test_default_parameters(self):
+        cb = CircuitBreaker("test")
+        assert cb.failure_threshold == 3
+        assert cb.recovery_timeout == 60
+
+    def test_thread_safety(self):
+        """Concurrent failures from multiple threads don't corrupt state."""
+        cb = CircuitBreaker("test", failure_threshold=100)
+        threads = []
+        for _ in range(50):
+            t = threading.Thread(target=cb.record_failure)
+            threads.append(t)
+            t.start()
+        for t in threads:
+            t.join()
+        assert cb.consecutive_failures == 50
+
+
+# ---------------------------------------------------------------------------
+# FallbackChain tests
+# ---------------------------------------------------------------------------
+
+
+class TestFallbackChain:
+    """Tests for FallbackChain with mocked providers."""
+
+    def _make_provider(self, name, response="ok", should_fail=False):
+        """Create a mock (name, client) tuple."""
+        client = MagicMock()
+        if should_fail:
+            client.generate.side_effect = RuntimeError(f"{name} failed")
+            client.generate_stream.side_effect = RuntimeError(f"{name} stream failed")
+        else:
+            client.generate.return_value = response
+            client.generate_stream.return_value = iter([response])
+        return (name, client)
+
+    def test_first_provider_succeeds(self):
+        chain = FallbackChain([
+            self._make_provider("groq", "groq answer"),
+            self._make_provider("gemini", "gemini answer"),
+        ])
+        result = chain.generate("question")
+        assert result == "groq answer"
+
+    def test_fallback_to_second(self):
+        chain = FallbackChain([
+            self._make_provider("groq", should_fail=True),
+            self._make_provider("gemini", "gemini answer"),
+        ])
+        result = chain.generate("question")
+        assert result == "gemini answer"
+
+    def test_all_fail_raises(self):
+        chain = FallbackChain([
+            self._make_provider("groq", should_fail=True),
+            self._make_provider("gemini", should_fail=True),
+        ])
+        with pytest.raises(RuntimeError, match="All providers in fallback chain failed"):
+            chain.generate("question")
+
+    def test_skips_open_circuit(self):
+        chain = FallbackChain([
+            self._make_provider("groq", "groq answer"),
+            self._make_provider("gemini", "gemini answer"),
+        ])
+        # Manually open groq's circuit
+        cb = chain.circuit_breakers["groq"]
+        cb.record_failure()
+        cb.record_failure()
+        cb.record_failure()
+        assert cb.is_open()
+
+        result = chain.generate("question")
+        assert result == "gemini answer"
+        # Groq client should NOT have been called
+        groq_client = chain.providers[0][1]
+        groq_client.generate.assert_not_called()
+
+    def test_records_success(self):
+        chain = FallbackChain([
+            self._make_provider("groq", "groq answer"),
+        ])
+        chain.generate("question")
+        assert chain.circuit_breakers["groq"].consecutive_failures == 0
+
+    def test_records_failure(self):
+        chain = FallbackChain([
+            self._make_provider("groq", should_fail=True),
+            self._make_provider("gemini", "gemini answer"),
+        ])
+        chain.generate("question")
+        assert chain.circuit_breakers["groq"].consecutive_failures == 1
+        assert chain.circuit_breakers["gemini"].consecutive_failures == 0
+
+    def test_stream_first_succeeds(self):
+        chain = FallbackChain([
+            self._make_provider("groq", "groq chunk"),
+            self._make_provider("gemini", "gemini chunk"),
+        ])
+        chunks = list(chain.generate_stream("question"))
+        assert chunks == ["groq chunk"]
+
+    def test_stream_all_fail_raises(self):
+        chain = FallbackChain([
+            self._make_provider("groq", should_fail=True),
+        ])
+        with pytest.raises(RuntimeError, match="All providers in fallback chain failed"):
+            list(chain.generate_stream("question"))
