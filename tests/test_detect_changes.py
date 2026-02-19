@@ -210,7 +210,7 @@ def test_save_state_creates_json(tmp_path: Path):
 
     assert state_file.exists()
     data = json.loads(state_file.read_text(encoding="utf-8"))
-    assert data["last_sha"] == "abc123def"
+    assert data["last_sha"] == "abc123def"  # pragma: allowlist secret
     assert "last_sync" in data
     assert data["stats"] == {"added": 5, "modified": 2, "deleted": 0}
 
