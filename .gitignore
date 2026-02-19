@@ -122,3 +122,13 @@ phase_timeline_comparison.txt
 tests/deepeval/golden_qa_backup*.json
 tests/deepeval/golden_qa_small.json
 tests/deepeval/golden_qa_temp*.json
+
+# IDE/server binaries (do NOT commit)
+basedpyright-langserver
+basedpyright-langserver.cmd
+
+# Large PDFs or raw scanned corpora - skip large binaries
+indonesian-legal-pdf/
+
+# Generated data directory (may contain large binary dumps)
+backend/data/generated/
