@@ -274,16 +274,9 @@ export default function Home() {
             animate="visible"
           >
             <div className="max-w-4xl mx-auto text-center">
-              {/* AI Badge */}
-              <motion.div className="mb-6" variants={itemVariants}>
-                <span className="ai-badge">
-                  <span>✦</span> AI Powered System
-                </span>
-              </motion.div>
-
               {/* Hero Title with DecryptedText */}
               <motion.h1
-                className="text-hero text-gradient mb-4"
+                className="text-hero text-gradient mb-6 text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tighter"
                 variants={itemVariants}
               >
                 <DecryptedText
@@ -298,13 +291,13 @@ export default function Home() {
               </motion.h1>
 
               <motion.p
-                className="text-lg text-text-secondary mb-2"
+                className="text-lg text-white mb-2"
                 variants={itemVariants}
               >
                 Sistem Harmonisasi & Intelijen Hukum Terpadu
               </motion.p>
               <motion.p
-                className="text-sm text-text-muted mb-8"
+                className="text-sm text-gray-200 mb-8"
                 variants={itemVariants}
               >
                 Didukung oleh AI untuk membantu Anda memahami peraturan perundang-undangan
@@ -326,7 +319,7 @@ export default function Home() {
                           </svg>
                           <span className="text-2xl sm:text-3xl font-bold text-[#AAFF00]">Terverifikasi</span>
                         </div>
-                        <div className="text-xs text-text-muted mt-1">{stat.label}</div>
+                        <div className="text-xs text-gray-300 mt-1">{stat.label}</div>
                       </div>
                     ) : (
                       // Quantitative stat - show animated number
@@ -342,7 +335,7 @@ export default function Home() {
                           />
                           <span className="text-[#AAFF00]">{stat.suffix}</span>
                         </div>
-                        <div className="text-xs text-text-muted mt-1">{stat.label}</div>
+                        <div className="text-xs text-gray-300 mt-1">{stat.label}</div>
                       </div>
                     )}
                   </div>
@@ -357,7 +350,7 @@ export default function Home() {
                 {trustBadges.map((badge) => (
                   <div
                     key={badge.label}
-                    className="flex items-center gap-1.5 px-3 py-1.5 glass rounded-full text-xs text-text-muted"
+                    className="flex items-center gap-1.5 px-3 py-1.5 glass rounded-full text-xs text-[#AAFF00]"
                   >
                     <span>{badge.icon}</span>
                     <span>{badge.label}</span>
@@ -371,7 +364,7 @@ export default function Home() {
         {/* Chat Section — z-10 to ensure it paints ABOVE the beam convergence point */}
         <motion.div
           className="relative z-[20] mx-auto px-3 sm:px-4 lg:px-6"
-          style={{ marginTop: '-8rem' }}
+          style={{ marginTop: '-7rem' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}

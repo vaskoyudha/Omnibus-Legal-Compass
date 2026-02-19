@@ -1,0 +1,3 @@
+[test]
+# Preload a setup file to initialize jsdom globals so tests have document/window
+preload = ["./src/test-setup.ts"]
