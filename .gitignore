@@ -132,3 +132,10 @@ indonesian-legal-pdf/
 
 # Generated data directory (may contain large binary dumps)
 backend/data/generated/
+
+# Large data files (too big for GitHub)
+data/external/
+backend/data/peraturan/merged_corpus.json
+indonesian-legal-pdf/
+backend/data/generated/
+*.parquet
