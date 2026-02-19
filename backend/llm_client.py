@@ -5,8 +5,11 @@ Provides a unified interface (LLMClient Protocol) for interacting with
 different AI model providers. Currently supports:
   - GitHub Copilot Chat API (default) — GPT-4o-mini, GPT-4o, Claude Sonnet 4, etc.
   - NVIDIA NIM (Kimi K2) — alternative provider
+  - Groq (LLaMA 3.3 70B) — fast, cheap, OpenAI-compatible
+  - Google Gemini (Gemini 2.5 Flash) — generous free tier, OpenAI-compatible
+  - Mistral (mistral-small-latest) — moderate free tier, OpenAI-compatible
 
-Both providers support streaming (generate_stream) and non-streaming (generate).
+All providers support streaming (generate_stream) and non-streaming (generate).
 
 Usage:
     from llm_client import create_llm_client
@@ -16,6 +19,11 @@ Usage:
 
     # NVIDIA NIM (alternative)
     client = create_llm_client("nvidia")
+
+    # New providers
+    client = create_llm_client("groq")
+    client = create_llm_client("gemini")
+    client = create_llm_client("mistral")
 
     response = client.generate("What is PT?", system_message="You are a lawyer")
 """
@@ -92,6 +100,268 @@ class LLMClient(Protocol):
     ) -> Generator[str, None, None]:
         """Generate a streaming response from the LLM. Yields chunks of text."""
         ...
+
+
+# ---------------------------------------------------------------------------
+# OpenAICompatibleClient — Base class for OpenAI-compatible API endpoints
+# ---------------------------------------------------------------------------
+class OpenAICompatibleClient:
+    """Base class for OpenAI-compatible API endpoints.
+
+    Provides ``generate()`` and ``generate_stream()`` with retry logic
+    (3 attempts, exponential backoff) matching the existing NVIDIANimClient
+    pattern.  Subclasses only need to set ``base_url``, ``api_key``, and
+    ``model`` via ``__init__``.
+    """
+
+    def __init__(
+        self,
+        base_url: str,
+        api_key: str,
+        model: str,
+        max_tokens: int = MAX_TOKENS,
+        temperature: float = TEMPERATURE,
+        extra_headers: dict | None = None,
+    ):
+        self.base_url = base_url
+        self.api_key = api_key
+        self.model = model
+        self.max_tokens = max_tokens
+        self.temperature = temperature
+        self.headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            **(extra_headers or {}),
+        }
+
+    def generate(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ) -> str:
+        """Generate response from an OpenAI-compatible API."""
+        messages: list[dict[str, str]] = []
+
+        if system_message:
+            messages.append({
+                "role": "system",
+                "content": system_message,
+            })
+
+        messages.append({
+            "role": "user",
+            "content": user_message,
+        })
+
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "stream": False,
+        }
+
+        max_retries = 3
+        last_exception: Exception | None = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(
+                    self.base_url,
+                    headers=self.headers,
+                    json=payload,
+                    timeout=120,
+                )
+                response.raise_for_status()
+
+                result = response.json()
+                message = result["choices"][0]["message"]
+
+                content = (
+                    message.get("content")
+                    or message.get("reasoning")
+                    or message.get("reasoning_content")
+                    or ""
+                )
+
+                if not content:
+                    logger.warning(f"Empty response from model. Full message: {message}")
+
+                return content
+
+            except requests.exceptions.RequestException as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt  # 1s, 2s, 4s
+                    logger.warning(
+                        f"{self.__class__.__name__} API attempt {attempt + 1}/{max_retries} "
+                        f"failed: {e}. Retrying in {wait_time}s..."
+                    )
+                    time.sleep(wait_time)
+                else:
+                    logger.error(
+                        f"{self.__class__.__name__} API error after {max_retries} attempts: {e}"
+                    )
+
+        raise RuntimeError(
+            f"{self.__class__.__name__} API failed after {max_retries} attempts."
+        ) from last_exception
+
+    def generate_stream(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ) -> Generator[str, None, None]:
+        """Generate streaming response from an OpenAI-compatible API. Yields chunks of text."""
+        messages: list[dict[str, str]] = []
+
+        if system_message:
+            messages.append({
+                "role": "system",
+                "content": system_message,
+            })
+
+        messages.append({
+            "role": "user",
+            "content": user_message,
+        })
+
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "stream": True,
+        }
+
+        max_retries = 3
+        last_exception: Exception | None = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(
+                    self.base_url,
+                    headers=self.headers,
+                    json=payload,
+                    timeout=120,
+                    stream=True,
+                )
+                response.raise_for_status()
+
+                for line in response.iter_lines():
+                    if line:
+                        line = line.decode('utf-8')
+                        if line.startswith('data: '):
+                            data = line[6:]  # Remove 'data: ' prefix
+                            if data == '[DONE]':
+                                break
+                            try:
+                                chunk = json.loads(data)
+                                if 'choices' in chunk and len(chunk['choices']) > 0:
+                                    delta = chunk['choices'][0].get('delta', {})
+                                    content = delta.get('content', '')
+                                    if content:
+                                        yield content
+                            except json.JSONDecodeError:
+                                continue
+                return  # Success — exit retry loop
+
+            except requests.exceptions.RequestException as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt  # 1s, 2s, 4s
+                    logger.warning(
+                        f"{self.__class__.__name__} streaming attempt {attempt + 1}/{max_retries} "
+                        f"failed: {e}. Retrying in {wait_time}s..."
+                    )
+                    time.sleep(wait_time)
+                else:
+                    logger.error(
+                        f"{self.__class__.__name__} streaming error after {max_retries} attempts: {e}"
+                    )
+
+        raise RuntimeError(
+            f"{self.__class__.__name__} streaming API failed after {max_retries} attempts."
+        ) from last_exception
+
+
+# ---------------------------------------------------------------------------
+# GroqClient — Groq API (LLaMA 3.3 70B)
+# ---------------------------------------------------------------------------
+class GroqClient(OpenAICompatibleClient):
+    """Client for Groq API with LLaMA 3.3 70B model.
+
+    Free tier: 30 RPM, 12K TPM.
+    Fully OpenAI-compatible.
+    """
+
+    def __init__(
+        self,
+        model: str = "llama-3.3-70b-versatile",
+        api_key: str | None = None,
+        **kwargs,
+    ):
+        resolved_key = api_key or os.getenv("GROQ_API_KEY", "")
+        if not resolved_key:
+            raise ValueError("GROQ_API_KEY not found in environment variables")
+        super().__init__(
+            base_url="https://api.groq.com/openai/v1/chat/completions",
+            api_key=resolved_key,
+            model=model,
+            **kwargs,
+        )
+
+
+# ---------------------------------------------------------------------------
+# GeminiClient — Google Gemini API (Gemini 2.5 Flash)
+# ---------------------------------------------------------------------------
+class GeminiClient(OpenAICompatibleClient):
+    """Client for Google Gemini API via OpenAI-compatible endpoint.
+
+    Free tier: 15 RPM, 1M TPM.
+    Uses the OpenAI-compatible endpoint for Gemini models.
+    """
+
+    def __init__(
+        self,
+        model: str = "gemini-2.5-flash",
+        api_key: str | None = None,
+        **kwargs,
+    ):
+        resolved_key = api_key or os.getenv("GEMINI_API_KEY", "")
+        if not resolved_key:
+            raise ValueError("GEMINI_API_KEY not found in environment variables")
+        super().__init__(
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+            api_key=resolved_key,
+            model=model,
+            **kwargs,
+        )
+
+
+# ---------------------------------------------------------------------------
+# MistralClient — Mistral API (mistral-small-latest)
+# ---------------------------------------------------------------------------
+class MistralClient(OpenAICompatibleClient):
+    """Client for Mistral API.
+
+    Free tier: 1 RPS, 500K TPM.
+    Fully OpenAI-compatible.
+    """
+
+    def __init__(
+        self,
+        model: str = "mistral-small-latest",
+        api_key: str | None = None,
+        **kwargs,
+    ):
+        resolved_key = api_key or os.getenv("MISTRAL_API_KEY", "")
+        if not resolved_key:
+            raise ValueError("MISTRAL_API_KEY not found in environment variables")
+        super().__init__(
+            base_url="https://api.mistral.ai/v1/chat/completions",
+            api_key=resolved_key,
+            model=model,
+            **kwargs,
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -825,9 +1095,142 @@ class CopilotChatClient:
 
 
 # ---------------------------------------------------------------------------
+# CircuitBreaker — Resilience pattern for provider health tracking
+# ---------------------------------------------------------------------------
+class CircuitBreaker:
+    """Circuit breaker pattern for LLM provider health tracking.
+
+    States:
+      - CLOSED (healthy): Requests pass through normally.
+      - OPEN (unhealthy): Requests are blocked for ``recovery_timeout`` seconds
+        after ``failure_threshold`` consecutive failures.
+      - HALF-OPEN: After ``recovery_timeout``, one request is allowed through
+        to test if the provider has recovered.
+    """
+
+    def __init__(
+        self,
+        name: str,
+        failure_threshold: int = 3,
+        recovery_timeout: int = 60,
+    ):
+        self.name = name
+        self.failure_threshold = failure_threshold
+        self.recovery_timeout = recovery_timeout
+        self.consecutive_failures = 0
+        self.last_failure_time: float = 0
+        self._lock = threading.Lock()
+
+    def is_open(self) -> bool:
+        """Return True if circuit is open (provider should be skipped).
+
+        Returns False (allow request) if:
+          - Fewer than ``failure_threshold`` consecutive failures, OR
+          - ``recovery_timeout`` has elapsed (half-open state).
+        """
+        with self._lock:
+            if self.consecutive_failures < self.failure_threshold:
+                return False
+            # Circuit is open — check if recovery timeout has passed
+            if time.time() - self.last_failure_time >= self.recovery_timeout:
+                # Half-open: allow one request through
+                return False
+            return True
+
+    def record_success(self) -> None:
+        """Reset failure count after a successful request."""
+        with self._lock:
+            self.consecutive_failures = 0
+            self.last_failure_time = 0
+
+    def record_failure(self) -> None:
+        """Increment failures; open circuit if threshold reached."""
+        with self._lock:
+            self.consecutive_failures += 1
+            self.last_failure_time = time.time()
+
+
+# ---------------------------------------------------------------------------
+# FallbackChain — Try providers in order with circuit breaker protection
+# ---------------------------------------------------------------------------
+class FallbackChain:
+    """Try LLM providers in order, skipping those with open circuit breakers.
+
+    Default provider order (cheapest/fastest first → most reliable last):
+      groq → gemini → mistral → copilot → nvidia
+
+    Implements the ``LLMClient`` protocol so it can be used as a drop-in
+    replacement for any single provider.
+    """
+
+    def __init__(self, providers: list[tuple[str, LLMClient]]):
+        self.providers = providers
+        self.circuit_breakers: dict[str, CircuitBreaker] = {
+            name: CircuitBreaker(name) for name, _ in providers
+        }
+
+    def generate(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ) -> str:
+        """Try each provider in order. Skip providers with open circuits."""
+        errors: list[str] = []
+
+        for name, client in self.providers:
+            cb = self.circuit_breakers[name]
+            if cb.is_open():
+                logger.debug(f"FallbackChain: skipping {name} (circuit open)")
+                continue
+
+            try:
+                result = client.generate(user_message, system_message)
+                cb.record_success()
+                logger.debug(f"FallbackChain: {name} succeeded")
+                return result
+            except Exception as e:
+                cb.record_failure()
+                errors.append(f"{name}: {e}")
+                logger.warning(f"FallbackChain: {name} failed: {e}")
+
+        raise RuntimeError(
+            f"All providers in fallback chain failed: {'; '.join(errors)}"
+        )
+
+    def generate_stream(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ) -> Generator[str, None, None]:
+        """Try each provider in order for streaming. Skip providers with open circuits."""
+        errors: list[str] = []
+
+        for name, client in self.providers:
+            cb = self.circuit_breakers[name]
+            if cb.is_open():
+                logger.debug(f"FallbackChain: skipping {name} for streaming (circuit open)")
+                continue
+
+            try:
+                for chunk in client.generate_stream(user_message, system_message):
+                    yield chunk
+                cb.record_success()
+                logger.debug(f"FallbackChain: {name} streaming succeeded")
+                return
+            except Exception as e:
+                cb.record_failure()
+                errors.append(f"{name}: {e}")
+                logger.warning(f"FallbackChain: {name} streaming failed: {e}")
+
+        raise RuntimeError(
+            f"All providers in fallback chain failed (streaming): {'; '.join(errors)}"
+        )
+
+
+# ---------------------------------------------------------------------------
 # Factory
 # ---------------------------------------------------------------------------
-KNOWN_PROVIDERS = {"nvidia", "copilot"}
+KNOWN_PROVIDERS = {"nvidia", "copilot", "groq", "gemini", "mistral"}
 
 
 def create_llm_client(
@@ -838,7 +1241,8 @@ def create_llm_client(
     """Create an LLM client for the specified provider.
 
     Args:
-        provider: "copilot" (default) or "nvidia".
+        provider: One of "copilot" (default), "nvidia", "groq", "gemini",
+            or "mistral".
         model: Model name override (uses provider default if None).
         **kwargs: Additional arguments passed to the client constructor.
 
@@ -848,16 +1252,20 @@ def create_llm_client(
     Raises:
         ValueError: If provider is unknown.
     """
+    client_kwargs = {**kwargs}
+    if model:
+        client_kwargs["model"] = model
+
     if provider == "nvidia":
-        client_kwargs = {**kwargs}
-        if model:
-            client_kwargs["model"] = model
         return NVIDIANimClient(**client_kwargs)
     elif provider == "copilot":
-        client_kwargs = {**kwargs}
-        if model:
-            client_kwargs["model"] = model
         return CopilotChatClient(**client_kwargs)
+    elif provider == "groq":
+        return GroqClient(**client_kwargs)
+    elif provider == "gemini":
+        return GeminiClient(**client_kwargs)
+    elif provider == "mistral":
+        return MistralClient(**client_kwargs)
     else:
         raise ValueError(
             f"Unknown provider '{provider}'. Known providers: {sorted(KNOWN_PROVIDERS)}"

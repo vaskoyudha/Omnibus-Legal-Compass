@@ -33,6 +33,11 @@ from llm_client import (  # noqa: E402
     LLMClient,
     NVIDIANimClient,
     CopilotChatClient,
+    GroqClient,
+    GeminiClient,
+    MistralClient,
+    FallbackChain,
+    CircuitBreaker,
     create_llm_client,
     NVIDIA_API_KEY,
     NVIDIA_API_URL,
@@ -40,11 +45,75 @@ from llm_client import (  # noqa: E402
     MAX_TOKENS,
     TEMPERATURE,
 )
+from prompts import (  # noqa: E402
+    SYSTEM_PROMPT_COT,
+    QUESTION_TYPE_PROMPTS,
+    PROVIDER_TUNING,
+    detect_question_type,
+)
+from hyde import HyDE  # noqa: E402
+from query_planner import QueryPlanner  # noqa: E402
+from multi_query import MultiQueryFusion  # noqa: E402
+from crag import CRAG  # noqa: E402
+from parent_child import ParentChildRetriever  # noqa: E402
+from agentic_rag import AgenticRAG  # noqa: E402
+# NOTE: semantic_chunker is indexing-time only, not imported here
 
 # Retriever configuration
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME", "indonesian_legal_docs")
 EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+# Fallback chain configuration
+# Provider order: cheapest/fastest first → most reliable last
+FALLBACK_PROVIDER_ORDER = ["groq", "gemini", "mistral", "copilot", "nvidia"]
+
+
+def create_fallback_chain(
+    primary_provider: str = "copilot",
+    fallback_providers: list[str] | None = None,
+) -> FallbackChain:
+    """Create a FallbackChain with multiple LLM providers.
+    
+    Args:
+        primary_provider: The first provider to try (default: "copilot").
+        fallback_providers: List of fallback providers in order. If None, uses
+            all available providers in FALLBACK_PROVIDER_ORDER, starting with
+            primary_provider.
+    
+    Returns:
+        A FallbackChain instance that tries providers in order.
+    
+    Example:
+        # Use copilot with fallbacks to groq, gemini, mistral, nvidia
+        chain = create_fallback_chain("copilot")
+        
+        # Use only groq and gemini as fallbacks
+        chain = create_fallback_chain("copilot", ["groq", "gemini"])
+    """
+    if fallback_providers is None:
+        # Use all providers, starting with primary
+        providers = [primary_provider]
+        for p in FALLBACK_PROVIDER_ORDER:
+            if p != primary_provider:
+                providers.append(p)
+    else:
+        providers = [primary_provider] + fallback_providers
+    
+    # Create clients for each provider (skip those without API keys)
+    provider_clients: list[tuple[str, LLMClient]] = []
+    for provider in providers:
+        try:
+            client = create_llm_client(provider)
+            provider_clients.append((provider, client))
+            logger.info(f"FallbackChain: Added {provider} to chain")
+        except Exception as e:
+            logger.warning(f"FallbackChain: Skipping {provider} (not available: {e})")
+    
+    if not provider_clients:
+        raise RuntimeError("No LLM providers available for fallback chain")
+    
+    return FallbackChain(provider_clients)
 
 
 # Chain-of-Thought Legal Reasoning System Prompt
@@ -196,7 +265,21 @@ class LegalRAGChain:
         retriever: HybridRetriever | None = None,
         llm_client: LLMClient | NVIDIANimClient | None = None,
         top_k: int = 5,
+        use_fallback: bool = False,
+        fallback_providers: list[str] | None = None,
+        primary_provider: str = "copilot",
     ):
+        """Initialize the RAG chain.
+        
+        Args:
+            retriever: HybridRetriever instance. If None, creates a new one.
+            llm_client: LLM client instance. If None, creates based on other params.
+            top_k: Number of documents to retrieve.
+            use_fallback: If True, wrap LLM client in FallbackChain for resilience.
+            fallback_providers: List of fallback providers (only used if use_fallback=True).
+                If None, uses all available providers.
+            primary_provider: Primary LLM provider (default: "copilot").
+        """
         # Initialize retriever
         if retriever is None:
             logger.info("Initializing HybridRetriever...")
@@ -208,14 +291,53 @@ class LegalRAGChain:
         else:
             self.retriever = retriever
         
-        # Initialize LLM client (defaults to Copilot Chat API / GPT-4o)
+        # Initialize LLM client with optional fallback chain
         if llm_client is None:
-            logger.info("Initializing Copilot Chat client (default)...")
-            self.llm_client = create_llm_client("copilot")
+            if use_fallback:
+                logger.info(f"Initializing FallbackChain with primary={primary_provider}...")
+                self.llm_client = create_fallback_chain(primary_provider, fallback_providers)
+            else:
+                logger.info(f"Initializing {primary_provider} client...")
+                self.llm_client = create_llm_client(primary_provider)
         else:
             self.llm_client = llm_client
         
         self.top_k = top_k
+        self.use_fallback = use_fallback
+        
+        # Expose .search() as alias for .hybrid_search() (used by HyDE and QueryPlanner)
+        if not hasattr(self.retriever, 'search'):
+            self.retriever.search = self.retriever.hybrid_search  # type: ignore[attr-defined]
+        
+        # Initialize Advanced RAG components
+        self.hyde = HyDE(self.llm_client)
+        self.query_planner = QueryPlanner(self.llm_client)
+        
+        # Initialize new Advanced RAG techniques
+        self.multi_query = MultiQueryFusion()
+        self.crag = CRAG(self.llm_client)
+        
+        # Parent-child: load parent_store if available, else empty dict
+        parent_store_path = os.path.join(os.path.dirname(__file__), "parent_store.json")
+        parent_store = {}
+        if os.path.exists(parent_store_path):
+            with open(parent_store_path, "r", encoding="utf-8") as f:
+                parent_store = json.load(f)
+            logger.info(f"Loaded parent store with {len(parent_store)} entries")
+        else:
+            logger.warning(f"Parent store not found at {parent_store_path} — parent-child retrieval disabled")
+        self.parent_child = ParentChildRetriever(parent_store=parent_store)
+        
+        # Agentic orchestrator (composes all techniques)
+        self.agentic = AgenticRAG(
+            llm_client=self.llm_client,
+            retriever=self.retriever,
+            hyde=self.hyde,
+            crag=self.crag,
+            multi_query=self.multi_query,
+            query_planner=self.query_planner,
+        )
+        logger.info("Advanced RAG v2 components initialized: MultiQuery + CRAG + ParentChild + Agentic")
     
     @staticmethod
     def _extract_json_metadata(raw_answer: str) -> tuple[str, dict[str, Any] | None]:
@@ -552,6 +674,12 @@ JSON:"""
         top_k: int | None = None,
         mode: str = "synthesized",
         skip_grounding: bool = False,
+        use_hyde: bool = True,
+        use_decomposition: bool = True,
+        use_crag: bool = False,           # NEW (off by default — enable for quality gate)
+        use_multi_query: bool = False,    # NEW (off by default)
+        use_parent_child: bool = False,   # NEW (off by default)
+        use_agentic: bool = False,        # NEW (off by default)
     ) -> RAGResponse:
         """
         Query the RAG chain with a question.
@@ -563,27 +691,69 @@ JSON:"""
             mode: Response mode - "synthesized" for AI answer, "verbatim" for direct quotes
             skip_grounding: If True, skip the LLM-as-judge grounding verification call
                 (saves ~30% time per query). Grounding fields will be None/empty.
+            use_hyde: If True, use HyDE enhanced search for better retrieval (default True)
+            use_decomposition: If True, decompose complex questions into sub-queries (default True)
+            use_crag: If True, apply CRAG quality grading post-retrieval (default False, enable for quality gate)
+            use_multi_query: If True, use Multi-Query Fusion (template-based variants, default False)
+            use_parent_child: If True, expand child chunks to parent context (default False, requires parent_store)
+            use_agentic: If True, use Agentic RAG orchestration (default False, overrides cascade)
         
         Returns:
             RAGResponse with answer, citations, and sources
         """
         k = top_k or self.top_k
         
-        # Step 1: Retrieve relevant documents
+        # Step 1: Retrieve relevant documents (Advanced RAG pipeline)
         logger.info(f"Retrieving documents for: {question[:50]}...")
         
         if filter_jenis_dokumen:
+            # Filtered search — bypass advanced RAG
             results = self.retriever.search_by_document_type(
                 query=question,
                 jenis_dokumen=filter_jenis_dokumen,
                 top_k=k,
             )
         else:
-            results = self.retriever.hybrid_search(
-                query=question,
-                top_k=k,
-                expand_queries=True,
-            )
+            # Advanced RAG retrieval pipeline with feature flags
+            
+            # Priority cascade (highest priority first):
+            if use_agentic:
+                # Agentic mode: orchestrator picks strategy dynamically
+                results = self.agentic.enhanced_search(question, self.retriever, top_k=k)
+                logger.info("Agentic RAG orchestration applied")
+            elif use_decomposition and self.query_planner.should_decompose(question):
+                # Complex compound questions
+                results = self.query_planner.multi_hop_search(question, self.retriever, top_k=k)
+                logger.info("Query decomposition applied")
+            elif use_multi_query:
+                # Vague/ambiguous questions
+                results = self.multi_query.enhanced_search(question, self.retriever, top_k=k)
+                logger.info("Multi-Query Fusion applied")
+            elif use_hyde:
+                # Definition/concept questions
+                results = self.hyde.enhanced_search(question, self.retriever, top_k=k)
+                logger.info("HyDE applied")
+            else:
+                # Direct search fallback
+                results = self.retriever.hybrid_search(query=question, top_k=k, expand_queries=True)
+            
+            # Post-retrieval correction with CRAG (applied after any retrieval strategy)
+            if use_crag and results:
+                grade = self.crag.grade_retrieval(question, results)
+                if grade != "correct":
+                    logger.info(f"CRAG quality gate: {grade} — re-retrieving")
+                    corrected = self.crag.enhanced_search(question, self.retriever, top_k=k)
+                    if corrected:
+                        results = corrected
+                    else:
+                        logger.info("CRAG re-retrieval returned empty — keeping original results")
+                else:
+                    logger.info("CRAG quality gate: correct — keeping results")
+            
+            # Parent-child expansion (applied after retrieval + correction)
+            if use_parent_child and self.parent_child.parent_store:
+                results = self.parent_child.enhanced_search(question, self.retriever, top_k=k)
+                logger.info("Parent-child expansion applied")
         
         # Handle no results
         if not results:
@@ -634,19 +804,67 @@ JSON:"""
                 ),
             )
         
-        # Step 3: Generate answer using LLM
+        # Step 3: Generate answer using LLM with Advanced RAG prompts
         user_prompt = USER_PROMPT_TEMPLATE.format(
             context=context,
             question=question,
         )
         
-        logger.info(f"Generating answer with NVIDIA NIM {NVIDIA_MODEL} (mode: {mode})...")
-        # Use different system prompt based on mode
-        system_msg = VERBATIM_SYSTEM_PROMPT if mode == "verbatim" else SYSTEM_PROMPT
-        raw_answer = self.llm_client.generate(
-            user_message=user_prompt,
-            system_message=system_msg,
-        )
+        # Detect question type and get specialized instruction
+        question_type = detect_question_type(question)
+        type_specific_instruction = QUESTION_TYPE_PROMPTS.get(question_type, "")
+        logger.info(f"Detected question type: {question_type}")
+        
+        # Select system prompt based on mode
+        if mode == "verbatim":
+            system_msg = VERBATIM_SYSTEM_PROMPT
+        else:
+            # Use CoT prompt + type-specific instruction for synthesized mode
+            system_msg = SYSTEM_PROMPT_COT
+            if type_specific_instruction:
+                system_msg = system_msg + "\n\n" + type_specific_instruction
+        
+        # Get provider-specific tuning (temperature, max_tokens)
+        provider_name = getattr(self.llm_client, 'provider_name', None)
+        if not provider_name:
+            # Detect from class name
+            class_name = self.llm_client.__class__.__name__.lower()
+            if 'groq' in class_name:
+                provider_name = 'groq'
+            elif 'gemini' in class_name:
+                provider_name = 'gemini'
+            elif 'mistral' in class_name:
+                provider_name = 'mistral'
+            elif 'nvidia' in class_name or 'nim' in class_name:
+                provider_name = 'nvidia'
+            else:
+                provider_name = 'copilot'
+        tuning = PROVIDER_TUNING.get(provider_name, PROVIDER_TUNING['copilot'])
+        
+        # Apply provider-specific tuning to LLM client
+        original_max_tokens = getattr(self.llm_client, 'max_tokens', None)
+        original_temperature = getattr(self.llm_client, 'temperature', None)
+        try:
+            if hasattr(self.llm_client, 'max_tokens'):
+                setattr(self.llm_client, 'max_tokens', tuning['max_tokens'])
+            if hasattr(self.llm_client, 'temperature'):
+                setattr(self.llm_client, 'temperature', tuning['temperature'])
+            
+            logger.info(
+                f"Generating answer (mode: {mode}, question_type: {question_type}, "
+                f"provider: {provider_name}, temp: {tuning['temperature']}, "
+                f"max_tokens: {tuning['max_tokens']})..."
+            )
+            raw_answer = self.llm_client.generate(
+                user_message=user_prompt,
+                system_message=system_msg,
+            )
+        finally:
+            # Restore original LLM client settings
+            if original_max_tokens is not None and hasattr(self.llm_client, 'max_tokens'):
+                setattr(self.llm_client, 'max_tokens', original_max_tokens)
+            if original_temperature is not None and hasattr(self.llm_client, 'temperature'):
+                setattr(self.llm_client, 'temperature', original_temperature)
         
         # Step 3.5: Extract structured JSON metadata from LLM response
         answer, json_metadata = self._extract_json_metadata(raw_answer)
