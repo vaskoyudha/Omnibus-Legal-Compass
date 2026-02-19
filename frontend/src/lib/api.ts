@@ -527,3 +527,149 @@ export async function fetchAccuracyMetrics(): Promise<AccuracyMetrics> {
 
   return response.json();
 }
+
+
+// === Regulation Library Types ===
+
+export interface RegulationListItem {
+  id: string;
+  node_type: string;
+  number: number;
+  year: number;
+  title: string;
+  about: string;
+  status: string;
+  chapter_count: number;
+  article_count: number;
+  indexed_chunk_count: number;
+  amendment_count: number;
+  cross_reference_count: number;
+}
+
+export interface RegulationListResponse {
+  items: RegulationListItem[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
+export interface ArticleDetail {
+  id: string;
+  number: string;
+  full_text: string;
+  content_summary: string | null;
+  parent_chapter_id: string | null;
+  cross_references: string[];
+}
+
+export interface ChapterDetail {
+  id: string;
+  number: string;
+  title: string | null;
+  articles: ArticleDetail[];
+}
+
+export interface AmendmentInfo {
+  regulation_id: string;
+  regulation_title: string;
+  year: number;
+  direction: string;
+  edge_type: string;
+}
+
+export interface RegulationDetailResponse {
+  id: string;
+  node_type: string;
+  number: number;
+  year: number;
+  title: string;
+  about: string;
+  status: string;
+  enactment_date: string | null;
+  chapters: ChapterDetail[];
+  amendments: AmendmentInfo[];
+  implementing_regulations: RegulationListItem[];
+  parent_law: RegulationListItem | null;
+  cross_reference_count: number;
+  indexed_chunk_count: number;
+}
+
+export interface AmendmentTimelineEntry {
+  regulation_id: string;
+  regulation_title: string;
+  year: number;
+  number: number;
+  edge_type: string;
+  direction: string;
+  target_id: string;
+  target_title: string;
+}
+
+export interface AmendmentTimelineResponse {
+  regulation_id: string;
+  regulation_title: string;
+  entries: AmendmentTimelineEntry[];
+}
+
+export interface RegulationListFilters {
+  node_type?: string;
+  status?: string;
+  year?: number;
+  search?: string;
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc';
+  page?: number;
+  page_size?: number;
+}
+
+export async function fetchRegulations(filters?: RegulationListFilters): Promise<RegulationListResponse> {
+  const params = new URLSearchParams();
+  if (filters?.node_type) params.set('node_type', filters.node_type);
+  if (filters?.status) params.set('status', filters.status);
+  if (filters?.year) params.set('year', String(filters.year));
+  if (filters?.search) params.set('search', filters.search);
+  if (filters?.sort_by) params.set('sort_by', filters.sort_by);
+  if (filters?.sort_order) params.set('sort_order', filters.sort_order);
+  if (filters?.page) params.set('page', String(filters.page));
+  if (filters?.page_size) params.set('page_size', String(filters.page_size));
+  const query = params.toString();
+  const response = await fetch(`${API_URL}/api/v1/regulations${query ? `?${query}` : ''}`);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal memuat regulasi' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+  return response.json();
+}
+
+export async function fetchRegulationDetail(id: string): Promise<RegulationDetailResponse> {
+  const response = await fetch(`${API_URL}/api/v1/regulations/${encodeURIComponent(id)}`);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Regulasi tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+  return response.json();
+}
+
+export async function fetchAmendmentTimeline(id: string): Promise<AmendmentTimelineResponse> {
+  const response = await fetch(`${API_URL}/api/v1/regulations/${encodeURIComponent(id)}/timeline`);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Timeline tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+  return response.json();
+}
+
+export async function fetchArticleReferences(
+  regulationId: string,
+  articleId: string
+): Promise<{ references_to: ArticleDetail[]; referenced_by: ArticleDetail[] }> {
+  const response = await fetch(
+    `${API_URL}/api/v1/regulations/${encodeURIComponent(regulationId)}/articles/${encodeURIComponent(articleId)}/references`
+  );
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Referensi tidak ditemukan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+  return response.json();
+}
