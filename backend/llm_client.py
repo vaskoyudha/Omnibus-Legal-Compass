@@ -436,7 +436,7 @@ class NVIDIANimClient:
             "stream": False,
         }
 
-        max_retries = 3
+        max_retries = 2
         last_exception: Exception | None = None
         for attempt in range(max_retries):
             try:
@@ -444,7 +444,7 @@ class NVIDIANimClient:
                     self.api_url,
                     headers=self.headers,
                     json=payload,
-                    timeout=120,
+                    timeout=60,
                 )
                 response.raise_for_status()
 
@@ -507,7 +507,7 @@ class NVIDIANimClient:
             "stream": True,
         }
 
-        max_retries = 3
+        max_retries = 2
         last_exception: Exception | None = None
         for attempt in range(max_retries):
             try:
@@ -515,7 +515,7 @@ class NVIDIANimClient:
                     self.api_url,
                     headers=self.headers,
                     json=payload,
-                    timeout=120,
+                    timeout=60,
                     stream=True,
                 )
                 response.raise_for_status()

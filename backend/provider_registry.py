@@ -81,6 +81,10 @@ _NVIDIA_PROVIDER = ProviderInfo(
     sort_order=3,
     models=[
         ModelInfo(id="kimi-k2", name="Kimi K2", api_model="moonshotai/kimi-k2-instruct", context_window=131072, default_max_tokens=4096),
+        ModelInfo(id="deepseek-v3", name="DeepSeek V3", api_model="deepseek-ai/deepseek-v3.2", context_window=65536, default_max_tokens=4096),
+        ModelInfo(id="llama-3.3-70b-nvidia", name="Llama 3.3 70B", api_model="meta/llama-3.3-70b-instruct", context_window=128000, default_max_tokens=4096),
+        ModelInfo(id="qwen3-235b", name="Qwen3 235B", api_model="qwen/qwen3-235b-a22b", context_window=32768, default_max_tokens=4096),
+        ModelInfo(id="llama-4-maverick", name="Llama 4 Maverick", api_model="meta/llama-4-maverick-17b-128e-instruct", context_window=128000, default_max_tokens=4096),
     ],
 )
 
