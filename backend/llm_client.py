@@ -94,11 +94,11 @@ ANTHROPIC_DEFAULT_MODEL = "claude-sonnet-4-20250514"
 # ---------------------------------------------------------------------------
 # Antigravity (Google IDE) constants
 # ---------------------------------------------------------------------------
-ANTIGRAVITY_API_URL = "https://cloudcode-pa.googleapis.com"
+ANTIGRAVITY_API_URL = "https://daily-cloudcode-pa.sandbox.googleapis.com"
 ANTIGRAVITY_TOKEN_URL = "https://oauth2.googleapis.com/token"
 ANTIGRAVITY_CLIENT_ID = "1071006060591-tmhssin2h21lcre235vtolojh4g403ep.apps.googleusercontent.com"
 ANTIGRAVITY_CLIENT_SECRET = "REDACTED_SECRET"  # pragma: allowlist secret
-ANTIGRAVITY_DEFAULT_MODEL = "antigravity-gemini-3-flash"
+ANTIGRAVITY_DEFAULT_MODEL = "gemini-3-flash"
 ANTIGRAVITY_DEFAULT_PROJECT_ID = "rising-fact-p41fc"
 
 
@@ -1129,13 +1129,9 @@ class AntigravityClient:
     """
 
     ANTIGRAVITY_HEADERS = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Antigravity/1.18.3 Chrome/138.0.0.0 Electron/37.3.1 Safari/537.36"
-        ),
-        "X-Goog-Api-Client": "google-cloud-sdk vscode_cloudshelleditor/0.1",
-        "Client-Metadata": '{"ideType":"ANTIGRAVITY","platform":"WINDOWS","pluginType":"GEMINI"}',
+        "User-Agent": "antigravity/1.18.3 darwin/arm64",
+        "X-Goog-Api-Client": "google-cloud-sdk vscode/1.86.0",
+        "Client-Metadata": '{"ideType":"ANTIGRAVITY","platform":"MACOS","pluginType":"GEMINI"}',
         "Content-Type": "application/json",
     }
 
@@ -1197,99 +1193,22 @@ class AntigravityClient:
     ) -> str:
         """Generate response from Antigravity (Google IDE) API.
 
-        Uses Google GenerativeLanguage format (NOT OpenAI-compatible).
-        Endpoint: POST /v1internal:generateContent
+        Delegates to generate_stream() and joins chunks to avoid 403s on
+        the non-streaming :generateContent endpoint (free accounts only).
         """
-        access_token = self._get_access_token()
-        headers = {
-            **self.ANTIGRAVITY_HEADERS,
-            "Authorization": f"Bearer {access_token}",
-            "x-goog-user-project": self.project_id,
-        }
-
-        # Build contents — prepend system message as a user/model pair if provided
-        contents = []
-        if system_message:
-            contents.append({
-                "role": "user",
-                "parts": [{"text": f"[System Instructions]\n{system_message}"}],
-            })
-            contents.append({
-                "role": "model",
-                "parts": [{"text": "Understood. I will follow these instructions."}],
-            })
-        contents.append({
-            "role": "user",
-            "parts": [{"text": user_message}],
-        })
-
-        body = {
-            "model": self.model,
-            "request": {
-                "model": self.model,
-                "contents": contents,
-                "generationConfig": {"maxOutputTokens": self.max_tokens},
-            },
-        }
-
-        endpoint = f"{ANTIGRAVITY_API_URL}/v1internal:generateContent"
-
-        max_retries = 3
-        last_exception: Exception | None = None
-        for attempt in range(max_retries):
-            try:
-                response = requests.post(
-                    endpoint,
-                    headers=headers,
-                    json=body,
-                    timeout=120,
-                )
-                # On 401, try refreshing the token once
-                if response.status_code == 401 and attempt == 0:
-                    logger.warning("Antigravity: 401 received, refreshing access token...")
-                    access_token = self._refresh_access_token()
-                    headers["Authorization"] = f"Bearer {access_token}"
-                    continue
-                response.raise_for_status()
-                data = response.json()
-                # Google GenerativeLanguage response format
-                candidates = data.get("candidates", [])
-                if candidates:
-                    parts = candidates[0].get("content", {}).get("parts", [])
-                    if parts:
-                        return parts[0].get("text", "")
-                logger.warning(f"AntigravityClient: empty response. Full data: {data}")
-                return ""
-            except requests.exceptions.RequestException as e:
-                last_exception = e
-                if attempt < max_retries - 1:
-                    wait_time = 2 ** attempt
-                    logger.warning(
-                        f"AntigravityClient attempt {attempt + 1}/{max_retries} failed: {e}. "
-                        f"Retrying in {wait_time}s..."
-                    )
-                    time.sleep(wait_time)
-                else:
-                    logger.error(f"AntigravityClient error after {max_retries} attempts: {e}")
-
-        raise RuntimeError(
-            f"AntigravityClient API failed after {max_retries} attempts."
-        ) from last_exception
+        return "".join(self.generate_stream(user_message, system_message))
 
     def generate_stream(
         self,
         user_message: str,
         system_message: str | None = None,
     ) -> Generator[str, None, None]:
-        """Streaming via Antigravity SSE endpoint (:streamGenerateContent?alt=sse).
-
-        Falls back to non-streaming generate() if streaming fails.
-        """
+        """Streaming via Antigravity SSE endpoint (:streamGenerateContent?alt=sse)."""
+        import uuid
         access_token = self._get_access_token()
         headers = {
             **self.ANTIGRAVITY_HEADERS,
             "Authorization": f"Bearer {access_token}",
-            "x-goog-user-project": self.project_id,
         }
 
         contents = []
@@ -1307,10 +1226,15 @@ class AntigravityClient:
             "parts": [{"text": user_message}],
         })
 
+        actual_model = self.model.replace("antigravity-", "") if self.model.startswith("antigravity-") else self.model
         body = {
-            "model": self.model,
+            "project": self.project_id,
+            "model": actual_model,
+            "requestType": "agent",
+            "userAgent": "antigravity",
+            "requestId": f"agent-{uuid.uuid4()}",
             "request": {
-                "model": self.model,
+                "model": actual_model,
                 "contents": contents,
                 "generationConfig": {"maxOutputTokens": self.max_tokens},
             },
@@ -1346,7 +1270,9 @@ class AntigravityClient:
                             break
                         try:
                             chunk = json.loads(data_str)
-                            candidates = chunk.get("candidates", [])
+                            # The format wraps candidates inside a "response" object
+                            response_obj = chunk.get("response", {})
+                            candidates = response_obj.get("candidates", [])
                             if candidates:
                                 parts = candidates[0].get("content", {}).get("parts", [])
                                 if parts:
