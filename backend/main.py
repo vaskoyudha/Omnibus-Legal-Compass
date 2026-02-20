@@ -627,8 +627,8 @@ async def lifespan(app: FastAPI):
         logger.info("RAG chain initialized successfully")
     except Exception as e:
         logger.error(f"Failed to initialize RAG chain with default provider: {e}")
-        # Try fallback providers in order: nvidia → groq → gemini → mistral
-        _fallback_providers = ["nvidia", "groq", "gemini", "mistral"]
+        # Try fallback providers in order: antigravity → nvidia → groq → gemini → mistral
+        _fallback_providers = ["antigravity", "nvidia", "groq", "gemini", "mistral"]
         for _fb_provider in _fallback_providers:
             try:
                 import os as _os
@@ -885,14 +885,21 @@ def _resolve_llm_client(provider: str | None, model: str | None):
     """
     if provider is None:
         return None
-    known = {"nvidia", "copilot", "groq", "gemini", "mistral", "anthropic", "openrouter"}
+    known = {"nvidia", "copilot", "groq", "gemini", "mistral", "anthropic", "openrouter", "antigravity"}
     if provider not in known:
         raise HTTPException(
             status_code=400,
             detail=f"Unknown provider '{provider}'. Valid: {sorted(known)}",
         )
     try:
-        return create_llm_client(provider=provider, model=model)
+        # Resolve frontend model IDs (e.g. ag-gemini-3-flash) → real api_model names
+        api_model = model
+        if api_model:
+            from provider_registry import SUPPORTED_MODELS  # pyright: ignore[reportImplicitRelativeImport]
+            model_info = SUPPORTED_MODELS.get(api_model)
+            if model_info:
+                api_model = model_info.api_model
+        return create_llm_client(provider=provider, model=api_model)
     except (ValueError, Exception) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

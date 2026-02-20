@@ -784,7 +784,7 @@ JSON:"""
         confidence = self._assess_confidence(results)
         
         # Step 2.5: Check confidence threshold - refuse if too low
-        CONFIDENCE_THRESHOLD = 0.30
+        CONFIDENCE_THRESHOLD = 0.15
         if confidence.numeric < CONFIDENCE_THRESHOLD:
             refusal_text = "Maaf, saya tidak memiliki cukup informasi hukum untuk menjawab pertanyaan ini dengan akurat. Silakan konsultasikan dengan ahli hukum."
             logger.info(f"Low confidence ({confidence.numeric:.3f} < {CONFIDENCE_THRESHOLD}) - refusing to answer")
@@ -1022,7 +1022,7 @@ JSON:"""
         confidence = self._assess_confidence(results)
         
         # Step 2.5: Check confidence threshold - refuse if too low
-        CONFIDENCE_THRESHOLD = 0.30
+        CONFIDENCE_THRESHOLD = 0.15
         if confidence.numeric < CONFIDENCE_THRESHOLD:
             refusal_text = "Maaf, saya tidak memiliki cukup informasi hukum untuk menjawab pertanyaan ini dengan akurat. Silakan konsultasikan dengan ahli hukum."
             logger.info(f"Low confidence ({confidence.numeric:.3f} < {CONFIDENCE_THRESHOLD}) - refusing to answer (streaming)")
