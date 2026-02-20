@@ -168,6 +168,14 @@ _ANTIGRAVITY_PROVIDER = ProviderInfo(
             can_reason=True,
         ),
         ModelInfo(
+            id="ag-gemini-3-1-pro",
+            name="Gemini 3.1 Pro (Antigravity)",
+            api_model="gemini-3.1-pro",
+            context_window=1048576,
+            default_max_tokens=4096,
+            can_reason=True,
+        ),
+        ModelInfo(
             id="ag-claude-sonnet-4-6",
             name="Claude Sonnet 4.6 (Antigravity)",
             api_model="claude-sonnet-4-6",
