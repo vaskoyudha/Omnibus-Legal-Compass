@@ -284,8 +284,8 @@ class TestAntigravityConstants:
     """Tests for Antigravity-specific constants."""
 
     def test_api_url(self):
-        """ANTIGRAVITY_API_URL contains googleapis.com."""
-        assert "googleapis.com" in ANTIGRAVITY_API_URL
+        """ANTIGRAVITY_API_URL contains 'daily'."""
+        assert "daily" in ANTIGRAVITY_API_URL
 
     def test_default_model(self):
         """ANTIGRAVITY_DEFAULT_MODEL contains 'gemini'."""
@@ -352,20 +352,35 @@ class TestAntigravityClientInit:
 class TestAntigravityClientGenerate:
     """Tests for AntigravityClient.generate() method."""
 
+    def _make_sse_stream_response(self, text="Respons hukum", status_code=200):
+        """Create a mock requests.Response for Antigravity SSE streaming API.
+
+        The response format wraps candidates inside a 'response' object:
+        data: {"response": {"candidates": [{"content": {"parts": [{"text": "..."}]}}]}}
+        """
+        import json as _json
+        sse_chunk = _json.dumps({
+            "response": {
+                "candidates": [{"content": {"parts": [{"text": text}]}}]
+            }
+        })
+        sse_line = f"data: {sse_chunk}".encode("utf-8")
+
+        mock_resp = MagicMock()
+        mock_resp.status_code = status_code
+        mock_resp.raise_for_status = MagicMock()
+        mock_resp.iter_lines.return_value = iter([sse_line])
+        return mock_resp
+
     def test_generate_success(self):
         """Successful generate returns extracted text."""
         mock_token_resp = MagicMock()
         mock_token_resp.json.return_value = {"access_token": "acc_tok", "expires_in": 3600}
         mock_token_resp.raise_for_status = MagicMock()
 
-        mock_gen_resp = MagicMock()
-        mock_gen_resp.status_code = 200
-        mock_gen_resp.json.return_value = {
-            "candidates": [{"content": {"parts": [{"text": "Respons hukum"}]}}]
-        }
-        mock_gen_resp.raise_for_status = MagicMock()
+        mock_stream_resp = self._make_sse_stream_response("Respons hukum")
 
-        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_gen_resp]):
+        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_stream_resp]):
             client = AntigravityClient(refresh_token="tok")
             result = client.generate("Apa itu PT?")
         assert result == "Respons hukum"
@@ -376,18 +391,13 @@ class TestAntigravityClientGenerate:
         mock_token_resp.json.return_value = {"access_token": "acc_tok", "expires_in": 3600}
         mock_token_resp.raise_for_status = MagicMock()
 
-        mock_gen_resp = MagicMock()
-        mock_gen_resp.status_code = 200
-        mock_gen_resp.json.return_value = {
-            "candidates": [{"content": {"parts": [{"text": "Result"}]}}]
-        }
-        mock_gen_resp.raise_for_status = MagicMock()
+        mock_stream_resp = self._make_sse_stream_response("Result")
 
-        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_gen_resp]) as mock_post:
+        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_stream_resp]) as mock_post:
             client = AntigravityClient(refresh_token="tok")
             result = client.generate("Question", system_message="Be a lawyer")
         assert result == "Result"
-        # Verify the generate POST was called with contents including system turn
+        # Verify the generate_stream POST was called with contents including system turn
         gen_call = mock_post.call_args_list[1]
         body = gen_call.kwargs.get("json") or gen_call[1].get("json")
         contents = body["request"]["contents"]
@@ -395,16 +405,18 @@ class TestAntigravityClientGenerate:
 
     def test_generate_empty_candidates_returns_empty(self):
         """Empty candidates list returns empty string."""
+        import json as _json
         mock_token_resp = MagicMock()
         mock_token_resp.json.return_value = {"access_token": "acc_tok", "expires_in": 3600}
         mock_token_resp.raise_for_status = MagicMock()
 
-        mock_gen_resp = MagicMock()
-        mock_gen_resp.status_code = 200
-        mock_gen_resp.json.return_value = {"candidates": []}
-        mock_gen_resp.raise_for_status = MagicMock()
+        sse_line = f'data: {_json.dumps({"response": {"candidates": []}})}'.encode("utf-8")
+        mock_stream_resp = MagicMock()
+        mock_stream_resp.status_code = 200
+        mock_stream_resp.raise_for_status = MagicMock()
+        mock_stream_resp.iter_lines.return_value = iter([sse_line])
 
-        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_gen_resp]):
+        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_stream_resp]):
             client = AntigravityClient(refresh_token="tok")
             result = client.generate("Q")
         assert result == ""
@@ -424,7 +436,7 @@ class TestAntigravityClientGenerate:
         ]):
             with patch("llm_client.time.sleep"):
                 client = AntigravityClient(refresh_token="tok")
-                with pytest.raises(RuntimeError, match="AntigravityClient API failed"):
+                with pytest.raises(RuntimeError, match="AntigravityClient"):
                     client.generate("Q")
 
 

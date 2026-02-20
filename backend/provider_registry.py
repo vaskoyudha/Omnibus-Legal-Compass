@@ -147,14 +147,14 @@ _ANTIGRAVITY_PROVIDER = ProviderInfo(
         ModelInfo(
             id="ag-gemini-3-flash",
             name="Gemini 3 Flash (Antigravity)",
-            api_model="antigravity-gemini-3-flash",
+            api_model="gemini-3-flash",
             context_window=1048576,
             default_max_tokens=4096,
         ),
         ModelInfo(
             id="ag-gemini-3-pro",
             name="Gemini 3 Pro (Antigravity)",
-            api_model="antigravity-gemini-3-pro",
+            api_model="gemini-3-pro",
             context_window=1048576,
             default_max_tokens=4096,
             can_reason=True,
@@ -162,14 +162,14 @@ _ANTIGRAVITY_PROVIDER = ProviderInfo(
         ModelInfo(
             id="ag-claude-sonnet-4-6",
             name="Claude Sonnet 4.6 (Antigravity)",
-            api_model="antigravity-claude-sonnet-4-6",
+            api_model="claude-sonnet-4-6",
             context_window=200000,
             default_max_tokens=4096,
         ),
         ModelInfo(
             id="ag-claude-opus-4-6",
             name="Claude Opus 4.6 Thinking (Antigravity)",
-            api_model="antigravity-claude-opus-4-6-thinking",
+            api_model="claude-opus-4-6-thinking",
             context_window=200000,
             default_max_tokens=4096,
             can_reason=True,
