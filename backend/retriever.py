@@ -490,7 +490,21 @@ class HybridRetriever:
         retriever = HybridRetriever()
         results = retriever.hybrid_search("Apa itu Undang-Undang Cipta Kerja?", top_k=5)
     """
-    
+
+    # National law intent keywords — used by _is_national_law_query() to detect
+    # queries about national legislation so Perda chunks can be deprioritized.
+    _NATIONAL_LAW_KEYWORDS: list[str] = [
+        # PT/company formation
+        "mendirikan pt", "pendirian pt", "syarat pt", "badan hukum",
+        "perseroan terbatas", "modal dasar", "akta pendirian",
+        # Employment/labor (national UU 13/2003)
+        "phk", "pesangon", "upah minimum", "hubungan kerja",
+        "perjanjian kerja",
+        # National regulations explicitly mentioned
+        "undang-undang", "peraturan pemerintah",
+        "hukum nasional",
+    ]
+
     def __init__(
         self,
         qdrant_url: str = QDRANT_URL,
@@ -1176,22 +1190,22 @@ class HybridRetriever:
         that have nearly identical cosine similarity scores.
 
         Multipliers:
-            UU      ×1.30  — national statute, highest authority
-            PP      ×1.15  — government regulation
+            UU      ×1.50  — national statute, highest authority
+            PP      ×1.20  — government regulation
             Perpres ×1.10  — presidential regulation
             Permen  ×1.05  — ministerial regulation
-            Perda   ×0.85  — regional regulation (penalized for national queries)
+            Perda   ×0.60  — regional regulation (heavy penalty for national queries)
             other   ×1.00  — unknown/neutral
 
         Returns:
             Candidates re-sorted by authority-boosted score.
         """
         AUTHORITY_MULTIPLIERS: dict[str, float] = {
-            "UU": 1.30,
-            "PP": 1.15,
+            "UU": 1.50,
+            "PP": 1.20,
             "Perpres": 1.10,
             "Permen": 1.05,
-            "Perda": 0.85,
+            "Perda": 0.60,
         }
 
         boosted: list[SearchResult] = []
@@ -1215,6 +1229,32 @@ class HybridRetriever:
         )
         return boosted
     
+    def _is_national_law_query(self, query: str) -> bool:
+        """Return True if query is clearly about national legislation, not regional."""
+        q = query.lower()
+        return any(kw in q for kw in self._NATIONAL_LAW_KEYWORDS)
+
+    def _prioritize_national_docs(
+        self,
+        candidates: list[SearchResult],
+        top_k: int,
+    ) -> list[SearchResult]:
+        """When no reranker and query is national-law, put UU/PP/Perpres/Permen first.
+
+        Perda chunks are only included if there are fewer than top_k national docs.
+        """
+        national_types = {"UU", "PP", "Perpres", "Permen"}
+        national = [r for r in candidates if r.metadata.get("jenis_dokumen") in national_types]
+        regional = [r for r in candidates if r.metadata.get("jenis_dokumen") not in national_types]
+
+        # Combine: national first, then regional as fallback
+        prioritized = national + regional
+        logger.debug(
+            "National-law query: %d national, %d regional candidates",
+            len(national), len(regional),
+        )
+        return prioritized[:top_k * 2]  # Return wider pool, caller slices to top_k
+
     def hybrid_search(
         self,
         query: str,
@@ -1351,6 +1391,10 @@ class HybridRetriever:
 
         # Apply document authority boosting (UU > PP > Perpres > Permen > Perda)
         candidates = self._boost_with_authority(candidates)
+
+        # Hard-prioritize national docs for national-law queries (when no reranker)
+        if not self.reranker and self._is_national_law_query(query):
+            candidates = self._prioritize_national_docs(candidates, top_k)
         
         # Apply CrossEncoder re-ranking if enabled (always re-rank against original query)
         # Apply minimum score filtering if specified
