@@ -12,11 +12,15 @@ from llm_client import (
     GroqClient,
     GeminiClient,
     MistralClient,
+    AntigravityClient,
     create_llm_client,
     KNOWN_PROVIDERS,
     ANTHROPIC_API_URL,
     ANTHROPIC_API_VERSION,
     ANTHROPIC_DEFAULT_MODEL,
+    ANTIGRAVITY_API_URL,
+    ANTIGRAVITY_DEFAULT_MODEL,
+    ANTIGRAVITY_DEFAULT_PROJECT_ID,
 )
 
 
@@ -29,8 +33,8 @@ class TestKnownProviders:
     """Tests for the KNOWN_PROVIDERS constant."""
 
     def test_known_providers_count(self):
-        """KNOWN_PROVIDERS has exactly 7 entries."""
-        assert len(KNOWN_PROVIDERS) == 7
+        """KNOWN_PROVIDERS has exactly 8 entries."""
+        assert len(KNOWN_PROVIDERS) == 8
 
     def test_known_providers_contains_anthropic(self):
         """'anthropic' is in KNOWN_PROVIDERS."""
@@ -244,8 +248,8 @@ class TestCreateLlmClientFactory:
 
     @patch("llm_client.CopilotChatClient._auto_discover_oauth_token", return_value="fake-token")
     @patch("llm_client.CopilotChatClient._exchange_and_store_token")
-    def test_factory_creates_all_7_providers(self, mock_exchange, mock_discover):
-        """Factory can create clients for all 7 known providers."""
+    def test_factory_creates_all_8_providers(self, mock_exchange, mock_discover):
+        """Factory can create clients for all 8 known providers."""
         env_keys = {
             "ANTHROPIC_API_KEY": "sk",  # pragma: allowlist secret
             "OPENROUTER_API_KEY": "or",  # pragma: allowlist secret
@@ -253,6 +257,7 @@ class TestCreateLlmClientFactory:
             "GEMINI_API_KEY": "gm",  # pragma: allowlist secret
             "MISTRAL_API_KEY": "ms",  # pragma: allowlist secret
             "NVIDIA_API_KEY": "nv",  # pragma: allowlist secret
+            "ANTIGRAVITY_REFRESH_TOKEN": "ag",  # pragma: allowlist secret
         }
         with patch.dict(os.environ, env_keys):
             for provider in KNOWN_PROVIDERS:
@@ -268,3 +273,174 @@ class TestCreateLlmClientFactory:
         """Model override works for openrouter."""
         client = create_llm_client("openrouter", model="qwen/qwen-2.5-72b-instruct", api_key="or-test")
         assert client.model == "qwen/qwen-2.5-72b-instruct"
+
+
+# ---------------------------------------------------------------------------
+# TestAntigravityConstants
+# ---------------------------------------------------------------------------
+
+
+class TestAntigravityConstants:
+    """Tests for Antigravity-specific constants."""
+
+    def test_api_url(self):
+        """ANTIGRAVITY_API_URL contains googleapis.com."""
+        assert "googleapis.com" in ANTIGRAVITY_API_URL
+
+    def test_default_model(self):
+        """ANTIGRAVITY_DEFAULT_MODEL contains 'gemini'."""
+        assert "gemini" in ANTIGRAVITY_DEFAULT_MODEL
+
+    def test_default_project_id(self):
+        """ANTIGRAVITY_DEFAULT_PROJECT_ID is non-empty."""
+        assert ANTIGRAVITY_DEFAULT_PROJECT_ID
+
+
+# ---------------------------------------------------------------------------
+# TestAntigravityClientInit
+# ---------------------------------------------------------------------------
+
+
+class TestAntigravityClientInit:
+    """Tests for AntigravityClient initialization."""
+
+    def test_init_with_token_only(self):
+        """AntigravityClient with plain token uses default project."""
+        client = AntigravityClient(refresh_token="mytoken")
+        assert client._refresh_token == "mytoken"
+        assert client.project_id == ANTIGRAVITY_DEFAULT_PROJECT_ID
+
+    def test_init_with_token_and_project(self):
+        """AntigravityClient with 'token|project' parses both."""
+        client = AntigravityClient(refresh_token="mytoken|myproject")
+        assert client._refresh_token == "mytoken"
+        assert client.project_id == "myproject"
+
+    def test_init_default_model(self):
+        """Default model matches ANTIGRAVITY_DEFAULT_MODEL."""
+        client = AntigravityClient(refresh_token="tok")
+        assert client.model == ANTIGRAVITY_DEFAULT_MODEL
+
+    def test_init_custom_model(self):
+        """Custom model override works."""
+        client = AntigravityClient(refresh_token="tok", model="antigravity-gemini-3-pro")
+        assert client.model == "antigravity-gemini-3-pro"
+
+    def test_init_missing_token_raises(self):
+        """Missing token raises ValueError."""
+        env_backup = os.environ.pop("ANTIGRAVITY_REFRESH_TOKEN", None)
+        try:
+            with pytest.raises(ValueError, match="ANTIGRAVITY_REFRESH_TOKEN"):
+                AntigravityClient()
+        finally:
+            if env_backup:
+                os.environ["ANTIGRAVITY_REFRESH_TOKEN"] = env_backup
+
+    def test_init_from_env(self, monkeypatch):
+        """Client reads token from ANTIGRAVITY_REFRESH_TOKEN env var."""
+        monkeypatch.setenv("ANTIGRAVITY_REFRESH_TOKEN", "envtoken|envproject")
+        client = AntigravityClient()
+        assert client._refresh_token == "envtoken"
+        assert client.project_id == "envproject"
+
+
+# ---------------------------------------------------------------------------
+# TestAntigravityClientGenerate
+# ---------------------------------------------------------------------------
+
+
+class TestAntigravityClientGenerate:
+    """Tests for AntigravityClient.generate() method."""
+
+    def test_generate_success(self):
+        """Successful generate returns extracted text."""
+        mock_token_resp = MagicMock()
+        mock_token_resp.json.return_value = {"access_token": "acc_tok", "expires_in": 3600}
+        mock_token_resp.raise_for_status = MagicMock()
+
+        mock_gen_resp = MagicMock()
+        mock_gen_resp.status_code = 200
+        mock_gen_resp.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "Respons hukum"}]}}]
+        }
+        mock_gen_resp.raise_for_status = MagicMock()
+
+        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_gen_resp]):
+            client = AntigravityClient(refresh_token="tok")
+            result = client.generate("Apa itu PT?")
+        assert result == "Respons hukum"
+
+    def test_generate_with_system_message(self):
+        """System message is included as user/model pair in contents."""
+        mock_token_resp = MagicMock()
+        mock_token_resp.json.return_value = {"access_token": "acc_tok", "expires_in": 3600}
+        mock_token_resp.raise_for_status = MagicMock()
+
+        mock_gen_resp = MagicMock()
+        mock_gen_resp.status_code = 200
+        mock_gen_resp.json.return_value = {
+            "candidates": [{"content": {"parts": [{"text": "Result"}]}}]
+        }
+        mock_gen_resp.raise_for_status = MagicMock()
+
+        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_gen_resp]) as mock_post:
+            client = AntigravityClient(refresh_token="tok")
+            result = client.generate("Question", system_message="Be a lawyer")
+        assert result == "Result"
+        # Verify the generate POST was called with contents including system turn
+        gen_call = mock_post.call_args_list[1]
+        body = gen_call.kwargs.get("json") or gen_call[1].get("json")
+        contents = body["request"]["contents"]
+        assert len(contents) == 3  # system user + model ack + actual user
+
+    def test_generate_empty_candidates_returns_empty(self):
+        """Empty candidates list returns empty string."""
+        mock_token_resp = MagicMock()
+        mock_token_resp.json.return_value = {"access_token": "acc_tok", "expires_in": 3600}
+        mock_token_resp.raise_for_status = MagicMock()
+
+        mock_gen_resp = MagicMock()
+        mock_gen_resp.status_code = 200
+        mock_gen_resp.json.return_value = {"candidates": []}
+        mock_gen_resp.raise_for_status = MagicMock()
+
+        with patch("llm_client.requests.post", side_effect=[mock_token_resp, mock_gen_resp]):
+            client = AntigravityClient(refresh_token="tok")
+            result = client.generate("Q")
+        assert result == ""
+
+    def test_generate_raises_after_retries(self):
+        """RuntimeError raised after all retries exhausted."""
+        import requests as req_lib
+        mock_token_resp = MagicMock()
+        mock_token_resp.json.return_value = {"access_token": "acc_tok", "expires_in": 3600}
+        mock_token_resp.raise_for_status = MagicMock()
+
+        with patch("llm_client.requests.post", side_effect=[
+            mock_token_resp,
+            req_lib.exceptions.ConnectionError("timeout"),
+            req_lib.exceptions.ConnectionError("timeout"),
+            req_lib.exceptions.ConnectionError("timeout"),
+        ]):
+            with patch("llm_client.time.sleep"):
+                client = AntigravityClient(refresh_token="tok")
+                with pytest.raises(RuntimeError, match="AntigravityClient API failed"):
+                    client.generate("Q")
+
+
+# ---------------------------------------------------------------------------
+# TestCreateLlmClientAntigravity
+# ---------------------------------------------------------------------------
+
+
+class TestCreateLlmClientAntigravity:
+    """Tests for create_llm_client('antigravity')."""
+
+    def test_create_antigravity_client(self):
+        """create_llm_client('antigravity') returns AntigravityClient."""
+        client = create_llm_client("antigravity", refresh_token="tok")
+        assert isinstance(client, AntigravityClient)
+
+    def test_antigravity_in_known_providers(self):
+        """'antigravity' is in KNOWN_PROVIDERS."""
+        assert "antigravity" in KNOWN_PROVIDERS

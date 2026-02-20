@@ -91,6 +91,16 @@ ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
 ANTHROPIC_API_VERSION = "2023-06-01"
 ANTHROPIC_DEFAULT_MODEL = "claude-sonnet-4-20250514"
 
+# ---------------------------------------------------------------------------
+# Antigravity (Google IDE) constants
+# ---------------------------------------------------------------------------
+ANTIGRAVITY_API_URL = "https://cloudcode-pa.googleapis.com"
+ANTIGRAVITY_TOKEN_URL = "https://oauth2.googleapis.com/token"
+ANTIGRAVITY_CLIENT_ID = "1071006060591-tmhssin2h21lcre235vtolojh4g403ep.apps.googleusercontent.com"
+ANTIGRAVITY_CLIENT_SECRET = "REDACTED_SECRET"  # pragma: allowlist secret
+ANTIGRAVITY_DEFAULT_MODEL = "antigravity-gemini-3-flash"
+ANTIGRAVITY_DEFAULT_PROJECT_ID = "rising-fact-p41fc"
+
 
 # ---------------------------------------------------------------------------
 # LLMClient Protocol
@@ -1102,6 +1112,271 @@ class CopilotChatClient:
 
 
 # ---------------------------------------------------------------------------
+# AntigravityClient — Google IDE (Antigravity) OAuth-based provider
+# ---------------------------------------------------------------------------
+class AntigravityClient:
+    """Client for Antigravity (Google IDE) API using Google OAuth refresh token.
+
+    Auth flow:
+      1. ANTIGRAVITY_REFRESH_TOKEN env var holds token as "refresh_token|project_id"
+         (the "|project_id" part is optional; defaults to ANTIGRAVITY_DEFAULT_PROJECT_ID)
+      2. Exchange refresh_token for access_token via Google OAuth2 token endpoint
+      3. POST to /v1internal:streamGenerateContent (non-streaming) or
+         /v1internal:generateContent using Google GenerativeLanguage format (NOT OpenAI)
+      4. Access token cached until expiry, then auto-refreshed
+
+    Required env var: ANTIGRAVITY_REFRESH_TOKEN
+    """
+
+    ANTIGRAVITY_HEADERS = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Antigravity/1.18.3 Chrome/138.0.0.0 Electron/37.3.1 Safari/537.36"
+        ),
+        "X-Goog-Api-Client": "google-cloud-sdk vscode_cloudshelleditor/0.1",
+        "Client-Metadata": '{"ideType":"ANTIGRAVITY","platform":"WINDOWS","pluginType":"GEMINI"}',
+        "Content-Type": "application/json",
+    }
+
+    def __init__(
+        self,
+        refresh_token: str | None = None,
+        model: str = ANTIGRAVITY_DEFAULT_MODEL,
+        max_tokens: int = MAX_TOKENS,
+    ):
+        raw = refresh_token or os.getenv("ANTIGRAVITY_REFRESH_TOKEN", "")
+        if not raw:
+            raise ValueError(
+                "ANTIGRAVITY_REFRESH_TOKEN not found. "
+                "Set this env var to your Antigravity OAuth refresh token."
+            )
+        # Token format: "refresh_token" OR "refresh_token|project_id"
+        parts = raw.split("|", 1)
+        self._refresh_token = parts[0].strip()
+        self.project_id = parts[1].strip() if len(parts) > 1 else ANTIGRAVITY_DEFAULT_PROJECT_ID
+        self.model = model
+        self.max_tokens = max_tokens
+        # Cached access token
+        self._access_token: str = ""
+        self._token_expires_at: float = 0.0
+        self._token_lock = threading.Lock()
+
+    def _refresh_access_token(self) -> str:
+        """Exchange refresh_token for a fresh Google OAuth access_token."""
+        resp = requests.post(
+            ANTIGRAVITY_TOKEN_URL,
+            data={
+                "client_id": ANTIGRAVITY_CLIENT_ID,
+                "client_secret": ANTIGRAVITY_CLIENT_SECRET,
+                "refresh_token": self._refresh_token,
+                "grant_type": "refresh_token",
+            },
+            timeout=30,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        access_token = data["access_token"]
+        expires_in = data.get("expires_in", 3600)
+        with self._token_lock:
+            self._access_token = access_token
+            self._token_expires_at = time.time() + expires_in - 60  # 60s buffer
+        return access_token
+
+    def _get_access_token(self) -> str:
+        """Return a valid access token, refreshing if expired (thread-safe)."""
+        with self._token_lock:
+            if self._access_token and time.time() < self._token_expires_at:
+                return self._access_token
+        return self._refresh_access_token()
+
+    def generate(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ) -> str:
+        """Generate response from Antigravity (Google IDE) API.
+
+        Uses Google GenerativeLanguage format (NOT OpenAI-compatible).
+        Endpoint: POST /v1internal:generateContent
+        """
+        access_token = self._get_access_token()
+        headers = {
+            **self.ANTIGRAVITY_HEADERS,
+            "Authorization": f"Bearer {access_token}",
+            "x-goog-user-project": self.project_id,
+        }
+
+        # Build contents — prepend system message as a user/model pair if provided
+        contents = []
+        if system_message:
+            contents.append({
+                "role": "user",
+                "parts": [{"text": f"[System Instructions]\n{system_message}"}],
+            })
+            contents.append({
+                "role": "model",
+                "parts": [{"text": "Understood. I will follow these instructions."}],
+            })
+        contents.append({
+            "role": "user",
+            "parts": [{"text": user_message}],
+        })
+
+        body = {
+            "model": self.model,
+            "request": {
+                "model": self.model,
+                "contents": contents,
+                "generationConfig": {"maxOutputTokens": self.max_tokens},
+            },
+        }
+
+        endpoint = f"{ANTIGRAVITY_API_URL}/v1internal:generateContent"
+
+        max_retries = 3
+        last_exception: Exception | None = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(
+                    endpoint,
+                    headers=headers,
+                    json=body,
+                    timeout=120,
+                )
+                # On 401, try refreshing the token once
+                if response.status_code == 401 and attempt == 0:
+                    logger.warning("Antigravity: 401 received, refreshing access token...")
+                    access_token = self._refresh_access_token()
+                    headers["Authorization"] = f"Bearer {access_token}"
+                    continue
+                response.raise_for_status()
+                data = response.json()
+                # Google GenerativeLanguage response format
+                candidates = data.get("candidates", [])
+                if candidates:
+                    parts = candidates[0].get("content", {}).get("parts", [])
+                    if parts:
+                        return parts[0].get("text", "")
+                logger.warning(f"AntigravityClient: empty response. Full data: {data}")
+                return ""
+            except requests.exceptions.RequestException as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt
+                    logger.warning(
+                        f"AntigravityClient attempt {attempt + 1}/{max_retries} failed: {e}. "
+                        f"Retrying in {wait_time}s..."
+                    )
+                    time.sleep(wait_time)
+                else:
+                    logger.error(f"AntigravityClient error after {max_retries} attempts: {e}")
+
+        raise RuntimeError(
+            f"AntigravityClient API failed after {max_retries} attempts."
+        ) from last_exception
+
+    def generate_stream(
+        self,
+        user_message: str,
+        system_message: str | None = None,
+    ) -> Generator[str, None, None]:
+        """Streaming via Antigravity SSE endpoint (:streamGenerateContent?alt=sse).
+
+        Falls back to non-streaming generate() if streaming fails.
+        """
+        access_token = self._get_access_token()
+        headers = {
+            **self.ANTIGRAVITY_HEADERS,
+            "Authorization": f"Bearer {access_token}",
+            "x-goog-user-project": self.project_id,
+        }
+
+        contents = []
+        if system_message:
+            contents.append({
+                "role": "user",
+                "parts": [{"text": f"[System Instructions]\n{system_message}"}],
+            })
+            contents.append({
+                "role": "model",
+                "parts": [{"text": "Understood. I will follow these instructions."}],
+            })
+        contents.append({
+            "role": "user",
+            "parts": [{"text": user_message}],
+        })
+
+        body = {
+            "model": self.model,
+            "request": {
+                "model": self.model,
+                "contents": contents,
+                "generationConfig": {"maxOutputTokens": self.max_tokens},
+            },
+        }
+
+        endpoint = f"{ANTIGRAVITY_API_URL}/v1internal:streamGenerateContent?alt=sse"
+
+        max_retries = 3
+        last_exception: Exception | None = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(
+                    endpoint,
+                    headers=headers,
+                    json=body,
+                    timeout=120,
+                    stream=True,
+                )
+                if response.status_code == 401 and attempt == 0:
+                    logger.warning("Antigravity streaming: 401, refreshing access token...")
+                    access_token = self._refresh_access_token()
+                    headers["Authorization"] = f"Bearer {access_token}"
+                    continue
+                response.raise_for_status()
+
+                for line in response.iter_lines():
+                    if not line:
+                        continue
+                    line_str = line.decode("utf-8") if isinstance(line, bytes) else line
+                    if line_str.startswith("data: "):
+                        data_str = line_str[6:]
+                        if data_str.strip() == "[DONE]":
+                            break
+                        try:
+                            chunk = json.loads(data_str)
+                            candidates = chunk.get("candidates", [])
+                            if candidates:
+                                parts = candidates[0].get("content", {}).get("parts", [])
+                                if parts:
+                                    text = parts[0].get("text", "")
+                                    if text:
+                                        yield text
+                        except json.JSONDecodeError:
+                            continue
+                return  # success
+
+            except requests.exceptions.RequestException as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt
+                    logger.warning(
+                        f"AntigravityClient streaming attempt {attempt + 1}/{max_retries} failed: {e}. "
+                        f"Retrying in {wait_time}s..."
+                    )
+                    time.sleep(wait_time)
+                else:
+                    logger.error(
+                        f"AntigravityClient streaming error after {max_retries} attempts: {e}"
+                    )
+
+        raise RuntimeError(
+            f"AntigravityClient streaming API failed after {max_retries} attempts."
+        ) from last_exception
+
+
+# ---------------------------------------------------------------------------
 # CircuitBreaker — Resilience pattern for provider health tracking
 # ---------------------------------------------------------------------------
 class CircuitBreaker:
@@ -1339,7 +1614,7 @@ class OpenRouterClient(OpenAICompatibleClient):
 # ---------------------------------------------------------------------------
 # Factory
 # ---------------------------------------------------------------------------
-KNOWN_PROVIDERS = {"nvidia", "copilot", "groq", "gemini", "mistral", "anthropic", "openrouter"}
+KNOWN_PROVIDERS = {"nvidia", "copilot", "groq", "gemini", "mistral", "anthropic", "openrouter", "antigravity"}
 
 
 def create_llm_client(
@@ -1351,7 +1626,7 @@ def create_llm_client(
 
     Args:
         provider: One of "copilot" (default), "nvidia", "groq", "gemini",
-            "mistral", "anthropic", or "openrouter".
+            "mistral", "anthropic", "openrouter", or "antigravity".
         model: Model name override (uses provider default if None).
         **kwargs: Additional arguments passed to the client constructor.
 
@@ -1379,6 +1654,8 @@ def create_llm_client(
         return AnthropicClient(**client_kwargs)
     elif provider == "openrouter":
         return OpenRouterClient(**client_kwargs)
+    elif provider == "antigravity":
+        return AntigravityClient(**client_kwargs)
     else:
         raise ValueError(
             f"Unknown provider '{provider}'. Known providers: {sorted(KNOWN_PROVIDERS)}"

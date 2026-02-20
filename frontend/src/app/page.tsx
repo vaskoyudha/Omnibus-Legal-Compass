@@ -55,7 +55,7 @@ const featureCards = [
 
 const stats = [
   { value: 44, suffix: '', label: 'Regulasi Terindeks' },
-  { value: 401, suffix: '', label: 'Segmen Dokumen' },
+  { value: 11974, suffix: '+', label: 'Segmen Dokumen' },
   { qualitative: true, label: 'Setiap jawaban disertai sumber hukum' },
 ];
 
@@ -90,7 +90,7 @@ function FAQSection() {
     },
     {
       question: 'Regulasi apa saja yang sudah terindeks?',
-      answer: '44 regulasi utama Indonesia sudah terindeks, mencakup UU Cipta Kerja, UU Perseroan Terbatas, UU Ketenagakerjaan, PP terkait perizinan usaha, Perpres OSS, dan regulasi sektoral lainnya. Total 401 segmen dokumen yang telah dipecah dan diindeks untuk pencarian presisi tinggi. Kami terus menambah regulasi baru secara berkala.',
+      answer: '44 regulasi utama Indonesia sudah terindeks, mencakup UU Cipta Kerja, UU Perseroan Terbatas, UU Ketenagakerjaan, PP terkait perizinan usaha, Perpres OSS, dan regulasi sektoral lainnya. Total lebih dari 11.974 segmen dokumen yang telah dipecah dan diindeks untuk pencarian presisi tinggi. Kami terus menambah regulasi baru secara berkala.',
     },
     {
       question: 'Apakah platform ini gratis?',
@@ -812,8 +812,8 @@ export default function Home() {
                         </svg>
                       )
                     },
-                    {
-                      label: '360+ Tests',
+                     {
+                      label: '459+ Tests',
                       desc: 'Teruji otomatis secara menyeluruh',
                       icon: (
                         <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>

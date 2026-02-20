@@ -92,6 +92,7 @@ PROVIDER_TUNING: Final[dict[str, dict[str, int | float]]] = {
     "nvidia": {"temperature": 0.15, "max_tokens": 4096},
     "anthropic": {"temperature": 0.1, "max_tokens": 4096},
     "openrouter": {"temperature": 0.1, "max_tokens": 4096},
+    "antigravity": {"temperature": 0.15, "max_tokens": 4096},
 }
 
 

@@ -625,9 +625,21 @@ async def lifespan(app: FastAPI):
         rag_chain = LegalRAGChain()
         logger.info("RAG chain initialized successfully")
     except Exception as e:
-        logger.error(f"Failed to initialize RAG chain: {e}")
-        # Don't raise - allow app to start for health checks
-        rag_chain = None
+        logger.error(f"Failed to initialize RAG chain with default provider: {e}")
+        # Try fallback providers in order: nvidia → groq → gemini → mistral
+        _fallback_providers = ["nvidia", "groq", "gemini", "mistral"]
+        for _fb_provider in _fallback_providers:
+            try:
+                import os as _os
+                _fb_client = create_llm_client(_fb_provider)
+                rag_chain = LegalRAGChain(llm_client=_fb_client)
+                logger.info(f"RAG chain initialized with fallback provider: {_fb_provider}")
+                break
+            except Exception as _fb_err:
+                logger.warning(f"Fallback provider '{_fb_provider}' also failed: {_fb_err}")
+        else:
+            logger.error("All fallback providers failed — RAG chain unavailable")
+            rag_chain = None
 
     # Load Knowledge Graph from JSON
     try:

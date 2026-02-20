@@ -546,8 +546,10 @@ class HybridRetriever:
             self.embedding_dim = EMBEDDING_DIM
         
         # Initialize CrossEncoder for re-ranking (optional but recommended)
+        # Set USE_DUMMY_RERANKER=1 to skip loading (useful when paging file/memory is low)
         self.reranker = None
-        if use_reranker:
+        _skip_reranker = os.environ.get("USE_DUMMY_RERANKER", "0") == "1"
+        if use_reranker and not _skip_reranker:
             try:
                 from sentence_transformers import CrossEncoder
                 logger.info(f"Loading CrossEncoder reranker: {RERANKER_MODEL}")
@@ -556,6 +558,8 @@ class HybridRetriever:
             except Exception as e:
                 logger.warning(f"Failed to load CrossEncoder, continuing without re-ranking: {e}")
                 self.reranker = None
+        elif _skip_reranker:
+            logger.info("CrossEncoder reranker skipped (USE_DUMMY_RERANKER=1)")
         
         # Load corpus for BM25
         self._corpus: list[dict[str, Any]] = []

@@ -28,6 +28,7 @@ from llm_client import (  # pyright: ignore[reportImplicitRelativeImport]
 logger = logging.getLogger(__name__)
 
 DEFAULT_PROVIDER_ORDER: List[str] = [
+    "antigravity",
     "groq",
     "gemini",
     "mistral",
