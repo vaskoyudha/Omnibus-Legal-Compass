@@ -1163,6 +1163,57 @@ class HybridRetriever:
         # Re-sort by boosted score
         boosted.sort(key=lambda x: x.score, reverse=True)
         return boosted
+
+    def _boost_with_authority(
+        self,
+        candidates: list[SearchResult],
+    ) -> list[SearchResult]:
+        """Boost/penalize candidates based on document type authority hierarchy.
+
+        UU (Undang-Undang) is the highest legal authority; Perda (regional
+        regulations) are lowest.  Without a CrossEncoder reranker, this
+        prevents regional Perda chunks from outranking national UU/PP chunks
+        that have nearly identical cosine similarity scores.
+
+        Multipliers:
+            UU      ×1.30  — national statute, highest authority
+            PP      ×1.15  — government regulation
+            Perpres ×1.10  — presidential regulation
+            Permen  ×1.05  — ministerial regulation
+            Perda   ×0.85  — regional regulation (penalized for national queries)
+            other   ×1.00  — unknown/neutral
+
+        Returns:
+            Candidates re-sorted by authority-boosted score.
+        """
+        AUTHORITY_MULTIPLIERS: dict[str, float] = {
+            "UU": 1.30,
+            "PP": 1.15,
+            "Perpres": 1.10,
+            "Permen": 1.05,
+            "Perda": 0.85,
+        }
+
+        boosted: list[SearchResult] = []
+        for r in candidates:
+            jenis = r.metadata.get("jenis_dokumen", "")
+            multiplier = AUTHORITY_MULTIPLIERS.get(jenis, 1.00)
+            boosted.append(SearchResult(
+                id=r.id,
+                text=r.text,
+                citation=r.citation,
+                citation_id=r.citation_id,
+                score=r.score * multiplier,
+                metadata=r.metadata,
+            ))
+
+        boosted.sort(key=lambda x: x.score, reverse=True)
+        logger.debug(
+            "Authority boost applied: %d candidates, top jenis=%s",
+            len(boosted),
+            boosted[0].metadata.get("jenis_dokumen", "?") if boosted else "none",
+        )
+        return boosted
     
     def hybrid_search(
         self,
@@ -1208,7 +1259,13 @@ class HybridRetriever:
             List of SearchResult objects with RRF-fused (and optionally re-ranked) scores
         """
         # Default retrieval counts - fetch more if reranking
-        rerank_multiplier = 3 if (use_reranking and self.reranker) else 2
+        # Without a reranker, use a larger candidate pool to improve RRF recall
+        if use_reranking and self.reranker:
+            rerank_multiplier = 3   # CrossEncoder will filter from larger pool
+        elif not self.reranker:
+            rerank_multiplier = 4   # No reranker: fetch more, authority boost sorts them
+        else:
+            rerank_multiplier = 2
         if dense_top_k is None:
             dense_top_k = top_k * rerank_multiplier
         if sparse_top_k is None:
@@ -1291,6 +1348,9 @@ class HybridRetriever:
         
         # Apply KG-aware boosting (before reranking so reranker sees adjusted order)
         candidates = self._boost_with_kg(candidates)
+
+        # Apply document authority boosting (UU > PP > Perpres > Permen > Perda)
+        candidates = self._boost_with_authority(candidates)
         
         # Apply CrossEncoder re-ranking if enabled (always re-rank against original query)
         # Apply minimum score filtering if specified
