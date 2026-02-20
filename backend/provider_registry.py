@@ -25,6 +25,14 @@ class ProviderInfo:
 
     @property
     def is_available(self) -> bool:
+        if self.id == "antigravity":
+            if os.getenv("ANTIGRAVITY_REFRESH_TOKEN"):
+                return True
+            opencode_path = os.path.expanduser("~/.config/opencode/antigravity-accounts.json")
+            if os.path.exists(opencode_path):
+                return True
+            return False
+            
         if self.env_key == "":
             return True
         return os.getenv(self.env_key) is not None

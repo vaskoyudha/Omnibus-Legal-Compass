@@ -329,12 +329,13 @@ class TestAntigravityClientInit:
     def test_init_missing_token_raises(self):
         """Missing token raises ValueError."""
         env_backup = os.environ.pop("ANTIGRAVITY_REFRESH_TOKEN", None)
-        try:
-            with pytest.raises(ValueError, match="ANTIGRAVITY_REFRESH_TOKEN"):
-                AntigravityClient()
-        finally:
-            if env_backup:
-                os.environ["ANTIGRAVITY_REFRESH_TOKEN"] = env_backup
+        with patch("os.path.exists", return_value=False):
+            try:
+                with pytest.raises(ValueError, match="ANTIGRAVITY_REFRESH_TOKEN"):
+                    AntigravityClient()
+            finally:
+                if env_backup:
+                    os.environ["ANTIGRAVITY_REFRESH_TOKEN"] = env_backup
 
     def test_init_from_env(self, monkeypatch):
         """Client reads token from ANTIGRAVITY_REFRESH_TOKEN env var."""

@@ -51,6 +51,7 @@ SAMPLE_INDEXED_ARTICLES: set[str] = {
     "uu_40_2007_pasal_1",
 }
 from dashboard.metrics import MetricsAggregator  # pyright: ignore[reportImplicitRelativeImport]
+from antigravity_auth import generate_pkce_pair, build_auth_url, start_auth_server, get_auth_status  # pyright: ignore[reportImplicitRelativeImport]
 
 # Configure logging
 logging.basicConfig(
@@ -922,6 +923,20 @@ async def get_providers():
             for p in providers
         ]
     }
+
+
+@api_router.get("/auth/antigravity/login", tags=["Auth"])
+async def antigravity_login():
+    """Start Antigravity OAuth flow."""
+    verifier, challenge = generate_pkce_pair()
+    url = build_auth_url(challenge)
+    start_auth_server(verifier)
+    return {"url": url, "status": "started"}
+
+@api_router.get("/auth/antigravity/status", tags=["Auth"])
+async def antigravity_status():
+    """Check Antigravity OAuth status."""
+    return get_auth_status()
 
 
 @api_router.post("/ask", response_model=QuestionResponse, tags=["Q&A"])

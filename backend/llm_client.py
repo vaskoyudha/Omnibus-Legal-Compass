@@ -1143,6 +1143,19 @@ class AntigravityClient:
     ):
         raw = refresh_token or os.getenv("ANTIGRAVITY_REFRESH_TOKEN", "")
         if not raw:
+            import json
+            opencode_path = os.path.expanduser("~/.config/opencode/antigravity-accounts.json")
+            if os.path.exists(opencode_path):
+                try:
+                    with open(opencode_path, "r") as f:
+                        data = json.load(f)
+                        if data.get("accounts") and len(data["accounts"]) > 0:
+                            raw = data["accounts"][0].get("refreshToken", "")
+                            os.environ["ANTIGRAVITY_REFRESH_TOKEN"] = raw
+                except Exception as e:
+                    logger.warning(f"Failed to load Antigravity token from opencode config: {e}")
+                    
+        if not raw:
             raise ValueError(
                 "ANTIGRAVITY_REFRESH_TOKEN not found. "
                 "Set this env var to your Antigravity OAuth refresh token."

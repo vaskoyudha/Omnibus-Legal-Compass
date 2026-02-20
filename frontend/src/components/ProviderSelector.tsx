@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useProvider } from '@/hooks/useProvider';
 
 interface ProviderSelectorProps {
@@ -17,6 +17,8 @@ export default function ProviderSelector({ onProviderChange }: ProviderSelectorP
     setModel,
     currentProviderModels,
   } = useProvider();
+
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   if (isLoading) {
     return (
@@ -54,6 +56,20 @@ export default function ProviderSelector({ onProviderChange }: ProviderSelectorP
     outline: 'none',
   };
 
+  const buttonStyle: React.CSSProperties = {
+    background: 'rgba(50, 100, 255, 0.2)',
+    border: '1px solid rgba(50, 100, 255, 0.4)',
+    color: '#aaccff',
+    fontSize: '11px',
+    fontFamily: 'monospace',
+    padding: '3px 10px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    outline: 'none',
+    whiteSpace: 'nowrap',
+    transition: 'all 0.2s ease',
+  };
+
   const handleProviderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newProvider = e.target.value;
     setProvider(newProvider);
@@ -66,6 +82,40 @@ export default function ProviderSelector({ onProviderChange }: ProviderSelectorP
     const newModel = e.target.value;
     setModel(newModel);
     onProviderChange?.(selectedProvider, newModel);
+  };
+
+  const hasAntigravity = providers.some(p => p.id === 'antigravity');
+
+  const handleAntigravityLogin = async () => {
+    setIsLoggingIn(true);
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${baseUrl}/api/v1/auth/antigravity/login`);
+      const data = await res.json();
+      
+      if (data.url) {
+        window.open(data.url, '_blank');
+        
+        const pollInterval = setInterval(async () => {
+          const statusRes = await fetch(`${baseUrl}/api/v1/auth/antigravity/status`);
+          const statusData = await statusRes.json();
+          
+          if (statusData.status === 'success') {
+            clearInterval(pollInterval);
+            alert('Successfully logged in to Antigravity!');
+            window.location.reload();
+          } else if (statusData.status === 'error') {
+            clearInterval(pollInterval);
+            setIsLoggingIn(false);
+            alert('Login failed: ' + statusData.message);
+          }
+        }, 2000);
+      }
+    } catch (e) {
+      console.error('Login failed', e);
+      setIsLoggingIn(false);
+      alert('Failed to connect to backend.');
+    }
   };
 
   return (
@@ -96,6 +146,17 @@ export default function ProviderSelector({ onProviderChange }: ProviderSelectorP
             </option>
           ))}
         </select>
+      )}
+
+      {!hasAntigravity && (
+        <button 
+          onClick={handleAntigravityLogin} 
+          style={buttonStyle}
+          disabled={isLoggingIn}
+          title="Login to Antigravity to enable free Gemini & Claude models"
+        >
+          {isLoggingIn ? 'Waiting...' : '⚡ Connect Antigravity'}
+        </button>
       )}
     </div>
   );
