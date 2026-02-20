@@ -1239,7 +1239,12 @@ class AntigravityClient:
             "parts": [{"text": user_message}],
         })
 
-        actual_model = self.model.replace("antigravity-", "") if self.model.startswith("antigravity-") else self.model
+        actual_model = self.model
+        if actual_model.startswith("antigravity-"):
+            actual_model = actual_model.replace("antigravity-", "", 1)
+        elif actual_model.startswith("ag-"):
+            actual_model = actual_model.replace("ag-", "", 1)
+        
         body = {
             "project": self.project_id,
             "model": actual_model,
