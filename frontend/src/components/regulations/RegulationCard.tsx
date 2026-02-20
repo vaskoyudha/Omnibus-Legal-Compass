@@ -33,58 +33,62 @@ export default function RegulationCard({ regulation, onClick }: Readonly<Regulat
 
   return (
     <motion.div
-      className="relative flex flex-col gap-3 p-5 bg-white/[0.03] border border-white/[0.06] rounded-2xl cursor-pointer hover:bg-white/[0.05] hover:border-white/[0.1] transition-colors"
+      className="relative flex flex-col gap-3 p-5 bg-white/[0.02] border border-white/[0.08] rounded-2xl cursor-pointer hover:bg-white/[0.04] hover:border-[#AAFF00]/40 hover:shadow-[0_0_20px_rgba(170,255,0,0.15)] transition-all duration-300 group overflow-hidden"
       onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.01 }}
-      whileTap={{ scale: 0.99 }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ scale: 1.02, y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Badge row */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${typeBadge.className}`}>
-          {typeBadge.label}
-        </span>
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${statusBadge.className}`}>
-          {statusBadge.label}
-        </span>
-        <span className="ml-auto text-xs text-white/30 font-mono">
-          No.{regulation.number}/{regulation.year}
-        </span>
-      </div>
-
-      {/* Title */}
-      <h3 className="text-sm font-semibold text-white/85 leading-snug line-clamp-2">
-        {regulation.title}
-      </h3>
-
-      {/* About */}
-      {regulation.about && (
-        <p className="text-xs text-white/50 leading-relaxed line-clamp-3">
-          Tentang: {regulation.about}
-        </p>
-      )}
-
-      {/* Stats row */}
-      <div className="flex items-center gap-3 mt-auto pt-2 border-t border-white/[0.04]">
-        <span className="text-xs text-white/40 font-mono">
-          {regulation.article_count} Pasal
-        </span>
-        <span className="text-white/20 text-xs">·</span>
-        <span className="text-xs text-white/40 font-mono">
-          {regulation.chapter_count} Bab
-        </span>
-        <span className="text-white/20 text-xs">·</span>
-        <span className="text-xs text-white/40 font-mono">
-          {regulation.indexed_chunk_count} indexed
-        </span>
-
-        {regulation.amendment_count > 0 && (
-          <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#AAFF00]/10 text-[#AAFF00]/80 text-xs font-medium border border-[#AAFF00]/15">
-            🔄 {regulation.amendment_count} amandemen
+      {/* Background Hover Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#AAFF00]/0 to-[#AAFF00]/0 group-hover:from-[#AAFF00]/[0.03] group-hover:to-transparent transition-all duration-500 pointer-events-none" />
+      <div className="relative z-10 flex flex-col gap-3 h-full">
+        {/* Badge row */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${typeBadge.className}`}>
+            {typeBadge.label}
           </span>
+          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${statusBadge.className}`}>
+            {statusBadge.label}
+          </span>
+          <span className="ml-auto text-xs text-white/30 font-mono">
+            No.{regulation.number}/{regulation.year}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3 className="text-sm font-semibold text-white/85 leading-snug line-clamp-2">
+          {regulation.title}
+        </h3>
+
+        {/* About */}
+        {regulation.about && (
+          <p className="text-xs text-white/50 leading-relaxed line-clamp-3">
+            Tentang: {regulation.about}
+          </p>
         )}
+
+        {/* Stats row */}
+        <div className="flex items-center gap-3 mt-auto pt-2 border-t border-white/[0.04]">
+          <span className="text-xs text-white/40 font-mono">
+            {regulation.article_count} Pasal
+          </span>
+          <span className="text-white/20 text-xs">·</span>
+          <span className="text-xs text-white/40 font-mono">
+            {regulation.chapter_count} Bab
+          </span>
+          <span className="text-white/20 text-xs">·</span>
+          <span className="text-xs text-white/40 font-mono">
+            {regulation.indexed_chunk_count} indexed
+          </span>
+
+          {regulation.amendment_count > 0 && (
+            <span className="ml-auto inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#AAFF00]/15 text-[#AAFF00] text-xs font-semibold border border-[#AAFF00]/30 shadow-[0_0_10px_rgba(170,255,0,0.2)]">
+              🔄 {regulation.amendment_count} amandemen
+            </span>
+          )}
+        </div>
       </div>
     </motion.div>
   );

@@ -4,14 +4,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { 
-  fetchGraphLaws, 
-  fetchGraphLaw, 
-  fetchGraphSearch, 
-  fetchGraphStats, 
-  GraphNode, 
-  GraphStats, 
-  GraphNodeType 
+import {
+  fetchGraphLaws,
+  fetchGraphLaw,
+  fetchGraphSearch,
+  fetchGraphStats,
+  GraphNode,
+  GraphStats,
+  GraphNodeType
 } from '@/lib/api';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import SpotlightCard from '@/components/reactbits/SpotlightCard';
@@ -27,10 +27,10 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 16 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
   },
 };
 
@@ -62,16 +62,16 @@ const getStatusConfig = (status?: string) => {
 };
 
 // Recursive Tree Node Component
-const TreeNode = ({ 
-  node, 
-  level = 0, 
-  onExpand, 
+const TreeNode = ({
+  node,
+  level = 0,
+  onExpand,
   expandedIds,
-  onViewArticle 
-}: { 
-  node: GraphNode; 
-  level?: number; 
-  onExpand: (node: GraphNode) => void; 
+  onViewArticle
+}: {
+  node: GraphNode;
+  level?: number;
+  onExpand: (node: GraphNode) => void;
   expandedIds: Set<string>;
   onViewArticle: (node: GraphNode) => void;
 }) => {
@@ -79,17 +79,21 @@ const TreeNode = ({
   const hasChildren = node.children && node.children.length > 0;
   const isArticle = node.node_type === 'article';
   const status = getStatusConfig(node.status);
-  
+
   // Indentation based on level
   const paddingLeft = `${level * 1.5 + 1}rem`;
 
   return (
-    <div className="group">
-      <div 
+    <div className="group relative">
+      {/* Hover Highlight & Glow Layer */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#AAFF00]/0 to-transparent group-hover:from-[#AAFF00]/5 transition-all duration-300 pointer-events-none" />
+      {isExpanded && <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-[#AAFF00] to-transparent pointer-events-none" />}
+
+      <div
         className={`
-          flex items-center gap-3 py-3 pr-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer
-          ${isExpanded ? 'bg-white/[0.02]' : ''}
-        `}
+            relative z-10 flex items-center gap-3 py-3 pr-4 border-b border-white/[0.08] cursor-pointer
+            ${isExpanded ? 'bg-white/[0.04]' : 'bg-transparent'}
+          `}
         style={{ paddingLeft }}
         onClick={() => {
           if (isArticle) {
@@ -102,9 +106,9 @@ const TreeNode = ({
         {/* Chevron / Icon */}
         <div className="flex-shrink-0 w-6 flex justify-center">
           {!isArticle ? (
-            <motion.svg 
+            <motion.svg
               animate={{ rotate: isExpanded ? 90 : 0 }}
-              className={`w-4 h-4 text-text-muted ${hasChildren || node.node_type === 'law' ? 'opacity-100' : 'opacity-30'}`}
+              className={`w-4 h-4 text-white/50 group-hover:text-[#AAFF00] transition-colors ${hasChildren || node.node_type === 'law' ? 'opacity-100' : 'opacity-30'}`}
               fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -119,26 +123,26 @@ const TreeNode = ({
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className={`text-sm font-medium ${isArticle ? 'text-text-secondary' : 'text-text-primary'}`}>
+            <span className={`text-[15px] font-medium ${isArticle ? 'text-white/70' : 'text-white/90 group-hover:text-[#AAFF00] transition-colors'}`}>
               {node.node_type === 'law' ? (
                 <>
                   <span className="text-[#AAFF00] mr-2">{node.title?.split('tentang')[0] || `UU No. ${node.number} Tahun ${node.year}`}</span>
-                  <span className="text-text-muted font-normal text-xs">{node.year}</span>
+                  <span className="text-white/40 font-normal text-xs">{node.year}</span>
                 </>
               ) : (
                 node.title || `${getNodeTypeLabel(node.node_type)} ${node.number}`
               )}
             </span>
-            
+
             {node.status && node.node_type === 'law' && (
               <span className={`text-[10px] px-2 py-0.5 rounded-full border ${status.bg} ${status.color} ${status.border}`}>
                 {status.label}
               </span>
             )}
           </div>
-          
+
           {node.about && (
-            <p className="text-xs text-text-muted truncate mt-0.5 max-w-2xl">
+            <p className="text-xs text-white/50 truncate mt-1 max-w-2xl">
               {node.about}
             </p>
           )}
@@ -155,11 +159,11 @@ const TreeNode = ({
             className="overflow-hidden"
           >
             {node.children!.map((child) => (
-              <TreeNode 
-                key={child.id} 
-                node={child} 
-                level={level + 1} 
-                onExpand={onExpand} 
+              <TreeNode
+                key={child.id}
+                node={child}
+                level={level + 1}
+                onExpand={onExpand}
                 expandedIds={expandedIds}
                 onViewArticle={onViewArticle}
               />
@@ -184,17 +188,17 @@ export default function KnowledgeGraphPage() {
   // Initial Load
   useEffect(() => {
     const init = async () => {
-    try {
-      const [statsData, lawsData] = await Promise.all([
-        fetchGraphStats(),
-        fetchGraphLaws()
-      ]);
-      setStats(statsData);
-      setLaws(lawsData);
-    } catch (error) {
-      // Graph load failed; user notified
-      toast.error('Gagal memuat data graf');
-    } finally {
+      try {
+        const [statsData, lawsData] = await Promise.all([
+          fetchGraphStats(),
+          fetchGraphLaws()
+        ]);
+        setStats(statsData);
+        setLaws(lawsData);
+      } catch (error) {
+        // Graph load failed; user notified
+        toast.error('Gagal memuat data graf');
+      } finally {
         setLoading(false);
       }
     };
@@ -211,7 +215,7 @@ export default function KnowledgeGraphPage() {
       const results = await fetchGraphSearch(searchQuery, selectedNodeType || undefined);
       setLaws(results);
       // Collapse all when searching new results
-      setExpandedIds(new Set()); 
+      setExpandedIds(new Set());
     } catch (error) {
       toast.error('Pencarian gagal');
     } finally {
@@ -253,11 +257,11 @@ export default function KnowledgeGraphPage() {
         setLoadingNodes(new Set(loadingNodes).add(node.id));
         try {
           const fullLaw = await fetchGraphLaw(node.id);
-          
+
           // Update the specific node in our laws state
           // This is a simple deep update for the top-level laws list
           setLaws(prev => prev.map(l => l.id === node.id ? { ...l, children: fullLaw.children } : l));
-          
+
           newExpanded.add(node.id);
           setExpandedIds(newExpanded);
         } catch (error) {
@@ -292,21 +296,35 @@ export default function KnowledgeGraphPage() {
 
       {/* Hero Section */}
       <motion.div
-        className="py-8 px-4"
+        className="relative py-12 px-4 overflow-hidden"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <div className="max-w-6xl mx-auto text-center">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[-1]"
+          style={{
+            width: '60%',
+            height: '200px',
+            background: 'radial-gradient(ellipse at center, rgba(170,255,0,0.15) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+          }}
+        />
+        <div className="relative max-w-6xl mx-auto text-center z-10">
           <motion.div className="mb-4" variants={itemVariants}>
-            <span className="ai-badge">
+            <span className="ai-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#AAFF00]/30 text-sm font-medium text-[#AAFF00] shadow-[0_0_15px_rgba(170,255,0,0.2)]">
               <span>🔗</span> Knowledge Graph
             </span>
           </motion.div>
-          <motion.h1 className="text-4xl font-extrabold text-gradient mb-2" variants={itemVariants}>
-            Graf Pengetahuan Hukum
+          <motion.h1
+            className="text-4xl md:text-5xl font-extrabold mb-3 tracking-tight"
+            variants={itemVariants}
+          >
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70">
+              Graf Pengetahuan Hukum
+            </span>
           </motion.h1>
-          <motion.p className="text-text-secondary max-w-2xl mx-auto" variants={itemVariants}>
+          <motion.p className="text-text-secondary max-w-2xl mx-auto text-lg" variants={itemVariants}>
             Jelajahi hierarki dan hubungan antar peraturan perundang-undangan Indonesia
           </motion.p>
         </div>
@@ -314,10 +332,10 @@ export default function KnowledgeGraphPage() {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 space-y-8">
-        
+
         {/* Stats Section */}
         {stats && (
-          <motion.div 
+          <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -343,7 +361,7 @@ export default function KnowledgeGraphPage() {
         )}
 
         {/* Search & Filter */}
-        <motion.div 
+        <motion.div
           className="glass-strong rounded-2xl p-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -356,16 +374,16 @@ export default function KnowledgeGraphPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Cari regulasi, pasal, atau topik..."
-                className="flex-1 px-4 py-3 rounded-xl dark-input text-sm"
+                className="flex-1 px-5 py-3.5 rounded-xl bg-white/[0.02] border border-white/10 text-white/90 text-[15px] placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/50 focus:border-[#AAFF00]/60 hover:border-white/20 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]"
               />
-              <button 
-                type="submit" 
-                className="px-6 py-3 bg-gradient-to-r from-[#AAFF00] to-[#88CC00] text-[#0A0A0F] font-semibold rounded-xl hover:shadow-lg hover:shadow-[#AAFF00]/20 transition-all whitespace-nowrap"
+              <button
+                type="submit"
+                className="px-8 py-3 bg-gradient-to-r from-[#AAFF00] to-[#88CC00] text-[#0A0A0F] font-semibold rounded-xl hover:shadow-[0_0_20px_rgba(170,255,0,0.3)] transition-all whitespace-nowrap"
               >
                 Cari
               </button>
             </div>
-            
+
             {/* Filters */}
             <div className="flex flex-wrap gap-2">
               <button
@@ -386,8 +404,8 @@ export default function KnowledgeGraphPage() {
                 </button>
               ))}
               {searchQuery && (
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={resetSearch}
                   className="ml-auto text-xs text-text-muted hover:text-white underline"
                 >
@@ -399,7 +417,7 @@ export default function KnowledgeGraphPage() {
         </motion.div>
 
         {/* Tree View Results */}
-        <motion.div 
+        <motion.div
           className="glass-strong rounded-2xl overflow-hidden min-h-[400px]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -409,7 +427,7 @@ export default function KnowledgeGraphPage() {
             <h2 className="font-semibold text-text-primary">Daftar Regulasi</h2>
             <span className="text-xs text-text-muted">{laws.length} dokumen ditemukan</span>
           </div>
-          
+
           {loading ? (
             <div className="p-6 space-y-4">
               <SkeletonLoader variant="text" />
@@ -430,8 +448,8 @@ export default function KnowledgeGraphPage() {
             <div className="divide-y divide-white/5">
               {laws.map((node) => (
                 <div key={node.id} className="relative">
-                  <TreeNode 
-                    node={node} 
+                  <TreeNode
+                    node={node}
                     onExpand={handleExpand}
                     expandedIds={expandedIds}
                     onViewArticle={setSelectedArticle}
@@ -455,16 +473,16 @@ export default function KnowledgeGraphPage() {
       <AnimatePresence>
         {selectedArticle && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedArticle(null)}
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }} 
-              animate={{ opacity: 1, scale: 1, y: 0 }} 
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-2xl glass-strong rounded-2xl shadow-2xl overflow-hidden max-h-[80vh] flex flex-col"
             >
@@ -478,7 +496,7 @@ export default function KnowledgeGraphPage() {
                     {getNodeTypeLabel(selectedArticle.node_type)}
                   </p>
                 </div>
-                <button 
+                <button
                   onClick={() => setSelectedArticle(null)}
                   className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                 >
@@ -487,7 +505,7 @@ export default function KnowledgeGraphPage() {
                   </svg>
                 </button>
               </div>
-              
+
               <div className="p-6 overflow-y-auto">
                 <div className="prose prose-invert max-w-none">
                   <p className="text-text-primary leading-relaxed whitespace-pre-wrap">

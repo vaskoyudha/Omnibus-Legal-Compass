@@ -74,21 +74,33 @@ export default function GuidancePage() {
 
       {/* Hero Section */}
       <motion.div
-        className="py-8 px-4"
+        className="relative py-12 px-4 overflow-hidden"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <div className="max-w-4xl mx-auto text-center">
+        {/* Glow aura */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[-1]"
+          style={{
+            width: '60%',
+            height: '200px',
+            background: 'radial-gradient(ellipse at center, rgba(170,255,0,0.15) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+          }}
+        />
+        <div className="relative max-w-4xl mx-auto text-center z-10">
           <motion.div className="mb-4" variants={itemVariants}>
-            <span className="ai-badge">
+            <span className="ai-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#AAFF00]/30 text-sm font-medium text-[#AAFF00] shadow-[0_0_15px_rgba(170,255,0,0.2)]">
               <span>📋</span> Business Guide
             </span>
           </motion.div>
-          <motion.h1 className="text-4xl font-extrabold text-gradient mb-2" variants={itemVariants}>
-            Panduan Pendirian Usaha
+          <motion.h1 className="text-4xl md:text-5xl font-extrabold mb-3 tracking-tight" variants={itemVariants}>
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70">
+              Panduan Pendirian Usaha
+            </span>
           </motion.h1>
-          <motion.p className="text-text-secondary" variants={itemVariants}>
+          <motion.p className="text-white/60 text-base max-w-2xl mx-auto" variants={itemVariants}>
             Panduan lengkap mendirikan badan usaha sesuai peraturan perundang-undangan
           </motion.p>
         </div>
@@ -112,9 +124,9 @@ export default function GuidancePage() {
                 {BUSINESS_TYPES.map((type) => (
                   <motion.label
                     key={type.value}
-                    className={`relative flex flex-col p-4 cursor-pointer glass rounded-xl border-2 transition-all ${businessType === type.value
-                      ? 'border-[#AAFF00]/50 bg-[#AAFF00]/5 shadow-lg shadow-[#AAFF00]/5'
-                      : 'border-transparent hover:border-[#AAFF00]/15 hover:shadow-md'
+                    className={`relative flex flex-col p-4 cursor-pointer rounded-xl border-2 transition-all bg-white/[0.02] ${businessType === type.value
+                        ? 'border-[#AAFF00]/50 bg-[#AAFF00]/5 shadow-[0_0_20px_rgba(170,255,0,0.15)]'
+                        : 'border-white/[0.06] hover:border-[#AAFF00]/25 hover:bg-white/[0.04]'
                       }`}
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
@@ -140,7 +152,7 @@ export default function GuidancePage() {
                     {businessType === type.value && (
                       <motion.div
                         layoutId="business-type-indicator"
-                        className="absolute top-2 right-2 w-6 h-6 bg-[#AAFF00] rounded-full flex items-center justify-center"
+                        className="absolute top-2 right-2 w-6 h-6 bg-[#AAFF00] rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(170,255,0,0.4)]"
                         transition={{ type: 'spring', bounce: 0.3 }}
                       >
                         <svg className="w-4 h-4 text-[#0A0A0F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -240,99 +252,103 @@ export default function GuidancePage() {
             animate="visible"
           >
             {/* Summary Card */}
-            <motion.div className="glass-strong rounded-2xl p-6" variants={itemVariants}>
-              <div className="flex items-center gap-4 mb-5">
-                <div className="p-3 bg-[#AAFF00]/10 rounded-xl">
-                  <svg className="w-8 h-8 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
+            <motion.div variants={itemVariants}>
+              <SpotlightCard className="p-6 h-full" spotlightColor="rgba(170, 255, 0, 0.1)">
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="p-3 bg-[#AAFF00]/10 rounded-xl">
+                    <svg className="w-8 h-8 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-text-primary">Panduan Pendirian</h2>
+                    <p className="text-sm text-text-muted">
+                      {BUSINESS_TYPES.find(t => t.value === businessType)?.label || businessType}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-xl font-bold text-text-primary">Panduan Pendirian</h2>
-                  <p className="text-sm text-text-muted">
-                    {BUSINESS_TYPES.find(t => t.value === businessType)?.label || businessType}
-                  </p>
-                </div>
-              </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-3 mb-5">
-                {result.total_estimated_time && (
-                  <div className="stat-card text-center">
-                    <div className="text-xs text-text-muted uppercase tracking-wide mb-1">Estimasi Waktu</div>
-                    <div className="text-lg font-bold text-[#AAFF00]">{result.total_estimated_time}</div>
-                  </div>
-                )}
-                {result.steps && (
-                  <div className="stat-card text-center">
-                    <div className="text-xs text-text-muted uppercase tracking-wide mb-1">Jumlah Langkah</div>
-                    <div className="text-lg font-bold text-text-primary">{result.steps.length}</div>
-                  </div>
-                )}
-                {result.required_permits && (
-                  <div className="stat-card text-center">
-                    <div className="text-xs text-text-muted uppercase tracking-wide mb-1">Izin Diperlukan</div>
-                    <div className="text-lg font-bold text-text-primary">{result.required_permits.length}</div>
-                  </div>
-                )}
-              </div>
-
-              {result.summary && (
-                <div className="p-4 glass rounded-xl">
-                  <h3 className="text-sm font-semibold text-text-primary mb-2">Ringkasan</h3>
-                  <p className="text-sm text-text-secondary leading-relaxed">{result.summary}</p>
+                {/* Stats */}
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  {result.total_estimated_time && (
+                    <div className="stat-card text-center">
+                      <div className="text-xs text-text-muted uppercase tracking-wide mb-1">Estimasi Waktu</div>
+                      <div className="text-lg font-bold text-[#AAFF00]">{result.total_estimated_time}</div>
+                    </div>
+                  )}
+                  {result.steps && (
+                    <div className="stat-card text-center">
+                      <div className="text-xs text-text-muted uppercase tracking-wide mb-1">Jumlah Langkah</div>
+                      <div className="text-lg font-bold text-text-primary">{result.steps.length}</div>
+                    </div>
+                  )}
+                  {result.required_permits && (
+                    <div className="stat-card text-center">
+                      <div className="text-xs text-text-muted uppercase tracking-wide mb-1">Izin Diperlukan</div>
+                      <div className="text-lg font-bold text-text-primary">{result.required_permits.length}</div>
+                    </div>
+                  )}
                 </div>
-              )}
+
+                {result.summary && (
+                  <div className="p-4 glass rounded-xl">
+                    <h3 className="text-sm font-semibold text-text-primary mb-2">Ringkasan</h3>
+                    <p className="text-sm text-text-secondary leading-relaxed">{result.summary}</p>
+                  </div>
+                )}
+              </SpotlightCard>
             </motion.div>
 
             {/* Steps Timeline */}
             {result.steps && result.steps.length > 0 && (
-              <motion.div className="glass-strong rounded-2xl p-6" variants={itemVariants}>
-                <h3 className="text-lg font-semibold text-text-primary mb-6 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                  </svg>
-                  Langkah-Langkah
-                </h3>
-                <div className="relative">
-                  {/* Timeline line */}
-                  <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#AAFF00] via-[#88CC00] to-transparent" />
+              <motion.div variants={itemVariants}>
+                <SpotlightCard className="p-6 h-full" spotlightColor="rgba(170, 255, 0, 0.08)">
+                  <h3 className="text-lg font-semibold text-text-primary mb-6 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                    Langkah-Langkah
+                  </h3>
+                  <div className="relative">
+                    {/* Timeline line */}
+                    <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#AAFF00] via-[#88CC00] to-transparent shadow-[0_0_8px_rgba(170,255,0,0.5)]" />
 
-                  <div className="space-y-4">
-                    {result.steps.map((step, i) => (
-                      <motion.div
-                        key={i}
-                        className="relative flex gap-4 pl-2"
-                        initial={{ opacity: 0, x: -16 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.3 + i * 0.1 }}
-                      >
-                        {/* Step Number */}
-                        <div className="relative z-10 flex-shrink-0 w-8 h-8 rounded-full bg-[#AAFF00] flex items-center justify-center text-sm font-bold text-[#0A0A0F] shadow-md shadow-[#AAFF00]/20">
-                          {i + 1}
-                        </div>
+                    <div className="space-y-4">
+                      {result.steps.map((step, i) => (
+                        <motion.div
+                          key={i}
+                          className="relative flex gap-4 pl-2"
+                          initial={{ opacity: 0, x: -16 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 + i * 0.1 }}
+                        >
+                          {/* Step Number */}
+                          <div className="relative z-10 flex-shrink-0 w-8 h-8 rounded-full bg-[#AAFF00] flex items-center justify-center text-sm font-bold text-[#0A0A0F] shadow-[0_0_12px_rgba(170,255,0,0.4)]">
+                            {i + 1}
+                          </div>
 
-                        {/* Step Content */}
-                        <div className="flex-1 glass rounded-xl p-4 hover:bg-white/[0.06] transition-colors">
-                          <h4 className="font-semibold text-text-primary text-sm mb-1">
-                            {typeof step === 'string' ? step : step.title || `Langkah ${i + 1}`}
-                          </h4>
-                          {typeof step !== 'string' && step.description && (
-                            <p className="text-sm text-text-secondary leading-relaxed">{step.description}</p>
-                          )}
-                          {typeof step !== 'string' && step.estimated_time && (
-                            <div className="mt-2 flex items-center gap-1 text-xs text-text-muted">
-                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                              </svg>
-                              {step.estimated_time}
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    ))}
+                          {/* Step Content */}
+                          <div className="flex-1 glass rounded-xl p-4 hover:bg-white/[0.06] transition-colors">
+                            <h4 className="font-semibold text-text-primary text-sm mb-1">
+                              {typeof step === 'string' ? step : step.title || `Langkah ${i + 1}`}
+                            </h4>
+                            {typeof step !== 'string' && step.description && (
+                              <p className="text-sm text-text-secondary leading-relaxed">{step.description}</p>
+                            )}
+                            {typeof step !== 'string' && step.estimated_time && (
+                              <div className="mt-2 flex items-center gap-1 text-xs text-text-muted">
+                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {step.estimated_time}
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </SpotlightCard>
               </motion.div>
             )}
 

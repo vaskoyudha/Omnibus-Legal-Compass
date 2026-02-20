@@ -85,11 +85,10 @@ function Pagination({
           <button
             key={p}
             onClick={() => onPageChange(p as number)}
-            className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
-              page === p
+            className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${page === p
                 ? 'bg-[#AAFF00]/15 text-[#AAFF00] border border-[#AAFF00]/30'
                 : 'text-white/50 hover:text-white/80 hover:bg-white/[0.05]'
-            }`}
+              }`}
             aria-current={page === p ? 'page' : undefined}
           >
             {p}
@@ -174,24 +173,33 @@ export default function RegulationsPage() {
 
       {/* Hero */}
       <motion.div
-        className="py-8 px-4"
+        className="relative py-12 px-4 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="max-w-7xl mx-auto">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[-1]"
+          style={{
+            width: '60%',
+            height: '200px',
+            background: 'radial-gradient(ellipse at center, rgba(170,255,0,0.15) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+          }}
+        />
+        <div className="relative max-w-7xl mx-auto z-10 text-center">
           <motion.div
-            className="mb-2"
+            className="mb-4"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
           >
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/50">
+            <span className="ai-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#AAFF00]/30 text-sm font-medium text-[#AAFF00] shadow-[0_0_15px_rgba(170,255,0,0.2)]">
               <span>📚</span> Regulation Library
             </span>
           </motion.div>
           <motion.h1
-            className="text-3xl sm:text-4xl font-extrabold text-white/90 mb-1"
+            className="text-4xl sm:text-5xl font-extrabold mb-3 tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -199,17 +207,17 @@ export default function RegulationsPage() {
             Perpustakaan Regulasi
           </motion.h1>
           <motion.p
-            className="text-white/45 text-sm"
+            className="text-white/60 text-base max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
           >
             {data ? (
               <>
-                <span className="text-[#AAFF00] font-semibold">{data.total}</span> regulasi ditemukan
+                <span className="text-[#AAFF00] font-semibold text-lg">{data.total}</span> regulasi ditemukan
               </>
             ) : (
-              'Muat ulang koleksi peraturan perundang-undangan Indonesia'
+              'Memuat koleksi peraturan perundang-undangan Indonesia...'
             )}
           </motion.p>
         </div>

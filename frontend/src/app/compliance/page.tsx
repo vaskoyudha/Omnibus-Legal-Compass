@@ -6,19 +6,24 @@ import Link from 'next/link';
 import { checkCompliance, ComplianceResponse } from '@/lib/api';
 import CitationList from '@/components/CitationList';
 import SkeletonLoader from '@/components/SkeletonLoader';
+import SpotlightCard from '@/components/reactbits/SpotlightCard';
 import { toast } from 'sonner';
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  },
 };
 
 type InputType = 'text' | 'pdf';
@@ -115,21 +120,33 @@ export default function CompliancePage() {
 
       {/* Hero Section */}
       <motion.div
-        className="py-8 px-4"
+        className="relative py-12 px-4 overflow-hidden"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <div className="max-w-4xl mx-auto text-center">
+        {/* Glow aura */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[-1]"
+          style={{
+            width: '60%',
+            height: '200px',
+            background: 'radial-gradient(ellipse at center, rgba(170,255,0,0.15) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+          }}
+        />
+        <div className="relative max-w-4xl mx-auto text-center z-10">
           <motion.div className="mb-4" variants={itemVariants}>
-            <span className="ai-badge">
+            <span className="ai-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#AAFF00]/30 text-sm font-medium text-[#AAFF00] shadow-[0_0_15px_rgba(170,255,0,0.2)]">
               <span>🛡️</span> Compliance Check
             </span>
           </motion.div>
-          <motion.h1 className="text-4xl font-extrabold text-gradient mb-2" variants={itemVariants}>
-            Cek Kepatuhan Bisnis
+          <motion.h1 className="text-4xl md:text-5xl font-extrabold mb-3 tracking-tight" variants={itemVariants}>
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70">
+              Cek Kepatuhan Bisnis
+            </span>
           </motion.h1>
-          <motion.p className="text-text-secondary" variants={itemVariants}>
+          <motion.p className="text-white/60 text-base max-w-2xl mx-auto" variants={itemVariants}>
             Periksa kepatuhan bisnis Anda terhadap peraturan perundang-undangan Indonesia
           </motion.p>
         </div>
@@ -144,14 +161,14 @@ export default function CompliancePage() {
           transition={{ delay: 0.2 }}
         >
           {/* Input Type Selector */}
-          <div className="flex gap-1 p-1 glass rounded-xl mb-6 max-w-xs">
+          <div className="flex gap-1 p-1 bg-white/[0.03] border border-white/[0.06] rounded-xl mb-6 max-w-xs">
             {(['text', 'pdf'] as const).map((type) => (
               <button
                 key={type}
                 onClick={() => setInputType(type)}
                 className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${inputType === type
-                  ? 'bg-[#AAFF00] text-[#0A0A0F] shadow-md shadow-[#AAFF00]/20'
-                  : 'text-text-secondary hover:text-text-primary'
+                    ? 'bg-[#AAFF00] text-[#0A0A0F] shadow-[0_0_15px_rgba(170,255,0,0.3)]'
+                    : 'text-text-secondary hover:text-text-primary hover:bg-white/5'
                   }`}
               >
                 {type === 'text' ? '📝 Teks' : '📄 PDF'}
@@ -179,9 +196,9 @@ export default function CompliancePage() {
                   Upload Dokumen Bisnis (PDF)
                 </label>
                 <div
-                  className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-colors ${selectedFile
-                    ? 'border-[#AAFF00]/30 bg-[#AAFF00]/5'
-                    : 'border-border hover:border-[#AAFF00]/20'
+                  className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer ${selectedFile
+                      ? 'border-[#AAFF00]/40 bg-[#AAFF00]/5 shadow-[0_0_20px_rgba(170,255,0,0.1)]'
+                      : 'border-white/[0.1] hover:border-[#AAFF00]/30 hover:bg-white/[0.02]'
                     }`}
                   onClick={() => fileInputRef.current?.click()}
                 >
@@ -220,7 +237,7 @@ export default function CompliancePage() {
             <motion.button
               type="submit"
               disabled={isLoading}
-              className="mt-6 w-full py-3.5 bg-gradient-to-r from-[#AAFF00] to-[#88CC00] text-[#0A0A0F] font-semibold rounded-xl hover:shadow-lg hover:shadow-[#AAFF00]/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="mt-6 w-full py-3.5 bg-gradient-to-r from-[#AAFF00] to-[#88CC00] text-[#0A0A0F] font-semibold rounded-xl hover:shadow-[0_0_20px_rgba(170,255,0,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
             >
@@ -276,85 +293,91 @@ export default function CompliancePage() {
             animate="visible"
           >
             {/* Status Card */}
-            <motion.div className="glass-strong rounded-2xl p-6" variants={itemVariants}>
-              <div className="flex items-center gap-4 mb-6">
-                {(() => {
-                  const config = getStatusConfig(result.compliant);
-                  return (
-                    <>
-                      <div className={`p-3 rounded-xl ${config.bg} ${config.text} border ${config.border}`}>
-                        {config.icon}
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-bold text-text-primary">
-                          {config.label}
-                        </h2>
-                        {result.risk_level && (
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className="text-sm text-text-muted">Tingkat Risiko:</span>
-                            {(() => {
-                              const riskConfig = getRiskConfig(result.risk_level);
-                              return (
-                                <span className={`px-2 py-0.5 text-xs font-medium rounded-md ${riskConfig.bg} ${riskConfig.text}`}>
-                                  {riskConfig.label}
-                                </span>
-                              );
-                            })()}
-                          </div>
-                        )}
-                      </div>
-                    </>
-                  );
-                })()}
-              </div>
-
-              {result.summary && (
-                <div className="p-4 glass rounded-xl">
-                  <h3 className="text-sm font-semibold text-text-primary mb-2">Ringkasan</h3>
-                  <p className="text-sm text-text-secondary leading-relaxed">{result.summary}</p>
+            <motion.div variants={itemVariants}>
+              <SpotlightCard className="p-6 h-full" spotlightColor="rgba(170, 255, 0, 0.1)">
+                <div className="flex items-center gap-4 mb-6">
+                  {(() => {
+                    const config = getStatusConfig(result.compliant);
+                    return (
+                      <>
+                        <div className={`p-3 rounded-xl ${config.bg} ${config.text} border ${config.border}`}>
+                          {config.icon}
+                        </div>
+                        <div>
+                          <h2 className="text-xl font-bold text-text-primary">
+                            {config.label}
+                          </h2>
+                          {result.risk_level && (
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-sm text-text-muted">Tingkat Risiko:</span>
+                              {(() => {
+                                const riskConfig = getRiskConfig(result.risk_level);
+                                return (
+                                  <span className={`px-2 py-0.5 text-xs font-medium rounded-md ${riskConfig.bg} ${riskConfig.text}`}>
+                                    {riskConfig.label}
+                                  </span>
+                                );
+                              })()}
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
-              )}
+
+                {result.summary && (
+                  <div className="p-4 glass rounded-xl">
+                    <h3 className="text-sm font-semibold text-text-primary mb-2">Ringkasan</h3>
+                    <p className="text-sm text-text-secondary leading-relaxed">{result.summary}</p>
+                  </div>
+                )}
+              </SpotlightCard>
             </motion.div>
 
             {/* Issues */}
             {result.issues && result.issues.length > 0 && (
-              <motion.div className="glass-strong rounded-2xl p-6" variants={itemVariants}>
-                <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                  Temuan Masalah
-                  <span className="px-2 py-0.5 text-sm bg-red-500/10 text-red-400 rounded-full">{result.issues.length}</span>
-                </h3>
-                <div className="space-y-3">
-                  {result.issues.map((issue, i) => (
-                    <div key={i} className="flex items-start gap-3 p-4 dark-error-bg border rounded-xl">
-                      <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-red-500/15 flex items-center justify-center text-red-400 text-xs font-bold">{i + 1}</span>
-                      <p className="text-sm text-red-200/80 leading-relaxed">{issue.issue}</p>
-                    </div>
-                  ))}
-                </div>
+              <motion.div variants={itemVariants}>
+                <SpotlightCard className="p-6 h-full" spotlightColor="rgba(239, 68, 68, 0.08)">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    Temuan Masalah
+                    <span className="px-2 py-0.5 text-sm bg-red-500/10 text-red-400 rounded-full">{result.issues.length}</span>
+                  </h3>
+                  <div className="space-y-3">
+                    {result.issues.map((issue, i) => (
+                      <div key={i} className="flex items-start gap-3 p-4 dark-error-bg border rounded-xl">
+                        <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-red-500/15 flex items-center justify-center text-red-400 text-xs font-bold">{i + 1}</span>
+                        <p className="text-sm text-red-200/80 leading-relaxed">{issue.issue}</p>
+                      </div>
+                    ))}
+                  </div>
+                </SpotlightCard>
               </motion.div>
             )}
 
             {/* Recommendations */}
             {result.recommendations && result.recommendations.length > 0 && (
-              <motion.div className="glass-strong rounded-2xl p-6" variants={itemVariants}>
-                <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                  Rekomendasi
-                  <span className="px-2 py-0.5 text-sm bg-[#AAFF00]/10 text-[#AAFF00] rounded-full">{result.recommendations.length}</span>
-                </h3>
-                <div className="space-y-3">
-                  {result.recommendations.map((rec, i) => (
-                    <div key={i} className="flex items-start gap-3 p-4 dark-success-bg border rounded-xl">
-                      <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-500/15 flex items-center justify-center text-emerald-400 text-xs font-bold">{i + 1}</span>
-                      <p className="text-sm text-emerald-200/80 leading-relaxed">{rec}</p>
-                    </div>
-                  ))}
-                </div>
+              <motion.div variants={itemVariants}>
+                <SpotlightCard className="p-6 h-full" spotlightColor="rgba(170, 255, 0, 0.08)">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    Rekomendasi
+                    <span className="px-2 py-0.5 text-sm bg-[#AAFF00]/10 text-[#AAFF00] rounded-full">{result.recommendations.length}</span>
+                  </h3>
+                  <div className="space-y-3">
+                    {result.recommendations.map((rec, i) => (
+                      <div key={i} className="flex items-start gap-3 p-4 dark-success-bg border rounded-xl">
+                        <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-500/15 flex items-center justify-center text-emerald-400 text-xs font-bold">{i + 1}</span>
+                        <p className="text-sm text-emerald-200/80 leading-relaxed">{rec}</p>
+                      </div>
+                    ))}
+                  </div>
+                </SpotlightCard>
               </motion.div>
             )}
 

@@ -36,7 +36,7 @@ const YEAR_OPTIONS = [
 ];
 
 const selectBaseClass =
-  'w-full px-3 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/70 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/50 focus:border-[#AAFF00]/30 hover:border-white/[0.15] transition-colors';
+  'w-full px-3 py-3 rounded-xl bg-white/[0.02] border border-white/10 text-white/80 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/50 focus:border-[#AAFF00]/60 hover:border-white/20 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] focus:shadow-[0_0_15px_rgba(170,255,0,0.15)]';
 
 export default function RegulationFilters({
   search,
@@ -74,7 +74,7 @@ export default function RegulationFilters({
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Cari regulasi…"
           aria-label="Cari regulasi"
-          className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/80 text-sm placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/50 focus:border-[#AAFF00]/30 hover:border-white/[0.15] transition-colors"
+          className="w-full pl-9 pr-4 py-3 rounded-xl bg-white/[0.02] border border-white/10 text-white/90 text-sm placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/50 focus:border-[#AAFF00]/60 hover:border-white/20 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] focus:shadow-[0_0_15px_rgba(170,255,0,0.15)]"
         />
       </div>
 
