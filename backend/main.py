@@ -1016,6 +1016,7 @@ async def ask_question(request: Request, body: QuestionRequest):
                     filter_jenis_dokumen=body.jenis_dokumen,
                     top_k=body.top_k,
                     mode=body.mode,
+                    skip_grounding=override_client is not None,
                 )
 
             processing_time = (time.perf_counter() - start_time) * 1000
