@@ -426,11 +426,14 @@ class LegalRAGChain:
     
     def _assess_confidence(self, results: list[SearchResult]) -> ConfidenceScore:
         """
-        Assess confidence using multi-factor heuristics:
-        1. Retrieval scores (top + average)
-        2. Document type authority (UU > PP > Perpres > Permen)
-        3. Score distribution (consistency across results)
-        4. Number of relevant documents found
+        Assess confidence using multi-factor heuristics calibrated for RRF scores.
+        RRF scores (k=60): max = 2/61 ≈ 0.033, typical good = 0.016–0.033
+
+        Factors:
+        1. Normalized retrieval quality (40% weight)
+        2. Document type authority (20% weight)
+        3. Score distribution / consistency (20% weight)
+        4. Number of relevant documents found (20% weight)
         """
         if not results:
             return ConfidenceScore(
@@ -439,17 +442,24 @@ class LegalRAGChain:
                 top_score=0.0,
                 avg_score=0.0,
             )
-        
+
         scores = [r.score for r in results]
         top_score = scores[0]
         avg_score = sum(scores) / len(scores)
-        
-        # Factor 1: Base retrieval score (40% weight)
-        # Normalize and weight top score more heavily
-        base_score = (top_score * 0.7) + (avg_score * 0.3)
-        
+
+        # RRF score constants (k=60)
+        RRF_MAX = 2 / 61        # ≈ 0.0328 — rank #1 in BOTH BM25 and dense
+        RRF_GOOD = 1 / 61       # ≈ 0.0164 — rank #1 in one search
+        RRF_QUALITY_THRESHOLD = RRF_GOOD * 0.8  # ≈ 0.013 — meaningful retrieval
+
+        # Factor 1: Normalized retrieval quality (40% weight)
+        # Normalize relative to RRF max so top score ≈ 0.033 maps to ≈ 1.0
+        norm_top = min(1.0, top_score / RRF_MAX)
+        norm_avg = min(1.0, avg_score / RRF_MAX)
+        base_score = (norm_top * 0.7) + (norm_avg * 0.3)
+
         # Factor 2: Document authority hierarchy (20% weight)
-        # Higher authority documents = more confidence
+        # Authority reflects document type quality. Retrieved presence = relevance.
         authority_weights = {
             'UU': 1.0,      # Undang-Undang (highest)
             'PP': 0.9,      # Peraturan Pemerintah
@@ -457,27 +467,29 @@ class LegalRAGChain:
             'Permen': 0.7,  # Peraturan Menteri
             'Perda': 0.6,   # Peraturan Daerah
         }
-        
+
         authority_scores = []
         for r in results[:3]:  # Consider top 3 results
             doc_type = r.metadata.get('jenis_dokumen', '')
             authority = authority_weights.get(doc_type, 0.5)
-            authority_scores.append(authority * r.score)
-        
+            # Weight by normalized score so higher-ranked retrieved docs matter more
+            norm_score = min(1.0, r.score / RRF_MAX)
+            authority_scores.append(authority * (0.5 + 0.5 * norm_score))
+
         authority_factor = sum(authority_scores) / len(authority_scores) if authority_scores else 0.5
-        
+
         # Factor 3: Score distribution / consistency (20% weight)
-        # If scores are consistent (low variance), higher confidence
+        # Scale-invariant variance: consistent scores = higher confidence
         if len(scores) > 1:
             score_variance = sum((s - avg_score) ** 2 for s in scores) / len(scores)
-            # Lower variance = higher consistency factor (inverse relationship)
-            consistency_factor = max(0.3, 1.0 - (score_variance * 2))
+            relative_variance = score_variance / (avg_score ** 2) if avg_score > 0 else 1.0
+            consistency_factor = max(0.3, 1.0 - min(1.0, relative_variance * 0.5))
         else:
             consistency_factor = 0.7  # Single result, moderate confidence
-        
+
         # Factor 4: Result count factor (20% weight)
-        # More relevant results = higher confidence (up to a point)
-        high_quality_results = sum(1 for s in scores if s > 0.3)
+        # Use RRF-appropriate threshold instead of cosine-similarity threshold of 0.3
+        high_quality_results = sum(1 for s in scores if s > RRF_QUALITY_THRESHOLD)
         if high_quality_results >= 4:
             count_factor = 1.0
         elif high_quality_results >= 2:
@@ -486,7 +498,7 @@ class LegalRAGChain:
             count_factor = 0.6
         else:
             count_factor = 0.3
-        
+
         # Combine all factors with weights
         numeric = (
             base_score * 0.40 +
@@ -494,16 +506,15 @@ class LegalRAGChain:
             consistency_factor * 0.20 +
             count_factor * 0.20
         )
-        
-        # Apply calibration to make scores more realistic
-        # Boost mid-range scores, cap very high scores
+
+        # Apply calibration: cap very high scores with diminishing returns
         if numeric > 0.85:
-            numeric = 0.85 + (numeric - 0.85) * 0.5  # Diminishing returns above 85%
+            numeric = 0.85 + (numeric - 0.85) * 0.5
         elif numeric < 0.3:
             numeric = numeric * 0.8  # Penalize low scores more
-        
+
         numeric = min(1.0, max(0.0, numeric))  # Clamp to 0-1
-        
+
         # Determine label based on calibrated thresholds
         if numeric >= 0.65:
             label = "tinggi"
@@ -511,12 +522,12 @@ class LegalRAGChain:
             label = "sedang"
         else:
             label = "rendah"
-        
+
         logger.debug(
             f"Confidence calculation: base={base_score:.3f}, authority={authority_factor:.3f}, "
             f"consistency={consistency_factor:.3f}, count={count_factor:.3f} -> final={numeric:.3f}"
         )
-        
+
         return ConfidenceScore(
             numeric=numeric,
             label=label,
