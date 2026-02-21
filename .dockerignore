@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+docs/node_modules/
+
+# Git
+.git/
+.gitignore
+
+# Environment / secrets
+.env
+*.env
+!.env.example
+
+# Dev files
+*.log
+*.tmp
+*.bak
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Large data files (ingested at runtime)
+backend/data/
+data/
+indonesian-legal-docs/
+indonesian-legal-pdf/
+
+# Reports and eval artifacts
+*.json.tmp
+eval_*.json
+eval_*.txt
+phase*_completion_report.md
+PROGRESS*.md
