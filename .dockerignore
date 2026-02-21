@@ -42,7 +42,6 @@ docs/node_modules/
 
 # Large data files (ingested at runtime)
 backend/data/
-data/
 indonesian-legal-docs/
 indonesian-legal-pdf/
 
