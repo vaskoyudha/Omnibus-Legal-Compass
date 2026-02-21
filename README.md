@@ -6,16 +6,16 @@
 
 **AI-Powered Indonesian Legal Intelligence Platform**
 
-[![CI](https://github.com/vaskoyudha/Omnibus-intelligence/actions/workflows/ci.yml/badge.svg)](https://github.com/vaskoyudha/Omnibus-intelligence/actions/workflows/ci.yml)
+[![CI](https://github.com/vaskoyudha/Omnibus-Legal-Compass/actions/workflows/ci.yml/badge.svg)](https://github.com/vaskoyudha/Omnibus-Legal-Compass/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)](https://fastapi.tiangolo.com)
-[![Tests](https://img.shields.io/badge/Tests-459%20passing-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-401%20passing-brightgreen)](tests/)
 
 Navigate Indonesian regulations with confidence. Ask legal questions, check compliance, get business guidance — all backed by hybrid search, cross-encoder reranking, and source citations.
 
-[**Documentation**](https://vaskoyudha.github.io/Omnibus-intelligence/) · [**Report Bug**](https://github.com/vaskoyudha/Omnibus-intelligence/issues/new?template=bug_report.yml) · [**Request Feature**](https://github.com/vaskoyudha/Omnibus-intelligence/issues/new?template=feature_request.yml)
+[**Documentation**](https://vaskoyudha.github.io/Omnibus-Legal-Compass/) · [**Report Bug**](https://github.com/vaskoyudha/Omnibus-Legal-Compass/issues/new?template=bug_report.yml) · [**Request Feature**](https://github.com/vaskoyudha/Omnibus-Legal-Compass/issues/new?template=feature_request.yml)
 
 </div>
 
@@ -29,7 +29,7 @@ Most legal AI tools are **keyword matchers dressed up as AI**. Omnibus is differ
 - **Source Citations on Every Answer** — Every response links back to specific regulation articles. Verify, don't trust blindly.
 - **Indonesia-Deep, Not Indonesia-Shallow** — Purpose-built for Indonesian legal framework: UU, PP, Perpres, Perda. Not a generic chatbot with an Indonesian prompt.
 - **Knowledge Graph** — Regulations aren't isolated. Our graph maps cross-references, amendments, and hierarchies between legal documents.
-- **Production-Ready** — Rate limiting, API versioning, 391 passing tests, CI/CD, structured error handling. Not a weekend prototype.
+- **Production-Ready** — Rate limiting, API versioning, 401 passing tests, CI/CD, structured error handling. Not a weekend prototype.
 - **Trust-First AI** — LLM-as-judge grounding verification, confidence thresholds with refusal mechanisms, embedding retrieval evaluation, red-team adversarial testing. No fake accuracy stats.
 
 ---
@@ -176,7 +176,7 @@ Note: NVIDIA NIM (Kimi K2) is also available as an alternative LLM provider.
 | **Frontend** | [Next.js 16](https://nextjs.org/) + React 19 | UI with Tailwind CSS + Framer Motion |
 | **Visualization** | [Recharts](https://recharts.org/) | Dashboard charts and heat maps |
 | **Graph** | [NetworkX](https://networkx.org/) | Knowledge graph storage & traversal |
-| **Testing** | pytest + Vitest | 459 tests passing |
+| **Testing** | pytest + Vitest | 401 tests passing |
 | **CI/CD** | GitHub Actions | Automated testing & docs deployment |
 | **Docs** | [VitePress](https://vitepress.dev/) | Documentation site on GitHub Pages |
 
@@ -194,8 +194,8 @@ Note: NVIDIA NIM (Kimi K2) is also available as an alternative LLM provider.
 ### 1. Clone & Configure
 
 ```bash
-git clone https://github.com/vaskoyudha/Omnibus-intelligence.git
-cd "Omnibus-intelligence"
+git clone https://github.com/vaskoyudha/Omnibus-Legal-Compass.git
+cd "Omnibus-Legal-Compass"
 cp .env.example .env
 # Copilot auth is auto-discovered. Optionally add NVIDIA_API_KEY for alternative provider
 ```
@@ -241,7 +241,7 @@ npm run dev
 
 ## API Preview
 
-All endpoints are versioned under `/api/v1/`. Full reference in [API Documentation](https://vaskoyudha.github.io/Omnibus-intelligence/api-reference).
+All endpoints are versioned under `/api/v1/`. Full reference in [API Documentation](https://vaskoyudha.github.io/Omnibus-Legal-Compass/api-reference).
 
 ```bash
 # Legal Q&A
@@ -288,7 +288,7 @@ How does Omnibus Legal Compass compare to other Indonesian legal AI platforms?
 | **Streaming Responses** | ✅ With safety parity | ❌ | ❌ | ✅ Yes | ❌ |
 | **API Versioning** | ✅ `/api/v1/*` | ❌ | ❌ | ✅ Yes | ❌ |
 | **Rate Limiting** | ✅ slowapi | ❌ | Unknown | ✅ Yes | ❌ |
-| **Test Coverage** | ✅ 459 tests (91%) | ❌ None visible | Unknown | Unknown (proprietary) | ❌ None visible |
+| **Test Coverage** | ✅ 401 tests (91%) | ❌ None visible | Unknown | Unknown (proprietary) | ❌ None visible |
 | **CI/CD** | ✅ GitHub Actions | ❌ | Unknown | ✅ Yes (proprietary) | ❌ |
 | **Open Source** | ✅ MIT License | ❌ | ❌ | ❌ Commercial | ❌ |
 | **Documentation Site** | ✅ VitePress | ❌ | ❌ | ✅ Yes | ❌ |
@@ -314,7 +314,7 @@ How does Omnibus Legal Compass compare to other Indonesian legal AI platforms?
 | **Streaming Responses** | Yes (with safety parity) | N/A | N/A | No | No |
 | **API Versioning** | `/api/v1/*` | No | No | No | No |
 | **Rate Limiting** | Yes (slowapi) | No | No | No | No |
-| **Test Coverage** | 391 tests (91%) | Minimal | Minimal | None | None |
+| **Test Coverage** | 401 tests (91%) | Minimal | Minimal | None | None |
 | **CI/CD** | GitHub Actions | No | No | No | No |
 | **Documentation Site** | VitePress | Minimal | README only | README only | README only |
 
@@ -322,13 +322,13 @@ How does Omnibus Legal Compass compare to other Indonesian legal AI platforms?
 
 **vs KawalSidang.id**: KawalSidang is a court monitoring and accompaniment service ("pengawalan dan pemantauan persidangan") with a basic chatbot. Omnibus is a full-stack AI legal research platform with hybrid RAG, knowledge graphs, and production-grade safety guardrails. Different missions — KawalSidang serves individuals navigating court proceedings, while Omnibus serves businesses and researchers analyzing regulatory compliance.
 
-**vs LegalHero.id & Hukumonline AIlex**: These are established commercial platforms with massive document corpora (millions of court decisions). Omnibus differentiates through its open-source nature, transparent AI safety mechanisms (LLM-as-Judge, adversarial testing, confidence thresholds), and developer-friendly architecture (versioned API, 391 tests, CI/CD).
+**vs LegalHero.id & Hukumonline AIlex**: These are established commercial platforms with massive document corpora (millions of court decisions). Omnibus differentiates through its open-source nature, transparent AI safety mechanisms (LLM-as-Judge, adversarial testing, confidence thresholds), and developer-friendly architecture (versioned API, 401 tests, CI/CD).
 
 **vs International OSS Projects**: Omnibus is the only Indonesian-focused legal AI with a full-stack production architecture combining hybrid search, reranking, knowledge graphs, and comprehensive trust & safety features.
 
 > **Note**: Comparison based on publicly available information as of Feb 2025. Commercial platforms (Hukumonline, LegalHero) may have additional features not visible publicly.
 
-For detailed analysis, see [Competitive Comparison](https://vaskoyudha.github.io/Omnibus-intelligence/comparison).
+For detailed analysis, see [Competitive Comparison](https://vaskoyudha.github.io/Omnibus-Legal-Compass/comparison).
 
 ---
 
@@ -380,7 +380,7 @@ Regulatory Harmonization Engine/
 │       │   └── Navbar.tsx             # Navigation (6 pages)
 │       └── lib/
 │           └── api.ts                 # API client (all endpoints)
-├── tests/                         # 391 tests (91% coverage)
+├── tests/                         # 401 tests (91% coverage)
 ├── docs/                          # VitePress documentation site
 ├── .github/
 │   ├── workflows/ci.yml           # CI pipeline
@@ -400,7 +400,7 @@ Regulatory Harmonization Engine/
 ## Testing
 
 ```bash
-# Run all backend tests (391 tests)
+# Run all backend tests (401 tests)
 python -m pytest tests/test_api.py tests/test_api_versioning.py \
   tests/test_chat.py tests/test_rag_chain.py tests/test_retriever_unit.py \
   tests/test_rate_limit.py tests/test_knowledge_graph.py \
@@ -456,7 +456,7 @@ Omnibus Legal Compass is an **AI-assisted research tool**. It does **not** const
 
 <div align="center">
 
-**[Documentation](https://vaskoyudha.github.io/Omnibus-intelligence/)** · **[Report Bug](https://github.com/vaskoyudha/Omnibus-intelligence/issues/new?template=bug_report.yml)** · **[Request Feature](https://github.com/vaskoyudha/Omnibus-intelligence/issues/new?template=feature_request.yml)**
+**[Documentation](https://vaskoyudha.github.io/Omnibus-Legal-Compass/)** · **[Report Bug](https://github.com/vaskoyudha/Omnibus-Legal-Compass/issues/new?template=bug_report.yml)** · **[Request Feature](https://github.com/vaskoyudha/Omnibus-Legal-Compass/issues/new?template=feature_request.yml)**
 
 Built for Indonesian Legal Tech
 
