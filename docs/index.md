@@ -11,7 +11,7 @@ hero:
       link: /getting-started
     - theme: alt
       text: View on GitHub
-      link: https://github.com/vaskoyudha/Regulatory-Harmonization-Engine
+      link: https://github.com/vaskoyudha/Omnibus-Legal-Compass
 
 features:
   - title: Legal Q&A

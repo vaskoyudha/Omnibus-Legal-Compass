@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'Omnibus Legal Compass',
   description: 'Indonesian Legal RAG System — AI-powered legal Q&A with citations',
-  base: '/Omnibus-intelligence/',
+  base: '/Omnibus-Legal-Compass/',
   head: [['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }]],
   themeConfig: {
     logo: '/logo.png',
@@ -11,7 +11,7 @@ export default defineConfig({
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/getting-started' },
       { text: 'API', link: '/api-reference' },
-      { text: 'GitHub', link: 'https://github.com/vaskoyudha/Omnibus-intelligence' },
+      { text: 'GitHub', link: 'https://github.com/vaskoyudha/Omnibus-Legal-Compass' },
     ],
     sidebar: [
       {
@@ -38,10 +38,10 @@ export default defineConfig({
       },
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vaskoyudha/Omnibus-intelligence' },
+      { icon: 'github', link: 'https://github.com/vaskoyudha/Omnibus-Legal-Compass' },
     ],
     editLink: {
-      pattern: 'https://github.com/vaskoyudha/Omnibus-intelligence/edit/main/docs/:path',
+      pattern: 'https://github.com/vaskoyudha/Omnibus-Legal-Compass/edit/main/docs/:path',
       text: 'Edit this page on GitHub',
     },
     search: { provider: 'local' },

@@ -29,8 +29,8 @@ docker run -d --name omnibus-qdrant \
 Clone the repository and set up the Python environment:
 
 ```bash
-git clone https://github.com/vaskoyudha/Regulatory-Harmonization-Engine.git
-cd Regulatory-Harmonization-Engine
+git clone https://github.com/vaskoyudha/Omnibus-Legal-Compass.git
+cd Omnibus-Legal-Compass
 python -m venv venv
 source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 pip install -r requirements.txt
