@@ -23,12 +23,12 @@ This project follows our [Code of Conduct](CODE_OF_CONDUCT.md). By participating
 1. **Fork** the repository on GitHub
 2. **Clone** your fork locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/Regulatory-Harmonization-Engine.git
-   cd "Regulatory Harmonization Engine"
+   git clone https://github.com/YOUR_USERNAME/Omnibus-Legal-Compass.git
+   cd "Omnibus-Legal-Compass"
    ```
 3. **Add upstream** remote:
    ```bash
-   git remote add upstream https://github.com/vaskoyudha/Regulatory-Harmonization-Engine.git
+   git remote add upstream https://github.com/vaskoyudha/Omnibus-Legal-Compass.git
    ```
 4. **Create a branch** for your work:
    ```bash
@@ -55,7 +55,7 @@ python -m venv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 
 # Start Qdrant
 docker run -d --name omnibus-qdrant \
@@ -86,19 +86,23 @@ npm run dev
 ### Running Tests
 
 ```bash
-# Backend tests (294 tests)
+# Backend tests (401 tests)
 python -m pytest tests/test_api.py tests/test_api_versioning.py \
   tests/test_chat.py tests/test_rag_chain.py tests/test_retriever_unit.py \
   tests/test_rate_limit.py tests/test_knowledge_graph.py \
   tests/test_knowledge_graph_ingest.py tests/test_graph_api.py \
-  tests/test_dashboard.py -v --tb=short
+  tests/test_dashboard.py tests/test_corpus.py \
+  tests/test_eval_embeddings.py tests/test_external_service_failures.py \
+  -v --tb=short
 
 # Backend with coverage
 python -m pytest tests/test_api.py tests/test_api_versioning.py \
   tests/test_chat.py tests/test_rag_chain.py tests/test_retriever_unit.py \
   tests/test_rate_limit.py tests/test_knowledge_graph.py \
   tests/test_knowledge_graph_ingest.py tests/test_graph_api.py \
-  tests/test_dashboard.py --cov=backend --cov-report=term-missing
+  tests/test_dashboard.py tests/test_corpus.py \
+  tests/test_eval_embeddings.py tests/test_external_service_failures.py \
+  --cov=backend --cov-report=term-missing
 
 # Frontend tests
 cd frontend && npm test
@@ -120,11 +124,11 @@ frontend/
 ├── src/app/             # Next.js pages (6 pages)
 ├── src/components/      # React components
 └── src/lib/api.ts       # API client
-tests/                   # 294 backend tests
+tests/                   # 401 backend tests
 docs/                    # VitePress documentation
 ```
 
-For detailed architecture documentation, see our [Architecture Guide](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/architecture).
+For detailed architecture documentation, see our [Architecture Guide](https://vaskoyudha.github.io/Omnibus-Legal-Compass/architecture).
 
 ## Coding Standards
 
@@ -198,7 +202,9 @@ test: add edge case tests for compliance checker
      tests/test_chat.py tests/test_rag_chain.py tests/test_retriever_unit.py \
      tests/test_rate_limit.py tests/test_knowledge_graph.py \
      tests/test_knowledge_graph_ingest.py tests/test_graph_api.py \
-     tests/test_dashboard.py -v --tb=short
+     tests/test_dashboard.py tests/test_corpus.py \
+     tests/test_eval_embeddings.py tests/test_external_service_failures.py \
+     -v --tb=short
    ```
 
 3. **Push** your branch and open a PR against `main`
@@ -268,7 +274,7 @@ describe('Navbar', () => {
 
 ## Good First Issues
 
-New to the project? Look for issues labeled [`good first issue`](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22). These are carefully scoped tasks suitable for first-time contributors.
+New to the project? Look for issues labeled [`good first issue`](https://github.com/vaskoyudha/Omnibus-Legal-Compass/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22). These are carefully scoped tasks suitable for first-time contributors.
 
 ### Suggested Starter Tasks
 
@@ -287,7 +293,7 @@ Here are some areas where contributions are welcome:
 
 ## Questions?
 
-- Open a [GitHub Issue](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new) for bugs or feature requests
-- Check the [Documentation](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/) for guides and API reference
+- Open a [GitHub Issue](https://github.com/vaskoyudha/Omnibus-Legal-Compass/issues/new) for bugs or feature requests
+- Check the [Documentation](https://vaskoyudha.github.io/Omnibus-Legal-Compass/) for guides and API reference
 
 Thank you for contributing to Indonesian legal technology!
