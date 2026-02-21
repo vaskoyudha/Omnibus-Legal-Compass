@@ -35,109 +35,62 @@ const YEAR_OPTIONS = [
   }),
 ];
 
-const selectBaseClass =
-  'w-full px-3 py-3 rounded-xl bg-white/[0.02] border border-white/10 text-white/80 text-sm appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/50 focus:border-[#AAFF00]/60 hover:border-white/20 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] focus:shadow-[0_0_15px_rgba(170,255,0,0.15)]';
+const selectClass =
+  'w-full px-3.5 py-3 rounded-xl bg-[#0A0A0F]/60 border border-white/[0.08] text-white/80 text-sm font-medium appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/40 focus:border-[#AAFF00]/40 hover:border-white/[0.15] transition-all';
 
 export default function RegulationFilters({
-  search,
-  nodeType,
-  status,
-  year,
-  onSearchChange,
-  onNodeTypeChange,
-  onStatusChange,
-  onYearChange,
+  search, nodeType, status, year,
+  onSearchChange, onNodeTypeChange, onStatusChange, onYearChange,
 }: Readonly<RegulationFiltersProps>) {
   return (
     <div className="flex flex-col sm:flex-row gap-3">
-      {/* Search input */}
-      <div className="relative flex-1 min-w-0">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <svg
-            className="w-4 h-4 text-white/30"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
-            />
+      {/* Search */}
+      <div className="relative flex-1 min-w-0 group">
+        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+          <svg className="w-4 h-4 text-white/25 group-focus-within:text-[#AAFF00] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
           </svg>
         </span>
         <input
-          type="text"
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Cari regulasi…"
-          aria-label="Cari regulasi"
-          className="w-full pl-9 pr-4 py-3 rounded-xl bg-white/[0.02] border border-white/10 text-white/90 text-sm placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/50 focus:border-[#AAFF00]/60 hover:border-white/20 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] focus:shadow-[0_0_15px_rgba(170,255,0,0.15)]"
+          type="text" value={search} onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="Cari regulasi…" aria-label="Cari regulasi"
+          className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0A0A0F]/60 border border-white/[0.08] text-white/90 text-sm font-medium placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-[#AAFF00]/40 focus:border-[#AAFF00]/40 hover:border-white/[0.15] transition-all"
         />
       </div>
 
-      {/* Jenis (node type) */}
+      {/* Type */}
       <div className="relative sm:w-52">
-        <select
-          value={nodeType}
-          onChange={(e) => onNodeTypeChange(e.target.value)}
-          aria-label="Filter jenis regulasi"
-          className={selectBaseClass}
-        >
+        <select value={nodeType} onChange={(e) => onNodeTypeChange(e.target.value)} aria-label="Filter jenis regulasi" className={selectClass}>
           {NODE_TYPE_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-[#0A0A0F]">
-              {opt.label}
-            </option>
+            <option key={opt.value} value={opt.value} className="bg-[#0A0A0F] text-white">{opt.label}</option>
           ))}
         </select>
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <svg className="w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+        <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+          <svg className="w-3.5 h-3.5 text-white/25" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
         </span>
       </div>
 
       {/* Status */}
       <div className="relative sm:w-44">
-        <select
-          value={status}
-          onChange={(e) => onStatusChange(e.target.value)}
-          aria-label="Filter status regulasi"
-          className={selectBaseClass}
-        >
+        <select value={status} onChange={(e) => onStatusChange(e.target.value)} aria-label="Filter status regulasi" className={selectClass}>
           {STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-[#0A0A0F]">
-              {opt.label}
-            </option>
+            <option key={opt.value} value={opt.value} className="bg-[#0A0A0F] text-white">{opt.label}</option>
           ))}
         </select>
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <svg className="w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+        <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+          <svg className="w-3.5 h-3.5 text-white/25" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
         </span>
       </div>
 
-      {/* Tahun */}
+      {/* Year */}
       <div className="relative sm:w-36">
-        <select
-          value={year}
-          onChange={(e) => onYearChange(e.target.value)}
-          aria-label="Filter tahun regulasi"
-          className={selectBaseClass}
-        >
+        <select value={year} onChange={(e) => onYearChange(e.target.value)} aria-label="Filter tahun regulasi" className={selectClass}>
           {YEAR_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-[#0A0A0F]">
-              {opt.label}
-            </option>
+            <option key={opt.value} value={opt.value} className="bg-[#0A0A0F] text-white">{opt.label}</option>
           ))}
         </select>
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <svg className="w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+        <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+          <svg className="w-3.5 h-3.5 text-white/25" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
         </span>
       </div>
     </div>

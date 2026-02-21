@@ -211,6 +211,15 @@ body {
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
+@keyframes sweep {
+  0% { transform: translateX(-120%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+
+.animate-sweep {
+  animation: sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 /* StarBorder orbit animations */
 @keyframes star-movement-bottom {
   0% {

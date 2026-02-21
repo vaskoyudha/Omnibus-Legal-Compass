@@ -171,7 +171,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen pt-24 pb-10 px-4">
+    <div className="min-h-screen bg-[#0A0A0F] -mt-16 sm:-mt-20 pt-20 sm:pt-24 pb-10 px-4">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <motion.div
@@ -179,11 +179,6 @@ export default function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-2"
         >
-          <div className="flex items-center gap-2 text-sm text-text-muted mb-1">
-            <Link href="/" className="hover:text-[#AAFF00] transition-colors">Beranda</Link>
-            <span>/</span>
-            <span className="text-text-primary">Dashboard</span>
-          </div>
           <div className="flex items-center gap-3">
             <div className="ai-badge flex items-center gap-2">
               <DashboardIcon className="w-4 h-4" />
@@ -310,11 +305,10 @@ export default function DashboardPage() {
                     <button
                       key={d.domain}
                       onClick={() => setExpandedDomain(expandedDomain === d.domain ? null : d.domain)}
-                      className={`relative p-4 rounded-xl border text-left transition-all hover:scale-[1.02] ${
-                        expandedDomain === d.domain
-                          ? 'border-[#AAFF00]/40 bg-[#AAFF00]/5'
-                          : 'border-white/5 hover:border-white/20'
-                      }`}
+                      className={`relative p-4 rounded-xl border text-left transition-all hover:scale-[1.02] ${expandedDomain === d.domain
+                        ? 'border-[#AAFF00]/40 bg-[#AAFF00]/5'
+                        : 'border-white/5 hover:border-white/20'
+                        }`}
                       style={{
                         backgroundColor: expandedDomain === d.domain
                           ? undefined

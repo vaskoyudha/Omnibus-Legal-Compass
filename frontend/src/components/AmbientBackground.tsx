@@ -6,11 +6,12 @@ import { usePathname } from 'next/navigation';
 export default function AmbientBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pathname = usePathname();
-  const isHomePage = pathname === '/';
+  // Pages with their own premium backgrounds — hide the ambient aurora
+  const pagesWithOwnBg = ['/', '/compliance', '/guidance', '/regulations', '/knowledge-graph', '/dashboard'];
+  const isHidden = pagesWithOwnBg.includes(pathname);
 
   useEffect(() => {
-    // Home page uses JumbotronBackground instead — skip animation
-    if (isHomePage) return;
+    if (isHidden) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -84,12 +85,12 @@ export default function AmbientBackground() {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationId);
     };
-  }, [isHomePage]);
+  }, [isHidden]);
 
   // Always render the same JSX structure (React Rules of Hooks).
-  // Hide everything with `hidden` when on the home page.
+  // Hide everything with `hidden` when on pages with their own backgrounds.
   return (
-    <div className={isHomePage ? 'hidden' : undefined}>
+    <div className={isHidden ? 'hidden' : undefined}>
       {/* Canvas aurora — half-res for perf */}
       <canvas
         ref={canvasRef}

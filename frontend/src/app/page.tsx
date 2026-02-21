@@ -119,18 +119,20 @@ function FAQSection() {
     >
       <div className="text-center mb-10">
         <motion.p
-          className="text-xs uppercase tracking-widest text-text-muted mb-2"
+          className="text-xs uppercase tracking-widest text-[#AAFF00]/60 font-mono mb-3"
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
         >
           Pertanyaan yang Sering Diajukan
         </motion.p>
         <motion.h2
-          className="text-3xl font-bold text-text-primary mb-3"
+          className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4"
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3.7 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
         >
           FAQ
         </motion.h2>
@@ -142,39 +144,57 @@ function FAQSection() {
           return (
             <motion.div
               key={i}
-              className={`glass-strong rounded-xl border transition-all ${isOpen ? 'border-[#AAFF00]/40' : 'border-white/10'
-                }`}
+              className={`group relative overflow-hidden rounded-2xl transition-all duration-500 border ${isOpen
+                ? 'bg-[#0A0A0F]/80 border-[#AAFF00]/30 shadow-[0_0_30px_rgba(170,255,0,0.05)]'
+                : 'bg-[#0A0A0F]/40 border-white/5 hover:border-white/10 hover:bg-[#0A0A0F]/60'
+                } backdrop-blur-md`}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 3.7 + i * 0.05 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: i * 0.1 }}
             >
+              {/* Active left border indicator */}
+              <div
+                className={`absolute left-0 top-0 bottom-0 w-1 bg-[#AAFF00] transition-transform duration-500 origin-top ${isOpen ? 'scale-y-100' : 'scale-y-0'
+                  }`}
+              />
+
               <button
                 onClick={() => setOpenIndex(isOpen ? null : i)}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors rounded-xl"
+                className="w-full px-6 py-5 flex items-center justify-between text-left relative z-10"
               >
-                <span className="text-sm font-semibold text-text-primary pr-4">{faq.question}</span>
-                <motion.svg
-                  className="w-5 h-5 text-[#AAFF00] flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </motion.svg>
+                <span className={`text-[15px] md:text-base font-semibold pr-6 transition-colors duration-300 ${isOpen ? 'text-[#AAFF00]' : 'text-white group-hover:text-gray-200'
+                  }`}>
+                  {faq.question}
+                </span>
+
+                {/* Animated Icon Container */}
+                <div className={`relative flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${isOpen ? 'bg-[#AAFF00]/20 rotate-180' : 'bg-white/5 group-hover:bg-white/10'
+                  }`}>
+                  <motion.svg
+                    className={`w-4 h-4 ${isOpen ? 'text-[#AAFF00]' : 'text-gray-400 group-hover:text-white'}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </motion.svg>
+                </div>
               </button>
+
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-4 pt-2 text-sm text-text-secondary leading-relaxed border-t border-white/5">
-                      {faq.answer}
+                    <div className="px-6 pb-6 pt-1">
+                      <p className="text-[15px] text-gray-400 leading-relaxed font-light">
+                        {faq.answer}
+                      </p>
                     </div>
                   </motion.div>
                 )}
@@ -205,7 +225,7 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="min-h-screen relative bg-[#0A0A0F]">
+    <div className="min-h-screen relative bg-[#0A0A0F] -mt-16 sm:-mt-20">
       {/* Beams background — ONLY covers hero jumbotron (first viewport) */}
       <div
         className="absolute top-0 left-0 w-full pointer-events-none z-[0] overflow-hidden"
@@ -242,7 +262,7 @@ export default function Home() {
       {/* All content — above the nebula background */}
       <div className="relative z-[1]">
         {/* Hero + LaserFlow combined zone — beam origin at bottom, search card overlaps it */}
-        <div className="relative overflow-hidden" style={{ paddingBottom: '220px' }}>
+        <div className="relative overflow-hidden" style={{ paddingBottom: '200px' }}>
 
           {/* LaserFlow — absolute background layer */}
           <div
@@ -271,7 +291,7 @@ export default function Home() {
 
           {/* Hero content ON TOP of the beam */}
           <motion.div
-            className="relative z-[5] pt-20 pb-6 px-4"
+            className="relative z-[5] pt-32 sm:pt-40 pb-6 px-4"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -367,7 +387,7 @@ export default function Home() {
         {/* Chat Section — z-10 to ensure it paints ABOVE the beam convergence point */}
         <motion.div
           className="relative z-[20] mx-auto px-3 sm:px-4 lg:px-6"
-          style={{ marginTop: '-7rem' }}
+          style={{ marginTop: '-8rem' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
@@ -660,14 +680,16 @@ export default function Home() {
               Fitur Utama
             </motion.p>
             <motion.h2
-              className="text-4xl md:text-5xl font-bold tracking-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.05 }}
             >
               <span className="text-white">Built for </span>
-              <span className="text-[#AAFF00]">Legal Precision</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#AAFF00] to-white drop-shadow-[0_0_30px_rgba(170,255,0,0.3)]">
+                Legal Precision
+              </span>
             </motion.h2>
             <motion.p
               className="text-base text-gray-400 mt-3 max-w-lg mx-auto"
@@ -694,37 +716,31 @@ export default function Home() {
                 }}
               >
                 <SpotlightCard
-                  className="h-full"
-                  spotlightColor={
-                    i === 0 ? 'rgba(170, 255, 0, 0.15)' :
-                      i === 1 ? 'rgba(0, 217, 255, 0.15)' :
-                        'rgba(255, 184, 0, 0.15)'
-                  }
+                  className="h-full group"
+                  spotlightColor="rgba(170, 255, 0, 0.15)"
                 >
-                  <div className="relative p-7 h-full group">
-                    {/* Top accent line with per-card color */}
-                    <div className={`absolute top-0 left-6 right-6 h-px ${i === 0 ? 'bg-gradient-to-r from-transparent via-[#AAFF00]/40 to-transparent' :
-                      i === 1 ? 'bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent' :
-                        'bg-gradient-to-r from-transparent via-amber-400/40 to-transparent'
-                      }`} />
+                  <div className="relative p-8 h-full rounded-2xl flex flex-col overflow-hidden transition-all duration-500 bg-[#0A0A0F]/60 hover:bg-[#0A0A0F]/40 border border-white/[0.04] hover:border-white/[0.1] backdrop-blur-md z-10 w-full">
 
-                    {/* Step number */}
-                    <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">
-                      0{i + 1}
-                    </span>
+                    {/* Top ambient glow */}
+                    <div
+                      className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#AAFF00]/10 blur-[50px] opacity-10 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"
+                    />
 
-                    {/* Icon with glow */}
-                    <div className="relative mt-5 mb-5">
-                      <div className={`absolute -inset-3 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${i === 0 ? 'bg-[#AAFF00]/20' :
-                        i === 1 ? 'bg-cyan-400/20' :
-                          'bg-amber-400/20'
-                        }`} />
+                    <div className="flex items-center justify-between mb-8">
+                      {/* Step number */}
+                      <span className="text-xs font-mono text-white/20 uppercase tracking-widest font-bold">
+                        0{i + 1}
+                      </span>
+                      {/* Top right subtle line */}
+                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-white/10 group-hover:to-[#AAFF00]/40 transition-colors duration-500" />
+                    </div>
+
+                    {/* Icon Container with glow */}
+                    <div className="relative w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-xl flex-shrink-0 bg-gradient-to-br from-white/[0.05] to-[#AAFF00]/10 border border-[#AAFF00]/20 text-[#AAFF00]">
+                      <div className="absolute inset-0 blur-md opacity-40 group-hover:opacity-70 transition-opacity duration-500 bg-[#AAFF00]/30 rounded-2xl" />
                       <motion.div
-                        className={`relative w-10 h-10 ${i === 0 ? 'text-[#AAFF00]' :
-                          i === 1 ? 'text-cyan-400' :
-                            'text-amber-400'
-                          }`}
-                        whileHover={{ scale: 1.15, rotate: 5 }}
+                        className="relative z-10 text-current"
+                        whileHover={{ scale: 1.15, rotate: -5 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                       >
                         {card.icon}
@@ -732,26 +748,15 @@ export default function Home() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl font-bold text-white mb-2 leading-tight">
+                    <h3 className="text-xl md:text-2xl font-bold text-white mb-3 tracking-tight transition-all duration-500">
                       {card.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-sm text-gray-400 leading-relaxed">
+                    <p className="text-[15px] text-gray-400 leading-relaxed font-light">
                       {card.description}
                     </p>
 
-                    {/* Bottom hover indicator */}
-                    <motion.div
-                      className={`absolute bottom-0 left-0 right-0 h-0.5 origin-left ${i === 0 ? 'bg-gradient-to-r from-[#AAFF00]/60 to-transparent' :
-                        i === 1 ? 'bg-gradient-to-r from-cyan-400/60 to-transparent' :
-                          'bg-gradient-to-r from-amber-400/60 to-transparent'
-                        }`}
-                      initial={{ scaleX: 0 }}
-                      whileInView={{ scaleX: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.4 + i * 0.15, duration: 0.8, ease: 'easeOut' }}
-                    />
                   </div>
                 </SpotlightCard>
               </motion.div>
@@ -812,7 +817,7 @@ export default function Home() {
                         </svg>
                       )
                     },
-                     {
+                    {
                       label: '459+ Tests',
                       desc: 'Teruji otomatis secara menyeluruh',
                       icon: (
@@ -891,19 +896,22 @@ export default function Home() {
 
           {/* Pipeline Steps */}
           <div className="relative">
-            {/* Central animated connecting line (desktop) */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px overflow-hidden">
-              <div className="h-full w-full bg-gradient-to-b from-[#AAFF00]/40 via-cyan-400/30 to-purple-500/20" />
-              {/* Traveling pulse */}
+            {/* Central animated connecting line (desktop) - Upgraded to Neon Pulse Track */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-[2px] overflow-hidden rounded-full shadow-[0_0_15px_rgba(170,255,0,0.5)]">
+              <div className="h-full w-full bg-gradient-to-b from-[#AAFF00]/60 via-cyan-400/50 to-purple-500/40" />
+              {/* Traveling neon pulse */}
               <motion.div
-                className="absolute left-1/2 -translate-x-1/2 w-1 h-24 rounded-full"
-                style={{ background: 'linear-gradient(to bottom, transparent, #AAFF00, transparent)' }}
-                animate={{ top: ['0%', '100%'] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                className="absolute left-1/2 -translate-x-1/2 w-[4px] h-32 rounded-full"
+                style={{
+                  background: 'linear-gradient(to bottom, transparent, #AAFF00, #AAFF00, transparent)',
+                  boxShadow: '0 0 20px #AAFF00, 0 0 40px #AAFF00'
+                }}
+                animate={{ top: ['-10%', '110%'] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
               />
             </div>
             {/* Mobile connecting line */}
-            <div className="md:hidden absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-[#AAFF00]/30 via-white/10 to-transparent" />
+            <div className="md:hidden absolute left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#AAFF00]/50 via-cyan-400/30 to-purple-500/20 shadow-[0_0_10px_rgba(170,255,0,0.3)]" />
 
             {[
               {
@@ -997,11 +1005,6 @@ export default function Home() {
                     {/* Left content (even steps) or empty */}
                     <div className={isEven ? 'order-1' : 'order-3'}>
                       <motion.div
-                        className="group relative p-6 rounded-2xl border transition-all duration-500 cursor-default"
-                        style={{
-                          background: item.accentBg,
-                          borderColor: item.accentBorder,
-                        }}
                         initial={{ opacity: 0, x: isEven ? -60 : 60, scale: 0.95 }}
                         whileInView={{ opacity: 1, x: 0, scale: 1 }}
                         viewport={{ once: true, margin: '-60px' }}
@@ -1010,150 +1013,149 @@ export default function Home() {
                           duration: 0.7,
                           ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
                         }}
-                        whileHover={{
-                          scale: 1.02,
-                          borderColor: item.accent,
-                          boxShadow: `0 0 30px ${item.accentBg}, 0 0 60px ${item.accentBg}`,
-                        }}
                       >
-                        {/* Top accent line */}
-                        <motion.div
-                          className="absolute top-0 left-6 right-6 h-px"
-                          style={{ background: `linear-gradient(to right, transparent, ${item.accent}, transparent)` }}
-                          initial={{ scaleX: 0, opacity: 0 }}
-                          whileInView={{ scaleX: 1, opacity: 0.6 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.15 + 0.4, duration: 0.8, ease: 'easeOut' }}
-                        />
-
-                        {/* Step label + Icon row */}
-                        <motion.div
-                          className="flex items-center gap-3 mb-3"
-                          initial={{ opacity: 0, y: 10 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.15 + 0.2, duration: 0.5 }}
-                        >
-                          <motion.div
-                            className="flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300"
+                        <SpotlightCard className="h-full group" spotlightColor={item.accentBg}>
+                          <div
+                            className="relative p-7 rounded-2xl border transition-all duration-500 overflow-hidden break-inside-avoid"
                             style={{
-                              background: `linear-gradient(135deg, ${item.accentBg}, transparent)`,
-                              border: `1px solid ${item.accentBorder}`,
-                              color: item.accent,
+                              background: 'rgba(10,10,15,0.85)',
+                              backdropFilter: 'blur(24px)',
+                              WebkitBackdropFilter: 'blur(24px)',
+                              borderColor: 'rgba(255,255,255,0.06)',
                             }}
-                            initial={{ scale: 0, rotate: -20 }}
-                            whileInView={{ scale: 1, rotate: 0 }}
-                            viewport={{ once: true }}
-                            transition={{
-                              delay: i * 0.15 + 0.3,
-                              type: 'spring',
-                              stiffness: 250,
-                              damping: 18,
-                            }}
-                            whileHover={{ scale: 1.15, rotate: 5 }}
                           >
-                            {item.icon}
-                          </motion.div>
-                          <span
-                            className="text-xs font-mono tracking-wider uppercase opacity-50"
-                            style={{ color: item.accent }}
-                          >
-                            Step {item.step}
-                          </span>
-                        </motion.div>
+                            {/* Top ambient glow */}
+                            <div
+                              className="absolute -top-12 -right-12 w-48 h-48 rounded-full blur-[60px] opacity-10 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none"
+                              style={{ background: item.accent }}
+                            />
 
-                        {/* Title */}
-                        <motion.h4
-                          className="text-lg font-bold text-white mb-1 group-hover:text-white transition-colors"
-                          initial={{ opacity: 0, y: 8 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.15 + 0.3, duration: 0.5 }}
-                        >
-                          {item.title}
-                        </motion.h4>
-                        <motion.p
-                          className="text-sm font-medium mb-2"
-                          style={{ color: item.accent, opacity: 0.7 }}
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 0.7 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.15 + 0.35, duration: 0.5 }}
-                        >
-                          {item.subtitle}
-                        </motion.p>
-                        <motion.p
-                          className="text-sm text-gray-400 leading-relaxed mb-4"
-                          initial={{ opacity: 0, y: 6 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.15 + 0.4, duration: 0.5 }}
-                        >
-                          {item.description}
-                        </motion.p>
+                            {/* Top accent line */}
+                            <motion.div
+                              className="absolute top-0 left-6 right-6 h-[2px]"
+                              style={{ background: `linear-gradient(to right, transparent, ${item.accent}, transparent)` }}
+                              initial={{ scaleX: 0, opacity: 0 }}
+                              whileInView={{ scaleX: 1, opacity: 0.8 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.15 + 0.4, duration: 0.8, ease: 'easeOut' }}
+                            />
 
-                        {/* Metric badge */}
-                        <motion.div
-                          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono"
-                          style={{
-                            background: item.accentBg,
-                            border: `1px solid ${item.accentBorder}`,
-                            color: item.accent,
-                          }}
-                          initial={{ opacity: 0, scale: 0.8, y: 8 }}
-                          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{
-                            delay: i * 0.15 + 0.5,
-                            type: 'spring',
-                            stiffness: 300,
-                            damping: 20,
-                          }}
-                        >
-                          <span className="text-base font-bold">{item.metric.value}</span>
-                          <span className="opacity-60">{item.metric.label}</span>
-                        </motion.div>
+                            {/* Step label + Icon row */}
+                            <motion.div
+                              className="flex items-center gap-4 mb-4"
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.15 + 0.2, duration: 0.5 }}
+                            >
+                              <motion.div
+                                className="relative w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg"
+                                style={{
+                                  background: `linear-gradient(135deg, ${item.accent}20, rgba(0,0,0,0.4))`,
+                                  border: `1px solid ${item.accentBorder}`,
+                                  color: item.accent,
+                                }}
+                                initial={{ scale: 0, rotate: -20 }}
+                                whileInView={{ scale: 1, rotate: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.15 + 0.3, type: 'spring', stiffness: 250, damping: 18 }}
+                                whileHover={{ scale: 1.15, rotate: 5, boxShadow: `0 0 20px ${item.accentBg}` }}
+                              >
+                                <div className="absolute inset-0 blur-md opacity-50 group-hover:opacity-80 transition-opacity duration-500 rounded-xl" style={{ background: item.accentBg }} />
+                                <div className="relative z-10 text-current">{item.icon}</div>
+                              </motion.div>
+                              <span className="text-xs font-mono tracking-widest uppercase opacity-70 font-semibold" style={{ color: item.accent }}>
+                                Step {item.step}
+                              </span>
+                            </motion.div>
 
-                        {/* Connector arrow pointing to center */}
-                        <motion.div
-                          className={`absolute top-1/2 -translate-y-1/2 w-4 h-px ${isEven ? '-right-4' : '-left-4'}`}
-                          style={{ background: item.accent }}
-                          initial={{ scaleX: 0, opacity: 0 }}
-                          whileInView={{ scaleX: 1, opacity: 0.4 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.15 + 0.5, duration: 0.4 }}
-                        />
+                            {/* Title */}
+                            <motion.h4
+                              className="text-xl font-bold text-white mb-1 group-hover:text-white transition-colors"
+                              initial={{ opacity: 0, y: 8 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.15 + 0.3, duration: 0.5 }}
+                            >
+                              {item.title}
+                            </motion.h4>
+                            <motion.p
+                              className="text-sm font-semibold mb-3 tracking-wide"
+                              style={{ color: item.accent, opacity: 0.9 }}
+                              initial={{ opacity: 0 }}
+                              whileInView={{ opacity: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.15 + 0.35, duration: 0.5 }}
+                            >
+                              {item.subtitle}
+                            </motion.p>
+                            <motion.p
+                              className="text-[15px] text-gray-400 leading-relaxed mb-5"
+                              initial={{ opacity: 0, y: 6 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.15 + 0.4, duration: 0.5 }}
+                            >
+                              {item.description}
+                            </motion.p>
+
+                            {/* Metric badge */}
+                            <motion.div
+                              className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm font-mono shadow-inner"
+                              style={{
+                                background: `linear-gradient(135deg, ${item.accentBg}, rgba(0,0,0,0.5))`,
+                                border: `1px solid ${item.accentBorder}`,
+                                color: item.accent,
+                              }}
+                              initial={{ opacity: 0, scale: 0.8, y: 8 }}
+                              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.15 + 0.5, type: 'spring', stiffness: 300, damping: 20 }}
+                            >
+                              <span className="text-base font-bold drop-shadow-[0_0_8px_currentColor]">{item.metric.value}</span>
+                              <span className="opacity-70 text-gray-300 font-sans tracking-wide">{item.metric.label}</span>
+                            </motion.div>
+
+                            {/* Connector arrow pointing to center */}
+                            <motion.div
+                              className={`absolute top-1/2 -translate-y-1/2 w-8 h-[2px] ${isEven ? '-right-8' : '-left-8'}`}
+                              style={{ background: `linear-gradient(to ${isEven ? 'right' : 'left'}, ${item.accent}, transparent)` }}
+                              initial={{ scaleX: 0, opacity: 0 }}
+                              whileInView={{ scaleX: 1, opacity: 0.6 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.15 + 0.5, duration: 0.5 }}
+                            />
+                          </div>
+                        </SpotlightCard>
                       </motion.div>
                     </div>
 
                     {/* Center node */}
                     <div className="order-2 flex flex-col items-center justify-center relative z-10">
                       <motion.div
-                        className="relative w-12 h-12 rounded-full flex items-center justify-center font-mono text-sm font-bold"
+                        className="relative w-14 h-14 rounded-full flex items-center justify-center font-mono text-base font-bold shadow-xl backdrop-blur-md"
                         style={{
-                          background: `radial-gradient(circle, ${item.accentBg} 0%, #0A0A0F 70%)`,
-                          border: `2px solid ${item.accentBorder}`,
+                          background: `radial-gradient(circle at center, ${item.accentBg} 0%, rgba(10,10,15,0.9) 70%)`,
+                          border: `2px solid ${item.accent}`,
                           color: item.accent,
+                          boxShadow: `0 0 20px ${item.accentBg}, inset 0 0 10px ${item.accentBg}`,
                         }}
                         initial={{ scale: 0, opacity: 0 }}
                         whileInView={{ scale: 1, opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{
-                          delay: i * 0.15 + 0.15,
-                          type: 'spring',
-                          stiffness: 300,
-                          damping: 20,
-                        }}
-                        whileHover={{ scale: 1.15, borderColor: item.accent }}
+                        transition={{ delay: i * 0.15 + 0.15, type: 'spring', stiffness: 300, damping: 20 }}
+                        whileHover={{ scale: 1.15, boxShadow: `0 0 30px ${item.accentBg}, inset 0 0 15px ${item.accentBg}` }}
                       >
                         {item.step}
-                        {/* Pulse ring */}
+                        {/* Outer Pulse ring */}
                         <motion.div
                           className="absolute inset-0 rounded-full"
                           style={{ border: `1px solid ${item.accent}` }}
-                          animate={{ scale: [1, 1.6], opacity: [0.4, 0] }}
-                          transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                          animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                          transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.2 }}
                         />
+                        {/* Inner Glowing core */}
+                        <div className="absolute inset-0 rounded-full blur-[8px] opacity-40 mix-blend-screen pointer-events-none" style={{ background: item.accent }} />
                       </motion.div>
                     </div>
 
@@ -1165,140 +1167,94 @@ export default function Home() {
                   <div className="md:hidden relative pl-16">
                     {/* Step node on the line */}
                     <motion.div
-                      className="absolute left-0 top-0 w-12 h-12 rounded-full flex items-center justify-center font-mono text-sm font-bold z-10"
+                      className="absolute left-0 top-6 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center font-mono text-sm font-bold z-20 shadow-lg"
                       style={{
-                        background: `radial-gradient(circle, ${item.accentBg} 0%, #0A0A0F 70%)`,
-                        border: `2px solid ${item.accentBorder}`,
+                        background: `radial-gradient(circle at center, ${item.accentBg} 0%, rgba(10,10,15,0.95) 70%)`,
+                        border: `2px solid ${item.accent}`,
                         color: item.accent,
+                        boxShadow: `0 0 15px ${item.accentBg}`,
                       }}
                       initial={{ scale: 0, opacity: 0 }}
                       whileInView={{ scale: 1, opacity: 1 }}
                       viewport={{ once: true }}
-                      transition={{
-                        delay: i * 0.12 + 0.1,
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 20,
-                      }}
+                      transition={{ delay: i * 0.12 + 0.1, type: 'spring', stiffness: 300, damping: 20 }}
                     >
                       {item.step}
                       {/* Pulse ring */}
                       <motion.div
                         className="absolute inset-0 rounded-full"
                         style={{ border: `1px solid ${item.accent}` }}
-                        animate={{ scale: [1, 1.5], opacity: [0.3, 0] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                        animate={{ scale: [1, 1.6], opacity: [0.5, 0] }}
+                        transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
                       />
                     </motion.div>
 
                     <motion.div
-                      className="group p-5 rounded-xl border transition-all duration-300"
-                      style={{
-                        background: item.accentBg,
-                        borderColor: item.accentBorder,
-                      }}
                       initial={{ opacity: 0, x: 30, scale: 0.95 }}
                       whileInView={{ opacity: 1, x: 0, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{
-                        delay: i * 0.12 + 0.15,
-                        duration: 0.6,
-                        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-                      }}
+                      transition={{ delay: i * 0.12 + 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                     >
-                      <motion.div
-                        className="flex items-center gap-2 mb-2"
-                        initial={{ opacity: 0, y: 8 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.12 + 0.25, duration: 0.4 }}
-                      >
-                        <motion.div
-                          style={{ color: item.accent }}
-                          initial={{ scale: 0, rotate: -15 }}
-                          whileInView={{ scale: 1, rotate: 0 }}
-                          viewport={{ once: true }}
-                          transition={{
-                            delay: i * 0.12 + 0.3,
-                            type: 'spring',
-                            stiffness: 250,
-                            damping: 18,
+                      <SpotlightCard className="h-full group" spotlightColor={item.accentBg}>
+                        <div
+                          className="relative p-6 rounded-2xl border transition-all duration-300 overflow-hidden"
+                          style={{
+                            background: 'rgba(10,10,15,0.85)',
+                            backdropFilter: 'blur(16px)',
+                            WebkitBackdropFilter: 'blur(16px)',
+                            borderColor: 'rgba(255,255,255,0.06)',
                           }}
                         >
-                          {item.icon}
-                        </motion.div>
-                        <span className="text-xs font-mono tracking-wider uppercase opacity-50" style={{ color: item.accent }}>
-                          Step {item.step}
-                        </span>
-                      </motion.div>
-                      <motion.h4
-                        className="text-base font-bold text-white mb-1"
-                        initial={{ opacity: 0, y: 6 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.12 + 0.3, duration: 0.4 }}
-                      >
-                        {item.title}
-                      </motion.h4>
-                      <motion.p
-                        className="text-xs mb-2"
-                        style={{ color: item.accent, opacity: 0.7 }}
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 0.7 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.12 + 0.35, duration: 0.4 }}
-                      >
-                        {item.subtitle}
-                      </motion.p>
-                      <motion.p
-                        className="text-sm text-gray-400 leading-relaxed mb-3"
-                        initial={{ opacity: 0, y: 4 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.12 + 0.4, duration: 0.4 }}
-                      >
-                        {item.description}
-                      </motion.p>
-                      <motion.div
-                        className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg text-xs font-mono"
-                        style={{
-                          background: item.accentBg,
-                          border: `1px solid ${item.accentBorder}`,
-                          color: item.accent,
-                        }}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{
-                          delay: i * 0.12 + 0.45,
-                          type: 'spring',
-                          stiffness: 300,
-                          damping: 20,
-                        }}
-                      >
-                        <span className="text-sm font-bold">{item.metric.value}</span>
-                        <span className="opacity-60">{item.metric.label}</span>
-                      </motion.div>
+                          {/* Top ambient glow */}
+                          <div
+                            className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-[40px] opacity-10 pointer-events-none"
+                            style={{ background: item.accent }}
+                          />
+
+                          <motion.div className="flex items-center gap-3 mb-3" initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 + 0.25, duration: 0.4 }}>
+                            <motion.div
+                              className="flex items-center justify-center w-10 h-10 rounded-xl"
+                              style={{ background: `linear-gradient(135deg, ${item.accent}20, rgba(0,0,0,0.3))`, border: `1px solid ${item.accentBorder}`, color: item.accent }}
+                              initial={{ scale: 0, rotate: -15 }} whileInView={{ scale: 1, rotate: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 + 0.3, type: 'spring', stiffness: 250, damping: 18 }}
+                            >
+                              <div className="absolute inset-0 blur-sm opacity-40 bg-current rounded-xl" />
+                              <div className="relative z-10 text-current">{item.icon}</div>
+                            </motion.div>
+                            <span className="text-xs font-mono tracking-widest uppercase opacity-60 font-semibold" style={{ color: item.accent }}>Step {item.step}</span>
+                          </motion.div>
+                          <motion.h4 className="text-lg font-bold text-white mb-1" initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 + 0.3, duration: 0.4 }}>{item.title}</motion.h4>
+                          <motion.p className="text-[13px] font-semibold mb-2 tracking-wide" style={{ color: item.accent, opacity: 0.9 }} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.12 + 0.35, duration: 0.4 }}>{item.subtitle}</motion.p>
+                          <motion.p className="text-sm text-gray-400 leading-relaxed mb-4" initial={{ opacity: 0, y: 4 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 + 0.4, duration: 0.4 }}>{item.description}</motion.p>
+                          <motion.div
+                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono shadow-inner"
+                            style={{ background: `linear-gradient(135deg, ${item.accentBg}, rgba(0,0,0,0.5))`, border: `1px solid ${item.accentBorder}`, color: item.accent }}
+                            initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.12 + 0.45, type: 'spring', stiffness: 300, damping: 20 }}
+                          >
+                            <span className="text-sm font-bold drop-shadow-[0_0_5px_currentColor]">{item.metric.value}</span>
+                            <span className="opacity-70 text-gray-300 font-sans">{item.metric.label}</span>
+                          </motion.div>
+                        </div>
+                      </SpotlightCard>
                     </motion.div>
                   </div>
                 </motion.div>
               );
             })}
 
-            {/* Bottom completion indicator */}
+            {/* Bottom completion indicator - Upgraded */}
             <motion.div
-              className="hidden md:flex flex-col items-center mt-8"
+              className="hidden md:flex flex-col items-center mt-12 relative z-10"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.8 }}
             >
-              <div className="w-10 h-10 rounded-full border border-[#AAFF00]/30 bg-[#AAFF00]/5 flex items-center justify-center">
-                <svg className="w-5 h-5 text-[#AAFF00]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <div className="w-12 h-12 rounded-full border-[2px] border-[#AAFF00] bg-[#AAFF00]/10 flex items-center justify-center shadow-[0_0_20px_rgba(170,255,0,0.3),inset_0_0_15px_rgba(170,255,0,0.2)] backdrop-blur-md">
+                <svg className="w-6 h-6 text-[#AAFF00] drop-shadow-[0_0_5px_#AAFF00]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className="text-xs font-mono text-[#AAFF00]/40 mt-2 tracking-wider">JAWABAN TERVERIFIKASI</p>
+              <p className="text-sm font-mono text-[#AAFF00] font-bold mt-3 tracking-[0.2em] drop-shadow-[0_0_8px_rgba(170,255,0,0.5)]">JAWABAN TERVERIFIKASI</p>
             </motion.div>
           </div>
         </motion.div>
@@ -1308,98 +1264,156 @@ export default function Home() {
           1. USE CASES — Siapa yang Menggunakan
           ============================================ */}
         <motion.div
-          className="max-w-6xl mx-auto px-4 mt-20"
+          className="max-w-7xl mx-auto px-4 mt-32"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8 }}
         >
-          <div className="text-center mb-10">
-            <motion.p
-              className="text-xs uppercase tracking-widest text-text-muted mb-2"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1 }}
+          <div className="text-center mb-16 relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#AAFF00]/5 blur-[120px] rounded-full pointer-events-none" />
+
+            <motion.div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
             >
-              Siapa yang Menggunakan
-            </motion.p>
+              <div className="w-2 h-2 rounded-full bg-[#AAFF00] animate-pulse" />
+              <span className="text-xs font-mono uppercase tracking-widest text-gray-300">Siapa yang Menggunakan</span>
+            </motion.div>
+
             <motion.h2
-              className="text-3xl font-bold text-text-primary mb-3"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 }}
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
             >
-              Dibangun untuk Profesional Hukum
+              <span className="text-white">Dibangun untuk </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500">Profesional Hukum</span>
             </motion.h2>
+
             <motion.p
-              className="text-text-secondary max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.3 }}
+              className="text-lg text-gray-400 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
             >
-              Dari firma hukum hingga mahasiswa, Omnibus melayani beragam kebutuhan riset hukum Indonesia
+              Dari firma hukum hingga mahasiswa, Omnibus hadir melayani beragam kebutuhan ekosistem riset hukum di Indonesia secara instan dan akurat.
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 icon: (
-                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
                 ),
                 title: 'Firma Hukum',
-                description: 'Riset cepat untuk kasus klien, analisis regulasi terkini, dan verifikasi dasar hukum',
-                example: '"Apa ketentuan PHK dalam UU Cipta Kerja?"',
+                description: 'Riset instan untuk kasus klien, monitor regulasi terkini, dan analisis gap hukum dengan presisi.',
+                example: 'Apa saja ketentuan cuti panjang dalam UU Cipta Kerja terbaru?',
+                color: '#AAFF00', // Lime
+                bgClass: 'rgba(170, 255, 0, 0.08)'
               },
               {
                 icon: (
-                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 ),
                 title: 'Startup & UMKM',
-                description: 'Compliance check sebelum ekspansi, panduan legalitas bisnis, dan izin usaha',
-                example: '"Bagaimana cara mendirikan PT di Jakarta?"',
+                description: 'Validasi kepatuhan operasional, panduan legalitas pendirian, dan mitigasi risiko izin usaha.',
+                example: 'Bagaimana prosedur mendirikan PT Perorangan di sistem OSS?',
+                color: '#00D4FF', // Cyan
+                bgClass: 'rgba(0, 212, 255, 0.08)'
               },
               {
                 icon: (
-                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 ),
                 title: 'Compliance Officers',
-                description: 'Audit kepatuhan regulasi, monitoring perubahan UU, dan gap analysis',
-                example: '"Regulasi apa yang berlaku untuk fintech?"',
+                description: 'Audit regulasi internal, pengawasan kewajiban lapor, serta pemetaan aturan sektoral terpadu.',
+                example: 'Aturan apa saja terkait perlindungan data pribadi untuk sektor Fintech?',
+                color: '#A855F7', // Purple
+                bgClass: 'rgba(168, 85, 247, 0.08)'
               },
               {
                 icon: (
-                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 ),
                 title: 'Mahasiswa Hukum',
-                description: 'Belajar regulasi Indonesia, riset tugas kuliah, dan persiapan ujian',
-                example: '"Apa perbedaan UU dan PP?"',
+                description: 'Akselerasi literature review, komparasi produk hukum, dan persiapan ujian akademis.',
+                example: 'Jelaskan perbedaan mendasar antara UU Perlindungan Konsumen dan PP turunannya.',
+                color: '#FFB800', // Amber
+                bgClass: 'rgba(255, 184, 0, 0.08)'
               },
             ].map((useCase, i) => (
               <motion.div
                 key={useCase.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.3 + i * 0.1, duration: 0.5 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{
+                  delay: 0.4 + i * 0.1,
+                  duration: 0.6,
+                  ease: [0.22, 1, 0.36, 1] as [number, number, number, number]
+                }}
               >
-                <SpotlightCard className="h-full" spotlightColor="rgba(170, 255, 0, 0.12)">
-                  <div className="p-6 flex flex-col h-full">
-                    <div className="w-14 h-14 rounded-xl bg-[#AAFF00]/10 flex items-center justify-center text-[#AAFF00] mb-4">
-                      {useCase.icon}
+                <SpotlightCard className="h-full group" spotlightColor={useCase.bgClass}>
+                  <div className="relative p-7 flex flex-col h-full rounded-2xl overflow-hidden transition-all duration-500 bg-[#0A0A0F]/60 hover:bg-[#0A0A0F]/40 border border-white/[0.04] hover:border-white/[0.1] backdrop-blur-md z-10 w-full">
+
+                    {/* Top ambient glow mapped to accent color */}
+                    <div
+                      className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-[50px] opacity-10 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none"
+                      style={{ background: useCase.color }}
+                    />
+
+                    {/* Icon Container with subtle gradient */}
+                    <div
+                      className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-xl flex-shrink-0"
+                      style={{
+                        background: `linear-gradient(135deg, rgba(255,255,255,0.05), ${useCase.color}20)`,
+                        border: `1px solid ${useCase.color}30`,
+                        color: useCase.color
+                      }}
+                    >
+                      {/* Inner glow */}
+                      <div className="absolute inset-0 blur-md opacity-40 group-hover:opacity-60 transition-opacity duration-500" style={{ background: useCase.color }} />
+                      <div className="relative z-10 transform group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500 text-current">
+                        {useCase.icon}
+                      </div>
                     </div>
-                    <h3 className="text-lg font-semibold text-text-primary mb-2">{useCase.title}</h3>
-                    <p className="text-sm text-text-secondary leading-relaxed mb-4 flex-grow">
+
+                    <h3 className="text-xl font-bold text-white mb-3 tracking-tight transition-all duration-500 leading-snug">
+                      {useCase.title}
+                    </h3>
+
+                    <p className="text-[14px] text-gray-400 leading-relaxed mb-8 flex-grow">
                       {useCase.description}
                     </p>
-                    <div className="mt-auto pt-3 border-t border-white/5">
-                      <p className="text-xs text-[#AAFF00]/70 italic">"{useCase.example}"</p>
+
+                    {/* Elevated Prompt Example */}
+                    <div className="mt-auto relative rounded-xl bg-black/40 border border-white/5 group-hover:border-white/10 transition-colors duration-500 overflow-hidden">
+                      {/* Highlight bar on left */}
+                      <div className="absolute top-0 bottom-0 left-0 w-1 opacity-50 transition-colors duration-300" style={{ backgroundColor: useCase.color }} />
+
+                      <div className="px-4 py-3 flex gap-3 items-start">
+                        <svg className="w-4 h-4 mt-0.5 opacity-60 flex-shrink-0" style={{ color: useCase.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                        <p className="text-[13px] text-gray-300 italic align-top group-hover:text-white transition-colors duration-300 line-clamp-3">
+                          "{useCase.example}"
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </SpotlightCard>
@@ -1412,218 +1426,183 @@ export default function Home() {
           2. TECH STACK — Arsitektur Platform
           ============================================ */}
         <motion.div
-          className="max-w-6xl mx-auto px-4 mt-20"
+          className="max-w-7xl mx-auto px-4 mt-32"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8 }}
         >
-          <div className="text-center mb-10">
-            <motion.p
-              className="text-xs uppercase tracking-widest text-text-muted mb-2"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              Teknologi Enterprise-Grade
-            </motion.p>
-            <motion.h2
-              className="text-3xl font-bold text-text-primary mb-3"
-              initial={{ opacity: 0, y: 10 }}
+          <div className="text-center mb-16 relative">
+            {/* Ambient Back Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-[#AAFF00]/10 blur-[100px] rounded-full pointer-events-none" />
+
+            <motion.div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-6"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
             >
-              Arsitektur yang Anda Bisa Percaya
-            </motion.h2>
-            <motion.p
-              className="text-text-secondary max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 10 }}
+              <svg className="w-3.5 h-3.5 text-[#AAFF00]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+              </svg>
+              <span className="text-xs font-mono uppercase tracking-widest text-gray-300">Teknologi Enterprise-Grade</span>
+            </motion.div>
+
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              Stack teknologi produksi dengan AI state-of-the-art dan infrastruktur yang telah teruji
+              <span className="text-white">Arsitektur yang Anda </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#AAFF00] via-[#88CC00] to-[#559900]">Bisa Percaya</span>
+            </motion.h2>
+
+            <motion.p
+              className="text-lg text-gray-400 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              Stack teknologi produksi dengan performa tinggi, dirancang khusus untuk memproses big data hukum dengan latensi minimal.
             </motion.p>
           </div>
 
-          {/* Tech Stack — Text Directory List with Hover Reveals */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12">
-            {/* AI & Search Column */}
-            <div>
-              <p className="text-xs uppercase tracking-widest text-amber-400/60 font-mono mb-6">
-                AI & Search
-              </p>
-
-              <div>
-                {[
-                  {
-                    name: 'NVIDIA NIM',
-                    role: 'Kimi K2 LLM',
-                    icon: (
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Qdrant',
-                    role: 'Vector Database',
-                    icon: (
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'CrossEncoder',
-                    role: 'Reranking',
-                    icon: (
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Hybrid Search',
-                    role: 'BM25 + Dense',
-                    icon: (
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    )
-                  },
-                ].map((tech, i) => (
-                  <motion.div
-                    key={tech.name}
-                    className="relative group py-4 border-b border-white/5 last:border-0"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08, duration: 0.5 }}
-                    whileHover={{ x: 4 }}
-                  >
-                    {/* Hover gradient reveal */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                    <div className="relative flex items-center gap-3">
-                      {/* Icon */}
-                      <div className="text-amber-400/40 group-hover:text-amber-400 transition-colors">
-                        {tech.icon}
-                      </div>
-
-                      {/* Name + Role */}
-                      <div className="flex-1">
-                        <span className="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors">
-                          {tech.name}
-                        </span>
-                        <span className="text-sm text-gray-500 font-mono ml-2">
-                          — {tech.role}
-                        </span>
-                      </div>
-
-                      {/* Arrow on hover */}
-                      <svg
-                        className="w-4 h-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+            {/* ── MODULE 1: AI & SEARCH ENGINE ── */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.7 }}
+            >
+              <div className="relative p-[1px] rounded-3xl overflow-hidden bg-gradient-to-br from-[#AAFF00]/20 via-[#AAFF00]/10 to-transparent group">
+                <div className="absolute inset-0 bg-[#AAFF00]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl" />
+                <div className="relative bg-[#0A0A0F]/90 backdrop-blur-xl rounded-[23px] p-8 h-full border border-white/5">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#AAFF00]/20 to-[#88CC00]/20 border border-[#AAFF00]/30 flex items-center justify-center text-[#AAFF00] shadow-[0_0_20px_rgba(170,255,0,0.2)]">
+                      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                       </svg>
                     </div>
-                  </motion.div>
-                ))}
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight">AI & Knowledge Engine</h3>
+                      <p className="text-sm text-[#AAFF00]/80 font-mono mt-1">CORE PERCEPTION LAYER</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {[
+                      {
+                        name: 'NVIDIA NIM', role: 'Kimi K2 LLM',
+                        color: '#AAFF00', // NVIDIA Green adjusted to theme
+                        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      },
+                      {
+                        name: 'Qdrant', role: 'Vector Database',
+                        color: '#AAFF00', // Pinkish Red adjusted to theme
+                        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                      },
+                      {
+                        name: 'CrossEncoder', role: 'Neural Reranking',
+                        color: '#AAFF00', // Cyan adjusted to theme
+                        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                      },
+                      {
+                        name: 'Hybrid Search', role: 'BM25 + Semantic',
+                        color: '#AAFF00', // Purple adjusted to theme
+                        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      },
+                    ].map((tech) => (
+                      <div key={tech.name} className="group/item relative overflow-hidden rounded-xl border border-white/5 bg-black/40 hover:bg-black/80 transition-all duration-300">
+                        {/* Hover edge highlight */}
+                        <div className="absolute left-0 top-0 bottom-0 w-1 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" style={{ backgroundColor: tech.color }} />
+
+                        <div className="p-4 flex items-center gap-4 relative z-10">
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover/item:scale-110" style={{ background: `${tech.color}15`, color: tech.color, border: `1px solid ${tech.color}30` }}>
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                              {tech.icon}
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-base font-bold text-white group-hover/item:text-white transition-colors">{tech.name}</h4>
+                            <p className="text-xs text-gray-500 font-mono mt-0.5 group-hover/item:text-gray-400 transition-colors">— {tech.role}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Frontend & Dev Column */}
-            <div>
-              <p className="text-xs uppercase tracking-widest text-amber-400/60 font-mono mb-6">
-                Frontend & Dev
-              </p>
-
-              <div>
-                {[
-                  {
-                    name: 'FastAPI',
-                    role: 'Backend API',
-                    icon: (
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Next.js 16',
-                    role: 'Frontend',
-                    icon: (
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Framer Motion',
-                    role: 'Animations',
-                    icon: (
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                      </svg>
-                    )
-                  },
-                  {
-                    name: 'Tailwind CSS',
-                    role: 'Styling',
-                    icon: (
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                      </svg>
-                    )
-                  },
-                ].map((tech, i) => (
-                  <motion.div
-                    key={tech.name}
-                    className="relative group py-4 border-b border-white/5 last:border-0"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 + 0.2, duration: 0.5 }}
-                    whileHover={{ x: 4 }}
-                  >
-                    {/* Hover gradient reveal */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                    <div className="relative flex items-center gap-3">
-                      {/* Icon */}
-                      <div className="text-amber-400/40 group-hover:text-amber-400 transition-colors">
-                        {tech.icon}
-                      </div>
-
-                      {/* Name + Role */}
-                      <div className="flex-1">
-                        <span className="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors">
-                          {tech.name}
-                        </span>
-                        <span className="text-sm text-gray-500 font-mono ml-2">
-                          — {tech.role}
-                        </span>
-                      </div>
-
-                      {/* Arrow on hover */}
-                      <svg
-                        className="w-4 h-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            {/* ── MODULE 2: FRONTEND & API GATEWAY ── */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6, duration: 0.7 }}
+            >
+              <div className="relative p-[1px] rounded-3xl overflow-hidden bg-gradient-to-bl from-[#AAFF00]/20 via-[#88CC00]/10 to-transparent group h-full">
+                <div className="absolute inset-0 bg-[#AAFF00]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl" />
+                <div className="relative bg-[#0A0A0F]/90 backdrop-blur-xl rounded-[23px] p-8 h-full border border-white/5">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#AAFF00]/20 to-[#88CC00]/20 border border-[#AAFF00]/30 flex items-center justify-center text-[#AAFF00] shadow-[0_0_20px_rgba(170,255,0,0.2)]">
+                      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
                       </svg>
                     </div>
-                  </motion.div>
-                ))}
+                    <div>
+                      <h3 className="text-xl font-bold text-white tracking-tight">Frontend & API Gateway</h3>
+                      <p className="text-sm text-[#AAFF00]/80 font-mono mt-1">USER EXPERIENCE LAYER</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {[
+                      {
+                        name: 'FastAPI', role: 'Backend Async API',
+                        color: '#AAFF00', // Teal adjusted
+                        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                      },
+                      {
+                        name: 'Next.js 16', role: 'React Framework',
+                        color: '#AAFF00', // White adjusted
+                        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                      },
+                      {
+                        name: 'Framer Motion', role: 'Fluid Layout Animations',
+                        color: '#AAFF00', // Fuchsia adjusted
+                        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                      },
+                      {
+                        name: 'Tailwind CSS', role: 'Utility Styling',
+                        color: '#AAFF00', // Light Blue adjusted
+                        icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                      },
+                    ].map((tech) => (
+                      <div key={tech.name} className="group/item relative overflow-hidden rounded-xl border border-white/5 bg-black/40 hover:bg-black/80 transition-all duration-300">
+                        <div className="absolute left-0 top-0 bottom-0 w-1 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" style={{ backgroundColor: tech.color }} />
+                        <div className="p-4 flex items-center gap-4 relative z-10">
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover/item:scale-110" style={{ background: `${tech.color}15`, color: tech.color, border: `1px solid ${tech.color}30` }}>
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                              {tech.icon}
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-base font-bold text-white group-hover/item:text-white transition-colors">{tech.name}</h4>
+                            <p className="text-xs text-gray-500 font-mono mt-0.5 group-hover/item:text-gray-400 transition-colors">— {tech.role}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -1754,62 +1733,126 @@ export default function Home() {
             </motion.p>
           </div>
 
-          <div className="glass-strong rounded-2xl overflow-hidden border border-white/10">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">Fitur</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-[#AAFF00]">Omnibus</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-text-muted">Legal Chatbot Generik</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { feature: 'Hybrid Search (BM25 + Dense)', omnibus: true, competitor: false },
-                    { feature: 'CrossEncoder Reranking', omnibus: true, competitor: false },
-                    { feature: 'Knowledge Graph Visualization', omnibus: true, competitor: false },
-                    { feature: 'Grounding Verification (LLM-as-Judge)', omnibus: true, competitor: false },
-                    { feature: 'Confidence Threshold Refusal', omnibus: true, competitor: false },
-                    { feature: 'Source Citations on Every Answer', omnibus: true, competitor: false },
-                    { feature: 'Multi-Turn Chat with Session Memory', omnibus: true, competitor: false },
-                    { feature: 'Compliance Dashboard & Analytics', omnibus: true, competitor: false },
-                    { feature: 'Open Source & Fully Auditable', omnibus: true, competitor: false },
-                  ].map((row, i) => (
-                    <motion.tr
-                      key={row.feature}
-                      className="border-b border-white/5 hover:bg-white/[0.02] transition-colors"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 3.4 + i * 0.05 }}
-                    >
-                      <td className="px-6 py-4 text-sm text-text-secondary">{row.feature}</td>
-                      <td className="px-6 py-4 text-center">
-                        {row.omnibus ? (
-                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#AAFF00]/20 text-[#AAFF00]">
-                            ✓
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-500/20 text-red-400">
-                            ✗
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        {row.competitor ? (
-                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#AAFF00]/20 text-[#AAFF00]">
-                            ✓
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-500/20 text-red-400">
-                            ✗
-                          </span>
-                        )}
-                      </td>
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
+          <div className="relative mt-16 max-w-5xl mx-auto">
+            {/* Background ambient glow for Omnibus column */}
+            <div className="absolute top-0 bottom-0 left-1/2 md:left-[50%] right-0 md:right-[25%] bg-gradient-to-b from-[#AAFF00]/5 via-[#AAFF00]/2 to-transparent rounded-3xl pointer-events-none hidden md:block" />
+
+            {/* Header Row */}
+            <div className="hidden md:grid grid-cols-4 gap-4 px-6 py-4 mb-2 border-b border-white/10 uppercase tracking-widest text-xs font-mono font-bold">
+              <div className="col-span-2 text-gray-500">Fitur & Kemampuan</div>
+              <div className="text-center text-[#AAFF00] drop-shadow-[0_0_10px_rgba(170,255,0,0.5)] flex flex-col items-center justify-center">
+                <span className="text-base font-extrabold tracking-tight shadow-[#AAFF00]">OMNIBUS</span>
+              </div>
+              <div className="text-center text-gray-500 flex flex-col items-center justify-center">
+                <span>Chatbot Generik</span>
+              </div>
+            </div>
+
+            {/* Feature Rows */}
+            <div className="space-y-3 relative z-10">
+              {[
+                {
+                  feature: 'Hybrid Search (BM25 + Dense)',
+                  desc: 'Pencarian keyword dan pemahaman semantik',
+                  omnibus: true, competitor: false
+                },
+                {
+                  feature: 'CrossEncoder Reranking',
+                  desc: 'Penyaringan presisi tinggi untuk hasil paling relevan',
+                  omnibus: true, competitor: false
+                },
+                {
+                  feature: 'Knowledge Graph Visualization',
+                  desc: 'Pemetaan relasi pasal secara interaktif',
+                  omnibus: true, competitor: false
+                },
+                {
+                  feature: 'Grounding Verification',
+                  desc: 'Pemeriksaan silang klaim AI dengan sumber hukum (LLM-as-Judge)',
+                  omnibus: true, competitor: false
+                },
+                {
+                  feature: 'Confidence Threshold',
+                  desc: 'Sistem menolak menjawab jika tidak memiliki dasar kuat',
+                  omnibus: true, competitor: false
+                },
+                {
+                  feature: 'Kutipan Pasal & Ayat',
+                  desc: 'Referensi spesifik pada setiap kalimat jawaban',
+                  omnibus: true, competitor: false
+                },
+                {
+                  feature: 'Session Memory',
+                  desc: 'Mengingat konteks percakapan bertahap',
+                  omnibus: true, competitor: true
+                },
+                {
+                  feature: 'Open Source',
+                  desc: 'Kode sumber terbuka dan dapat diaudit mandiri',
+                  omnibus: true, competitor: false
+                },
+              ].map((row, i) => (
+                <motion.div
+                  key={row.feature}
+                  className="group relative grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-4 items-center p-5 md:px-6 rounded-2xl bg-[#0A0A0F]/60 border border-white/5 hover:border-white/10 transition-all duration-300 backdrop-blur-sm cursor-default overflow-hidden hover:bg-[#0A0A0F]/80"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ delay: 0.1 + i * 0.05, duration: 0.5 }}
+                >
+                  {/* Hover Left Highlight */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#AAFF00] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  {/* Omnibus Column Highlight inside the row */}
+                  <div className="hidden md:block absolute inset-y-0 left-[50%] right-[25%] bg-[#AAFF00]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  {/* Feature Info */}
+                  <div className="col-span-1 md:col-span-2 relative z-10 text-center md:text-left">
+                    <h3 className="text-[16px] font-bold text-white group-hover:text-[#AAFF00] transition-colors">{row.feature}</h3>
+                    <p className="text-[13px] text-gray-500 mt-1 group-hover:text-gray-400 transition-colors leading-relaxed">{row.desc}</p>
+                  </div>
+
+                  {/* Comparison Grid for Mobile (shows side-by-side on small screens) */}
+                  <div className="grid grid-cols-2 md:contents gap-4 mt-2 md:mt-0 pt-3 md:pt-0 border-t border-white/5 md:border-0 relative z-10 w-full">
+
+                    {/* Omnibus Status */}
+                    <div className="flex flex-col md:items-center justify-center gap-2 items-center">
+                      <span className="md:hidden text-[10px] font-mono tracking-widest uppercase text-[#AAFF00] font-bold mb-1">Omnibus</span>
+                      {row.omnibus ? (
+                        <div className="w-10 h-10 rounded-full bg-[#AAFF00]/10 border border-[#AAFF00]/20 flex items-center justify-center text-[#AAFF00] shadow-[0_0_15px_rgba(170,255,0,0.15)] group-hover:shadow-[0_0_25px_rgba(170,255,0,0.3)] transition-all group-hover:scale-110">
+                          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-gray-600/50 relative">
+                          <div className="w-4 h-px bg-gray-600/50 rotate-45 absolute" />
+                          <div className="w-4 h-px bg-gray-600/50 -rotate-45 absolute" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Competitor Status */}
+                    <div className="flex flex-col md:items-center justify-center gap-2 items-center">
+                      <span className="md:hidden text-[10px] font-mono tracking-widest uppercase text-gray-500 font-bold mb-1">Generik</span>
+                      {row.competitor ? (
+                        <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 opacity-60 transition-all group-hover:bg-white/10">
+                          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-gray-600/50 relative">
+                          {/* A very subtle minimal cross */}
+                          <div className="w-3 h-px bg-gray-600/40 rotate-45 absolute" />
+                          <div className="w-3 h-px bg-gray-600/40 -rotate-45 absolute" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.div>
@@ -1823,61 +1866,82 @@ export default function Home() {
           6. CTA BANNER — Call to Action
           ============================================ */}
         <motion.div
-          className="max-w-6xl mx-auto px-4 mt-20"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 3.8, duration: 0.6 }}
+          className="max-w-5xl mx-auto px-4 mt-32 mb-20 relative"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8 }}
         >
-          <div className="relative overflow-hidden rounded-2xl p-12 text-center"
-            style={{
-              background: 'linear-gradient(135deg, rgba(170, 255, 0, 0.15) 0%, rgba(170, 255, 0, 0.05) 100%)',
-              border: '2px solid rgba(170, 255, 0, 0.3)',
-              boxShadow: '0 0 60px rgba(170, 255, 0, 0.15), inset 0 1px 0 rgba(170, 255, 0, 0.2)',
-            }}
-          >
-            {/* Animated background glow */}
-            <div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-30 blur-3xl pointer-events-none animate-pulse-glow"
-              style={{
-                background: 'radial-gradient(circle, rgba(170, 255, 0, 0.4) 0%, transparent 70%)',
-              }}
-            />
+          {/* Outer glow aura */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[120%] bg-[#AAFF00]/5 blur-[120px] rounded-full pointer-events-none" />
 
-            <motion.div
-              className="relative z-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 3.9 }}
-            >
-              <h2 className="text-4xl font-bold text-text-primary mb-4">
-                Mulai Eksplorasi Hukum Indonesia
-              </h2>
-              <p className="text-lg text-text-secondary mb-8 max-w-2xl mx-auto">
-                Platform open-source dan gratis. Tidak perlu akun, tidak perlu kartu kredit.
-                Langsung tanya dan dapatkan jawaban hukum yang terverifikasi.
-              </p>
-              <motion.button
-                onClick={() => router.push('/chat')}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#AAFF00] text-[#0A0A0F] rounded-xl font-bold text-lg hover:bg-[#88CC00] transition-all shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+          {/* Premium Glassmorphic Container */}
+          <div className="relative p-[1px] rounded-[2.5rem] overflow-hidden bg-gradient-to-b from-[#AAFF00]/30 via-[#AAFF00]/5 to-transparent group">
+            {/* Hover ambient blur */}
+            <div className="absolute inset-0 bg-[#AAFF00]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-3xl pointer-events-none" />
+
+            <div className="relative bg-[#0A0A0F]/90 backdrop-blur-xl rounded-[2.5rem] p-12 md:p-16 text-center border border-white/5 overflow-hidden">
+
+              {/* Internal subtle glow pulse */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#AAFF00]/20 blur-[60px] rounded-full pointer-events-none" />
+
+              <motion.div
+                className="relative z-10"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 0.6 }}
               >
-                Mulai Sekarang
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </motion.button>
-              <p className="text-xs text-text-muted mt-4 flex items-center justify-center gap-1 flex-wrap">
-                <svg className="w-3.5 h-3.5 text-[#AAFF00] inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                <span>Powered by NVIDIA NIM</span>
-                <span className="mx-1">•</span>
-                <svg className="w-3.5 h-3.5 text-[#AAFF00] inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                <span>Sumber Terverifikasi</span>
-                <span className="mx-1">•</span>
-                <svg className="w-3.5 h-3.5 text-[#AAFF00] inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21V3h18v18H3zm3-3h12M6 6h12" /></svg>
-                <span>100% Fokus Hukum Indonesia</span>
-              </p>
-            </motion.div>
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                  <span className="text-white">Mulai Eksplorasi </span>
+                  <br className="hidden md:block" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#AAFF00] to-white">
+                    Hukum Indonesia
+                  </span>
+                </h2>
+
+                <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                  Platform AI legal intelligence open-source dan gratis. <br className="hidden md:block" />
+                  <span className="text-white/80 font-medium">Tanpa akun. Tanpa kartu kredit. Langsung dapatkan jawaban terverifikasi.</span>
+                </p>
+
+                {/* Animated Shine Button */}
+                <motion.button
+                  onClick={() => router.push('/chat')}
+                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-[#AAFF00] text-[#0A0A0F] rounded-2xl font-bold text-lg overflow-hidden shadow-[0_0_40px_rgba(170,255,0,0.3)] hover:shadow-[0_0_60px_rgba(170,255,0,0.5)] transition-shadow duration-300"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Mulai Sekarang
+                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </span>
+                  {/* Sweeping Shine overlay */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:animate-sweep bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 z-0" />
+                </motion.button>
+
+                {/* Trust Badges */}
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-gray-500 uppercase tracking-wider">
+                    <svg className="w-3.5 h-3.5 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    <span>Powered by NIM</span>
+                  </div>
+                  <div className="w-1 h-1 rounded-full bg-white/10" />
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-gray-500 uppercase tracking-wider">
+                    <svg className="w-3.5 h-3.5 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    <span>Terverifikasi</span>
+                  </div>
+                  <div className="w-1 h-1 rounded-full bg-white/10" />
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-gray-500 uppercase tracking-wider">
+                    <svg className="w-3.5 h-3.5 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21V3h18v18H3zm3-3h12M6 6h12" /></svg>
+                    <span>100% Hukum ID</span>
+                  </div>
+                </div>
+
+              </motion.div>
+            </div>
           </div>
         </motion.div>
       </div>
